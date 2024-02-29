@@ -60,9 +60,16 @@ include "nav.php";
                                                         <p>Item Description</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-success">Open</button>
-                                                    </div>
+    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-success" id="openButton">Open</button>
+</div>
+
+<script>
+    document.getElementById('openButton').addEventListener('click', function() {
+        window.location.href = 'itemdetail.php'; // replace with your link
+    });
+</script>
+
                                                 </div>
                                             </div>
                                         </div>

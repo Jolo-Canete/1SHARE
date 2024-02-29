@@ -19,7 +19,7 @@
 
 <nav class="navbar navbar-expand navbar-dark bg-dark" aria-label="Second navbar example">
     <div class="container">
-        <a class="navbar-brand" href="#">I S H A R E</a>
+        <a class="navbar-brand" href="home.php">I S H A R E</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -81,8 +81,8 @@
                                        
 
       <li class="nav-item">
-      <a href="nav.php" class="nav-link link-body-emphasis">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="nav.php"/></svg>
+      <a href="home.php" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="home.php"/></svg>
           Home
         </a>
       </li>
@@ -93,8 +93,8 @@
         </a>
       </li>
       <li>
-        <a href="#" class="nav-link link-body-emphasis">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+        <a href="finditem.php" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="finditem.php"/></svg>
           Items
         </a>
       </li>
