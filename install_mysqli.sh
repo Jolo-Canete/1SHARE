@@ -1,0 +1,1 @@
+https://gist.githubusercontent.com/jerickalmeda/81a9fe4b569a7d83494c80c25e6272d4/raw/a9b0551ceb88f659daf2432df932c0823386c830/install_mysql_extension_forcodespace.sh
