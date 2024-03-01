@@ -95,13 +95,19 @@
       <li>
         <a href="finditem.php" class="nav-link link-body-emphasis">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="finditem.php"/></svg>
-          Items
+          Find Items
+        </a>
+      </li>
+      <li>
+        <a href="profile.php" class="nav-link link-body-emphasis">
+          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="finditem.php"/></svg>
+          Item Owned
         </a>
       </li>
       <li>
         <a href="#" class="nav-link link-body-emphasis">
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
-          Request
+          Request Approval
         </a>
       </li>
       <li>
