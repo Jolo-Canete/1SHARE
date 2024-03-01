@@ -30,7 +30,7 @@ include "nav.php";
                                     <div class="carousel-caption text-start">
                                         <h1>Item</h1>
                                         <p>Item Description</p>
-                                        <p><a class="btn btn-lg btn-primary" href="find_item_design.php">More Items</a></p>
+                                        <p><a class="btn btn-lg btn-primary" href="finditem.php">More Items</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -43,7 +43,7 @@ include "nav.php";
                                     <div class="carousel-caption text-start">
                                         <h1>Item</h1>
                                         <p>Item Description</p>
-                                        <p><a class="btn btn-lg btn-primary" href="find_item_design.php">More Items</a></p>
+                                        <p><a class="btn btn-lg btn-primary" href="finditem.php">More Items</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@ include "nav.php";
                                     <div class="carousel-caption text-start">
                                         <h1>Item</h1>
                                         <p>Item Description</p>
-                                        <p><a class="btn btn-lg btn-primary" href="find_item_design.php">More Items</a></p>
+                                        <p><a class="btn btn-lg btn-primary" href="finditem.php">More Items</a></p>
                                     </div>
                                 </div>
                             </div>
