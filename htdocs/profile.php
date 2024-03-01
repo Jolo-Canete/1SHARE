@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Profile</title>
@@ -10,47 +11,48 @@
     <?php include "profile.css"; ?>
   </style>
 </head>
+
 <body>
-<header>
-  <?php include "nav.php"; ?>
-</header>
-<div class="container mt-4">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="profile-container">
-        <div class="row">
-          <div class="col-md-3 text-center">
-            <div class="profile-avatar">
-              <img src="https://github.com/mdo.png" alt="user" width="100" class="rounded-circle">
-              <div class="verify-badge">
-                <i class="fas fa-check-circle"></i> <!-- Font Awesome icon for verified -->
+  <header>
+    <?php include "nav.php"; ?>
+  </header>
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="profile-container">
+          <div class="row">
+            <div class="col-md-3 text-center">
+              <div class="profile-avatar">
+                <img src="https://github.com/mdo.png" alt="user" width="100" class="rounded-circle">
+                <div class="verify-badge">
+                  <i class="fas fa-check-circle"></i> <!-- Font Awesome icon for verified -->
+                </div>
+              </div>
+            </div>
+            <div class="col-md-9">
+              <div class="profile-info">
+                <h4 class="mb-3">Jolo Cañete</h4>
+                <p class="fs-6 status-verified">Status: Verified</p>
+                <p>Resident</p>
+              </div>
+              <!-- Star rating -->
+              <div class="rating">
+                <span>Rating:</span>
+                <label for="star5"><i class="fas fa-star"></i></label>
+                <input type="radio" name="rating" id="star5" value="5">
+                <label for="star4"><i class="fas fa-star"></i></label>
+                <input type="radio" name="rating" id="star4" value="4">
+                <label for="star3"><i class="fas fa-star"></i></label>
+                <input type="radio" name="rating" id="star3" value="3">
+                <label for="star2"><i class="fas fa-star"></i></label>
+                <input type="radio" name="rating" id="star2" value="2">
+                <label for="star1"><i class="fas fa-star"></i></label>
+                <input type="radio" name="rating" id="star1" value="1">
               </div>
             </div>
           </div>
-          <div class="col-md-9">
-            <div class="profile-info">
-              <h4 class="mb-3">Jolo Cañete</h4>
-              <p class="fs-6 status-verified">Status: Verified</p>
-              <p>Resident</p>
-            </div>
-              <!-- Star rating -->
-             <div class="rating">
-  <span>Rating:</span>
-  <label for="star5"><i class="fas fa-star"></i></label>
-  <input type="radio" name="rating" id="star5" value="5">
-  <label for="star4"><i class="fas fa-star"></i></label>
-  <input type="radio" name="rating" id="star4" value="4">
-  <label for="star3"><i class="fas fa-star"></i></label>
-  <input type="radio" name="rating" id="star3" value="3">
-  <label for="star2"><i class="fas fa-star"></i></label>
-  <input type="radio" name="rating" id="star2" value="2">
-  <label for="star1"><i class="fas fa-star"></i></label>
-  <input type="radio" name="rating" id="star1" value="1">
-</div>
-          </div>
         </div>
-      </div>
-      <br>
+        <br>
         <div class="right">
           <div class="info" data-bs-toggle="modal" data-bs-target="#infoModal">
             <h3><i class="fas fa-info-circle"></i> Information</h3>
@@ -82,33 +84,82 @@
             </div>
           </div>
         </div>
-      
 
-          <div class="transaction-box">
-            <h3>Transaction History</h3>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="data transaction-item" data-bs-toggle="modal" data-bs-target="#transactionModal" data-date="2024-02-15" data-type="Barter">
-                  <h4>Transaction</h4>
-                  <p><i class="fas fa-calendar-alt"></i> Date: 2024-02-15</p>
-                  <p><i class="fas fa-exchange-alt"></i> Type: Barter</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="data transaction-item" data-bs-toggle="modal" data-bs-target="#transactionModal" data-date="2024-02-10" data-type="Borrow">
-                  <h4>Transaction</h4>
-                  <p><i class="fas fa-calendar-alt"></i> Date: 2024-02-10</p>
-                  <p><i class="fas fa-hand-holding-usd"></i> Type: Borrow</p>
-                </div>
+
+        <div class="transaction-box">
+          <h3>Transaction History</h3>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="data transaction-item" data-bs-toggle="modal" data-bs-target="#transactionModal" data-date="2024-02-15" data-type="Barter">
+                <h4>Transaction</h4>
+                <p><i class="fas fa-calendar-alt"></i> Date: 2024-02-15</p>
+                <p><i class="fas fa-exchange-alt"></i> Type: Barter</p>
               </div>
             </div>
-            <div class="text-center">
-              <button class="btn btn-primary mt-3">Make History Private</button>
+            <div class="col-md-6">
+              <div class="data transaction-item" data-bs-toggle="modal" data-bs-target="#transactionModal" data-date="2024-02-10" data-type="Borrow">
+                <h4>Transaction</h4>
+                <p><i class="fas fa-calendar-alt"></i> Date: 2024-02-10</p>
+                <p><i class="fas fa-hand-holding-usd"></i> Type: Borrow</p>
+              </div>
             </div>
           </div>
-          <!-- Item Owned box -->
-          <div class="transaction-box">
+          <div class="text-center">
+            <button class="btn btn-primary mt-3">Make History Private</button>
+          </div>
+        </div>
+        <!-- Item Owned box -->
+        <div class="transaction-box">
           <h3>Item Owned</h3>
+
+          <button class="btn btn-primary upload-button" data-bs-toggle="modal" data-bs-target="#uploadItemModal">
+            <i class="fas fa-upload"></i> Upload item
+          </button>
+          <!-- Upload Item Modal -->
+          <div class="modal fade" id="uploadItemModal" tabindex="-1" aria-labelledby="uploadItemModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="uploadItemModalLabel">Upload Item</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form>
+                    <div class="mb-3">
+                      <label for="itemName" class="form-label">Item Name</label>
+                      <input type="text" class="form-control" id="itemName">
+                    </div>
+                    <div class="mb-3">
+                      <label for="itemDescription" class="form-label">Description</label>
+                      <textarea class="form-control" id="itemDescription" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label">Open For</label>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="openFor" id="openForAll" value="All">
+                        <label class="form-check-label" for="openForAll">Borrow</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="openFor" id="openForIndividual" value="Individual">
+                        <label class="form-check-label" for="openForIndividual">Barter</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="openFor" id="openForOrganization" value="Organization">
+                        <label class="form-check-label" for="openForOrganization">Lend</label>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Upload</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br>
+          <br>
           <div class="row">
             <div class="col-md-6">
               <div class="data transaction-item" data-bs-toggle="modal" data-bs-target="#itemOwnedModal" data-name="Item Name" data-date="2024-02-15" data-status="Active" data-type="Barter">
@@ -119,115 +170,116 @@
                 <img src="item_picture.jpg" alt="Item Picture" width="50" class="img-thumbnail">
               </div>
             </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Transaction Modal -->
-<div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="transactionModalLabel"><i class="fas fa-exchange-alt"></i> Transaction Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <!-- Transaction Modal -->
+  <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="transactionModalLabel"><i class="fas fa-exchange-alt"></i> Transaction Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><i class="far fa-calendar-alt"></i> Date: <span id="transactionDate"></span></p>
+          <p><i class="fas fa-info-circle"></i> Type: <span id="transactionType"></span></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
-      <div class="modal-body">
-        <p><i class="far fa-calendar-alt"></i> Date: <span id="transactionDate"></span></p>
-        <p><i class="fas fa-info-circle"></i> Type: <span id="transactionType"></span></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
+
+
     </div>
-  
-
   </div>
-</div>
-    <!-- Item Owned Modal -->
-    <div class="modal fade" id="itemOwnedModal" tabindex="-1" aria-labelledby="itemOwnedModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="itemOwnedModalLabel">Item Details</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p><i class="far fa-calendar-alt"></i> Date & Time Published: <span id="itemOwnedDate"></span></p>
-        <p><i class="fas fa-info-circle"></i> Item Status: <span id="itemOwnedStatus"></span></p>
-        <p><i class="fas fa-exchange-alt"></i> Type of Request: <span id="itemOwnedType"></span></p>
-        <img id="itemOwnedImg" src="" alt="Item Picture">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+  <!-- Item Owned Modal -->
+  <div class="modal fade" id="itemOwnedModal" tabindex="-1" aria-labelledby="itemOwnedModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="itemOwnedModalLabel">Item Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><i class="far fa-calendar-alt"></i> Date & Time Published: <span id="itemOwnedDate"></span></p>
+          <p><i class="fas fa-info-circle"></i> Item Status: <span id="itemOwnedStatus"></span></p>
+          <p><i class="fas fa-exchange-alt"></i> Type of Request: <span id="itemOwnedType"></span></p>
+          <img id="itemOwnedImg" src="" alt="Item Picture">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
-    </div>
-    </div>
+  </div>
 
 
-<script>
-  document.querySelectorAll('.transaction-item').forEach(item => {
-    item.addEventListener('click', event => {
-      const date = item.dataset.date;
-      const type = item.dataset.type;
-      document.getElementById('transactionDate').innerText = `Date: ${date}`;
-      document.getElementById('transactionType').innerText = `Type: ${type}`;
+  <script>
+    document.querySelectorAll('.transaction-item').forEach(item => {
+      item.addEventListener('click', event => {
+        const date = item.dataset.date;
+        const type = item.dataset.type;
+        document.getElementById('transactionDate').innerText = `Date: ${date}`;
+        document.getElementById('transactionType').innerText = `Type: ${type}`;
+      });
     });
-  });
-</script>
+  </script>
 
 
 
-<!-- Information Modal -->
-<div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="infoModalLabel"><i class="fas fa-info-circle"></i> Detailed Information</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-1 text-center">
-            <i class="fas fa-envelope"></i>
+  <!-- Information Modal -->
+  <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="infoModalLabel"><i class="fas fa-info-circle"></i> Detailed Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-1 text-center">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="col-md-11">
+              <p>Email: canete.jolo@gmail.com</p>
+            </div>
           </div>
-          <div class="col-md-11">
-            <p>Email: canete.jolo@gmail.com</p>
+          <div class="row">
+            <div class="col-md-1 text-center">
+              <i class="fas fa-phone"></i>
+            </div>
+            <div class="col-md-11">
+              <p>Phone: 09203513491</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-1 text-center">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="col-md-11">
+              <p>Address: Zone 11, Purok 26-A, Curvada</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-1 text-center">
+              <i class="fas fa-landmark"></i>
+            </div>
+            <div class="col-md-11">
+              <p>Nearest Landmark: Bilyaran</p>
+            </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-1 text-center">
-            <i class="fas fa-phone"></i>
-          </div>
-          <div class="col-md-11">
-            <p>Phone: 09203513491</p>
-          </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
-        <div class="row">
-          <div class="col-md-1 text-center">
-            <i class="fas fa-map-marker-alt"></i>
-          </div>
-          <div class="col-md-11">
-            <p>Address: Zone 11, Purok 26-A, Curvada</p>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-1 text-center">
-            <i class="fas fa-landmark"></i>
-          </div>
-          <div class="col-md-11">
-            <p>Nearest Landmark: Bilyaran</p>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-</div>
 
 </body>
+
 </html>

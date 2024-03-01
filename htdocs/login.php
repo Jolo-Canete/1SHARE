@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login/signup</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
+
 <body>
-<div class="container my-5">
+    <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-4">
                 <div class="h1 text-start" id="itemSharingSystem">I S H A R E</div>
@@ -20,16 +22,23 @@
                             <!--- Login --->
                             <div class="form">
                                 <div class="mb-3">
-                                <label for="email_address" class="form-label">Email Address</label>
-                                <input type="text" class="form-control" id="email_address" placeholder="Email address or mobile number">
+                                    <label for="email_address" class="form-label">Email Address</label>
+                                    <input type="text" class="form-control" id="email_address" placeholder="Email address or mobile number">
+                                </div>
                             </div>
-                        </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" placeholder="Password">
                             </div>
                             <div class="d-grid gap-2">
-                                <button class="btn btn-primary" type="submit" value="login">Login</button>
+                                <button id="loginButton" class="btn btn-primary" type="submit" value="login">Login</button>
+                                <script>
+                                    // Function to redirect to the specified link when the button is clicked
+                                    document.getElementById('loginButton').addEventListener('click', function() {
+                                        // Replace 'your-link-here' with the actual URL you want to redirect to
+                                        window.location.href = 'home.php';
+                                    });
+                                </script>
                             </div>
                             <br>
                             <div class="text-center">
@@ -104,8 +113,8 @@
                 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script> 
+                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
 
 </html>
