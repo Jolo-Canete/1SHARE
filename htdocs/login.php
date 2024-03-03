@@ -23,12 +23,12 @@
                             <div class="form">
                                 <div class="mb-3">
                                     <label for="email_address" class="form-label">Email Address</label>
-                                    <input type="text" class="form-control" id="email_address" placeholder="Email address or mobile number">
+                                    <input type="text" class="form-control" id="email_address" name="email" placeholder="Email address or mobile number">
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" class="form-control" id="password" placeholder="Password">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
                             </div>
                             <div class="d-grid gap-2">
                                 <button id="loginButton" class="btn btn-primary" type="submit" value="login">Login</button>
@@ -116,5 +116,6 @@
                 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
+<!-- Login System -->
 
 </html>

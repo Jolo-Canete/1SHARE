@@ -110,7 +110,7 @@
         </div>
         <!-- Item Owned box -->
         <div class="transaction-box">
-          <h3>Item Owned</h3>
+          <h3>Items Owned</h3>
 
           <button class="btn btn-primary upload-button" data-bs-toggle="modal" data-bs-target="#uploadItemModal">
             <i class="fas fa-upload"></i> Upload item
