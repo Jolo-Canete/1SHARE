@@ -87,9 +87,9 @@
     </style>
 </head>
 <body>
-<header> <?php
+ <?php
                 include "nav.php";
-                ?></header>
+                ?>
     
     <br>
     <h1 class="text-center mb-4"><i class="bi bi-archive-fill"></i> My Items</h1>
