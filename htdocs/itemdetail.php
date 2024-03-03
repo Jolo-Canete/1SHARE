@@ -54,7 +54,7 @@ include "nav.php";
                         <p class="text-start"><b>Address:</b>&nbsp;Purok 31, Zone 13</b></p>
                         <p class="text-start"><b>Pick up Location:</b>&nbsp;Overton</p>
                         <p class="text-start"><b>Owned by:</b>&nbsp;
-                            <span class="badge  align-items-center text-light-emphasis bg-primary-subtle border border-primary-subtle rounded-pill">
+                            <span class="badge align-items-center text-light-emphasis bg-primary-subtle border border-primary-subtle rounded-pill">
                                 <img class="rounded-circle me-1" width="23" height="23" src="picture/elmo.jpg">Elmo
                             </span>
                         </p>
