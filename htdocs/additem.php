@@ -90,9 +90,9 @@
  <?php include "nav.php";?>
     
     <br>
-    <h1 class="text-center mb-4"><i class="bi bi-archive-fill"></i> My Items</h1>
+    <h1 class="text-center mb-4"><i class="bi bi-archive-fill"></i> MY ITEMS</h1>
     <div class="container">
-        <button id="but" type="button" class="btn btn-add mb-3 border border-success rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadModal">
+        <button id="but" type="button" class="btn btn btn-outline-success btn-add mb-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadModal">
             <i class="bi bi-plus"></i> Add New Item
         </button>
     </div>
@@ -106,11 +106,12 @@
                 <img src="picture/elmo.jpg" class="card-img-top" alt="Item 1">
                 <div class="card-body">
                     <h5 class="card-title">Elmo</h5>
+                    <p class="card-text"><i class="bi bi-tags-fill"></i> Category: Toys <span id="itemCategory"></span></p>
                     <p class="card-text"><i class="bi bi-card-text"></i> Item Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</p>
                     <p class="card-text"><i class="bi bi-calendar"></i> Date and Time Posted: January 1, 2024</p>
                     <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Like New</p>
-                    <p class="card-text"><i class="bi bi-check-circle-fill"></i> Availability: Available</p>
-                    <p class="card-text"><i class="bi bi-arrow-repeat"></i> Request Type: Barter</p>
+                    <p class="card-text"><i class="bi bi-check-circle-fill"></i> Availability: &nbsp;<span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></p>
+                    <p class="card-text"><i class="bi bi-arrow-repeat"></i> Request Type: &nbsp;<span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></p>
                 </div>
             </div>
         </div>
@@ -120,11 +121,12 @@
                 <img src="picture/elmo.jpg" class="card-img-top" alt="Item 2">
                 <div class="card-body">
                     <h5 class="card-title">Elmo</h5>
+                    <p class="card-text"><i class="bi bi-tags-fill"></i> Category: Toys <span id="itemCategory"></span></p>
                     <p class="card-text"><i class="bi bi-card-text"></i> Item Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</p>
                     <p class="card-text"><i class="bi bi-calendar"></i> Date and Time Posted: January 1, 2024</p>
                     <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Very New</p>
-                    <p class="card-text"><i class="bi bi-check-circle-fill"></i> Availability: Available</p>
-                    <p class="card-text"><i class="bi bi-arrow-repeat"></i> Request Type: Borrow</p>
+                    <p class="card-text"><i class="bi bi-check-circle-fill"></i> Availability: &nbsp;<span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></p>
+                    <p class="card-text"><i class="bi bi-arrow-repeat"></i> Request Type: &nbsp;<span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></p>
                 </div>
             </div>
         </div>
@@ -134,11 +136,12 @@
                 <img src="picture/elmo.jpg" class="card-img-top" alt="Item 3">
                 <div class="card-body">
                     <h5 class="card-title">Elmo</h5>
+                    <p class="card-text"><i class="bi bi-tags-fill"></i> Category: Toys <span id="itemCategory"></span></p>
                     <p class="card-text"><i class="bi bi-card-text"></i> Item Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</p>
                     <p class="card-text"><i class="bi bi-calendar"></i> Date and Time Posted: January 1, 2024</p>
                     <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Like Old</p>
-                    <p class="card-text"><i class="bi bi-check-circle-fill"></i> Availability: Available</p>
-                    <p class="card-text"><i class="bi bi-arrow-repeat"></i> Request Type: Barter/Borrow</p>
+                    <p class="card-text"><i class="bi bi-check-circle-fill"></i> Availability: &nbsp;<span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></p>
+                    <p class="card-text"><i class="bi bi-arrow-repeat"></i> Request Type: &nbsp;<span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></p>
                 </div>
             </div>
         </div>
@@ -181,6 +184,7 @@
                     <img id="modalItemImage" src="" alt="">
                     <div class="modal-details">
                         <h5 id="modalItemName"></h5>
+                        <p><i class="bi bi-tags-fill"></i> <span id="modalItemCategory"></span></p>
                         <p><i class="bi bi-card-text"></i> <span id="modalItemDescription"></span></p>
                         <p><i class="bi bi-calendar"></i> <span id="modalItemDatePosted"></span></p>
                         <p><i class="bi bi-star-fill"></i> <span id="modalItemCondition"></span></p>
@@ -214,15 +218,15 @@
                         </div>
                         <div class="mb-3">
                             <label for="itemName" class="form-label"><i class="bi bi-card-heading"></i> Item Name:</label>
-                            <input type="text" class="form-control" id="itemName">
+                            <input type="text" class="form-control" id="itemName" placeholder="Enter item name">
                         </div>
                         <div class="mb-3">
                             <label for="itemDescription" class="form-label"><i class="bi bi-card-text"></i> Item Description:</label>
-                            <input type="text" class="form-control" id="itemDescription">
+                            <input type="text" class="form-control" id="itemDescription" placeholder="Enter item description">
                         </div>
                         <div class="mb-3">
                             <label for="itemCondition" class="form-label"><i class="bi bi-gem"></i> Item Condition:</label>
-                            <input type="text" class="form-control" id="itemCondition">
+                            <input type="text" class="form-control" id="itemCondition" placeholder="Enter item condition (e.g. new, old, good, bad)">
                         </div>
                         <div class="mb-3">
                             <label for="itemAvailability" class="form-label"><i class="bi bi-check2-circle"></i> Availability:</label>
@@ -268,6 +272,8 @@
             document.getElementById("modalItemCondition").innerText = "Condition: " + condition;
             document.getElementById("modalItemAvailability").innerText = "Availability: " + availability;
             document.getElementById("modalItemRequestType").innerText = "Request Type: " + requestType;
+            document.getElementById("modalItemCategory").innerText = "Category: " + category; 
+
         }
     </script>
 </body>

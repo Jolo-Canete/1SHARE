@@ -8,7 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        .navbar {
+      .navbar {
             z-index: 1000;
         }
 
@@ -17,9 +17,9 @@
             top: 56px;
             left: 0;
             bottom: 0;
-            background-color: #343a40;
+            background-color: #212529;
             color: #fff;
-            padding: 20px;
+            padding: 10px;
             transition: width 0.3s ease;
             position: fixed;
             z-index: 1;
@@ -30,13 +30,14 @@
         }
 
         .nav-link {
-            display: block;
+            display: flex;
+            align-items: center;
             text-align: center;
         }
 
         .nav-text {
             display: none;
-            left: calc(100% + 10px);
+            margin-left: 10px;
             font-size: 14px;
             white-space: nowrap;
             color: #fff;
@@ -46,35 +47,19 @@
             display: block;
         }
 
-        .nav-icon {
-            width: 24px;
-            height: 24px;
-            fill: #fff;
-            transition: fill 0.3s ease;
-        }
-
-        .nav-item:hover .nav-icon {
-            fill: #ffc107;
-        }
-
         .nav-item {
             transition: background-color 0.3s ease;
         }
 
-        .nav-link {
-            display: block;
-            text-align: center;
-            padding: 10px 0;
-            position: relative;
-            transition: color 0.3s ease;
+        .nav-link svg {
+            fill: white;
         }
 
-        .nav-link:hover {
-            color: #495057;
+        .nav-link:hover svg {
+            fill: #526e75;
         }
 
         @media (max-width: 992px) {
-
             /* Adjust sidebar width and positioning for smaller screens */
             .sidebar {
                 position: fixed;
@@ -84,10 +69,6 @@
             main {
                 margin-left: 80px;
             }
-        }
-
-        .nav-link:hover svg {
-            fill: white;
         }
     </style>
 </head>
@@ -175,15 +156,13 @@
     </nav>
 
     <main>
-        <div class="sidebar" id="sidebar">
+    <div class="sidebar" id="sidebar">
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a href="home.php" class="nav-link py-3 border-bottom rounded-0" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
                         <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Home">
                             <use xlink:href="#home" />
                         </svg>
-
-
                         <span class="nav-text">Home</span>
                     </a>
                 </li>
@@ -295,10 +274,14 @@
                 if (sidebar.classList.contains('collapsed')) {
                     expandSidebar();
                 } else {
-                    collapseSidebar();
+                    const isClickInsideNavbar = clickedElement.closest('.navbar');
+                    if (!isClickInsideNavbar) {
+                        collapseSidebar();
+                    }
                 }
             }
         });
+
     </script>
 
 
