@@ -87,9 +87,7 @@
     </style>
 </head>
 <body>
- <?php
-                include "nav.php";
-                ?>
+ <?php include "nav.php";?>
     
     <br>
     <h1 class="text-center mb-4"><i class="bi bi-archive-fill"></i> My Items</h1>
@@ -237,13 +235,13 @@
                         <div class="mb-3">
                             <label class="form-label"><i class="bi bi-arrow-repeat"></i> Request Type:</label>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="barter" id="requestTypeBarter">
+                                <input class="form-check-input" type="radio" value="barter" name="barter-or-borrow" id="requestTypeBarter">
                                 <label class="form-check-label" for="requestTypeBarter">
                                     Barter
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="borrow" id="requestTypeBorrow">
+                                <input class="form-check-input" type="radio" value="borrow" name="barter-or-borrow" id="requestTypeBorrow">
                                 <label class="form-check-label" for="requestTypeBorrow">
                                     Borrow
                                 </label>
