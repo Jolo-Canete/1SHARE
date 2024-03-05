@@ -250,7 +250,7 @@
                 </li>
 
                 <li>
-                    <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <a href="dashboard.php" class="nav-link py-3 border-bottom rounded-0" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="right">
                         <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Dashboard">
                             <use xlink:href="#speedometer2" />
                         </svg>
