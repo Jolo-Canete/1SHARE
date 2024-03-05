@@ -4,234 +4,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navigation</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
-        .navbar {
-            z-index: 1000;
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
         }
 
-        .sidebar {
-            width: 80px;
-            top: 56px;
-            left: 0;
-            bottom: 0;
-            background-color: #212529;
-            color: #fff;
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .profile-container {
+            background-color: #fff;
             padding: 20px;
-            transition: width 0.3s ease;
-            position: fixed;
-            z-index: 1;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .sidebar.collapsed {
-            width: 80px;
+        .profile-avatar img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
         }
 
-        .nav-link {
-            display: flex;
-            align-items: center;
-            text-align: center;
+        .verify-badge {
+            color: #0f9d58;
+            font-size: 1.5em;
+            margin-top: 10px;
         }
 
-        .nav-text {
-            display: none;
-            margin-left: 10px;
-            font-size: 14px;
-            white-space: nowrap;
-            color: #fff;
+        .profile-info {
+            margin-left: 20px;
         }
 
-        .sidebar.collapsed .nav-text {
-            display: block;
+        .status-verified {
+            color: #0f9d58;
         }
 
-        .nav-item {
-            transition: background-color 0.3s ease;
+        .rating {
+            margin-top: 10px;
         }
 
-        .nav-link svg {
-            fill: white;
+        .transaction-box {
+            background-color: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
-        .nav-link:hover svg {
-            fill: #526e75;
+        .transaction-item {
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
         }
 
-        @media (max-width: 992px) {
-            /* Adjust sidebar width and positioning for smaller screens */
-            .sidebar {
-                position: fixed;
-                margin-right: 40px;
-            }
+        .modal-body p {
+            margin: 5px 0;
+        }
 
-            main {
-                margin-left: 80px;
-            }
+        .modal-body span {
+            font-weight: bold;
+        }
+
+        .modal-body img {
+            max-width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .info h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .info p {
+            margin-bottom: 5px;
         }
     </style>
 </head>
 
 <body>
-<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
-
-<symbol id="inventory" viewBox="0 0 16 16">
-<path fill-rule="evenodd"
-    d="M4.5 1A1.5 1.5 0 0 1 6 2.5V4h4V2.5A1.5 1.5 0 0 1 11.5 1h2A1.5 1.5 0 0 1 15 2.5v11a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 1 13.5v-11C1 2.673 1.673 2 2.5 2h2z" />
-<path fill-rule="evenodd"
-    d="M3 6.5A.5.5 0 0 1 3.5 6h9a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5v-6zM2.5 5A1.5 1.5 0 0 0 1 6.5v6A1.5 1.5 0 0 0 2.5 14h9a1.5 1.5 0 0 0 1.5-1.5v-6A1.5 1.5 0 0 0 11.5 5h-9z" />
-</symbol>
-
-    
-
-    <symbol id="settings" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M15.89 8.723l-1.34-.756a5.7 5.7 0 0 0-.854-.342c-.2-.081-.343-.264-.393-.48l-.24-1.053c-.042-.185-.167-.325-.33-.388a5.746 5.746 0 0 0-.696-.245l-.53-1.194c-.195-.44-.615-.717-1.09-.717h-2.457c-.474 0-.894.277-1.089.717l-.53 1.194c-.208.075-.42.14-.635.197-.163.062-.288.202-.33.388l-.24 1.053c-.05.215-.193.398-.393.48a5.7 5.7 0 0 0-.854.342l-1.34.756c-.321.181-.532.524-.532.91v1.492c0 .387.211.729.532.91l1.34.756a5.746 5.746 0 0 0 .854.342c.2.081.343.264.393.48l.24 1.053c.042.185.167.325.33.388a5.746 5.746 0 0 0 .696.245l.53 1.194c.195.44.615.717 1.089.717h2.457c.474 0 .894-.277 1.089-.717l.53-1.194c.208-.075.42-.14.635-.197.163-.062.288-.202.33-.388l.24-1.053c.05-.215.193-.398.393-.48.31-.125.623-.266.854-.342l1.34-.756c.321-.181.532-.524.532-.91V9.633c0-.386-.211-.729-.532-.91zM8 10.99a2.99 2.99 0 1 0 0-5.98 2.99 2.99 0 0 0 0 5.98z" />
-    </symbol>
-
-    <symbol id="item-owned" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M8 10.99a2.99 2.99 0 1 0 0-5.98 2.99 2.99 0 0 0 0 5.98z" />
-    </symbol>
-
-    <symbol id="request-approval" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M8 16a2 2 0 0 1-2-2h4a2 2 0 0 1-2 2zm6-5.5V7c0-3.128-2.124-5.812-5-6.555V0h-2v.445C4.124 1.188 2 3.872 2 7v3.5L.293 13.207a1 1 0 0 0-.293.707V15a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1v-1.086a1 1 0 0 0-.293-.707L14 9.5zm-2.819.994a3.505 3.505 0 0 1-2.357 1.398 1.5 1.5 0 0 0-2.648 0 3.506 3.506 0 0 1-2.357-1.398l-.134-.186C2.33 9.752 2 8.9 2 8V7c0-2.82 2.239-5 5-5s5 2.18 5 5v1c0 .9-.329 1.753-.919 2.494l-.134.186z" />
-    </symbol>
-
-    <symbol id="home" viewBox="0 0 16 16">
-        <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146zM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5z" />
-    </symbol>
-    <symbol id="speedometer2" viewBox="0 0 16 16">
-        <path d="M8 4a.5.5 0 0 1 .5.5V6a.5.5 0 0 1-1 0V4.5A.5.5 0 0 1 8 4zM3.732 5.732a.5.5 0 0 1 .707 0l.915.914a.5.5 0 1 1-.708.708l-.914-.915a.5.5 0 0 1 0-.707zM2 10a.5.5 0 0 1 .5-.5h1.586a.5.5 0 0 1 0 1H2.5A.5.5 0 0 1 2 10zm9.5 0a.5.5 0 0 1 .5-.5h1.5a.5.5 0 0 1 0 1H12a.5.5 0 0 1-.5-.5zm.754-4.246a.389.389 0 0 0-.527-.02L7.547 9.31a.91.91 0 1 0 1.302 1.258l3.434-4.297a.389.389 0 0 0-.029-.518z" />
-        <path fill-rule="evenodd" d="M0 10a8 8 0 1 1 15.547 2.661c-.442 1.253-1.845 1.602-2.932 1.25C11.309 13.488 9.475 13 8 13c-1.474 0-3.31.488-4.615.911-1.087.352-2.49.003-2.932-1.25A7.988 7.988 0 0 1 0 10zm8-7a7 7 0 0 0-6.603 9.329c.203.575.923.876 1.68.63C4.397 12.533 6.358 12 8 12s3.604.532 4.923.96c.757.245 1.477-.056 1.68-.631A7 7 0 0 0 8 3z" />
-    </symbol>
-    <symbol id="table" viewBox="0 0 16 16">
-        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z" />
-    </symbol>
-    <symbol id="people-circle" viewBox="0 0 16 16">
-        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-        <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-    </symbol>
-    <symbol id="grid" viewBox="0 0 16 16">
-        <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z" />
-    </symbol>
-    <symbol id="notification" viewBox="0 0 16 16">
-<path fill-rule="evenodd" d="M8 1a1.5 1.5 0 0 1 1.355.868c.204.49.545.937.997 1.29.724.517 1.64.843 2.648.843s1.924-.326 2.648-.843a2.815 2.815 0 0 1 1.997-3.157V3.5A3.5 3.5 0 0 0 11.5 7v4.346c0 .28.055.556.16.815a3.501 3.501 0 0 0-1.223 1.69l-.167.71a1 1 0 0 1-1.94-.001l-.167-.71a3.501 3.501 0 0 0-1.223-1.69.5.5 0 0 1 .32-.946 2.501 2.501 0 0 1 1.101 1.208l.167.71a.999.999 0 0 1-1.94.001l-.167-.71a2.501 2.501 0 0 1 1.101-1.208.5.5 0 0 1 .32.946 3.501 3.501 0 0 0-1.223 1.69L7 11.314V7A3.5 3.5 0 0 0 4.5 3.5v-.782a2.815 2.815 0 0 1 1.997 3.157 1 1 0 0 1-.354.79A4.501 4.501 0 0 0 8 14c-.464 0-.909-.072-1.33-.207a.5.5 0 1 1 .264-.964c.36.12.748.207 1.066.207a3.501 3.501 0 0 0 3.5-3.5V7A1.5 1.5 0 0 1 8 5.5V1z"/>
-</symbol>
-
-
-
-
-</svg>
-
-    <nav class="navbar navbar-expand navbar-dark bg-dark fixed-top" aria-label="Second navbar example">
-        &nbsp;&nbsp;&nbsp;&nbsp;
-
-        <div class="d-flex">
-            <button class="btn btn-outline-secondary" type="button" onclick="toggleSidebar()">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-        </div>
-        <a class="navbar-brand" href="home.php">I S H A R E</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse justify-content-center" id="navbarsExample02">
-            <form role="search" class="w-50">
-                <div class="input-group">
-                    <input class="form-control rounded-0" type="search" placeholder="Search" aria-label="Search" style="background-color: white;">
-                    <div class="input-group-append">
-                        <button class="btn btn-outline-secondary rounded-0" type="button" style="border-color: black; background-color: white;">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="black" class="bi bi-search" viewBox="0 0 16 16">
-                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                            </svg>
-                        </button>
+    <div class="container">
+        <div class="profile-container">
+            <div class="row">
+                <div class="col-md-3 text-center">
+                    <div class="profile-avatar">
+                        <img src="https://github.com/mdo.png" alt="user">
+                        <div class="verify-badge">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
                     </div>
                 </div>
-            </form>
+                <div class="col-md-9">
+                    <div class="profile-info">
+                        <h4 class="mb-3">Jolo Cañete</h4>
+                        <p class="fs-6 status-verified">Status: Verified</p>
+                        <p>Resident</p>
+                        <div class="rating">
+                            <span>Rating:</span>
+                            <label for="star5"><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" id="star5" value="5">
+                            <label for="star4"><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" id="star4" value="4">
+                            <label for="star3"><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" id="star3" value="3">
+                            <label for="star2"><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" id="star2" value="2">
+                            <label for="star1"><i class="fas fa-star"></i></label>
+                            <input type="radio" name="rating" id="star1" value="1">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-    </nav>
-
-    <main>
-        <div class="sidebar" id="sidebar">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a href="home.php" class="nav-link py-3 border-bottom rounded-0" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
-                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Home">
-                            <use xlink:href="#home" />
-                        </svg>
-                        <span class="nav-text">Home</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Notifications" data-bs-toggle="tooltip" data-bs-placement="right">
-                        <svg class="bi pe-none" width="24" height="24" role="img" aria-label="Notifications">
-                            <use xlink:href="#notification" />
-                        </svg>
-                        <span class="nav-text">Notifications</span>
-                    </a>
-                </li>
-                <!-- Other sidebar items -->
-            </ul>
+        <div class="transaction-box">
+            <h3>Transaction History</h3>
+            <div class="transaction-item">
+                <h4>Transaction</h4>
+                <p><i class="fas fa-calendar-alt"></i> Date: 2024-02-15</p>
+                <p><i class="fas fa-exchange-alt"></i> Type: Barter</p>
+            </div>
+            <div class="transaction-item">
+                <h4>Transaction</h4>
+                <p><i class="fas fa-calendar-alt"></i> Date: 2024-02-10</p>
+                <p><i class="fas fa-hand-holding-usd"></i> Type: Borrow</p>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary mt-3">Make History Private</button>
+            </div>
         </div>
-    </main>
+    </div>
 
-    <script>
-        // Function to collapse the sidebar
-        function collapseSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            const navTexts = document.querySelectorAll('.nav-text');
-            sidebar.classList.add('collapsed');
-            sidebar.style.width = "80px";
-            navTexts.forEach(text => text.style.display = 'none');
-            overlay.style.display = 'none';
-        }
+    <!-- Modals -->
 
-        // Function to expand the sidebar
-        function expandSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            const navTexts = document.querySelectorAll('.nav-text');
-            sidebar.classList.remove('collapsed');
-            sidebar.style.width = "200px";
-            navTexts.forEach(text => text.style.display = 'block');
-            overlay.style.display = 'block';
-        }
+    <!-- Transaction Modal -->
+    <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="transactionModalLabel">Transaction Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><i class="far fa-calendar-alt"></i> Date: <span id="transactionDate"></span></p>
+                    <p><i class="fas fa-info-circle"></i> Type: <span id="transactionType"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Function to toggle the sidebar
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            if (sidebar.classList.contains('collapsed')) {
-                expandSidebar();
-            } else {
-                collapseSidebar();
-            }
-        }
+    <!-- Information Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="infoModalLabel">Detailed Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-1 text-center">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="col-md-11">
+                            <p>Email: canete.jolo@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 text-center">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="col-md-11">
+                            <p>Phone: 09203513491</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 text-center">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="col-md-11">
+                            <p>Address: Zone 11, Purok 26-A, Curvada</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-1 text-center">
+                            <i class="fas fa-landmark"></i>
+                        </div>
+                        <div class="col-md-11">
+                            <p>Nearest Landmark: Bilyaran</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // Event listener for the menu button
-        document.getElementById('menu-btn').addEventListener('click', toggleSidebar);
-
-        // Event listener for clicks anywhere on the document body
-        document.body.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const clickedElement = event.target;
-            const isMenuButton = clickedElement.id === 'menu-btn';
-            const isSidebar = clickedElement.id === 'sidebar' || clickedElement.closest('#sidebar');
-            if (!isMenuButton && !isSidebar) {
-                if (sidebar.classList.contains('collapsed')) {
-                    expandSidebar();
-                } else {
-                    const isClickInsideNavbar = clickedElement.closest('.navbar');
-                    if (!isClickInsideNavbar) {
-                        collapseSidebar();
-                    }
-                }
-            }
-        });
-    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js" integrity="sha512-MXtRbXdlyFXkdqMCM/ujU4fH0uv/gOMhhCMe92qEG1i4Hbb4yGLz5kwJlWgsGR8t8W1flR0olqtjTDAj6Mciig==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 
 </html>

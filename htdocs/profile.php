@@ -25,7 +25,7 @@
               <div class="profile-avatar">
                 <img src="https://github.com/mdo.png" alt="user" width="100" class="rounded-circle">
                 <div class="verify-badge">
-                  <i class="fas fa-check-circle"></i> <!-- Font Awesome icon for verified -->
+                  <i class="fas fa-check-circle"></i> 
                 </div>
               </div>
             </div>
@@ -108,73 +108,7 @@
             <button class="btn btn-primary mt-3">Make History Private</button>
           </div>
         </div>
-        <!-- Item Owned box -->
-        <div class="transaction-box">
-          <h3>Items Owned</h3>
-
-          <button class="btn btn-primary upload-button" data-bs-toggle="modal" data-bs-target="#uploadItemModal">
-            <i class="fas fa-upload"></i> Upload item
-          </button>
-          <!-- Upload Item Modal -->
-          <div class="modal fade" id="uploadItemModal" tabindex="-1" aria-labelledby="uploadItemModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="uploadItemModalLabel">Upload Item</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form>
-                    <div class="mb-3">
-                      <label for="itemName" class="form-label">Item Name</label>
-                      <input type="text" class="form-control" id="itemName">
-                    </div>
-                    <div class="mb-3">
-                      <label for="itemDescription" class="form-label">Description</label>
-                      <textarea class="form-control" id="itemDescription" rows="3"></textarea>
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label">Open For</label>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="openFor" id="openForAll" value="All">
-                        <label class="form-check-label" for="openForAll">Borrow</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="openFor" id="openForIndividual" value="Individual">
-                        <label class="form-check-label" for="openForIndividual">Barter</label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="openFor" id="openForOrganization" value="Organization">
-                        <label class="form-check-label" for="openForOrganization">Lend</label>
-                      </div>
-                    </div>
-
-                  </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Upload</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <br>
-          <br>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="data transaction-item" data-bs-toggle="modal" data-bs-target="#itemOwnedModal" data-name="Item Name" data-date="2024-02-15" data-status="Active" data-type="Barter">
-                <h4>Item Name</h4>
-                <p><i class="far fa-calendar-alt"></i> Date & Time Published: <small>2024-02-15 08:30 AM</small></p>
-                <p><i class="fas fa-info-circle"></i> Item Status: <small>Active</small></p>
-                <p><i class="fas fa-exchange-alt"></i> Type of Request: <small>Barter</small></p>
-                <img src="item_picture.jpg" alt="Item Picture" width="50" class="img-thumbnail">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+     
 
   <!-- Transaction Modal -->
   <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
@@ -196,27 +130,7 @@
 
     </div>
   </div>
-  <!-- Item Owned Modal -->
-  <div class="modal fade" id="itemOwnedModal" tabindex="-1" aria-labelledby="itemOwnedModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="itemOwnedModalLabel">Item Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p><i class="far fa-calendar-alt"></i> Date & Time Published: <span id="itemOwnedDate"></span></p>
-          <p><i class="fas fa-info-circle"></i> Item Status: <span id="itemOwnedStatus"></span></p>
-          <p><i class="fas fa-exchange-alt"></i> Type of Request: <span id="itemOwnedType"></span></p>
-          <img id="itemOwnedImg" src="" alt="Item Picture">
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
+ 
 
   <script>
     document.querySelectorAll('.transaction-item').forEach(item => {
