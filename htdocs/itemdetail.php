@@ -5,7 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ItemDetail</title>
-    <!-- Bootstrap CSS -->
+    <style>
+          .review-container {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .review-box {
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        background-color: #f9f9f9;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .rating {
+        color: #ffd700; /* Yellow color for stars */
+    }
+    .star {
+        font-size: 20px;
+        margin-right: 5px;
+    }
+    .star-empty {
+        color: #ccc;
+    }
+    .overall-rating {
+        font-size: 24px;
+        margin-top: 20px;
+        color: orangered; /* Yellow color for overall rating */
+    }
+    </style>
 </head>
 
 <body>
@@ -62,9 +91,9 @@ include "nav.php";
                         <!-- Barter Button -->
                         <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#barterModal">Barter</button>
                         <!-- Borrow Button -->
-                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#borrowModal">Borrow</button>
+                        <button type="button" class="btn btn-outline-dark disabled" data-bs-toggle="modal" data-bs-target="#borrowModal">Borrow</button>
                         <!-- Lend Button -->
-                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#lendModal">Lend</button>
+                       
 
                         <!-- Barter Modal -->
                         <div class="modal fade" id="barterModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -92,7 +121,7 @@ include "nav.php";
 
                                         </div>
 
-                                    </div>
+                                  
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -127,35 +156,7 @@ include "nav.php";
                                 </div>
                             </div>
                         </div>
-                        <div class="modal fade" id="lendModal" tabindex="-1" aria-labelledby="lendModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="lendModalLabel">Lend</h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- Lend Form -->
-                                        <form>
-                                            <div class="mb-3">
-                                                <label for="lendPrice" class="form-label">Price:</label>
-                                                <input type="text" class="form-control" id="lendPrice">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="lendStartDate" class="form-label">Start Date:</label>
-                                                <input type="date" class="form-control" id="lendStartDate">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="lendEndDate" class="form-label">End Date:</label>
-                                                <input type="date" class="form-control" id="lendEndDate">
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Request</button>
-                                    </div>
-                                </div>
+                        </div>   
                             </div>
                         </div>
                     </div>
@@ -163,16 +164,57 @@ include "nav.php";
             </div>
         </div>
     
-    <div class="row">
-        <div class="col">
-            <p class="text-start h2">
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Resident Reviews</b>
-            </p>
+        <div class="container text-left">
+    <div class="col">
+        <p class="text-start h2">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Resident Reviews</b>
+        </p>
+        
+        <div class="review-container" style="height: 300px; overflow-y: auto;">
+            <div class="card">
+                <div class="card-body">
+                    <div class="overall-rating" style="font-size: 24px; color: #ffbb00; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+                        Overall Rating: 4.75
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="review-box">
+                        <h5 class="card-title">John Doe</h5>
+                        <p class="card-text">"This item is amazing! 5 stars!"</p>
+                        <p class="text-muted">Date: 2024-03-05 10:30 AM</p>
+                        <div class="rating">
+                        <span class="star" style="color: #ffbb00;">&#9733; </span>
+                            <span class="star" style="color: #ffbb00;">&#9733; </span>
+                            <span class="star" style="color: #ffbb00;">&#9733; </span>
+                            <span class="star" style="color: #ffbb00;">&#9733; </span>
+                            <span class="star" style="color: #ffbb00;">&#9733; 5/5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="review-box">
+                        <h5 class="card-title">Jane Smith</h5>
+                        <p class="card-text">"Great item, highly recommended! 4 stars!"</p>
+                        <p class="text-muted">Date: 2024-03-04 3:45 PM</p>
+                        <div class="rating">
+                            <span class="star" style="color: #ffbb00;">&#9733; </span>
+                            <span class="star" style="color: #ffbb00;">&#9733; </span>
+                            <span class="star" style="color: #ffbb00;">&#9733; </span>
+                            <span class="star-empty" style="color: #ffbb00;">&#9733; 4/5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more reviews here -->
         </div>
     </div>
-    </div>
 </div>
-    <!-- Bootstrap Bundle with Popper -->
+
+
 </body>
 
 </html>
