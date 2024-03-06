@@ -233,7 +233,7 @@
                                                     <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
 
                                                     <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
+                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Borrow</span></dd>
 
                                                     <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
                                                     <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
