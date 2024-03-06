@@ -5,6 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <style>
+        .carousel {
+            margin-bottom: 4rem;
+        }
+
+        .carousel-caption {
+            bottom: 3rem;
+            z-index: 10;
+        }
+
+        .carousel-item {
+            height: 32rem;
+        }
+
+        .carousel-item>img {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            height: 32rem;
+        }
+    </style>
 </head>
 
 <body>
