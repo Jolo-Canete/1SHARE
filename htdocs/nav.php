@@ -144,7 +144,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
         </div>
-        <a class="navbar-brand" href="home.php" style="margin-left: 50px;">I S H A R E</a>
+        <a class="navbar-brand" href="home.php" style="margin-left: 50px;">
+    <img src="picture/logo.png" alt="I S H A R E logo" style="height: 30px; ">
+    I S H A R E
+</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample02" aria-controls="navbarsExample02" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -333,7 +336,7 @@
 
 
 
-    <br><br>
+    <br><br><br>
 
 
 
