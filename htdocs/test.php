@@ -3,323 +3,158 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Testing</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Code</title>
+
+  <!--- Bootstrap CSS --->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!--- Bootstrap Icon --->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
+  <!--- Style --->
   <style>
-    .rating>input {
-      display: none;
+    .dropdown:hover .dropdown-menu {
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     }
-
-    .rating>label {
-      padding: 0px;
-      font-size: 15px;
-      color: #FFD700;
-      display: inline-block;
-      cursor: pointer;
-    }
-
-    .rating>input:checked~label {
-      color: #f8de7e;
-    }
-
-    body {
-      background-color: #808080;
-    }
-
-
-
-    .left {
-      background: linear-gradient(to right, #01a9ac, #01dbdf);
-      padding: 30px 25px;
-      border-radius: 5px;
-      text-align: center;
-      color: #fff;
-      margin-bottom: 20px;
-    }
-
-    .left img {
-      border-radius: 5px;
-      margin-bottom: 10px;
-    }
-
-    .info h3 {
-      margin-bottom: 15px;
-      padding-bottom: 5px;
-      border-bottom: 1px solid #e0e0e0;
-      color: #353c4e;
-
-    }
-
-    .data h4 {
-      color: #353c4e;
-      margin-bottom: 5px;
-      font-size: 18px;
-    }
-
-    .data p {
-      font-size: 16px;
-      margin-bottom: 10px;
-      color: #919aa3;
-    }
-
-    .transaction-box {
-      background-color: #ffffff;
-      border-radius: 10px;
- 
-
-    }
-
-    .transaction-item {
-      border: 8px solid #ccc;
-      border-radius: 5px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-
-    .transaction-item:hover {
-      border: 1px solid black;
-      cursor: pointer;
-    }
-
-
-    .profile-container {
-      background-color: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      border: 2px solid black;
-      padding: 20px;
-    }
-
-    .profile-avatar {
-      position: relative;
-    }
-
-    .verify-badge {
-      position: absolute;
+    .sidebar {
+      width: 280px;
+      position: fixed;
+      top: 0;
+      left: 0;
       bottom: 0;
-      right: 0;
-      background-color: #4CAF50;
-      /* Green background */
+      z-index: 1030;
+      background-color: #212529;
+    }
+
+    .sidebar a {
+      padding: 10px;
+      text-decoration: none;
       color: white;
-      padding: 5px 10px;
-      border-radius: 50%;
+      display: block;
+      transition: padding 0.3s;
     }
 
-    .profile-info h4 {
-      margin-bottom: 10px;
+    .sidebar a:hover {
+      padding-left: 20px;
+      background-color: #495057;
     }
 
-    .rating {
-      text-align: center;
+    .navbar {
+      z-index: 1031;
     }
-
-
-
-    /* Just for demo */
-    .profile-info p {
-      margin-bottom: 5px;
-    }
-
-    .modal-content {
-      background-color: #f8f9fa;
-      border-radius: 10px;
-    }
-
-    .modal-header {
-      border-bottom: none;
-    }
-
-    .modal-footer {
-      border-top: none;
-    }
-
-    .modal-title {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .modal-body {
-      padding: 30px;
-    }
-
-    .modal-body p {
-      font-size: 18px;
-      color: #666;
-    }
-
-    .modal-body p i {
-      margin-right: 10px;
-    }
-
-    .modal-body img {
-      width: 100px;
-      height: 100px;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
+    
   </style>
+
 </head>
 
 <body>
-  <header>
-    <?php include "nav.php"; ?>
-  </header>
-  <div class="container mt-4">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="profile-container">
-          <div class="row">
-            <div class="col-md-3 text-center">
-              <div class="profile-avatar">
-                <img src="https://github.com/mdo.png" width="120" class="rounded-circle">
-              </div>
+  <header class="p-3 bg-dark text-bg-dark">
+    <div class="container">
+      <div class="row">
+        <div class="col">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+              <!--- Add content --->
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <!--- Add content --->
+            </ul>
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+              <input type="search" class="form-control rounded-0 form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
+            </form>
+
+            <div class="text-end">
+              <!--- Add content --->
             </div>
-            <div class="col-md-9">
-              <div class="profile-info">
-                <h4 class="mb-0">Jolo Cañete</h4>
-                <div class="text-secondary mt-0 mb-0">Resident</div>
-                <div class="mb-2"></div>
-                <p class="fs-6 status-verified">Status:&nbsp;<span class="badge text-bg-primary rounded-pill">Verified</span></p>
-              </div>
-              <!-- Star rating -->
-              <div class="rating text-start">
-                <span>Rating:</span>
-                <label for="star5"><i class="fas fa-star"></i></label>
-                <input type="radio" name="rating" id="star5" value="5">
-                <label for="star4"><i class="fas fa-star"></i></label>
-                <input type="radio" name="rating" id="star4" value="4">
-                <label for="star3"><i class="fas fa-star"></i></label>
-                <input type="radio" name="rating" id="star3" value="3">
-                <label for="star2"><i class="fas fa-star"></i></label>
-                <input type="radio" name="rating" id="star2" value="2">
-                <label for="star1"><i class="fas fa-star"></i></label>
-                <input type="radio" name="rating" id="star1" value="1">
-              </div>
-            </div>
-          </div>
-          <br>
-          <hr>
-          <div class="right">
-            <div class="h1 fs-5 mb-3">
-              Details
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="data">
-                  <h4><i class="bi-envelope-fill"></i> Email</h4>
-                  <p>canete.jolo@gmail.com</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="data">
-                  <h4><i class="bi-telephone-fill"></i> Phone</h4>
-                  <p>09203513491</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="data">
-                  <h4><i class="bi-map-fill"></i> Address</h4>
-                  <p>Zone 11, Purok 26-A, Curvada</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="data">
-                  <h4><i class="bi-pin-map-fill"></i> Nearest Landmark</h4>
-                  <p>Bilyaran</p>
-                </div>
-              </div>
-            </div>
-            <hr>
-            <div class="transaction-box">
-              <h3 class="d-flex align-items-center h1 fs-5 mb-3">Transaction History
-                <button type="button" class="btn btn-link ms-auto text-dark" data-bs-toggle="modal" data-bs-target="#unlockModal">
-                  <i class="bi bi-lock-fill fs-5"></i>
-                </button>
-              </h3>
-
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="data transaction-item" data-bs-toggle="modal" data-bs-target="#transactionModal" data-date="2024-02-15" data-type="Barter">
-                    <h4>Transaction</h4>
-                    <p><i class="fas fa-calendar-alt"></i> Date: 2024-02-15</p>
-                    <p><i class="fas fa-exchange-alt"></i> Type: Barter</p>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="data transaction-item" data-bs-toggle="modal" data-bs-target="#transactionModal" data-date="2024-02-10" data-type="Borrow">
-                    <h4>Transaction</h4>
-                    <p><i class="fas fa-calendar-alt"></i> Date: 2024-02-10</p>
-                    <p><i class="fas fa-hand-holding-usd"></i> Type: Borrow</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Unlock Modal -->
-            <div class="modal fade" id="unlockModal" tabindex="-1" aria-labelledby="unlockModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="unlockModalLabel">Unlock Transaction History</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <!-- Add your unlock content here -->
-                    <p>Are you sure you want to unlock your transaction history?</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Unlock</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-
-            <!-- Transaction Modal -->
-            <div class="modal fade" id="transactionModal" tabindex="-1" aria-labelledby="transactionModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="transactionModalLabel"><i class="fas fa-exchange-alt"></i> Transaction Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <p><i class="far fa-calendar-alt"></i> Date: <span id="transactionDate"></span></p>
-                    <p><i class="fas fa-info-circle"></i> Type: <span id="transactionType"></span></p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  </div>
-                </div>
-
-
-              </div>
-            </div>
-
-
-            <script>
-              document.querySelectorAll('.transaction-item').forEach(item => {
-                item.addEventListener('click', event => {
-                  const date = item.dataset.date;
-                  const type = item.dataset.type;
-                  document.getElementById('transactionDate').innerText = `${date}`;
-                  document.getElementById('transactionType').innerText = `${type}`;
-                });
-              });
-            </script>
           </div>
         </div>
-        <br>
+      </div>
+    </div>
+  </header>
+  
+<main>
+  <div class="sidebar">
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white" style="width: 280px;">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+        <img src="picture/logo.png" alt="I S H A R E logo" style="height: 30px;">
+        <span class="fs-4 ms-lg-3">I S H A R E</span>
+      </a>
+      <hr>
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="#" class="nav-link active" aria-current="page">
+            <div class="bi-house-door" width="16" height="16">
+              <span class="fs-8 ms-lg-2">Home</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <div class="bi-person-circle" width="16" height="16">
+              <span class="fs-8 ms-lg-2">Profile</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <div class="bi-box" width="16" height="16">
+              <span class="fs-8 ms-lg-2">Inventory</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <div class="bi-card-checklist" width="16" height="16">
+              <span class="fs-8 ms-lg-2">Request Approval</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <div class="bi-cart" width="16" height="16">
+              <span class="fs-8 ms-lg-2">Cart</span>
+            </div>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <div class="bi-speedometer2" width="16" height="16">
+              <span class="fs-8 ms-lg-2">Dashboard</span>
+            </div>   
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-link text-white">
+            <div class="bi-gear" width="16" height="16">
+              <span class="fs-8 ms-lg-2">Settings</span>
+            </div>
+          </a>
+        </li>
+      </ul>
+      <hr>
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+          <strong>mdo</strong>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+          <li><a class="dropdown-item" href="#">New project...</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Sign out</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</main>
 
-
-
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 
 </html>
