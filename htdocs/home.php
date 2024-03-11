@@ -33,7 +33,7 @@
     <header> <?php
                 include "nav.php";
                 ?></header>
-    <main>
+    <div class="content">
         <br>
         <div class="container">
             <div class="row">
@@ -95,7 +95,8 @@
                 </div>
             </div>
         </div>
-    </main>
-</body>
+
+        </div>
+    </body>
 
 </html>

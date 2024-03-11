@@ -25,6 +25,8 @@
 <header>
     <?php include "nav.php"; ?>
   </header>
+  <div id="content" class="content">
+
   <br>
   <br>
   <br>
@@ -48,6 +50,7 @@
     </div>
   </div>
 </div>
+  </div>
 
 
 <script>

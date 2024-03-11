@@ -87,7 +87,10 @@
     </style>
 </head>
 <body>
- <?php include "nav.php";?>
+<header>
+        <?php include "nav.php"; ?>
+    </header>
+    <div id="content" class="content">
     
     <br>
     <h1 class="text-center mb-4"><i class="bi bi-archive-fill"></i> MY ITEMS</h1>
@@ -259,6 +262,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Bootstrap Bundle with Popper -->

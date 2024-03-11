@@ -225,6 +225,8 @@
   <header>
     <?php include "nav.php"; ?>
   </header>
+  <div id="content" class="content">
+
   <div class="container mt-4">
     <div class="row justify-content-center">
       <div class="col-md-8">
@@ -370,6 +372,7 @@
       </div>
     </div>
   </div>
+            </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

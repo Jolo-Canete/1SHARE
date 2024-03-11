@@ -43,6 +43,8 @@
 include "nav.php";
 ?>
     </header>
+    <div id="content" class="content">
+
     <br>
     <div class="container text-center">
         <div class="row">
@@ -162,7 +164,6 @@ include "nav.php";
                     </div>
                 </div>
             </div>
-        </div>
     
         <div class="container text-left">
     <div class="col">
@@ -212,6 +213,7 @@ include "nav.php";
             <!-- Add more reviews here -->
         </div>
     </div>
+</div>
 </div>
 
 

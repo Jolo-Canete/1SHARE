@@ -35,8 +35,8 @@
         <?php include "nav.php"; ?>
     </header>
     <!--- End of Navigation Bar --->
+    <div id="content" class="content">
 
-    <main>
         <br>
         <!--- Dropdown --->
         <div class="container">
@@ -1208,8 +1208,8 @@
             </div>
         </footer>
         <!--- End of Page Buttons --->
+        </div>
 
-    </main>
 
 </body>
 

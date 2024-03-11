@@ -16,6 +16,20 @@
 
   <!--- Style --->
   <style>
+   body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+    }
+
+    .main-content {
+      display: flex;
+      flex: 1;
+      overflow-x: hidden;
+    }
+
     .sidebar {
       width: 280px;
       position: fixed;
@@ -24,6 +38,19 @@
       bottom: 0;
       z-index: 1030;
       background-color: #212529;
+      transition: width 0.3s;
+    }
+
+    .sidebar.collapsed {
+      width: 80px;
+    }
+
+    .sidebar .nav-text {
+      transition: opacity 0.3s;
+    }
+
+    .sidebar.collapsed .nav-text {
+      opacity: 0;
     }
 
     .sidebar a {
@@ -42,6 +69,53 @@
     .navbar {
       z-index: 1031;
     }
+
+    #button {
+      margin-left: 170px;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+      margin-left: 280px; /* Set initial margin to accommodate the expanded sidebar */
+      transition: margin-left 0.3s; /* Add transition for smooth animation */
+    }
+
+    .sidebar.collapsed + .content {
+      margin-left: 80px; /* Reduce margin when sidebar is collapsed */
+    }
+
+    .nav-link .bi {
+      font-size: 1rem;
+      transition: font-size 0.3s;
+    }
+
+    .sidebar.collapsed .nav-link .bi {
+      font-size: 1.5rem;
+    }
+
+    .sidebar.collapsed .nav-text {
+      display: none;
+    }
+
+    @media (max-width: 991px) {
+      .sidebar {
+        width: 80px;
+      }
+
+      .sidebar.collapsed {
+        width: 80px;
+      }
+
+      .sidebar.collapsed .nav-text {
+        display: none;
+      }
+
+      .sidebar.collapsed + .content {
+        margin-left: 80px; /* Reduce margin when sidebar is collapsed */
+      }
+    }
+
   </style>
 
 </head>
@@ -49,12 +123,14 @@
 <body>
   <header class="p-3 bg-dark text-bg-dark">
     <div class="container">
+    
       <div class="row">
         <div class="col">
+          
           <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-              <!--- Add content --->
-            </a>
+          <button id="button" class="btn btn-outline-secondary" type="button" onclick="toggleSidebar()">
+            <i class="bi bi-arrow-bar-left"></i>
+          </button>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
               <!--- Add content --->
@@ -74,7 +150,7 @@
   </header>
 
   <main>
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
       <div class="d-flex flex-column flex-shrink-0 p-3 text-white" style="width: 280px;">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
           <img src="picture/logo.png" alt="I S H A R E logo" style="height: 30px;">
@@ -133,6 +209,31 @@
           </li>
         </ul>
   </main>
+  </div>
+  
+  <script>
+function collapseSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.add('collapsed');
+    }
+
+    function expandSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.remove('collapsed');
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('collapsed')) {
+        expandSidebar();
+      } else {
+        collapseSidebar();
+      }
+    }
+  </script>
+
+
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>

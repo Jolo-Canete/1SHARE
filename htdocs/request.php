@@ -11,6 +11,7 @@
     <header>
         <?php include "nav.php"; ?>
     </header>
+    <div class="content">
 
     <div class="container mt-5">
         <div class="row">
@@ -38,6 +39,8 @@
             </div>
         </div>
     </div>
+        </div>
+
 
     <!-- Bootstrap Bundle with Popper -->
 </body>
