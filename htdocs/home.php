@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Home</title>\
+    
     <style>
         .carousel {
             margin-bottom: 4rem;
@@ -33,7 +34,7 @@
     <header> <?php
                 include "nav.php";
                 ?></header>
-    <div class="content">
+    <div id="content" class="content">
         <br>
         <div class="container">
             <div class="row">

@@ -11,7 +11,7 @@
     <header>
         <?php include "nav.php"; ?>
     </header>
-    <div class="content">
+    <div id="content" class="content">
 
     <div class="container mt-5">
         <div class="row">

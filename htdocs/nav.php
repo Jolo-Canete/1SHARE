@@ -89,22 +89,7 @@
             /* Add any other hover styles you want */
         }
 
-        /* Offcanvas Notification */
-        .offcanvas-notification {
-            position: fixed;
-            top: 56px;
-            right: 0;
-            height: 100%;
-            width: 300px;
-            background-color: #fff;
-            transition: transform 0.3s ease;
-            transform: translateX(100%);
-        }
-
-        .offcanvas-notification.show {
-            transform: translateX(0);
-
-        }
+      
 
         .content {
             flex-grow: 1;
@@ -119,20 +104,22 @@
             margin-left: 80px;
             /* Adjusted margin when sidebar is collapsed */
         }
+
+    
     </style>
 </head>
 
 <body>
-    <div class="offcanvas offcanvas-end offcanvas-notification" tabindex="-1" id="notificationsOffcanvas" aria-labelledby="notificationsOffcanvasLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="notificationsOffcanvasLabel">Notifications</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-
-        </div>
-        <div class="offcanvas-body">
-            <!-- Your notification content here -->
-        </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasRightLabel">Notifications</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    ...
+  </div>
     </div>
+    
 
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
 
@@ -235,7 +222,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" style="padding: 10px;" data-bs-toggle="offcanvas" data-bs-target="#notificationsOffcanvas" aria-controls="notificationsOffcanvas">
+                        <a class="nav-link" href="#" style="padding: 10px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRightLabel">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
                                 <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
                             </svg>
@@ -294,7 +281,7 @@
                 </li>
 
                 <li>
-                    <a href="#" class="nav-link py-3 border-bottom rounded-0" title="Cart" data-bs-toggle="tooltip" data-bs-placement="right">
+                    <a href="cart.php" class="nav-link py-3 border-bottom rounded-0" title="Cart" data-bs-toggle="tooltip" data-bs-placement="right">
                         <svg class="bi bi-cart-check-fill" width="24" height="24" role="img" aria-label="cart">
                             <use xlink:href="#cart" />
                         </svg>
