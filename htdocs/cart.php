@@ -69,6 +69,7 @@
     </style>
 </head>
 <body>
+    <!-- ISSUE: Notification Bug-->
     <header>
         <?php include "nav.php"; ?>
     </header>
