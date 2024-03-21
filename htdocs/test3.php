@@ -158,36 +158,10 @@
     //  Login System
     // Check errors
     ini_set('display_errors', 1);
-    // Check login
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // check email and password
-        $email = $_POST['username'];
-        $password = $_POST['password'];
-
-        // Query Sql to check if the email and password exist in the database
-        $sql = "SELECT * FROM users WHERE username AND password = '$username' AND password = '$password'";
-        $result = $conn->query($sql);
-
-        // Check the inputs
-        if ($result->num_rows == 1) {
-            // Username and password are correct, set session variables
-            $_SESSION['Loggedin'] = true;
-            $_SESSION['username'] = $username;
-
-            // Grant access the homepage
-            header("Location: home.php");
-            exit;
-        } else {
-            // username and/or password is incorrect
-            $error = "Ïnvalid username or password";
+    // Create user
+        if(isset($_POST['signUp'])) {
+            
         }
-    }
-
-    // CREATE SEPERATE DATABASE TABLE FOR ADMIN BEFORE CREATING PHP FORM!!
-    ?>
-
-    </html>
-
 </body>
 
 </html>
