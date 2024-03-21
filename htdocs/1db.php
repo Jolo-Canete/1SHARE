@@ -7,11 +7,13 @@
 
     
     // Create connection 
-        $connection = new mysqli($servername, $username, $password, $dbname);
+        $conn = new mysqli($servername, $username, $password, $dbname);
 
     // Check the connection
-        if ($connection ->connect_error) {
-            die("Connection Failed nigga" . $connection->connect_error);
+        if ($conn ->connect_error) {
+            die("Connection Failed nigga" . $conn->connect_error);
+        } else {
+            echo 'mama bahog biiat';
         }
     
 
