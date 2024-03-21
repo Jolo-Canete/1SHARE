@@ -22,7 +22,7 @@
                 // Check if a file is uploaded
                 if (!empty($_FILES['fileToUpload']['tmp_name']) && is_uploaded_file($_FILES['fileToUpload']['tmp_name'])) {
                     // Create the target directory if it doesn't exist
-                    $targetDirectory = "htdocs/pictures/";
+                    $targetDirectory = "pictures/";
                     if (!file_exists($targetDirectory)) {
                         mkdir($targetDirectory, 0777, true);
                     }
