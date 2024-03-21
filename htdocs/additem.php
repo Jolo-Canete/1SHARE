@@ -240,19 +240,27 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label"><i class="bi bi-arrow-repeat"></i> Request Type:</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" value="barter" name="barter-or-borrow" id="requestTypeBarter">
-                                <label class="form-check-label" for="requestTypeBarter">
-                                    Barter
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" value="borrow" name="barter-or-borrow" id="requestTypeBorrow">
-                                <label class="form-check-label" for="requestTypeBorrow">
-                                    Borrow
-                                </label>
-                            </div>
+    <label class="form-label"><i class="bi bi-arrow-repeat"></i> Request Type:</label>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="barter" name="requestType" id="requestTypeBarter">
+        <label class="form-check-label" for="requestTypeBarter">
+            Barter
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="borrow" name="requestType" id="requestTypeBorrow">
+        <label class="form-check-label" for="requestTypeBorrow">
+            Borrow
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="buy" name="requestType" id="requestTypeBuy">
+        <label class="form-check-label" for="requestTypeBuy">
+            Buy
+        </label>
+    </div>
+</div>
+
                         </div>
                     </form>
                 </div>

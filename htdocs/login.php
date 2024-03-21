@@ -29,22 +29,19 @@
         <header>
             <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
                 <div class="container">
-                    <a class="navbar-brand" href="home.php" style="margin-left: 50px;">I S H A R E</a>
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="home.php">
-                                <i class="bi bi-house-door fs-4"></i>
-                            </a>
-                        </li>
-                    </ul>
-            </nav>
+                    
+                <a class="navbar-brand" href="login.php" style="margin-left: 50px;">
+            <img src="picture/logo.png" alt="I S H A R E logo" style="height: 30px; ">
+            I S H A R E
+        </a>
+                </nav>
         </header>
 
         <div class="container my-5">
             <div class="row justify-content-center">
                 <div class="row justify-content-center">
                     <div class="col-4">
-                        <h1><b>
+                        <h1><b>            
                                 <p class="text-center">I S H A R E</p>
                             </b></h1>
                     </div>
