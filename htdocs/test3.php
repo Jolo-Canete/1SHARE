@@ -159,8 +159,26 @@
     // Check errors
     ini_set('display_errors', 1);
     // Create user
-        if(isset($_POST['signUp'])) {
-            
+    if(isset($_POST['signUp'])) {
+        // Retrieve form data
+            $first_name = $_POST['first_name'];
+            $middle_name = $_POST['middle_name'];
+            $last_name = $_POST['last_name'];
+            $purok = $_POST['purok'];
+            $zone = $_POST['zone'];
+            $mobile_number = $_POST['mobile_number'];
+            $email = $_POST['email'];
+            $password1 = $_POST['password1'];
+            $password2 = $_POST['password2'];
+    
+            // Check if the password matched
+            if ($password1 != $password2) {
+                echo "Passwords do not match";
+                exit();
+                } 
+            // Check if email is already existed
+                $email_check = "SELECT * from user WHERE email =  '$email'";
+                $result_email_check = $conn
         }
 </body>
 
