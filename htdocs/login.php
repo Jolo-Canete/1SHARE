@@ -183,7 +183,7 @@
                 if ($password1 !== $password2) {
                     echo 'Password does not match';
                 } else {
-                    // Hash the password
+                    // rename the password
                     $default_password = $password1;
             
                     // Start a transaction
@@ -207,15 +207,24 @@
             if (isset($_POST['login'])) {
                 $email = trim($_POST['userEmail']);
                 $password = trim($_POST['userPassword']);
-        
+            
                 // Prepare the MySQL query
                 $sql = "SELECT * FROM user WHERE userEmail = '$email'";
                 $result = $conn->query($sql);
-        
+                
+                // og ang piste mo palpak
+                if ($result === false) {
+                    echo "Error executing the query: " . $conn->error;
+                    return;
+                }
+            
                 // Check if the user exists and the password is correct
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
-                    if (password_verify($password, $row["password"])) {
+                    $stored_password = $row["password"];
+            
+                    // Verify the password
+                    if (password_verify($password, $stored_password)) {
                         // Login successful, redirect to the home page
                         header("Location: home.php");
                         exit();
@@ -225,9 +234,11 @@
                     }
                 } else {
                     // User not found
-                    echo "User not Found.";
+                    echo "User not found.";
                 }
             }
+            
+            
         
         }
 
