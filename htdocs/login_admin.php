@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
         // Compare the entered password with the stored password
         if ($password == $stored_password) {
             // Passwords match, login successful
-            header("Location: home.php");
+            echo '<script>alert("You have successfully logged in '. $username .'"); window.location.href = "home.php"; </script>';
             exit();
         } else {
             // Invalid password
@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["signup"])) {
 
     if ($conn->query($sql) === TRUE) {
         // Sign-up successful, redirect to the login page
-        header("Location: home.php");
+        echo '<script>alert("You have successfully signed in '. $adFirstName .'"); window.location.href = "home.php"; </script>';;
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;

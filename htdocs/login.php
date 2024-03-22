@@ -66,7 +66,7 @@
                                     <span class="input-group-text" id="addon-wrapping">
                                         <div class="bi-person-fill"></div>
                                     </span>
-                                    <input type="text" class="form-control" name="userPassword" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
+                                    <input type="password" class="form-control" name="userPassword" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
                                 </div>
                                 <div class="mb-3"></div>
                                 <div class="d-grid gap-2">
@@ -134,6 +134,10 @@
                                                             <input type="text" class="form-control" placeholder="Email Address or Mobile Number" name="email" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
                                                         </div>
                                                         <div class="mb-3">
+                                                            <label for="username" class="form-label">Username</label>
+                                                            <input type="text" class="form-control" id="username" name="username" placeholder="Create your own username" aria-label="Create a new password" >
+                                                        </div>
+                                                        <div class="mb-3">
                                                             <label for="new_password" class="form-label">New Password</label>
                                                             <input type="password" class="form-control" id="new_password" name="password1" placeholder="Create a new password" aria-label="Create a new password">
                                                         </div>
@@ -166,15 +170,16 @@
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (isset($_POST['signup'])) {
                 // Gather the Input data
-                $first_name = $_POST['first_name'];
-                $middle_name = $_POST['middle_name'];
-                $last_name = $_POST['last_name'];
-                $purok = $_POST['purok'];
-                $zone = $_POST['zone'];
-                $mobile_number = $_POST['mobile_number'];
-                $email = $_POST['email'];
-                $password1 = $_POST['password1'];
-                $password2 = $_POST['password2'];
+                $first_name = trim($_POST['first_name']);
+                $middle_name = trim($_POST['middle_name']);
+                $last_name = trim($_POST['last_name']);
+                $purok = trim($_POST['purok']);
+                $zone = trim($_POST['zone']);
+                $mobile_number = trim($_POST['mobile_number']);
+                $email = trim($_POST['email']);
+                $username = trim($_POST['username']);
+                $password1 = trim($_POST['password1']);
+                $password2 = trim($_POST['password2']);
             
                 // Capture the correct time and date
                 $dateJoined = date('Y-m-d H:i:s');
@@ -184,17 +189,17 @@
                     echo 'Password does not match';
                 } else {
                     // rename the password
-                    $default_password = $password1;
+                    $default_password = password_hash($password1, PASSWORD_DEFAULT);
             
                     // Start a transaction
                     $conn->begin_transaction();
             
                     // Insert into user table
-                    $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$email', '$default_password')";
+                    $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password')";
             
                     if ($conn->query($sql_user) === TRUE) {
                         $conn->commit();
-                        header("Location: home.php");
+                        echo '<script>alert("You have successfully Signed up <b>'. $first_name .'</b>"); window.location.href = "home.php"; </script>';
                     } else {
                         // Rollback the transaction if there is an error in the first query
                         $conn->rollback();
@@ -205,11 +210,11 @@
             
             // Login form
             if (isset($_POST['login'])) {
-                $email = trim($_POST['userEmail']);
+                $username = trim($_POST['userEmail']);
                 $password = trim($_POST['userPassword']);
             
                 // Prepare the MySQL query
-                $sql = "SELECT * FROM user WHERE userEmail = '$email'";
+                $sql = "SELECT * FROM user WHERE username = '$username'";
                 $result = $conn->query($sql);
                 
                 // og ang piste mo palpak
@@ -226,11 +231,12 @@
                     // Verify the password
                     if (password_verify($password, $stored_password)) {
                         // Login successful, redirect to the home page
-                        header("Location: home.php");
+                        echo '<script>alert("You have successfully logged in '. $username .'"); window.location.href = "home.php"; </script>';
                         exit();
                     } else {
                         // Invalid password
-                        echo "Invalid email or password.";
+                        echo "Invalid email or password. <br>";
+                       
                     }
                 } else {
                     // User not found

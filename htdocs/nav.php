@@ -241,7 +241,7 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item rounded-2" href="#">Log Out</a></li>
+                                <li><a class="dropdown-item rounded-2" href="login.php">Log Out</a></li>
                             </ul>
                         </div>
                     </li>
