@@ -57,7 +57,7 @@
                                 <label for="email_address">Email Address</label>
                                 <div class="input-group flex-nowrap">
                                     <span class="input-group-text" id="addon-wrapping">@</span>
-                                    <input type="text" class="form-control" name="email" placeholder="Email Address or Mobile Number" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
+                                    <input type="text" class="form-control" name="userEmail" placeholder="Email Address or Mobile Number" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
 
                                 </div>
                                 <div class="mb-3"></div>
@@ -66,7 +66,7 @@
                                     <span class="input-group-text" id="addon-wrapping">
                                         <div class="bi-person-fill"></div>
                                     </span>
-                                    <input type="text" class="form-control" name="password" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
+                                    <input type="text" class="form-control" name="userPassword" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
                                 </div>
                                 <div class="mb-3"></div>
                                 <div class="d-grid gap-2">
@@ -205,18 +205,13 @@
             
             // Login form
             if (isset($_POST['login'])) {
-                $email = $_POST['email'];
-                $password = $_POST['password'];
-            
+                $email = trim($_POST['userEmail']);
+                $password = trim($_POST['userPassword']);
+        
                 // Prepare the MySQL query
                 $sql = "SELECT * FROM user WHERE userEmail = '$email'";
                 $result = $conn->query($sql);
-            
-                if ($result === false) {
-                    echo "Error executing the query: " . $conn->error;
-                    return;
-                }
-            
+        
                 // Check if the user exists and the password is correct
                 if ($result->num_rows > 0) {
                     $row = $result->fetch_assoc();
@@ -226,11 +221,11 @@
                         exit();
                     } else {
                         // Invalid password
-                        echo "Invalid oten.";
+                        echo "Invalid email or password.";
                     }
                 } else {
                     // User not found
-                     header("Location: home.php");;
+                    echo "User not Found.";
                 }
             }
         
