@@ -145,6 +145,10 @@
                                                             <label for="confirm_new_password" class="form-label">Confirm New Password</label>
                                                             <input type="password" class="form-control" id="confirm_new_password" name="password2" placeholder="Confirm new password" aria-label="Confirm new password">
                                                         </div>
+                                                        <div class="mb-3">
+                                                            <label for="confirm_SignUp" class="form-label" >By clicking Sign Up, you agree to our <a href="Terms & privacy/terms_condition.html">Terms,</a> and <a href=""> Privacy Policy.</a> You may wait for the Confirmation of your account through your local SK Chairman.</label>
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
