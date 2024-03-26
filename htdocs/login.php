@@ -146,7 +146,7 @@
                                                             <input type="password" class="form-control" id="confirm_new_password" name="password2" placeholder="Confirm new password" aria-label="Confirm new password">
                                                         </div>
                                                         <div class="mb-3">
-                                                            <label for="confirm_SignUp" class="form-label" >By clicking Sign Up, you agree to our <a href="Terms & privacy/terms_condition.html">Terms,</a> and <a href=""> Privacy Policy.</a> You may wait for the Confirmation of your account through your local SK Chairman.</label>
+                                                            <label for="confirm_SignUp" class="form-label" >By clicking Sign Up, you agree to our <a href="Terms & privacy/terms_condition.html">Terms and Condition,</a> and <a href=""> Privacy Policy.</a> You may wait for the Confirmation of your account through your local SK Chairman.</label>
                                                         </div>
 
                                                     </div>
@@ -203,7 +203,7 @@
             
                     if ($conn->query($sql_user) === TRUE) {
                         $conn->commit();
-                        echo '<script>alert("You have successfully Signed up <b>'. $first_name .'</b>"); window.location.href = "home.php"; </script>';
+                        echo '<script>alert("You have successfully Signed up <b>'. $first_name .'</b>"); window.location.href = "loading.php"; </script>';
                     } else {
                         // Rollback the transaction if there is an error in the first query
                         $conn->rollback();

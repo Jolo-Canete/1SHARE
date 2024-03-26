@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.0/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+  
     <style>
         body {
             background-color: #f8f9fa;
@@ -91,7 +87,7 @@
                                 <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Like New</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <button type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</button>
-                                    <p class="card-text"><i class="bi bi-currency-dollar"></i> Price: $10.00</p>
+                                    <p class="card-text">Price:<i class="bi bi-currency-dollar"></i>  10.00</p>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +104,7 @@
                                 <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Very New</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <button type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</button>
-                                    <p class="card-text"><i class="bi bi-currency-dollar"></i> Price: $15.00</p>
+                                    <p class="card-text">Price:<i class="bi bi-currency-dollar"></i> 15.00</p>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +121,7 @@
                                 <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Like Old</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <button type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</button>
-                                    <p class="card-text"><i class="bi bi-currency-dollar"></i> Price: $5.00</p>
+                                    <p class="card-text">Price:<i class="bi bi-currency-dollar"></i> 5.00</p>
                                 </div>
                             </div>
                         </div>
@@ -136,13 +132,11 @@
             <div class="total-container mt-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <p class="total-label">Total:</p>
-                    <p class="card-text"><i class="bi bi-currency-dollar"></i> $30.00</p>
+                    <p class="card-text"><i class="bi bi-currency-dollar"></i>30.00</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
