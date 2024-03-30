@@ -203,7 +203,7 @@
             
                     if ($conn->query($sql_user) === TRUE) {
                         $conn->commit();
-                        echo '<script>alert("You have successfully Signed up <b>'. $first_name .'</b>"); window.location.href = "loading.php"; </script>';
+                        echo '<script>alert("You have successfully Signed up '. $first_name .'"); window.location.href = "loading.php"; </script>';
                     } else {
                         // Rollback the transaction if there is an error in the first query
                         $conn->rollback();
