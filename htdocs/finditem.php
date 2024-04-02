@@ -35,7 +35,7 @@
         <?php include "nav.php"; ?>
     </header>
     <!--- End of Navigation Bar --->
-    <div id="content" class="content">
+    <div class="page-content" id="content">
 
         <br>
         <!--- Dropdown --->

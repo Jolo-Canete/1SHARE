@@ -1,177 +1,273 @@
+<?php ob_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Code</title>
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
-    <!-- Bootstrap Icon -->
+    <!--- Bootstrap Icons --->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
-    <!-- Style -->
     <style>
-        .dropdown:hover .dropdown-menu {
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-        }
-
-        .sidebar {
-            width: 280px;
-            position: fixed;
-            top: 58px;
-            left: 0;
-            bottom: 0;
-            z-index: 1030;
-            background-color: #212529;
-        }
-
-        .sidebar a {
-            padding: 10px;
-            text-decoration: none;
-            color: white;
-            display: block;
-            transition: padding 0.3s;
-        }
-
-        .sidebar a:hover {
-            padding-left: 14px;
-            background-color: #495057;
-        }
-
-        .navbar {
-            z-index: 1031;
-        }
     </style>
 
 </head>
 
 <body>
-    <header class="p-3 bg-dark text-bg-dark">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                            <!-- Add content -->
-                        </a>
+    <!DOCTYPE html>
+    <html lang="en">
 
-                        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                            <!-- Add content -->
-                        </ul>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login/Sign Up</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    </head>
 
-                        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                            <input type="search" class="form-control rounded-0 form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search">
-                        </form>
+    <body>
+        <?php include "1db.php"; ?>
 
-                        <div class="text-end">
-                            <!-- Add content -->
-                        </div>
+        <header>
+            <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+                <div class="container">
+
+                    <a class="navbar-brand" href="login.php" style="margin-left: 50px;">
+                        <img src="picture/logo.png" alt="I S H A R E logo" style="height: 30px; ">
+                        I S H A R E
+                    </a>
+            </nav>
+        </header>
+
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="row justify-content-center">
+                    <div class="col-4">
+                        <h1><b>
+                                <p class="text-center">I S H A R E</p>
+                            </b></h1>
                     </div>
                 </div>
-            </div>
-        </div>
-    </header>
+                <div class="col-4">
+                    <div class="card shadow p-3 mb-5 bg-body rounded-4">
+                        <div class="card-body">
+                            <label for="email_address"><b>Email Address</b></label>
+                            <div class="mb-3">
+                                <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                                    <!--- Login --->
 
-    <main>
-        <div class="sidebar">
-            <div class="d-flex flex-column flex-shrink-0 p-3 text-white" style="width: 280px;">
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link text-white" aria-current="page">
-                            <div class="bi-house-door" width="24" height="24">
-                                <span class="fs-8 ms-lg-2">Home</span>
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="addon-wrapping">@</span>
+                                        <input type="text" class="form-control" name="userEmail" placeholder="Email Address or Mobile Number" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping" required>
+                                    </div>
                             </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <div class="bi-person-circle" width="16" height="16">
-                                <span class="fs-8 ms-lg-2">Profile</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <div class="bi-box" width="16" height="16">
-                                <span class="fs-8 ms-lg-2">Inventory</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <div class="bi-card-checklist" width="16" height="16">
-                                <span class="fs-8 ms-lg-2">Request Approval</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <div class="bi-cart" width="16" height="16">
-                                <span class="fs-8 ms-lg-2">Cart</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <div class="bi-speedometer2" width="16" height="16">
-                                <span class="fs-8 ms-lg-2">Dashboard</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="nav-link text-white">
-                            <div class="bi-gear" width="16" height="16">
-                                <span class="fs-8 ms-lg-2">Settings</span>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-    </main>
+                            <label for="email_address"><b>Password</b></label>
+                            <div class="mb-3">
 
-    <script>
-        // Function to toggle the sidebar
-        function toggleSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            const content = document.querySelector('main');
-            const overlay = document.querySelector('#sidebar-overlay');
+                                <div class="input-group flex-nowrap">
+                                    <span class="input-group-text" id="addon-wrapping">
+                                        <div class="bi-person-fill"></div>
+                                    </span>
+                                    <input type="password" class="form-control" name="userPassword" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping" required>
+                                </div>
+                            </div>
+                            <div class="mb-3"></div>
+                            <div class="d-grid gap-2">
+                                <button id="loginButton" class="btn btn-primary" type="submit" name="login" value="login">Login</button>
+                                <script>
+                                    // Function to redirect to the specified link when the button is clicked
+                                    document.getElementById('loginButton').addEventListener('click', function() {
+                                        // Replace 'your-link-here' with the actual URL you want to redirect to
+                                        window.location.href = 'home.php';
+                                    });
+                                </script>
+                            </div>
+                            <br>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-link">Forgot Password?</button>
+                            </div>
+                            <hr>
+                            <button type="button" class="btn btn-success d-grid gap-2 col-6 mx-auto" data-bs-toggle="modal" data-bs-target="#sign_up">
+                                Sign Up
+                            </button>
+                            <!--- Sign Up --->
+                            <div class="modal fade" id="sign_up" tabindex="-1" aria-labelledby="sign_up" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-dark text-light">
+                                            <h5 class="modal-title text-light" id="sign_up">Sign Up</h5>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="mb-3">
+                                                        <label for="first_name" class="form-label"><b> First Name</b></label>
+                                                        <input type="text" class="form-control" placeholder="First name" id="first_name" name="first_name" aria-label="First name">
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="middle_name" class="form-label"><b>Middle Name</b></label>
+                                                    <input type="text" class="form-control" placeholder="Middle name" id="middle_name" name="middle_name" aria-label="Middle name">
+                                                </div>
+                                                <div class="col">
+                                                    <label for="last_name" class="form-label"><b>Last Name</b></label>
+                                                    <input type="text" class="form-control" placeholder="Last name" id="last_name" name="last_name" aria-label="Last name">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="mb-3">
+                                                        <label for="purok" class="form-label"><b>Purok</b></label>
+                                                        <select class="form-select" aria-label="Select your purok" required>
+                                                            <option selected>Select your purok</option>
+                                                            <option value="1">One</option>
+                                                            <option value="2">Two</option>
+                                                            <option value="3">Three</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <label for="zone" class="form-label"><b>Zone</b></label>
+                                                    <select class="form-select" aria-label="Select your zone" required>
+                                                        <option selected>Select your zone</option>
+                                                        <option value="1">One</option>
+                                                        <option value="2">Two</option>
+                                                        <option value="3">Three</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="mobile_number" class="form-label"><b>Mobile Number</b></label>
+                                                    <input type="text" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" aria-label="Enter mobile number">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email_address" class="form-label"><b>Email Address</b></label>
+                                                    <input type="text" class="form-control" id="email_address" name="email_address" placeholder="Enter your email address" aria-label="Enter your email address" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="username" class="form-label"><b>Username</b></label>
+                                                    <input type="text" class="form-control" id="username" name="username" placeholder="Create your own username" aria-label="Create your own unsername">
+                                                </div>
+                                                <label for="new_password" class="form-label"><b>New Password</b></label>
+                                                <div class="input-group mb-3">
+                                                    <input type="password" class="form-control" id="new_password" name="password1" placeholder="Create a new password" aria-label="Create a new password" required>
+                                                    <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_new_password"></button>
+                                                </div>
+                                                <label for="confirm_new_password" class="form-label"><b>Confirm New Password</b></label>
+                                                <div class="input-group mb-3">
+                                                    <input type="password" class="form-control" id="confirm_new_password" name="password2" placeholder="Confirm new password" aria-label="Confirm new password" required>
+                                                    <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_confirmed_password"></button>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="confirm_SignUp" class="form-label">By clicking the <span class="badge text-bg-success">Sign Up</span> button, you agree to our <a href="Terms & privacy/terms_condition.html">Terms and Condition</a> and <a href=""> Privacy Policy.</a> You may wait for the confirmation of your account through your local SK Chairman.</label>
+                                                </div>
 
-            if (sidebar.classList.contains('collapsed')) {
-                sidebar.classList.remove('collapsed');
-                sidebar.style.width = "280px";
-                content.style.marginLeft = '280px'; // Adjusted margin for expanded sidebar
-                overlay.style.display = 'block';
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-success d-grid gap-2 col-6 mx-auto" name="signup" type="submit" value="sign_up">Sign Up</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        </form>
+
+                        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    </body>
+    <!-- Create database first before operating -->
+    <?php
+    //  Login System
+    // Check errors
+    ini_set('display_errors', 1);
+    // Form Submission
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['signup'])) {
+            // Gather the Input data
+            $first_name = trim($_POST['first_name']);
+            $middle_name = trim($_POST['middle_name']);
+            $last_name = trim($_POST['last_name']);
+            $purok = trim($_POST['purok']);
+            $zone = trim($_POST['zone']);
+            $mobile_number = trim($_POST['mobile_number']);
+            $email = trim($_POST['email']);
+            $username = trim($_POST['username']);
+            $password1 = trim($_POST['password1']);
+            $password2 = trim($_POST['password2']);
+
+            // Capture the correct time and date
+            $dateJoined = date('Y-m-d H:i:s');
+
+            // Check if password matched
+            if ($password1 !== $password2) {
+                echo 'Password does not match';
             } else {
-                sidebar.classList.add('collapsed');
-                sidebar.style.width = "80px";
-                content.style.marginLeft = '80px'; // Default margin for collapsed sidebar
-                overlay.style.display = 'none';
+                // rename the password
+                $default_password = password_hash($password1, PASSWORD_DEFAULT);
+
+                // Start a transaction
+                $conn->begin_transaction();
+
+                // Insert into user table
+                $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password')";
+
+                if ($conn->query($sql_user) === TRUE) {
+                    $conn->commit();
+                    echo '<script>alert("You have successfully Signed up ' . $first_name . '"); window.location.href = "loading.php"; </script>';
+                } else {
+                    // Rollback the transaction if there is an error in the first query
+                    $conn->rollback();
+                    echo 'Error: ' . $sql_user . '<br>' . $conn->error;
+                }
             }
         }
 
-        // Event listener for the menu button
-        document.getElementById('menu-btn').addEventListener('click', toggleSidebar);
+        // Login form
+        if (isset($_POST['login'])) {
+            $username = trim($_POST['userEmail']);
+            $password = trim($_POST['userPassword']);
 
-        // Event listener for clicks anywhere on the document body
-        document.body.addEventListener('click', function(event) {
-            const sidebar = document.querySelector('.sidebar');
-            const clickedElement = event.target;
-            const isMenuButton = clickedElement.id === 'menu-btn';
-            const isSidebar = clickedElement.classList.contains('sidebar');
-            if (!isMenuButton && !isSidebar) {
-                if (!sidebar.classList.contains('collapsed')) {
-                    toggleSidebar();
-                }
+            // Prepare the MySQL query
+            $sql = "SELECT * FROM user WHERE username = '$username'";
+            $result = $conn->query($sql);
+
+            // og ang piste mo palpak
+            if ($result === false) {
+                echo "Error executing the query: " . $conn->error;
+                return;
             }
-        });
-    </script>
+
+            // Check if the user exists and the password is correct
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $stored_password = $row["password"];
+
+                // Verify the password
+                if (password_verify($password, $stored_password)) {
+                    // Login successful, redirect to the home page
+                    echo '<script>alert("You have successfully logged in ' . $username . '"); window.location.href = "home.php"; </script>';
+                    exit();
+                } else {
+                    // Invalid password
+                    echo "Invalid email or password. <br>";
+                }
+            } else {
+                // User not found
+                echo "User not found.";
+            }
+        }
+    }
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    ?>
+    <?php ob_end_flush(); ?>
 </body>
 
 </html>

@@ -70,7 +70,7 @@
         <?php include "nav.php"; ?>
     </header>
 
-    <div id="content" class="content">
+    <div class="page-content" id="content">
         <br>
         <h1 class="text-center mb-4"><i class="bi bi-cart-fill"></i> Cart</h1>
         <div class="container">

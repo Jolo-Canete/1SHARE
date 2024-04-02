@@ -90,7 +90,7 @@
 <header>
         <?php include "nav.php"; ?>
     </header>
-    <div id="content" class="content">
+    <div class="page-content" id="content">
     
     <br>
     <h1 class="text-center mb-4"><i class="bi bi-archive-fill"></i> MY ITEMS</h1>

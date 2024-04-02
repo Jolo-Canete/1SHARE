@@ -225,7 +225,7 @@
   <header>
     <?php include "nav.php"; ?>
   </header>
-  <div id="content" class="content">
+  <div class="page-content" id="content">
 
   <div class="container mt-4">
     <div class="row justify-content-center">

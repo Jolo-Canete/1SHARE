@@ -43,7 +43,7 @@
 include "nav.php";
 ?>
     </header>
-    <div id="content" class="content">
+    <div class="page-content" id="content">
 
     <br>
     <div class="container text-center">
