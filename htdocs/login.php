@@ -60,7 +60,7 @@
                                 <div class="mb-3"></div>
                                 <div class="d-grid gap-2">
                                     <button id="loginButton" class="btn btn-primary" type="submit" name="login" value="login">Login</button>
-                                 
+
                                 </div>
                                 <br>
                                 <div class="text-center">
@@ -122,6 +122,12 @@
                                                     <div class="mb-3">
                                                         <label for="email_address" class="form-label"><b>Email Address</b></label>
                                                         <input type="text" class="form-control" id="email_address" name="email_address" placeholder="Enter your email address" aria-label="Enter your email address" required>
+                                                    </div>
+                                                    <div class="">
+                                                        <label for="proof_of_residency" class="form-label"><b>Proof of Residency</b></label>
+                                                    </div>
+                                                    <div class="input-group mb-3">
+                                                        <input type="file" class="form-control" id="proof_of_residency">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="username" class="form-label"><b>Username</b></label>
