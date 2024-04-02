@@ -205,88 +205,118 @@
     </div>
 
 
-    <!-- Upload Modal -->
-    <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-dark text-light">
-                    <h5 class="modal-title" id="uploadModalLabel">Add New Item</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="itemPicture" class="form-label"><i class="bi bi-image"></i> Item Picture:</label>
-                            <input type="file" class="form-control" id="itemPicture">
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemName" class="form-label"><i class="bi bi-card-heading"></i> Item Name:</label>
-                            <input type="text" class="form-control" id="itemName" placeholder="Enter item name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemDescription" class="form-label"><i class="bi bi-card-text"></i> Item Description:</label>
-                            <input type="text" class="form-control" id="itemDescription" placeholder="Enter item description">
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemCondition" class="form-label"><i class="bi bi-gem"></i> Item Condition:</label>
-                            <input type="text" class="form-control" id="itemCondition" placeholder="Enter item condition (e.g. new, old, good, bad)">
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemAvailability" class="form-label"><i class="bi bi-check2-circle"></i> Availability:</label>
-                            <select class="form-select" id="itemAvailability">
+  <!-- Upload Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-light">
+                <h5 class="modal-title" id="uploadModalLabel">Add New Item</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadForm">
+                    <div class="mb-3">
+                        <label for="itemPicture" class="form-label"><i class="bi bi-image"></i> Item Picture:</label>
+                        <input type="file" class="form-control" id="itemPicture" name="fileToUpload" accept="image/*" onchange="previewImage(this)">
+                        <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid mt-3" style="max-height: 200px; display: none;">
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemName" class="form-label"><i class="bi bi-card-heading"></i> Item Name:</label>
+                        <input type="text" class="form-control" id="itemName" placeholder="Enter item name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemDescription" class="form-label"><i class="bi bi-card-text"></i> Item Description:</label>
+                        <input type="text" class="form-control" id="itemDescription" placeholder="Enter item description">
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemCondition" class="form-label"><i class="bi bi-gem"></i> Item Condition:</label>
+                        <input type="text" class="form-control" id="itemCondition" placeholder="Enter item condition (e.g. new, old, good, bad)">
+                    </div>
+                    <div class="mb-3">
+                        <label for="itemAvailability" class="form-label"><i class="bi bi-check2-circle"></i> Availability:</label>
+                        <select class="form-select" id="itemAvailability">
                             <option value="" selected>Select an option...</option>
-                                <option value="available">Available</option>
-                                <option value="notAvailable">Not Available</option>
-                            </select>
+                            <option value="available">Available</option>
+                            <option value="notAvailable">Not Available</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-arrow-repeat"></i> Request Type:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="barter" name="requestType" id="requestTypeBarter">
+                            <label class="form-check-label" for="requestTypeBarter">
+                                Barter
+                            </label>
                         </div>
-                        <div class="mb-3">
-    <label class="form-label"><i class="bi bi-arrow-repeat"></i> Request Type:</label>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="barter" name="requestType" id="requestTypeBarter">
-        <label class="form-check-label" for="requestTypeBarter">
-            Barter
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="borrow" name="requestType" id="requestTypeBorrow">
-        <label class="form-check-label" for="requestTypeBorrow">
-            Borrow
-        </label>
-    </div>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="buy" name="requestType" id="requestTypeBuy">
-        <label class="form-check-label" for="requestTypeBuy">
-            Buy
-        </label>
-    </div>
-</div>
-
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="borrow" name="requestType" id="requestTypeBorrow">
+                            <label class="form-check-label" for="requestTypeBorrow">
+                                Borrow
+                            </label>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x"></i> Close</button>
-                    <button id="but" type="button" class="btn btn-add btn-outline-dark"><i class="bi bi-cloud-upload"></i> Submit</button>
-                </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="buy" name="requestType" id="requestTypeBuy">
+                            <label class="form-check-label" for="requestTypeBuy">
+                                Buy
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="bi bi-x"></i> Close</button>
+                <button id="but" type="button" class="btn btn-add btn-outline-dark" onclick="uploadItem()"><i class="bi bi-cloud-upload"></i> Submit</button>
             </div>
         </div>
     </div>
-    </div>
+</div>
+<script>
+    function uploadItem() {
+    // Get the form data
+    var formData = new FormData();
+    formData.append('fileToUpload', $('#itemPicture')[0].files[0]);
+    formData.append('itemName', $('#itemName').val());
+    formData.append('itemDescription', $('#itemDescription').val());
+    formData.append('itemCondition', $('#itemCondition').val());
+    formData.append('itemAvailability', $('#itemAvailability').val());
+    var requestTypes = $('input[name="requestType"]:checked').map(function() {
+        return this.value;
+    }).get();
+    formData.append('requestTypes', requestTypes.join(','));
+
+    // Send the form data to the server
+    $.ajax({
+        type: 'POST',
+        url: 'upload.php',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            // Handle the successful upload
+            console.log(response);
+            // Close the modal or display a success message
+        },
+        error: function(xhr, status, error) {
+            // Handle the upload error
+            console.error(error);
+            // Display an error message
+        }
+    });
+}
+</script>
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        function populateModal(name, image, description, datePosted, condition, availability, requestType) {
-            document.getElementById("modalItemImage").src = image; // Set src to image path directly
-            document.getElementById("modalItemName").innerText = name;
-            document.getElementById("modalItemDescription").innerText = "Item Description: " + description;
-            document.getElementById("modalItemDatePosted").innerText = "Date and Time Posted: " + datePosted;
-            document.getElementById("modalItemCondition").innerText = "Condition: " + condition;
-            document.getElementById("modalItemAvailability").innerText = "Availability: " + availability;
-            document.getElementById("modalItemRequestType").innerText = "Request Type: " + requestType;
-            document.getElementById("modalItemCategory").innerText = "Category: " + category; 
-
-        }
-    </script>
+    function populateModal(itemName, imagePath, itemDescription, datePosted, condition, availability, requestType) {
+        document.getElementById('modalItemName').textContent = itemName;
+        document.getElementById('modalItemImage').src = imagePath;
+        document.getElementById('modalItemDescription').textContent = itemDescription;
+        document.getElementById('modalItemDatePosted').textContent = datePosted;
+        document.getElementById('modalItemCondition').textContent = condition;
+        document.getElementById('modalItemAvailability').textContent = availability;
+        document.getElementById('modalItemRequestType').textContent = requestType;
+    }
+</script>
 </body>
 </html>
