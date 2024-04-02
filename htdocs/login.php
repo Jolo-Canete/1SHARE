@@ -60,13 +60,7 @@
                                 <div class="mb-3"></div>
                                 <div class="d-grid gap-2">
                                     <button id="loginButton" class="btn btn-primary" type="submit" name="login" value="login">Login</button>
-                                    <script>
-                                        // Function to redirect to the specified link when the button is clicked
-                                        document.getElementById('loginButton').addEventListener('click', function() {
-                                            // Replace 'your-link-here' with the actual URL you want to redirect to
-                                            window.location.href = 'home.php';
-                                        });
-                                    </script>
+                                 
                                 </div>
                                 <br>
                                 <div class="text-center">
