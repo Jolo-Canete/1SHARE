@@ -171,12 +171,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="finditem.php" class="nav-link text-light font-italic">
-                        <i class="bi bi-search text-light fa-fw"></i>
-                        Find Items
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="additem.php" class="nav-link text-light font-italic">
                         <i class="bi bi-box text-light fa-fw"></i>
                         Inventory
