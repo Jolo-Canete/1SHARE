@@ -1,3 +1,7 @@
+<?php
+        include "nav.php";
+        ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,9 +70,7 @@
 </head>
 <body>
     <!-- ISSUE: Notification Bug-->
-    <header>
-        <?php include "nav.php"; ?>
-    </header>
+
 
     <div class="page-content" id="content">
         <br>

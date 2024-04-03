@@ -1,14 +1,15 @@
+<?php
+        include "nav.php";
+        ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Inventory</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.0/font/bootstrap-icons.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+
+  
     <style>
         body {
             background-color: #f8f9fa;
@@ -87,11 +88,19 @@
     </style>
 </head>
 <body>
-<header>
-        <?php include "nav.php"; ?>
-    </header>
-    <div class="page-content" id="content">
-    
+<?php
+// Retrieve the user's items
+$userID = $_SESSION['user_id'];
+$sqlSelect = "SELECT * FROM item WHERE userID = ?";
+$stmt = $conn->prepare($sqlSelect);
+$stmt->bind_param("i", $userID);
+$stmt->execute();
+$result = $stmt->get_result();
+$items = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+?>
+
+<div class="page-content" id="content">
     <br>
     <h1 class="text-center mb-4"><i class="bi bi-archive-fill"></i> MY ITEMS</h1>
     <div class="container">
@@ -102,110 +111,66 @@
 
     <div class="container">
         <div class="container-box">
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <!-- Item Card 1 -->
-        <div class="col">
-            <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('Item 1', 'picture/elmo.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.', 'January 1, 2024', 'Like New', 'Available', 'Barter')">
-                <img src="picture/elmo.jpg" class="card-img-top" alt="Item 1">
-                <div class="card-body">
-                    <h5 class="card-title">Elmo</h5>
-                    <p class="card-text"><i class="bi bi-tags-fill"></i> Category: Toys <span id="itemCategory"></span></p>
-                    <p class="card-text"><i class="bi bi-card-text"></i> Item Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</p>
-                    <p class="card-text"><i class="bi bi-calendar"></i> Date and Time Posted: January 1, 2024</p>
-                    <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Like New</p>
-                    <p class="card-text"><i class="bi bi-check-circle-fill"></i> Availability: &nbsp;<span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></p>
-                    <p class="card-text"><i class="bi bi-arrow-repeat"></i> Request Type: &nbsp;<span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></p>
-                </div>
-            </div>
-        </div>
-        <!-- Item Card 2 -->
-        <div class="col">
-            <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('Item 2', 'picture/elmo.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.', 'January 1, 2024', 'Like New', 'Available', 'Barter')">
-                <img src="picture/elmo.jpg" class="card-img-top" alt="Item 2">
-                <div class="card-body">
-                    <h5 class="card-title">Elmo</h5>
-                    <p class="card-text"><i class="bi bi-tags-fill"></i> Category: Toys <span id="itemCategory"></span></p>
-                    <p class="card-text"><i class="bi bi-card-text"></i> Item Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</p>
-                    <p class="card-text"><i class="bi bi-calendar"></i> Date and Time Posted: January 1, 2024</p>
-                    <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Very New</p>
-                    <p class="card-text"><i class="bi bi-check-circle-fill"></i> Availability: &nbsp;<span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></p>
-                    <p class="card-text"><i class="bi bi-arrow-repeat"></i> Request Type: &nbsp;<span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></p>
-                </div>
-            </div>
-        </div>
-        <!-- Item Card 3 -->
-        <div class="col">
-            <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('Item 3', 'picture/elmo.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.', 'January 1, 2024', 'Like New', 'Available', 'Barter')">
-                <img src="picture/elmo.jpg" class="card-img-top" alt="Item 3">
-                <div class="card-body">
-                    <h5 class="card-title">Elmo</h5>
-                    <p class="card-text"><i class="bi bi-tags-fill"></i> Category: Toys <span id="itemCategory"></span></p>
-                    <p class="card-text"><i class="bi bi-card-text"></i> Item Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</p>
-                    <p class="card-text"><i class="bi bi-calendar"></i> Date and Time Posted: January 1, 2024</p>
-                    <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Like Old</p>
-                    <p class="card-text"><i class="bi bi-check-circle-fill"></i> Availability: &nbsp;<span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></p>
-                    <p class="card-text"><i class="bi bi-arrow-repeat"></i> Request Type: &nbsp;<span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></p>
-                </div>
-            </div>
-        </div>
-        <!-- Repeat the pattern for more items -->
-        <!-- Item Card 4 -->
-        <div class="col">
-            <!-- Content for Item Card 4 -->
-        </div>
-        <!-- Item Card 5 -->
-        <div class="col">
-            <!-- Content for Item Card 5 -->
-        </div>
-        <!-- Item Card 6 -->
-        <div class="col">
-            <!-- Content for Item Card 6 -->
-        </div>
-        <!-- Item Card 7 -->
-        <div class="col">
-            <!-- Content for Item Card 7 -->
-        </div>
-        <!-- Item Card 8 -->
-        <div class="col">
-            <!-- Content for Item Card 8 -->
-        </div>
-        <!-- Item Card 9 -->
-        <div class="col">
-            <!-- Content for Item Card 9
-
- <!-- Item Detail Modal -->
- <div class="modal fade item-detail" id="itemDetailModal" tabindex="-1" aria-labelledby="itemDetailModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-dark text-light">
-                    <h5 class="modal-title" id="itemDetailModalLabel">
-                        <i class="bi bi-info-circle-fill"></i> Item Details
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <img id="modalItemImage" src="" alt="">
-                    <div class="modal-details">
-                        <h5 id="modalItemName"></h5>
-                        <p><i class="bi bi-tags-fill"></i> <span id="modalItemCategory"></span></p>
-                        <p><i class="bi bi-card-text"></i> <span id="modalItemDescription"></span></p>
-                        <p><i class="bi bi-calendar"></i> <span id="modalItemDatePosted"></span></p>
-                        <p><i class="bi bi-star-fill"></i> <span id="modalItemCondition"></span></p>
-                        <p><i class="bi bi-check-circle-fill"></i> <span id="modalItemAvailability"></span></p>
-                        <p><i class="bi bi-arrow-repeat"></i> <span id="modalItemRequestType"></span></p>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <?php foreach ($items as $item) { ?>
+                       <!-- Item Card -->
+                       <div class="col">
+                        <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['ItemDescription']; ?>', '<?php echo $item['itemCondition']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>', '<?php echo $item['price']; ?>')">
+                            <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
+                                <p class="card-text"><i class="bi bi-tags-fill"></i> Category: <?php echo $item['category']; ?></p>
+                                <p class="card-text"><i class="bi bi-card-text"></i> Item Description: <?php echo $item['ItemDescription']; ?></p>
+                                <p class="card-text"><i class="bi bi-hammer"></i> Item Condition: <?php echo $item['itemCondition']; ?></p>
+                                <p class="card-text"><i class="bi bi-box-seam"></i> Item Availability: <?php echo $item['itemAvailability']; ?></p>
+                                <p class="card-text"><i class="bi bi-person-fill"></i> Request Type: <?php echo $item['requestType']; ?></p>
+                                <?php if ($item['price'] !== null) { ?>
+                                    <p class="card-text"><i class="bi bi-cash-coin"></i> Price: $<?php echo $item['price']; ?></p>
+                                <?php } ?>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x"></i> Close
-                    </button>
-                </div>
+                <?php } ?>
             </div>
         </div>
     </div>
+<!-- Item Detail Modal -->
+<div class="modal fade item-detail" id="itemDetailModal" tabindex="-1" aria-labelledby="itemDetailModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-light">
+                <h5 class="modal-title" id="itemDetailModalLabel">
+                    <i class="bi bi-info-circle-fill"></i> Item Details
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img id="modalItemImage" src="" alt="" class="img-fluid">
+                    </div>
+                    <div class="col-md-6">
+                        <h5 id="modalItemName"></h5>
+                        <p><i class="bi bi-tags-fill"></i> Category: <span id="modalItemCategory"></span></p>
+                        <p><i class="bi bi-card-text"></i> Description: <span id="modalItemDescription"></span></p>
+                        <p><i class="bi bi-hammer"></i> Condition: <span id="modalItemCondition"></span></p>
+                        <p><i class="bi bi-box-seam"></i> Availability: <span id="modalItemAvailability"></span></p>
+                        <p><i class="bi bi-person-fill"></i> Request Type: <span id="modalItemRequestType"></span></p>
+                        <p><i class="bi bi-cash-coin"></i> Price: <span id="modalItemPrice"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
-  <!-- Upload Modal -->
+ <!-- Upload Modal -->
 <div class="modal fade" id="uploadModal" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -227,6 +192,10 @@
                     <div class="mb-3">
                         <label for="itemDescription" class="form-label"><i class="bi bi-card-text"></i> Item Description:</label>
                         <input type="text" class="form-control" id="itemDescription" placeholder="Enter item description">
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label"><i class="bi bi-tags"></i> Category:</label>
+                        <input type="text" class="form-control" id="category" placeholder="Enter item category">
                     </div>
                     <div class="mb-3">
                         <label for="itemCondition" class="form-label"><i class="bi bi-gem"></i> Item Condition:</label>
@@ -261,6 +230,10 @@
                             </label>
                         </div>
                     </div>
+                    <div class="mb-3" id="priceField" style="display: none;">
+                        <label for="price" class="form-label"><i class="bi bi-cash"></i> Price:</label>
+                        <input type="number" class="form-control" id="price" placeholder="Enter item price">
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -271,18 +244,29 @@
     </div>
 </div>
 <script>
-    function uploadItem() {
+function uploadItem() {
     // Get the form data
     var formData = new FormData();
     formData.append('fileToUpload', $('#itemPicture')[0].files[0]);
     formData.append('itemName', $('#itemName').val());
     formData.append('itemDescription', $('#itemDescription').val());
+    formData.append('category', $('#category').val());
     formData.append('itemCondition', $('#itemCondition').val());
     formData.append('itemAvailability', $('#itemAvailability').val());
     var requestTypes = $('input[name="requestType"]:checked').map(function() {
         return this.value;
     }).get();
     formData.append('requestTypes', requestTypes.join(','));
+
+    // Get the price if the request type is "buy"
+    if (requestTypes.includes('buy')) {
+        var itemPrice = $('#price').val();
+        if (itemPrice === '') {
+            alert('Please enter the item price.');
+            return;
+        }
+        formData.append('price', itemPrice);
+    }
 
     // Send the form data to the server
     $.ajax({
@@ -293,30 +277,48 @@
         contentType: false,
         success: function(response) {
             // Handle the successful upload
-            console.log(response);
-            // Close the modal or display a success message
+            if (response !== 'Error') {
+                alert('Item uploaded successfully');
+                // Close the modal
+                $('#uploadModal').modal('hide');
+                // Reset the form fields
+                $('#uploadForm')[0].reset();
+                // Hide the image preview
+                $('#imagePreview').hide();
+            } else {
+                // Display the error message
+                alert('Error uploading item');
+            }
         },
         error: function(xhr, status, error) {
             // Handle the upload error
-            console.error(error);
-            // Display an error message
+            alert('Error uploading file: ' + error);
         }
     });
 }
+
+// Show/hide the price field based on the request type
+$('input[name="requestType"]').on('change', function() {
+    if ($('#requestTypeBuy').is(':checked')) {
+        $('#priceField').show();
+    } else {
+        $('#priceField').hide();
+        $('#price').val('');
+    }
+});
 </script>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-    function populateModal(itemName, imagePath, itemDescription, datePosted, condition, availability, requestType) {
-        document.getElementById('modalItemName').textContent = itemName;
-        document.getElementById('modalItemImage').src = imagePath;
-        document.getElementById('modalItemDescription').textContent = itemDescription;
-        document.getElementById('modalItemDatePosted').textContent = datePosted;
-        document.getElementById('modalItemCondition').textContent = condition;
-        document.getElementById('modalItemAvailability').textContent = availability;
-        document.getElementById('modalItemRequestType').textContent = requestType;
-    }
+ function populateModal(itemName, itemDescription, category, condition, availability, requestType, price) {
+    document.getElementById('modalItemName').textContent = itemName;
+document.getElementById('modalItemImage').src = "pictures/<?php echo $item['itemImage_path']; ?>";
+    document.getElementById('modalItemDescription').textContent = itemDescription;
+    document.getElementById('modalItemCategory').textContent = category;
+    document.getElementById('modalItemCondition').textContent = condition;
+    document.getElementById('modalItemAvailability').textContent = availability;
+    document.getElementById('modalItemRequestType').textContent = requestType;
+    document.getElementById('modalItemPrice').textContent = price !== null ? '$' + price : 'N/A';
+}
 </script>
 </body>
 </html>

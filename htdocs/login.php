@@ -1,4 +1,6 @@
-<?php ob_start(); ?>
+<?php ob_start(); 
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,7 +43,7 @@
                 <div class="card shadow p-3 mb-5 bg-body rounded-4">
                     <div class="card-body">
                         <div class="mb-3">
-                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>"  enctype="multipart/form-data">
                                 <!--- Login --->
                                 <label for="email_address"><b>Email Address</b></label>
                                 <div class="input-group flex-nowrap">
@@ -98,7 +100,7 @@
                                                     <div class="col">
                                                         <div class="mb-3">
                                                             <label for="purok" class="form-label"><b>Purok</b></label>
-                                                            <select class="form-select" aria-label="Select your purok" required>
+                                                            <select class="form-select" aria-label="Select your purok" name="purok">
                                                                 <option selected>Select your purok</option>
                                                                 <option value="1">One</option>
                                                                 <option value="2">Two</option>
@@ -108,7 +110,7 @@
                                                     </div>
                                                     <div class="col">
                                                         <label for="zone" class="form-label"><b>Zone</b></label>
-                                                        <select class="form-select" aria-label="Select your zone" required>
+                                                        <select class="form-select" aria-label="Select your zone" name ="zone">
                                                             <option selected>Select your zone</option>
                                                             <option value="1">One</option>
                                                             <option value="2">Two</option>
@@ -121,13 +123,7 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="email_address" class="form-label"><b>Email Address</b></label>
-                                                        <input type="text" class="form-control" id="email_address" name="email_address" placeholder="Enter your email address" aria-label="Enter your email address" required>
-                                                    </div>
-                                                    <div class="">
-                                                        <label for="proof_of_residency" class="form-label"><b>Proof of Residency</b></label>
-                                                    </div>
-                                                    <div class="input-group mb-3">
-                                                        <input type="file" class="form-control" id="proof_of_residency">
+                                                        <input type="text" class="form-control" id="email_address" name="email_address" placeholder="Enter your email address" aria-label="Enter your email address" >
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="username" class="form-label"><b>Username</b></label>
@@ -135,13 +131,19 @@
                                                     </div>
                                                     <label for="new_password" class="form-label"><b>New Password</b></label>
                                                     <div class="input-group mb-3">
-                                                        <input type="password" class="form-control" id="new_password" name="password1" placeholder="Create a new password" aria-label="Create a new password" required>
+                                                        <input type="password" class="form-control" id="new_password" name="password1" placeholder="Create a new password" aria-label="Create a new password" >
                                                         <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_new_password"></button>
                                                     </div>
                                                     <label for="confirm_new_password" class="form-label"><b>Confirm New Password</b></label>
                                                     <div class="input-group mb-3">
-                                                        <input type="password" class="form-control" id="confirm_new_password" name="password2" placeholder="Confirm new password" aria-label="Confirm new password" required>
+                                                        <input type="password" class="form-control" id="confirm_new_password" name="password2" placeholder="Confirm new password" aria-label="Confirm new password" >
                                                         <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_confirmed_password"></button>
+                                                    </div>
+                                                    <label for="" class="form-label"><b>Proof of Residency</b></label>
+                                                    <div class="mb-3">
+                                                        <div class="input-group mb-3">
+                                                            <input type="file" class="form-control" name="fileToUpload" id="fileToUpload" accept="image/*">
+                                                        </div>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="confirm_SignUp" class="form-label">By clicking the <span class="badge text-bg-success">Sign Up</span> button, you agree to our <a href="Terms & privacy/terms_condition.html">Terms and Condition</a> and <a href=""> Privacy Policy.</a> You may wait for the confirmation of your account through your local SK Chairman.</label>
@@ -178,28 +180,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $purok = trim($_POST['purok']);
         $zone = trim($_POST['zone']);
         $mobile_number = trim($_POST['mobile_number']);
-        $email = trim($_POST['email']);
+        $email = trim($_POST['email_address']);
         $username = trim($_POST['username']);
         $password1 = trim($_POST['password1']);
         $password2 = trim($_POST['password2']);
-
+    
+        if (empty($first_name) || empty($middle_name) || empty($last_name) || empty($purok) || empty($zone) || empty($mobile_number) || empty($email) || empty($username) || empty($password1) || empty($password2)) {
+            echo "<div class='alert alert-warning mt-3'>Error: Signup Failed is incomplete.</div>" ;
+            return;
+        }
+    
+        // Upload Image to the different directory
+        $targetDirectory = "verify/";
+        if (!file_exists($targetDirectory)) {
+            mkdir($targetDirectory, 0777, true);
+        }
+    
+        // Get the uploaded image information
+        $uploadedImagePath = $_FILES['fileToUpload']['tmp_name'];
+        $uploadedImageName = $_FILES['fileToUpload']['name'];
+    
+        // Move the uploaded file to the target directory
+        $targetFile = $targetDirectory . basename($uploadedImageName);
+        if (move_uploaded_file($uploadedImagePath, $targetFile)) {
+            echo "<div class='alert alert-success mt-3'>The file " . basename($uploadedImageName) . " has been uploaded.</div>";
+        } else {
+            echo "<div class='alert alert-danger mt-3'>Failed to move uploaded file.</div>";
+            return;
+        }
+    
         // Capture the correct time and date
         $dateJoined = date('Y-m-d H:i:s');
-
+    
         // Check if password matched
         if ($password1 !== $password2) {
             echo 'Password does not match';
         } else {
             // rename the password
             $default_password = password_hash($password1, PASSWORD_DEFAULT);
-
+    
             // Start a transaction
             $conn->begin_transaction();
-
-            // Insert into user table
+    
+            // Insert into user table without the verifyImage_path
             $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password')";
-
+    
             if ($conn->query($sql_user) === TRUE) {
+                // Get the last inserted ID
+                $last_id = $conn->insert_id;
+    
+                // Rename the uploaded file to its corresponding auto-incremented primary key
+                $newFileName = $last_id . '.' . pathinfo($uploadedImageName, PATHINFO_EXTENSION);
+                rename($targetFile, $targetDirectory . $newFileName);
+    
+                // Update the verifyImage_path in the database
+                $sql_update = "UPDATE user SET verifyImage_path = '$newFileName' WHERE `userID` = $last_id";
+                echo "$sql_update";
+                $conn->query($sql_update);
+    
                 $conn->commit();
                 echo '<script>alert("You have successfully Signed up ' . $first_name . '"); window.location.href = "loading.php"; </script>';
             } else {
@@ -209,11 +247,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
+}
 
     // Login form
     if (isset($_POST['login'])) {
         $username = trim($_POST['userEmail']);
         $password = trim($_POST['userPassword']);
+
+    if (empty($username) || empty($password)) { 
+        echo "<div class='alert alert-warning mt-3'>username or password is empty.</div>" ;
+        return;
+    }
 
         // Prepare the MySQL query
         $sql = "SELECT * FROM user WHERE username = '$username'";
@@ -229,9 +273,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $stored_password = $row["password"];
+            $user_id = $row["userID"]; 
 
             // Verify the password
             if (password_verify($password, $stored_password)) {
+                 // Login successful, store user information in the session
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['email'] = $row['email'];
                 // Login successful, redirect to the home page
                 echo '<script>alert("You have successfully logged in ' . $username . '"); window.location.href = "home.php"; </script>';
                 exit();
@@ -244,7 +293,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "User not found.";
         }
     }
-}
+ 
 
 
 

@@ -1,3 +1,6 @@
+<?php
+        include "nav.php";
+        ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,11 +33,7 @@
 </head>
 
 <body>
-    <!--- Navigation Bar --->
-    <header>
-        <?php include "nav.php"; ?>
-    </header>
-    <!--- End of Navigation Bar --->
+    
     <div class="page-content" id="content">
 
         <br>

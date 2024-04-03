@@ -1,3 +1,8 @@
+<?php
+        include "nav.php";
+        ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -91,9 +96,7 @@
 
 <body>
     <header>
-        <?php
-        include "nav.php";
-        ?>
+      
     </header>
 
     <main>

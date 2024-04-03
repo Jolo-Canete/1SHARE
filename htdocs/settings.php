@@ -1,3 +1,7 @@
+<?php
+        include "nav.php";
+        ?>
+        
 <!doctype html>
 <html lang="en">
 
@@ -32,9 +36,7 @@
 
 <body>
 
-    <header>
-        <?php include "nav.php"?>
-    </header>
+
 
     <main>
         <div class="page-content" id="content">
@@ -52,17 +54,10 @@
                             Account Info
                         </a>
                         <a href="#" class="list-group-item list-group-item-action">
-                            Security
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
                             Privacy
                         </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            Notifications
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            Request
-                        </a>
+                        
+                     
                         <!--- Add more if needed --->
                     </div>
                 </div>

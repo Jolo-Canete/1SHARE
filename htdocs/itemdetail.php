@@ -1,3 +1,7 @@
+<?php
+        include "nav.php";
+        ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -38,11 +42,7 @@
 </head>
 
 <body>
-    <header>
-    <?php
-include "nav.php";
-?>
-    </header>
+    
     <div class="page-content" id="content">
 
     <br>
