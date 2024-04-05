@@ -16,40 +16,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Validate the form data
     $isValid = true;
+    $errors = [];
+
     if (empty($itemName)) {
         $isValid = false;
-        echo "Item name is required.\n";
+        $errors[] = "Item name is required.";
     }
     if (empty($itemDescription)) {
         $isValid = false;
-        echo "Item description is required.\n";
+        $errors[] = "Item description is required.";
     }
     if (empty($category)) {
         $isValid = false;
-        echo "Category is required.\n";
+        $errors[] = "Category is required.";
     }
     if (empty($itemCondition)) {
         $isValid = false;
-        echo "Item condition is required.\n";
+        $errors[] = "Item condition is required.";
     }
     if (empty($itemAvailability)) {
         $isValid = false;
-        echo "Item availability is required.\n";
+        $errors[] = "Item availability is required.";
     }
     if (empty($requestTypes)) {
         $isValid = false;
-        echo "At least one request type is required.\n";
+        $errors[] = "At least one request type is required.";
     }
 
-    // Get the price if the request type is "buy"
-    if (in_array('buy', $requestTypes)) {
-        $price = $_POST['price'];
-        if (empty($price)) {
+    // Get the price if the request type is "Buy"
+    if (in_array('Buy', $requestTypes)) {
+        $buyPrice = $_POST['buyPrice'];
+        if (empty($buyPrice)) {
             $isValid = false;
-            echo "Price is required for the 'buy' request type.\n";
+            $errors[] = "Price is required for the 'Buy' request type.";
         }
     } else {
-        $price = null;
+        $buyPrice = null;
+    }
+
+    // Get the price and duration if the request type is "Borrow"
+    if (in_array('Borrow', $requestTypes)) {
+        $borrowPrice = $_POST['borrowPrice'];
+        $borrowDuration = $_POST['borrowDuration']; // Get the borrow duration from the request
+        if (empty($borrowPrice)) {
+            $isValid = false;
+            $errors[] = "Price is required for the 'Borrow' request type.";
+        }
+        if (empty($borrowDuration)) {
+            $isValid = false;
+            $errors[] = "Duration is required for the 'Borrow' request type.";
+        }
+    } else {
+        $borrowPrice = null;
+        $borrowDuration = null;
     }
 
     // Handle the file upload
@@ -74,15 +93,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Move the uploaded file to the target directory
     if ($fileError === UPLOAD_ERR_OK) {
         if (move_uploaded_file($fileTmpName, $targetFilePath)) {
+            // Get the current date and time
+            $currentDateTime = date('Y-m-d H:i:s');
+
             // Update the database with the new item information
             if ($isValid) {
-                $sqlInsert = "INSERT INTO item (itemName, ItemDescription, category, itemCondition, itemAvailability, itemImage_path, price, userID, requestType) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $sqlInsert = "INSERT INTO item (itemName, ItemDescription, category, itemCondition, itemAvailability, itemImage_path, buyPrice, borrowPrice, borrowDuration, userID, requestType, DateTimePosted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sqlInsert);
-                $stmt->bind_param("ssssssdis", $itemName, $itemDescription, $category, $itemCondition, $itemAvailability, $newFileName, $price, $userID, $requestType);
-                if ($stmt->execute()) {
-                    echo "Item uploaded successfully";
-                    header("Location: additem.php");
 
+
+                // Bind parameters
+                $stmt->bind_param("ssssssiiisss", $itemName, $itemDescription, $category, $itemCondition, $itemAvailability, $newFileName, $buyPrice, $borrowPrice, $borrowDuration, $userID, $requestType, $currentDateTime);
+
+
+                if ($stmt->execute()) {
+                    echo "Goods";
+                    
+                    
+                    
+                    exit(); // Ensure no further execution after redirect
                 } else {
                     $error = $stmt->error;
                     echo "Error: $error";
@@ -90,10 +119,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->close();
             }
         } else {
-            echo "Error uploading file";
+            echo "Error moving uploaded file";
         }
     } else {
-        echo "Error uploading file";
+        echo "Error uploading file: $fileError";
+    }
+
+    // Output validation errors
+    if (!$isValid) {
+        echo implode("\n", $errors);
     }
 }
-?>

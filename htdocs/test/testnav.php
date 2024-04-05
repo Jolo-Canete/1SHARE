@@ -10,9 +10,9 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // If the user is logged in, retrieve their information from the session
-$user_id = $_SESSION['user_id'];
-$username = $_SESSION['username'];
-$email = $_SESSION['email'];
+$_SESSION['user_id'] = $user_id;
+$_SESSION['username'] = $Lgn_Username;
+$_SESSION['email'] = $email;
 
 // Handle the logout process
 if (isset($_GET['logout'])) {
@@ -175,6 +175,7 @@ if (isset($_GET['logout'])) {
             ...
         </div>
     </div>
+    <header>
         <!-- Vertical navbar -->
         <div class="vertical-nav bg-dark" id="sidebar">
             <div class="py-4 px-3">
@@ -233,6 +234,7 @@ if (isset($_GET['logout'])) {
         </div>
 
         <!-- End vertical navbar -->
+    </header>
 
     <main>
         <!-- Page content holder -->

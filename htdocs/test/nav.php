@@ -1,8 +1,34 @@
+<?php
+
+session_start();
+include "1db.php";
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // If the user is not logged in, redirect them to the login page
+    header("Location: login.php");
+    exit;
+}
+
+// If the user is logged in, retrieve their information from the session
+$user_id = $_SESSION['user_id'];
+$username = $_SESSION['username'];
+$email = $_SESSION['email'];
+
+// Handle the logout process
+if (isset($_GET['logout'])) {
+    // Destroy the session and all its data
+    session_destroy();
+    // Redirect the user to the login page
+    header("Location: login.php");
+    exit;
+}
+?>
+
 <!doctype html>
 <html lang="en">
 
 <head>
-    <title>testestest</title>
+    <title>ISHARE</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -26,6 +52,7 @@
     }
 
     .navbar {
+       
         z-index: 1000;
     }
 
@@ -136,7 +163,10 @@
 </style>
 
 <body>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+
+
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasRightLabel">Notifications</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -145,7 +175,6 @@
             ...
         </div>
     </div>
-    <header>
         <!-- Vertical navbar -->
         <div class="vertical-nav bg-dark" id="sidebar">
             <div class="py-4 px-3">
@@ -168,12 +197,6 @@
                     <a href="profile.php" class="nav-link text-light font-italic">
                         <i class="bi bi-person-circle text-light fa-fw"></i>
                         Profile
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="finditem.php" class="nav-link text-light font-italic">
-                        <i class="bi bi-search text-light fa-fw"></i>
-                        Find Items
                     </a>
                 </li>
                 <li class="nav-item">
@@ -208,9 +231,8 @@
                 </li>
             </ul>
         </div>
-        
+
         <!-- End vertical navbar -->
-    </header>
 
     <main>
         <!-- Page content holder -->
@@ -253,13 +275,13 @@
 
                 <div class="collapse navbar-collapse justify-content-end" id="navbarsExample02">
                     <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" style="padding: 10px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRightLabel">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-                                <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
-                            </svg>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" style="padding: 10px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRightLabel">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
+                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
+                                </svg>
+                            </a>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link d-flex align-items-center" href="#" style="padding: 10px;" data-bs-toggle="dropdown" aria-expanded="false">
@@ -275,7 +297,7 @@
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item rounded-2 text-danger" href="login.php">Log Out</a></li>
+                                    <li><a class="dropdown-item rounded-2 text-danger" href="?logout=true">Log Out</a></li>
                                 </ul>
                             </div>
                         </li>

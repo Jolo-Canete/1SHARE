@@ -1,6 +1,35 @@
 <?php
-        include "nav.php";
-        ?>
+    include "nav.php";
+?>
+<!-- Run the Database -->
+
+<?php 
+    $sql = "SELECT * FROM user where userID = $user_id";
+    $query = mysqli_query($conn, $sql);
+
+    // Fetch the Data
+    $user = array();
+
+    while($userRow = mysqli_fetch_assoc($query)) {
+        $userData = array(
+            'firstName' => $userRow['firstName'],
+            'middleName' => $userRow['middleName'],
+            'lastName' => $userRow['lastName'],
+            'contactNumber' => $userRow['contactNumber'],
+            'zone' => $userRow['zone'],
+            'purok' => $userRow['purok'],
+            'dateJoined' => $userRow['dateJoined'],
+            'userEmail' => $userRow['userEmail'],
+            'status' => $userRow['status'],
+            'userRating' => $userRow['userRating'],
+            'userImage_path' => $userRow['userEmail'],
+        );
+    
+        array_push($user, $userData);
+    }
+        
+
+?>
         
 <!doctype html>
 <html lang="en">
@@ -65,7 +94,10 @@
                     <p class="h3">Account Info</p>
                     <div class="data">
                         <p class="h6 text-secondary d-flex">Name: &nbsp;
-                            <span class="text-dark">Jolo A. Cañete</span>
+                        <span class="text-dark"> 
+                            <?php echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName']) . '. &nbsp; ' . ucfirst($userData['lastName']);    ?>  
+                        </span>
+                        <span class="bi bi-pencil-fill text-end ms-auto"></span>
                         <div class="mb-2"></div>
                         </p>
                         <p class="h6 text-secondary d-flex">Email: &nbsp;
