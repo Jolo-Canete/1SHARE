@@ -18,37 +18,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $isValid = true;
     $errors = [];
 
-    if (empty($itemName)) {
-        $isValid = false;
-        $errors[] = "Item name is required.";
-    }
-    if (empty($itemDescription)) {
-        $isValid = false;
-        $errors[] = "Item description is required.";
-    }
-    if (empty($category)) {
-        $isValid = false;
-        $errors[] = "Category is required.";
-    }
-    if (empty($itemCondition)) {
-        $isValid = false;
-        $errors[] = "Item condition is required.";
-    }
-    if (empty($itemAvailability)) {
-        $isValid = false;
-        $errors[] = "Item availability is required.";
-    }
-    if (empty($requestTypes)) {
-        $isValid = false;
-        $errors[] = "At least one request type is required.";
-    }
 
     // Get the price if the request type is "Buy"
     if (in_array('Buy', $requestTypes)) {
         $buyPrice = $_POST['buyPrice'];
-        if (empty($buyPrice)) {
+        if (is_numeric($buyPrice)) {
+            $buyPrice = floatval($buyPrice);
+        } else {
             $isValid = false;
-            $errors[] = "Price is required for the 'Buy' request type.";
+            $errors[] = "Please enter a valid buy price.";
         }
     } else {
         $buyPrice = null;
@@ -57,19 +35,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the price and duration if the request type is "Borrow"
     if (in_array('Borrow', $requestTypes)) {
         $borrowPrice = $_POST['borrowPrice'];
-        $borrowDuration = $_POST['borrowDuration']; // Get the borrow duration from the request
-        if (empty($borrowPrice)) {
+        if (is_numeric($borrowPrice)) {
+            $borrowPrice = floatval($borrowPrice);
+        } else {
             $isValid = false;
-            $errors[] = "Price is required for the 'Borrow' request type.";
+            $errors[] = "Please enter a valid borrow price.";
         }
-        if (empty($borrowDuration)) {
+        $borrowDuration = $_POST['borrowDuration']; // Get the borrow duration from the request
+        if (is_numeric($borrowDuration)) {
+            $borrowDuration = floatval($borrowDuration);
+        } else {
             $isValid = false;
-            $errors[] = "Duration is required for the 'Borrow' request type.";
+            $errors[] = "Please enter a valid borrow duration.";
         }
     } else {
         $borrowPrice = null;
         $borrowDuration = null;
     }
+
 
     // Handle the file upload
     $targetDirectory = "pictures/";
@@ -103,14 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
                 // Bind parameters
-                $stmt->bind_param("ssssssiiisss", $itemName, $itemDescription, $category, $itemCondition, $itemAvailability, $newFileName, $buyPrice, $borrowPrice, $borrowDuration, $userID, $requestType, $currentDateTime);
+                $stmt->bind_param("ssssssddisss", $itemName, $itemDescription, $category, $itemCondition, $itemAvailability, $newFileName, $buyPrice, $borrowPrice, $borrowDuration, $userID, $requestType, $currentDateTime);
 
 
                 if ($stmt->execute()) {
                     echo "Goods";
-                    
-                    
-                    
+
+
+
                     exit(); // Ensure no further execution after redirect
                 } else {
                     $error = $stmt->error;

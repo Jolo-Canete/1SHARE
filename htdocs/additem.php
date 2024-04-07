@@ -41,19 +41,21 @@ include "nav.php";
         </div>
 
         <div class="container">
-    <div class="container-box">
-        <div class="row row-cols-1 row-cols-md-6 g-4">
-            <?php if (empty($items)) { ?>
-                <div class="col">
-                    <div class="card">
+            <div class="container-box d-flex justify-content-center align-items-center" style="min-height: 300px;">
+                <?php if (empty($items)) { ?>
+                    <div class="card text-center">
                         <div class="card-body">
-                            <h5 class="card-title">No Item Owned</h5>
+                            <h5 class="card-title">No Items Owned</h5>
+                            <p class="card-text">You haven't added any items yet.</p>
                         </div>
                     </div>
-                </div>
+
             <?php } else { ?>
+                <div class="row row-cols-1 row-cols-md-6 g-4">
+
                 <?php foreach ($items as $item) { ?>
                     <!-- Item Card -->
+
                     <div class="col">
                         <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>')">
                             <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">

@@ -8,7 +8,14 @@ body {
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+.is-invalid {
+    border-color: #dc3545 !important; /* Red border */
+}
 
+.invalid-feedback {
+    color: #dc3545; /* Red text color */
+    font-size: 80%; /* Smaller font size */
+}
 .card {
 
     background-color: #fff;
