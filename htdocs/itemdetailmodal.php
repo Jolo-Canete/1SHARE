@@ -23,6 +23,8 @@
                         <p><i class="bi bi-card-text"></i> Description: <span id="modalItemDescription"></span></p>
                         <p><i class="bi bi-hammer"></i> Condition: <span id="modalItemCondition"></span></p>
                         <p><i class="bi bi-check-circle-fill"></i> Availability: <span id="modalItemAvailability"></span></p>
+                        <p style="display: none;"><i class="bi bi-check-circle-fill"></i> Item ID: <span id="modalItemID"></span></p>
+
                         <p><i class="bi bi-arrow-repeat"></i> Open For: <span id="modalItemRequestType"></span></p>
 
                         <!-- Display Buy Price field if request type is Buy -->
@@ -54,7 +56,15 @@
         </div>
     </div>
 </div>
- 
+ <script>
+    function editItem() {
+    // Get the item ID from the modal
+    var itemID = document.getElementById('modalItemID').textContent;
+
+    // Redirect to edit.php with the item ID as query parameter
+    window.location.href = 'edit.php?itemID=' + encodeURIComponent(itemID);
+}
+</script>
 
 <script>
     function populateModal(itemName, itemImagePath, itemAvailability, requestType) {
@@ -71,6 +81,7 @@
             dataType: 'json',
             success: function(response) {
                 // Populate modal with fetched item details
+                document.getElementById('modalItemID').textContent = response.itemID;
                 document.getElementById('modalItemName').textContent = response.itemName;
                 document.getElementById('modalItemCategory').textContent = response.category;
                 document.getElementById('modalItemDescription').textContent = response.ItemDescription;
