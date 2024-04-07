@@ -41,31 +41,39 @@ include "nav.php";
         </div>
 
         <div class="container">
-            <div class="container-box">
-                <div class="row row-cols-1 row-cols-md-6 g-4">
-                    <?php foreach ($items as $item) { ?>
-                        <!-- Item Card -->
-                        <div class="col">
-                            <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>')">
-                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
-
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
-                                    <p class="text-start text-secondary">
-                                        <?php
-                                        $availability = $item['itemAvailability'];
-                                        $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
-                                        echo "<span class='badge $badgeColor rounded-pill'>$availability</span>";
-                                        ?>
-                                    </p>
-
-                                </div>
+    <div class="container-box">
+        <div class="row row-cols-1 row-cols-md-6 g-4">
+            <?php if (empty($items)) { ?>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">No Item Owned</h5>
+                        </div>
+                    </div>
+                </div>
+            <?php } else { ?>
+                <?php foreach ($items as $item) { ?>
+                    <!-- Item Card -->
+                    <div class="col">
+                        <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>')">
+                            <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
+                            <div class="card-body">
+                                <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
+                                <p class="text-start text-secondary">
+                                    <?php
+                                    $availability = $item['itemAvailability'];
+                                    $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
+                                    echo "<span class='badge $badgeColor rounded-pill'>$availability</span>";
+                                    ?>
+                                </p>
                             </div>
                         </div>
-                    <?php } ?>
-                </div>
-            </div>
+                    </div>
+                <?php } ?>
+            <?php } ?>
         </div>
+    </div>
+</div>
 
  <!-- Item Detail Modal -->
         <?php

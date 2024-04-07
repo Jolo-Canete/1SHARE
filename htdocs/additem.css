@@ -70,7 +70,7 @@ body {
 
 
 .item-detail .modal-body {
-    display: flex;
+    display: fix;
 
     align-items: center;
 }
@@ -79,9 +79,8 @@ body {
     max-width: 100%;
     /* Half of the modal body */
     height: 300px;
-    /* Adjust the height as needed */
     object-fit: fill;
-    border-radius: 10px;
+    border-radius: 20px;
 }
 
 .item-detail .modal-body .modal-details {

@@ -1,11 +1,16 @@
-<?php session_start();   ?>
-
+<?php  ob_start();session_start();include ('1db.php');?>
 <!-- get the session variables -->
-<?php 
-  $username = $_SESSION['username'] ;
- $email= $_SESSION['email'] ;
+<?php
+$username = $_SESSION['username'];
+$legitEmail = $_SESSION['email'];
 
 // Check if the user is logged in
+    if (empty($username)) {
+        header("Location: login.php");
+        exit;
+    }
+
+// Handle the logout process
 if (isset($_GET['logout'])) {
     // Destroy the session and all its data
     session_destroy();
@@ -13,6 +18,8 @@ if (isset($_GET['logout'])) {
     header("Location: login.php");
     exit;
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -23,20 +30,20 @@ if (isset($_GET['logout'])) {
     <title>Document</title>
 </head>
 <body>
-<a href="?logout=true">Back to login</a>
+<a href="?logout=true">Logout</a>
     <?php
     // Display errors
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
-      // Post the form
-      if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Post the form
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['submit'])) {
             $email = trim($_POST['email']);
     
             // Check if the email is empty
-              if (empty($email)) {
+            if (empty($email)) {
                 echo 'Please enter your email. <br>
                 <form method="POST" action="">
                 <label for="email">Please enter your registered email again:</label>
@@ -88,10 +95,7 @@ if (isset($_GET['logout'])) {
 
         ';
     }
-    
-
-    
-    $conn->close();
+ $conn->close();
     ?>
 </body>
 </html>

@@ -22,13 +22,16 @@
     <title>Test Code 2</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
     <style>
         .profile-container {
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #e8e9e8;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
             padding: 20px;
             position: relative;
+            width: 103%;
+            margin: 0 auto;
+            margin-bottom: 2rem;
         }
 
         .profile-header {
@@ -67,33 +70,12 @@
             cursor: pointer;
         }
 
-        .right {
-            margin-top: 20px;
-        }
-
         .data {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 15px;
+            background-color: yellow;
+            padding: 8px;
+            margin-top: 15px;
             margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .data h4 {
-            color: #333333;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-        }
-
-        .data h4 i {
-            color: #212529;
-            margin-right: 10px;
-        }
-
-        .data p {
-            color: #666666;
-            margin-bottom: 0;
         }
 
         .modal-content {
@@ -127,7 +109,8 @@
         }
 
         .rating {
-            text-align: center;
+            text-align: left;
+            margin-top: 0;
         }
 
         .rating>input {
@@ -135,8 +118,7 @@
         }
 
         .rating>label {
-            padding: 5px;
-            font-size: 25px;
+            font-size: 15px;
             color: #ffc107;
             display: inline-block;
             cursor: pointer;
@@ -167,6 +149,25 @@
         .nav-link.active {
             color: #fff;
         }
+
+        .table-hover tbody tr.table-row:hover {
+            background-color: #f5f5f5;
+            cursor: pointer;
+        }
+
+        .table-row {
+            transition: background-color 0.3s ease;
+        }
+
+        .table-wrapper {
+            width: 103%;
+            margin: 0 auto;
+        }
+
+        .table thead th,
+        td {
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -196,6 +197,9 @@
                         <div class="col">
                             <div class="text-secondary">Resident</div>
                         </div>
+                        <div class="col">
+                            <span class="badge text-bg-primary rounded-pill">Verified</span>
+                        </div>
                         <div class="col mt-4">
                             <div class="d-flex align-items-center text-secondary">
                                 <span class="bi-envelope">&nbsp; canete.jolo@gmail.com</span>
@@ -204,8 +208,7 @@
                         </div>
                         <div class="col mt-1">
                             <div class="d-flex align-items-center text-secondary">
-                                <span class="bi-calendar">&nbsp; Joined January 2024</span>
-                                <span class="bi-telephone ms-5">&nbsp; 09203513491</span>
+                                <span class="bi-telephone">&nbsp; 09203513491</span>
                             </div>
                         </div>
                     </div>
@@ -216,15 +219,14 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="reportUserModalLabel">Report User</h5>
-                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <label><b>Please specify your reason for reporting this account </b></label>
-                                    <div class="input-group mb-3">
-                                        <textarea class="form-control" aria-label="With textarea"></textarea>
-                                    </div>
-                                    <div>
-                                        <input type="file" class="form-control" id="inputGroupFile01">
+                                    <label class="form-label"><b>Please specify your reason for reporting this account</b></label>
+                                    <textarea class="form-control" aria-label="Report reason"></textarea>
+                                    <label class="form-label mt-3"><b>Upload a screenshot for evidence/proof</b></label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -253,36 +255,178 @@
                     </ul>
 
                     <!--- Tab Content --->
+
+                    <!--- Personal Information --->
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="tweets-tab">
+                        <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+                            <div class="h2 d-flex align-items-center mt-3"><i class="bi bi-person me-2"></i> Personal Information</div>
+
                         </div>
-                            <div class="h4 mt-3"><i class="bi bi-person"></i> Personal Information</div>
-                            <div class="d-flex justify-content-between">
-                                <p><b>First Name:</b> Jolo</p>
-                                <p><b>Middle Name:</b> Alvarado</p>
-                                <p><b>Last Name:</b> Cañete</p>
+                        <!--- End of Personal Information --->
+
+                        <!--- Transaction History --->
+                        <div class="tab-pane fade" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
+                            <div class="mt-3">
+                                <div class="h2 d-flex align-items-center"><i class="bi bi-arrow-repeat me-2"></i> Transaction History
+                                    <button type="button" class="btn btn-link ms-auto text-dark" data-bs-toggle="modal" data-bs-target="#unlockModal">
+                                        <i class="bi bi-lock-fill fs-5"></i>
+                                    </button>
+                                </div>
                             </div>
-                            <div class="d-flex justify-content-between">
-                                <p><b>Purok:</b> 31</p>
-                                <p><b>Zone:</b> 13</p>
+                            <div class="table-wrapper">
+                                <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
+                                    <thead>
+                                        <tr class="table-dark">
+                                            <th>Transaction Type</th>
+                                            <th>Item Name</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="table-row table-light" data-bs-toggle="modal" data-bs-target="#transactionModal1">
+                                            <td>Borrow</span></td>
+                                            <td>Book</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                        <div class="tab-pane fade" id="transaction" role="tabpanel" aria-labelledby="tweets-replies-tab">
-                            <!-- Tweets & replies content -->
+
+                            <!-- Transaction History Modal -->
+                            <div class="modal fade" id="transactionModal1" tabindex="-1" aria-labelledby="transactionModalLabel1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="transactionModalLabel1">Transaction Details</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row g-4">
+                                                <div class="col-md-5">
+                                                    <img src="htdocs/picture/elmo.jpg" class="img-fluid rounded">
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <dl class="row g-0">
+                                                        <dt class="col-sm-5 text-secondary"><i class="bi bi-card-heading"></i>&nbsp; Item Name</dt>
+                                                        <dd class="col-sm-7">Book</dd>
+
+                                                        <dt class="col-sm-5 text-secondary"><i class="bi bi-card-text"></i>&nbsp; Description</dt>
+                                                        <dd class="col-sm-7">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
+
+                                                        <dt class="col-sm-5 text-secondary"><i class="bi bi-star-fill"></i>&nbsp; Transaction Type</dt>
+                                                        <dd class="col-sm-7"><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Borrow</span></dd>
+
+                                                        <dt class="col-sm-5 text-secondary"><i class="bi bi-calendar"></i>&nbsp; Started</dt>
+                                                        <dd class="col-sm-7">01/01/24 at 10:16 P.M.</dd>
+
+                                                        <dt class="col-sm-5 text-secondary"><i class="bi bi-calendar"></i>&nbsp; Ended</dt>
+                                                        <dd class="col-sm-7">02/02/24 at 10:30 A.M.</dd>
+
+                                                        <dt class="col-sm-5 text-secondary"><i class="bi bi-calendar-check-fill"></i>&nbsp; Owned By</dt>
+                                                        <dd class="col-sm-7">
+                                                            <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill align-items-center">
+                                                                <img class="rounded-circle me-1" width="23" height="23" src="picture/elmo.jpg">Elmo
+                                                            </span>
+                                                        </dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End of Transaction History Modal -->
+
                         </div>
-                        <div class="tab-pane fade" id="itemowned" role="tabpanel" aria-labelledby="media-tab">
-                            <!-- Media content -->
+                        <!-- End of Transaction History -->
+
+                        <!--- Item Owned --->
+                        <div class="tab-pane fade" id="itemowned" role="tabpanel" aria-labelledby="itemowned-tab">
+                            <div class="mt-3">
+                                <div class="h2 d-flex align-items-center"><i class="bi bi-box me-2"></i> Item Owned
+                                </div>
+                            </div>
+                            <div class="table-wrapper">
+                                <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
+                                    <thead>
+                                        <tr class="table-dark">
+                                            <th>Item Name</th>
+                                            <th>Posted</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="table-row table-light" data-bs-toggle="modal" data-bs-target="#itemOwnedModal1">
+                                            <td>Halloween Costume</span></td>
+                                            <td>02/03/24 11:18 P.M.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Item Owned Modal -->
+                            <div class="modal fade" id="itemOwnedModal1" tabindex="-1" aria-labelledby="itemOwnedModalLabel1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="itemOwnedModalLabel1">Item Owned Details</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-5">
+                                                    <img src="htdocs/picture/elmo.jpg" class="img-fluid rounded">
+                                                </div>
+                                                <div class="col-md-7">
+                                                    <dl class="row">
+                                                        <dt class="col-sm-5 text-secondary bi-card-heading">&nbsp; Item Name</dt>
+                                                        <dd class="col-sm-7">Halloween Costume</dd>
+
+                                                        <dt class="col-sm-5 text-secondary bi-card-text">&nbsp; Description</dt>
+                                                        <dd class="col-sm-7">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
+
+                                                        <dt class="col-sm-5 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
+                                                        <dd class="col-sm-7"><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Borrow<i class=""></i>
+                                                            </span></span></dd>
+
+                                                        <dt class="col-sm-5 text-secondary bi-pin-map">&nbsp; Pick up</dt>
+                                                        <dd class="col-sm-7">Overton</dd>
+
+                                                        <dt class="col-sm-5 text-secondary bi-clock">&nbsp; Duration</dt>
+                                                        <dd class="col-sm-7">5 Days</dd>
+
+                                                        <dt class="col-sm-5 text-secondary bi-calendar-check-fill mb-0">&nbsp; Owned By</dt>
+                                                        <dd class="col-sm-7"><span class="badge align-items-center text-light-emphasis bg-primary-subtle border border-primary-subtle rounded-pill">
+                                                                <img class="rounded-circle me-1" width="23" height="23" src="picture/elmo.jpg">Elmo
+                                                            </span>
+                                                        </dd>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--- End of Item Owned Modal --->
+
+                            </div>
+                            <!--- End of Item Owned --->
+
+                            <!--- Ratings --->
+                            <div class="tab-pane fade" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">
+
+                            </div>
+                            <!--- End of Ratings --->
+
                         </div>
-                        <div class="tab-pane fade" id="ratings" role="tabpanel" aria-labelledby="likes-tab">
-                            <!-- Likes content -->
-                        </div>
+                        <!--- End of Tab Content --->
+
                     </div>
-                    <!--- End of Tab Content --->
+                    <!--- End of Tab --->
 
                 </div>
-                <!--- End of Tab --->
-
             </div>
-        </div>
         </div>
     </main>
 
