@@ -321,7 +321,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                  // Login successful, store user information in the session
             $_SESSION['user_id'] = $user_id;
             $_SESSION['username'] = $row['username'];
-            $_SESSION['email'] = $row['email'];
+            $_SESSION['email'] = $row['userEmail'];
                 // Login successful, redirect to the home page
                 echo '<script>alert("You have successfully logged in ' . $username . '"); window.location.href = "home.php"; </script>';
                 exit();
@@ -338,7 +338,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div>
                         Relax, try to remember your password again. If not try to reset your password.
                         </div>
-                    </div> ';
+                    </div> ' . $row['password'];
             }
         } else {
             // User not found
