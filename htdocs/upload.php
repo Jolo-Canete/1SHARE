@@ -8,6 +8,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $itemName = $_POST['itemName'];
     $itemDescription = $_POST['itemDescription'];
     $category = $_POST['category'];
+    if ($category === 'Others') {
+        // If "Others" is selected, set category to the value of otherCategory
+        $category = $_POST['otherCategory'];
+    }
     $itemCondition = $_POST['itemCondition'];
     $itemAvailability = $_POST['itemAvailability'];
     $userID = $_SESSION['user_id']; // Use the logged-in user's ID

@@ -56,7 +56,7 @@
 
                                 </div>
                                 <div class="mb-3"></div>
-                                <label for="email_address"><b>Password</b></label>
+                                <label for="password"><b>Password</b></label>
                                 <div class="input-group flex-nowrap">
                                     <span class="input-group-text" id="addon-wrapping">
                                         <div class="bi-lock-fill"></div>

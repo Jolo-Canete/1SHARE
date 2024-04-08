@@ -7,7 +7,7 @@
             </div>
             <div class="modal-body">
                 <form id="uploadForm">
-                <div class="mb-3 <?php echo isset($errors['itemPicture']) ? 'has-error' : ''; ?>">
+                    <div class="mb-3 <?php echo isset($errors['itemPicture']) ? 'has-error' : ''; ?>">
                         <label for="itemPicture" class="form-label"><i class="bi bi-image"></i> *Item Picture:</label>
                         <input type="file" class="form-control <?php echo isset($errors['itemPicture']) ? 'is-invalid' : ''; ?>" id="itemPicture" name="fileToUpload" accept="image/*" onchange="previewImage(this)" required>
                         <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid mt-3" style="max-height: 200px; display: none;">
@@ -28,8 +28,23 @@
                     </div>
                     <div class="mb-3">
                         <label for="category" class="form-label"><i class="bi bi-tags"></i> *Category:</label>
-                        <input type="text" class="form-control <?php echo isset($errors['category']) ? 'is-invalid' : ''; ?>" id="category" placeholder="Enter item category" required>
-                        <div class="invalid-feedback">⚠️ Please enter a category.</div>
+                        <select class="form-select <?php echo isset($errors['category']) ? 'is-invalid' : ''; ?>" id="category" required>
+                            <option value="" selected disabled>Select item category</option>
+                            <option value="Toys">Toys</option>
+                            <option value="Cloths">Cloths</option>
+                            <option value="Kitchen Utensils">Kitchen Utensils</option>
+                            <option value="Tools">Tools</option>
+                            <option value="Sports Items">Sports Items</option>
+                            <option value="School Supply">School Supply</option>
+                            <option value="Others">Others</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                        <br>
+                        <div id="specifyCategoryInput" style="display: none;">
+                            <label for="otherCategory" class="form-label"><i class="bi bi-tags"></i> *Specify Category:</label>
+                            <input type="text" class="form-control" id="otherCategory" placeholder="Enter other category">
+                        </div>
+                        <div class="invalid-feedback">⚠️ Please select a category.</div>
                     </div>
                     <div class="mb-3">
                         <label for="itemCondition" class="form-label"><i class="bi bi-gem"></i> *Item Condition:</label>
@@ -68,16 +83,16 @@
                         <div class="invalid-feedback">⚠️ Please select at least one request type.</div>
                     </div>
                     <div class="mb-3" id="buyPriceField" style="display: none;">
-                        <label for="buyPrice" class="form-label"><i class="bi bi-cash"></i> Selling Price:</label>
-                        <input type="text" class="form-control" id="buyPrice" min="0"  step=".01" placeholder="Enter selling price">
+                        <label for="buyPrice" class="form-label"><i class="bi bi-cash"></i> Selling Price(₱):</label>
+                        <input type="text" class="form-control" id="buyPrice" min="0" step=".01" placeholder="Enter selling price">
                     </div>
                     <div class="mb-3" id="borrowPriceField" style="display: none;">
-                        <label for="borrowPrice" class="form-label"><i class="bi bi-cash"></i> Borrow Price:</label>
-                        <input type="number" class="form-control" id="borrowPrice" min="0"  step=".01" placeholder="Enter borrow price">
+                        <label for="borrowPrice" class="form-label"><i class="bi bi-cash"></i> Borrow Price(₱):</label>
+                        <input type="number" class="form-control" id="borrowPrice" min="0" step=".01" placeholder="Enter borrow price">
                     </div>
                     <div class="mb-3" id="borrowDurationField" style="display: none;">
                         <label for="borrowDuration" class="form-label"><i class="bi bi-clock"></i> Borrow Duration:</label>
-                        <input type="number" class="form-control" id="borrowDuration"  min="0" placeholder="Enter borrow duration (in days)">
+                        <input type="number" class="form-control" id="borrowDuration" min="0" placeholder="Enter borrow duration (in days)">
                     </div>
                 </form>
             </div>
@@ -88,6 +103,7 @@
         </div>
     </div>
 </div>
+
 <script>
     function uploadItem() {
         // Get the form data
@@ -96,6 +112,18 @@
         formData.append('itemName', $('#itemName').val());
         formData.append('itemDescription', $('#itemDescription').val());
         formData.append('category', $('#category').val());
+        // Check for "Others" category
+        var selectedCategory = $('#category').val();
+        if (selectedCategory === 'Others') {
+            var otherCategory = $('#otherCategory').val();
+            if (!otherCategory) {
+                $('#otherCategory').addClass('is-invalid');
+                isValid = false;
+                return; // Stop further processing if category is not valid
+            } else {
+                formData.append('otherCategory', otherCategory);
+            }
+        }
         formData.append('itemCondition', $('#itemCondition').val());
         formData.append('itemAvailability', $('#itemAvailability').val());
         var requestTypes = $('input[name="requestType"]:checked').map(function() {
@@ -130,62 +158,63 @@
             isValid = false;
         }
 
-          // Check for "Buy" request type
-    if (requestTypes.includes('Buy')) {
-        var buyPrice = $('#buyPrice').val();
-        if (!buyPrice) {
-            $('#buyPrice').addClass('is-invalid');
-            isValid = false;
-        } else {
-            // Parse the buy price to float
-            buyPrice = parseFloat(buyPrice);
-            if (isNaN(buyPrice) || buyPrice <= 0) {
+
+        // Check for "Buy" request type
+        if (requestTypes.includes('Buy')) {
+            var buyPrice = $('#buyPrice').val();
+            if (!buyPrice) {
                 $('#buyPrice').addClass('is-invalid');
-                alert('Please enter a valid item price.');
                 isValid = false;
             } else {
-                formData.append('buyPrice', buyPrice);
+                // Parse the buy price to float
+                buyPrice = parseFloat(buyPrice);
+                if (isNaN(buyPrice) || buyPrice <= 0) {
+                    $('#buyPrice').addClass('is-invalid');
+                    alert('Please enter a valid item price.');
+                    isValid = false;
+                } else {
+                    formData.append('buyPrice', buyPrice);
+                }
             }
         }
-    }
 
-    // Check for "Borrow" request type
-    if (requestTypes.includes('Borrow')) {
-        var borrowPrice = $('#borrowPrice').val();
-        var borrowDuration = $('#borrowDuration').val();
-        if (!borrowPrice) {
-            $('#borrowPrice').addClass('is-invalid');
-            isValid = false;
-        } else {
-            // Parse the borrow price to float
-            borrowPrice = parseFloat(borrowPrice);
-            if (isNaN(borrowPrice) || borrowPrice <= 0) {
+        // Check for "Borrow" request type
+        if (requestTypes.includes('Borrow')) {
+            var borrowPrice = $('#borrowPrice').val();
+            var borrowDuration = $('#borrowDuration').val();
+            if (!borrowPrice) {
                 $('#borrowPrice').addClass('is-invalid');
-                alert('Please enter a valid item price.');
                 isValid = false;
             } else {
-                formData.append('borrowPrice', borrowPrice);
+                // Parse the borrow price to float
+                borrowPrice = parseFloat(borrowPrice);
+                if (isNaN(borrowPrice) || borrowPrice <= 0) {
+                    $('#borrowPrice').addClass('is-invalid');
+                    alert('Please enter a valid item price.');
+                    isValid = false;
+                } else {
+                    formData.append('borrowPrice', borrowPrice);
+                }
             }
-        }
-        if (!borrowDuration) {
-            $('#borrowDuration').addClass('is-invalid');
-            isValid = false;
-        } else {
-            // Parse the borrow duration to float
-            borrowDuration = parseFloat(borrowDuration);
-            if (isNaN(borrowDuration) || borrowDuration <= 0) {
+            if (!borrowDuration) {
                 $('#borrowDuration').addClass('is-invalid');
-                alert('Please enter a valid borrow duration.');
                 isValid = false;
             } else {
-                formData.append('borrowDuration', borrowDuration);
+                // Parse the borrow duration to float
+                borrowDuration = parseFloat(borrowDuration);
+                if (isNaN(borrowDuration) || borrowDuration <= 0) {
+                    $('#borrowDuration').addClass('is-invalid');
+                    alert('Please enter a valid borrow duration.');
+                    isValid = false;
+                } else {
+                    formData.append('borrowDuration', borrowDuration);
+                }
             }
         }
-    }
 
-    if (!isValid) {
-        return;
-    }
+        if (!isValid) {
+            return;
+        }
 
 
         // Send the form data to the server
@@ -230,6 +259,8 @@
             $('#buyPrice').val('');
         }
 
+
+
         // Show/hide the borrow price and duration fields
         if (selectedRequestTypes.includes('Borrow')) {
             $('#borrowPriceField').show();
@@ -261,4 +292,22 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
+
+
+    var selectedCategory = $('#category').val();
+
+    console.log(selectedCategory);
+    // jQuery script to show/hide specify category input based on selected category
+    $('#category').on('change', function() {
+        var selectedCategory = $(this).val();
+
+
+        // Show/hide the specify category input field
+        if (selectedCategory === 'Others') {
+            $('#specifyCategoryInput').show();
+        } else {
+            $('#specifyCategoryInput').hide();
+            $('#otherCategory').val('');
+        }
+    });
 </script>

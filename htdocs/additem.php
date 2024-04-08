@@ -34,61 +34,133 @@ include "nav.php";
     <div class="page-content" id="content">
         <br>
         <h1 class="text-center mb-4"><i class="bi bi-archive-fill"></i> MY ITEMS</h1>
-        <div class="container">
-            <button id="but" type="button" class="btn btn btn-outline-success btn-add mb-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadModal">
-                <i class="bi bi-plus"></i> Add New Item
-            </button>
-        </div>
 
         <div class="container">
-            <div class="container-box d-flex justify-content-center align-items-center" style="min-height: 300px;">
-                <?php if (empty($items)) { ?>
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <h5 class="card-title">No Items Owned</h5>
-                            <p class="card-text">You haven't added any items yet.</p>
+            <div class="row">
+                <div class="col">
+                    <!-- Upload Button on the left -->
+                    <button id="but" type="button" class="btn btn btn-outline-success btn-add mb-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                        <i class="bi bi-plus"></i> Add New Item
+                    </button>
+                </div>
+                <div class="col">
+                    <!-- Sort Dropdowns -->
+                    <div class="d-flex justify-content-end">
+                        <div class="btn-group me-2">
+                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Sort by Availability
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#" onclick="sortByAvailability('all')">Show All</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="sortByAvailability('Available')">Available</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="sortByAvailability('Unavailable')">Unavailable</a></li>
+                            </ul>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Sort by Upload Date
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="#" onclick="sortByUploadDate('newest')">Newest to Oldest</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="sortByUploadDate('oldest')">Oldest to Newest</a></li>
+                            </ul>
                         </div>
                     </div>
-
-            <?php } else { ?>
-                <div class="row row-cols-1 row-cols-md-6 g-4">
-
-                <?php foreach ($items as $item) { ?>
-                    <!-- Item Card -->
-
-                    <div class="col">
-                        <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>')">
-                            <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
-                                <p class="text-start text-secondary">
-                                    <?php
-                                    $availability = $item['itemAvailability'];
-                                    $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
-                                    echo "<span class='badge $badgeColor rounded-pill'>$availability</span>";
-                                    ?>
-                                </p>
+                </div>
+            </div>
+            <div class="container">
+                <div class="container-box">
+                    <div class="row row-cols-1 row-cols-md-6 g-4">
+                        <?php if (empty($items)) { ?>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">No Item Owned</h5>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        <?php } else { ?>
+                            <?php foreach ($items as $item) { ?>
+                                <!-- Item Card -->
+                                <div class="col">
+                                    <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>')">
+                                        <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
+                                            <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
+                                            <p class="text-start text-secondary">
+                                                <?php
+                                                $availability = $item['itemAvailability'];
+                                                $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
+                                                echo "<span class='badge $badgeColor rounded-pill'>$availability</span>";
+                                                ?>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        <?php } ?>
                     </div>
-                <?php } ?>
-            <?php } ?>
-        </div>
-    </div>
-</div>
+                </div>
+            </div>
 
- <!-- Item Detail Modal -->
-        <?php
-        include "itemdetailmodal.php";
-        ?>
+            <!-- Item Detail Modal -->
+            <?php
+            include "itemdetailmodal.php";
+            ?>
 
-        <!-- Upload Modal -->
-        <?php
-        include "uploadmodal.php";
-        ?>
-        
+            <!-- Upload Modal -->
+            <?php
+            include "uploadmodal.php";
+            ?>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script>
+                function sortByAvailability(filter) {
+                    var container = document.querySelector(".row-cols-1");
+                    var items = container.querySelectorAll(".col");
+
+                    // Loop through all items
+                    items.forEach(function(item) {
+                        var availability = item.querySelector(".badge").textContent.trim();
+
+                        // Check if the item should be displayed based on the filter
+                        if (filter === 'all' || availability === filter) {
+                            item.style.display = 'block'; // Display the item
+                        } else {
+                            item.style.display = 'none'; // Hide the item
+                        }
+                    });
+                }
+
+
+                function sortByUploadDate(order) {
+                    var container = document.querySelector(".row-cols-1");
+                    var items = Array.from(container.querySelectorAll(".col"));
+
+                    items.sort(function(a, b) {
+                        var dateA = new Date(a.querySelector('.upload-date').textContent);
+                        var dateB = new Date(b.querySelector('.upload-date').textContent);
+
+                        if (order === 'newest') {
+                            return dateB - dateA; // Sort from newest to oldest
+                        } else {
+                            return dateA - dateB; // Sort from oldest to newest
+                        }
+                    });
+
+                    // Remove all items from the container
+                    items.forEach(function(item) {
+                        container.removeChild(item);
+                    });
+
+                    // Append sorted items back to the container
+                    items.forEach(function(item) {
+                        container.appendChild(item);
+                    });
+                }
+            </script>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 </body>
 
