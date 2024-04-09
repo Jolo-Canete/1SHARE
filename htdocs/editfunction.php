@@ -12,6 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $itemName = $_POST['itemName'];
     $itemDescription = $_POST['itemDescription'];
     $category = $_POST['category'];
+    $itemQuantity = $_POST['itemQuantity'];
     $otherCategory = $_POST['otherCategory'] ?? '';
     $itemCondition = $_POST['itemCondition'];
     $itemAvailability = $_POST['itemAvailability'];
@@ -41,6 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $targetFile = $targetDir . $uniqueFileName;
         if (move_uploaded_file($itemPicture['tmp_name'], $targetFile)) {
             $itemImagePath = $uniqueFileName;
+
+        
         } else {
             echo json_encode(["status" => "error", "message" => "Error uploading file."]);
             exit();
@@ -63,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sqlUpdate = "UPDATE item 
                   SET itemName = ?, 
                       ItemDescription = ?, 
+                      itemQuantity = ?,
                       category = ?, 
                       itemCondition = ?, 
                       itemAvailability = ?, 
@@ -76,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt) {
         // Bind parameters
-        $stmt->bind_param("sssssddsssi", $itemName, $itemDescription, $category, $itemCondition, $itemAvailability, $buyPrice, $borrowPrice, $borrowDuration, $requestTypes, $itemImagePath, $itemID);
+        $stmt->bind_param("ssisssddsssi", $itemName, $itemDescription, $itemQuantity, $category, $itemCondition, $itemAvailability, $buyPrice, $borrowPrice, $borrowDuration, $requestTypes, $itemImagePath, $itemID);
 
         if ($stmt->execute()) {
             echo json_encode(["status" => "success", "message" => "Item updated successfully"]);

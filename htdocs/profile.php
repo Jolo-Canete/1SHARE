@@ -256,9 +256,6 @@
             <li class="nav-item" role="presentation">
               <button class="nav-link" id="itemowned-tab" data-bs-toggle="tab" data-bs-target="#itemowned" type="button" role="tab" aria-controls="itemowned" aria-selected="false">Item Owned</button>
             </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="ratings-tab" data-bs-toggle="tab" data-bs-target="#ratings" type="button" role="tab" aria-controls="ratings" aria-selected="false">Ratings</button>
-            </li>
           </ul>
 
           <!--- Tab Content --->
@@ -471,12 +468,6 @@
 
               </div>
               <!--- End of Item Owned --->
-
-              <!--- Ratings --->
-              <div class="tab-pane fade" id="ratings" role="tabpanel" aria-labelledby="ratings-tab">
-
-              </div>
-              <!--- End of Ratings --->
 
             </div>
             <!--- End of Tab Content --->

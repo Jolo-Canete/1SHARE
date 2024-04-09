@@ -49,7 +49,7 @@
     <div class="container text-center">
         <div class="row">
             <div class="col-6">
-                <img src="picture/elmo.jpg" class="rounded" style="max-width: 540px;" height="490px" alt="Elmo">
+                <img src="pictures/6615075310df0.jpg" class="rounded" style="max-width: 540px;" height="490px" alt="Elmo">
             </div>
             <div class="col-6">
                 <div class="card overflow-auto shadow-lg p-3 mb-5 bg-body-tertiary rounded" style="max-width: 530px; height: 30.7rem;">

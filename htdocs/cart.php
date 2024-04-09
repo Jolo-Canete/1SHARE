@@ -1,144 +1,103 @@
 <?php
-        include "nav.php";
-        ?>
+// Include nav.php to access user information
+include "nav.php";
+
+// Check if the user is logged in
+if (isset($_SESSION['user_id'])) {
+    // Get the user ID from the session
+    $user_id = $_SESSION['user_id'];
+
+    // Prepare the SQL statement to fetch cart items for the logged-in user
+    $sql = "SELECT item.itemID, item.itemName, item.itemImage_path, item.itemDescription, item.requestType, item.category, item.itemCondition, item.itemAvailability, item.buyPrice, cart.quantity
+            FROM cart
+            INNER JOIN item ON cart.itemID = item.itemID
+            WHERE cart.userID = ?";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+
+
+
+
+    // Close the statement and connection
+    $stmt->close();
+    $conn->close();
+} else {
+    // Redirect to login page if user is not logged in
+    header("Location: login.php");
+    exit();
+}
+?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
-  
+    <title>My Inventory</title>
+
+
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .container-box {
-            background-color: #e9ecef;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .card {
-            background-color: #fff;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-img-top {
-            border-top-left-radius: 15px;
-            border-top-right-radius: 15px;
-        }
-
-        .card-title {
-            font-weight: bold;
-        }
-
-        .card-text {
-            color: #6c757d;
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-        }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-            border-color: #bd2130;
-        }
-
-        .total-container {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .total-label {
-            font-weight: bold;
-        }
+        <?php
+        include "additem.css";
+        ?>
     </style>
 </head>
+
 <body>
-    <!-- ISSUE: Notification Bug-->
 
 
     <div class="page-content" id="content">
         <br>
-        <h1 class="text-center mb-4"><i class="bi bi-cart-fill"></i> Cart</h1>
+        <h1 class="text-center mb-4"><i class="bi bi-cart-fill"></i> CART</h1>
         <div class="container">
             <div class="container-box">
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-                    <!-- Cart Item 1 -->
-                    <div class="col">
-                        <div class="card">
-                            <img src="picture/elmo.jpg" class="card-img-top" alt="Cart Item 1">
-                            <div class="card-body">
-                                <h5 class="card-title">Elmo</h5>
-                                <p class="card-text"><i class="bi bi-tags-fill"></i> Category: Toys</p>
-                                <p class="card-text"><i class="bi bi-card-text"></i> Item Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Like New</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</button>
-                                    <p class="card-text">Price:<i class="bi bi-currency-dollar"></i>  10.00</p>
+                <div class="row row-cols-1 row-cols-md-6 g-4">
+                    <?php if ($result->num_rows === 0) { ?>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">No Item Owned</h5>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <?php } else {
+                        while ($item = $result->fetch_assoc()) { ?>
+                            <!-- Item Card -->
+                            <div class="col">
+                                <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>')">
+                                    <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
+                                        <p class="text-start text-secondary">
+                                            <?php
+                                            $availability = $item['itemAvailability'];
+                                            $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
+                                            echo "<span class='badge $badgeColor rounded-pill'>$availability</span>";
+                                            ?>
+                                        </p>
+                                        <p class="text-start text-secondary">Quantity: <?php echo $item['quantity']; ?></p>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <!-- Cart Item 2 -->
-                    <div class="col">
-                        <div class="card">
-                            <img src="picture/elmo.jpg" class="card-img-top" alt="Cart Item 2">
-                            <div class="card-body">
-                                <h5 class="card-title">Elmo</h5>
-                                <p class="card-text"><i class="bi bi-tags-fill"></i> Category: Toys</p>
-                                <p class="card-text"><i class="bi bi-card-text"></i> Item Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Very New</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</button>
-                                    <p class="card-text">Price:<i class="bi bi-currency-dollar"></i> 15.00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cart Item 3 -->
-                    <div class="col">
-                        <div class="card">
-                            <img src="picture/elmo.jpg" class="card-img-top" alt="Cart Item 3">
-                            <div class="card-body">
-                                <h5 class="card-title">Elmo</h5>
-                                <p class="card-text"><i class="bi bi-tags-fill"></i> Category: Toys</p>
-                                <p class="card-text"><i class="bi bi-card-text"></i> Item Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                <p class="card-text"><i class="bi bi-star-fill"></i> Condition: Like Old</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <button type="button" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Remove</button>
-                                    <p class="card-text">Price:<i class="bi bi-currency-dollar"></i> 5.00</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php }
+                    } ?>
                 </div>
             </div>
-
-            <div class="total-container mt-4">
-                <div class="d-flex justify-content-between align-items-center">
-                    <p class="total-label">Total:</p>
-                    <p class="card-text"><i class="bi bi-currency-dollar"></i>30.00</p>
-                </div>
-            </div>
+            <?php
+            include "cartmodal.php";
+            ?>
         </div>
-    </div>
+
+
 
 </body>
+
 </html>

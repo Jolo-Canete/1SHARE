@@ -1,6 +1,58 @@
 <?php
-        include "nav.php";
-        ?>
+include "nav.php";
+
+// Sorting logic
+$sortBy = isset($_GET['sort_by']) ? $_GET['sort_by'] : '';
+
+if ($sortBy == 'date_uploaded') {
+    $orderBy = isset($_GET['order']) && $_GET['order'] == 'asc' ? 'ASC' : 'DESC';
+    $sql = "SELECT * FROM item WHERE itemAvailability = 'Available' ORDER BY DateTimePosted $orderBy";
+} elseif ($sortBy == 'item_category') {
+    $category = isset($_GET['category']) ? $_GET['category'] : '';
+    if ($category == 'all') {
+        $sql = "SELECT * FROM item WHERE itemAvailability = 'Available'";
+    } elseif ($category == 'Others') {
+        $sql = "SELECT * FROM item 
+                WHERE itemAvailability = 'Available'
+                AND category NOT IN ('Toys', 'Clothes', 'Kitchen Utensils', 'Tools', 'Sports Items', 'School Supply')";
+    } else {
+        $sql = "SELECT * FROM item 
+                WHERE itemAvailability = 'Available' 
+                AND category = '$category'";
+    }
+} elseif ($sortBy == 'open_for') {
+    $openFor = isset($_GET['open_for']) ? $_GET['open_for'] : '';
+    if ($openFor == 'all') {
+        $sql = "SELECT * FROM item WHERE itemAvailability = 'Available'";
+    } else {
+        $sql = "SELECT * FROM item 
+                WHERE itemAvailability = 'Available' 
+                AND requestType = '$openFor'";
+    }
+} else {
+    $sql = "SELECT * FROM item WHERE itemAvailability = 'Available'";
+}
+
+$items = [];
+
+if (isset($_GET['search_term'])) {
+    $searchTerm = $_GET['search_term'];
+
+    $searchSql = "SELECT * FROM item 
+                  WHERE itemAvailability = 'Available' 
+                  AND itemName LIKE '%$searchTerm%'";
+
+    $searchResult = $conn->query($searchSql);
+    $items = $searchResult->fetch_all(MYSQLI_ASSOC);
+
+    if (empty($items)) {
+        echo "";
+    }
+} else {
+    $items = $conn->query($sql)->fetch_all(MYSQLI_ASSOC);
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,10 +60,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find Item</title>
-    <!--- Bootstrap 5 Icons --->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 
     <style>
         .rating>input {
@@ -28,1188 +76,157 @@
         .rating>input:checked~label {
             color: #f8de7e;
         }
+
+        <?php include "additem.css"; ?>
+        
+        .card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card-title {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     </style>
+
 
 </head>
 
 <body>
-    
+
     <div class="page-content" id="content">
 
         <br>
+        
+        <!-- Display the search term if it's set -->
+       
         <!--- Dropdown --->
         <div class="container">
+        <?php if (isset($_GET['search_term'])) { ?>
+            <p>You've searched for: <?php echo htmlspecialchars($_GET['search_term']); ?></p>
+        <?php } ?>
             <div class="row">
                 <div class="col-custom-column">
                     <div class="d-grid gap-2 d-md-block">
-                        <button id="item_category" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Category
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="item_category">
-                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                        </ul> &nbsp;
-                        <button id="sort_by_item" type="button" class="btn btn-outline-dark rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Sort By
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="sort_by_item">
-                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                            <li><a class="dropdown-item" href="#">Dropdown link</a></li>
-                        </ul> &nbsp;
-                        <button id="availability_of_item" type="button" class="btn btn-outline-dark rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Availability
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="availability_of_item">
-                            <li><a class="dropdown-item" href="#">Available</a></li>
-                            <li><a class="dropdown-item" href="#">Not Available</a></li>
-                        </ul>
+                        <!-- Category Dropdown -->
+                        <div class="btn-group">
+                            <button id="item_category" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Category
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="item_category">
+                                <li><a class="dropdown-item" href="?sort_by=item_category&category=all">All</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Toys">Toys</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Cloths">Cloths</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Kitchen Utensils">Kitchen Utensils</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Tools">Tools</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Sports Items">Sports Items</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=item_category&category=School Supply">School Supply</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Others">Others</a></li>
+                            </ul>
+                        </div>
+                        &nbsp; 
+
+                        <!-- Sorting Dropdown (Date Uploaded) -->
+                        <div class="btn-group">
+                            <button id="sort_by_item" type="button" class="btn btn-outline-dark rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Sort By: Date Uploaded
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="sort_by_item">
+                                <li><a class="dropdown-item" href="?sort_by=date_uploaded&order=desc">Most Recent</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=date_uploaded&order=asc">Least Recent</a></li>
+                            </ul>
+                        </div>
+                        &nbsp;&nbsp;
+
+                        <!-- Sorting Dropdown (Open For) -->
+                        <div class="btn-group">
+                            <button id="sort_by_open_for" type="button" class="btn btn-outline-dark rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Sort By: Open For
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="sort_by_open_for">
+                                <li><a class="dropdown-item" href="?sort_by=open_for&open_for=all">All</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Barter">Barter</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Borrow">Borrow</a></li>
+                                <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Buy">Buy</a></li>
+
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+
+        <br>
         <!--- End of Dropdown --->
 
         <!--- Item Display --->
         <div class="container">
-            <br>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-md-4 g-3">
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Borrow</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header bg-dark text-light">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
-                                        </div>
-                                    </div>
+            <div class="container-box">
+                <div class="row row-cols-1 row-cols-md-6 g-4">
+                    <?php if (empty($items)) { ?>
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">No Item</h5>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Borrow</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
+                    <?php } else { ?>
+                        <?php foreach ($items as $item) { ?>
+                            <!-- Item Card -->
+                            <div class="col">
+                                <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>', '<?php echo $item['itemID']; ?>')">
+                                    <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
+                                        <div class="rating">
+                                            <label for="star5"><i class="fas fa-star"></i></label>
+                                            <input type="radio" name="rating" id="star5" value="5">
+                                            <label for="star4"><i class="fas fa-star"></i></label>
+                                            <input type="radio" name="rating" id="star4" value="4">
+                                            <label for="star3"><i class="fas fa-star"></i></label>
+                                            <input type="radio" name="rating" id="star3" value="3">
+                                            <label for="star2"><i class="fas fa-star"></i></label>
+                                            <input type="radio" name="rating" id="star2" value="2">
+                                            <label for="star1"><i class="fas fa-star"></i></label>
+                                            <input type="radio" name="rating" id="star1" value="1">
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
+                                        <hr>
+                                        <div>
+                                            <p><i class="bi bi-tags-fill"></i> Category: <?php echo $item['category']; ?></p>
+                                            <p><i class="bi bi-arrow-repeat"></i> Open For: <?php echo $item['requestType']; ?></p>
                                         </div>
+
+
+                                        <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
+                                        <p class="text-start text-secondary">
+                                            <?php
+                                            $availability = $item['itemAvailability'];
+                                            $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
+                                            echo "<span style='display: none;' class='badge $badgeColor rounded-pill'>$availability</span>";
+                                            ?>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card shadow-lg" data-bs-toggle="modal" data-bs-target="#item1">
-                        <img src="picture/elmo.jpg" class="rounded-top">
-
-                        <div class="card-body">
-                            <p class="h5 card-text text-truncate">
-                                Elmo Stuffed Toy
-                            </p>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col d-flex align-items-center">
-                                    <p class="text-start text-secondary">
-                                        <small>Open for:</small>
-                                        <span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span>
-                                </div>
-                                <div class="col">
-                                    <p class="text-end bi-cart-plus" style="font-size: 1.3rem;">
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-center justify-content-md-end">
-                                <div class="modal fade" id="item1" tabindex="-1" aria-labelledby="item1" aria-hidden="true">
-
-                                    <!--- Modal --->
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-
-                                            <!--- Modal Header --->
-                                            <div class="modal-header">
-                                                <p class="modal-title h4" id="item1">Details</p>
-                                            </div>
-                                            <!--- End of Modal Header --->
-
-                                            <!--- Modal Body --->
-                                            <div class="modal-body">
-                                                <img src="picture/elmo.jpg" class="img-fluid rounded">
-                                                <hr>
-                                                <dl class="row">
-                                                    <dt class="col-sm-4 text-secondary bi-card-text">&nbsp; Description</dt>
-                                                    <dd class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-star-fill">&nbsp; Condition</dt>
-                                                    <dd class="col-sm-8">New</dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-check-circle-fill">&nbsp; Availability</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Available</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                                                    <dd class="col-sm-8"><span class="badge bg-secondary-subtle text-secondary-emphasis rounded-pill">Barter</span></dd>
-
-                                                    <dt class="col-sm-4 text-secondary bi-calendar-check-fill">&nbsp; Posted</dt>
-                                                    <dd class="col-sm-8">01/01/24 at 10:16 P.M.</span></dd>
-                                            </div>
-
-                                            <!--- Modal Footer --->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="button" class="btn btn-success" id="openButton">Open</button>
-                                            </div>
-                                            <!--- End of Modal Footer --->
-
-                                            <!--- Modal JavaScript --->
-                                            <script>
-                                                document.getElementById('openButton').addEventListener('click', function() {
-                                                    window.location.href = 'itemdetail.php';
-                                                });
-                                            </script>
-                                            <!--- End of JavaScript --->
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                        <?php } ?>
+                    <?php } ?>
                 </div>
             </div>
+            <?php include "finddetailmodal.php"; ?>
         </div>
-
-        <!--- End of Item Display --->
-
-        <!--- Page Buttons --->
-        <br>
-        <footer>
-            <div class="btn-toolbar mb-3 justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
-                <div class="btn-group me-2" role="group" aria-label="First group">
-                            <button type="button" class="btn btn-outline-secondary"><</button>
-                            <button type="button" class="btn btn-outline-secondary">1</button>
-                            <button type="button" class="btn btn-outline-secondary">2</button>
-                            <button type="button" class="btn btn-outline-secondary">3</button>
-                            <button type="button" class="btn btn-outline-secondary">4</button>
-                            <button type="button" class="btn btn-outline-secondary">></button>
-                </div>
-            </div>
-        </footer>
-        <!--- End of Page Buttons --->
-        </div>
-
-
+    </div>
 </body>
 
 </html>
