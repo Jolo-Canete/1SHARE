@@ -137,16 +137,21 @@
                                                         <label for="username" class="form-label"><b>Username</b></label>
                                                         <input type="text" name="username"  class="form-control" id="username"placeholder="Create your own username" aria-label="Create your own username">
                                                     </div>
+                                                    <div class="mb-3">
                                                     <label for="new_password" class="form-label"><b>New Password</b></label>
                                                     <div class="input-group mb-3">
-                                                        <input type="password" class="form-control" id="new_password" name="SgnUp_Password_1" placeholder="Create a new password" aria-label="Create a new password" >
-                                                        <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_new_password"></button>
+                                                        <input type="password" class="form-control" id="new_password" name="SgnUp_Password_1" placeholder="Create a new password" aria-label="Create a new password" minlength="8">
+                                                        <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_new_password" onclick="showPassword()"></button>
                                                     </div>
-                                                    <div id="new_password_error" class="invalid-feedback">asdads</div>
+                                                    <div id="password-requirement-error" class="text-danger" style="display: none;">Password must be at least 8 characters long.</div>  
+                                                    </div>
+                                                    </div>
+                                                    <div class="mb-3">
                                                     <label for="confirm_new_password" class="form-label"><b>Confirm New Password</b></label>
                                                     <div class="input-group mb-3">
                                                         <input type="password" class="form-control" id="confirm_new_password" name="SgnUp_Password_2" placeholder="Confirm new password" aria-label="Confirm new password" >
                                                         <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_confirmed_password"></button>
+                                                    </div>
                                                     </div>
                                                     <label for="" class="form-label"><b>Proof of Residency</b></label>
                                                     <div class="mb-3">
@@ -236,7 +241,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $birthDay = date('Y-m-d', strtotime($_POST['birthDay']));
 
     
-        if (empty($first_name) || empty($middle_name) || empty($last_name) || empty($purok) || empty($zone) || empty($mobile_number) || empty($email) || empty($username) || empty($password1) || empty($password2)) {
+        if (empty($first_name) || empty($middle_name) || empty($last_name) || empty($purok) || empty($zone) || empty($mobile_number) || empty($email) || empty($username) || empty($password1) || empty($password2) || empty($birthDay)) {
             echo "<div class='alert alert-warning mt-3'>Error: Signup Failed is incomplete.</div>" ;
             return;
         }
@@ -263,7 +268,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         // Check if password matched
         if ($password1 !== $password2) {
-            echo 'Password does not match';
+            echo '<div class="alert alert-danger mt-3">Password does not match.</div>';
         } else {
             // rename the password
             $default_password = password_hash($password1, PASSWORD_DEFAULT);
@@ -345,7 +350,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div>
                         Relax, try to remember your password again. If not try to reset your password.
                         </div>
-                    </div> ' . $row['password'];
+                    </div> ';
             }
         } else {
             // User not found
@@ -372,60 +377,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!-- Function for Password -->
 <script>
-// Get the form element
-const form = document.querySelector('form');
+const passwordInput = document.getElementById('new_password');
+const passwordRequirementError = document.getElementById('password-requirement-error');
 
-// Get the password input fields
-const loginPasswordInput = document.getElementById('Lgn_Password');
-const signupPasswordInput = document.getElementById('new_password');
-const confirmPasswordInput = document.getElementById('confirm_new_password');
-
-// Get the error message elements
-const newPasswordErrorMessage = document.getElementById('new_password_error');
-const confirmPasswordErrorMessage = document.getElementById('confirm_new_password_error');
-
-// Add an event listener to the form's submit event
-form.addEventListener('submit', function(event) {
-    
-  // Check if the sign-up button was clicked
-  if (event.submitter.name === 'signup') {
-
-    // Get the values of the sign-up password input fields
-    const newPassword = signupPasswordInput.value.trim();
-    const confirmPassword = confirmPasswordInput.value.trim();
-
-    // Check if the new password is at least 6 characters long
-    if (newPassword.length < 6) {
-      // If the password is less than 6 characters, prevent the form from being submitted
-      event.preventDefault();
-
-      // Set the error message text
-      signupPasswordInput.classList.add('is-invalid');
-      newPasswordErrorMessage.textContent = 'Password must be at least 6 characters long.';
-
+passwordInput.addEventListener('input', function() {
+    if (passwordInput.value.length < 8) {
+        passwordRequirementError.style.display = 'block';
+        passwordRequirementError.textContent = 'Password must be at least 8 characters long.';
     } else {
-      // If the password is valid, remove the error message
-      signupPasswordInput.classList.remove('is-invalid');
-      newPasswordErrorMessage.textContent = '';
-
-      // Check if the confirm password matches the new password
-      if (confirmPassword !== newPassword) {
-
-        // If the passwords don't match, prevent the form from being submitted
-        event.preventDefault();
-
-        // Set the error message text
-        confirmPasswordInput.classList.add('is-invalid');
-        confirmPasswordErrorMessage.textContent = 'Passwords do not match.';
-
-      } else {
-        // If the passwords match, remove the error message
-        confirmPasswordInput.classList.remove('is-invalid');
-        confirmPasswordErrorMessage.textContent = '';
-      }
+        passwordRequirementError.style.display = 'none';
     }
-  }
 });
+
+// Function for Show password
+function showPassword() {
+    var passwordInput = document.getElementById('new_password');
+    var togglePasswordIcon = document.getElementById('togglePassword');
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        togglePasswordIcon.classList.remove('bi-eye-slash');
+        togglePasswordIcon.classList.add('bi-eye');
+    } else {
+        passwordInput.type = "password";
+        togglePasswordIcon.classList.remove('bi-eye');
+        togglePasswordIcon.classList.add('bi-eye-slash');
+    }
+}
 </script>
 <?php ob_end_flush(); ?>
 
