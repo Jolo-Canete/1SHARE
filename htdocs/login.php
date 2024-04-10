@@ -1,6 +1,5 @@
-<?php ob_start(); session_start(); include('1db.php');
+<?php ob_start(); session_start(); include('1db.php');?>
 
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,7 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login/Sign Up</title>
 <style>
-
+/* Hide the button from input number */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
@@ -127,7 +131,7 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="mobile_number" class="form-label"><b>Mobile Number</b></label>
-                                                        <input type="text" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" aria-label="Enter mobile number">
+                                                        <input type="number" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" aria-label="Enter mobile number">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="email_address" class="form-label"><b>Email Address</b></label>
@@ -135,13 +139,14 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="username" class="form-label"><b>Username</b></label>
-                                                        <input type="text" name="username"  class="form-control" id="username"placeholder="Create your own username" aria-label="Create your own username">
+                                                        <input type="text" name="username"  class="form-control" id="username" placeholder="Create your own username" aria-label="Create your own username">
+                                                        <div id="username-error" class="text-danger" style="display: none;"></div>
                                                     </div>
                                                     <div class="mb-3">
                                                     <label for="new_password" class="form-label"><b>New Password</b></label>
                                                     <div class="input-group mb-3">
                                                         <input type="password" class="form-control" id="new_password" name="SgnUp_Password_1" placeholder="Create a new password" aria-label="Create a new password" minlength="8">
-                                                        <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_new_password" onclick="showPassword()"></button>
+                                                        <button class="btn btn-outline-secondary bi bi-eye-slash" type="button" id="see_new_password" onclick="togglePasswordVisibility('new_password', 'see_new_password')"></button>
                                                     </div>
                                                     <div id="password-requirement-error" class="text-danger" style="display: none;">Password must be at least 8 characters long.</div>  
                                                     </div>
@@ -150,8 +155,9 @@
                                                     <label for="confirm_new_password" class="form-label"><b>Confirm New Password</b></label>
                                                     <div class="input-group mb-3">
                                                         <input type="password" class="form-control" id="confirm_new_password" name="SgnUp_Password_2" placeholder="Confirm new password" aria-label="Confirm new password" >
-                                                        <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_confirmed_password"></button>
+                                                        <button class="btn btn-outline-secondary bi bi-eye-slash" type="button" id="see_confirmed_password" onclick="togglePasswordVisibility('confirm_new_password', 'see_confirmed_password')"></button>
                                                     </div>
+                                                    <div id="confirm-password-error" class="text-danger" style="display: none;"></div>
                                                     </div>
                                                     <label for="" class="form-label"><b>Proof of Residency</b></label>
                                                     <div class="mb-3">
@@ -164,10 +170,11 @@
                                                     </div>
 
                                                 </div>
-                                            </div>
+                                            
                                             <div class="modal-footer">
-                                                <button class="btn btn-success d-grid gap-2 col-6 mx-auto" name="signup" type="submit" value="sign_up" id="signup">Sign Up</button>
+                                                <button type="submit" class="btn btn-success d-grid gap-2 col-6 mx-auto" name="signup" value="sign_up" id="signup">Sign Up</button>
                                             </div>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -189,6 +196,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['forgetPass'])) {
         $username = trim($_POST['Lgn_Username']);
         $password = trim($_POST['Lgn_Password']);
+    
         if (empty($username)) { 
             echo "<div class='alert alert-warning mt-3'>Please enter your username.</div>" ;
             return;
@@ -222,9 +230,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     User not Found.
                   </div>';
             }
-
+        }
     }
-}
+
 
     if (isset($_POST['signup'])) {
         // Gather the Input data
@@ -239,13 +247,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password1 = trim($_POST['SgnUp_Password_1']);
         $password2 = trim($_POST['SgnUp_Password_2']);
         $birthDay = date('Y-m-d', strtotime($_POST['birthDay']));
+        $status = "Unverified";
 
     
         if (empty($first_name) || empty($middle_name) || empty($last_name) || empty($purok) || empty($zone) || empty($mobile_number) || empty($email) || empty($username) || empty($password1) || empty($password2) || empty($birthDay)) {
             echo "<div class='alert alert-warning mt-3'>Error: Signup Failed is incomplete.</div>" ;
             return;
         }
-    
+
+        // If the user is already taken
+        $sql = "SELECT * FROM user WHERE username = '$username'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            echo '<div class="alert alert-danger mt-3">Username is already taken.</div>';
+            return;
+        }
+
+        // If the password is less than 8 characters
+        if (strlen($password1) < 8) {
+            echo '<div class="alert alert-danger mt-3">Password must be at least 8 characters long.</div>';
+            return;
+        }
+
+        // // If the email is already taken
+        // $sql = "SELECT * FROM user WHERE userEmail = '$email'";
+        // $result = $conn->query($sql);
+        // if ($result->num_rows > 0) {
+        //     echo '<div class="alert alert-danger mt-3">Email is already taken.</div>';
+        //     return;
+        // }
+
         // Upload Image to the different directory
         $targetDirectory = "verify/";
         if (!file_exists($targetDirectory)) {
@@ -277,7 +308,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conn->begin_transaction();
     
             // Insert into user table without the verifyImage_path
-            $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password, Birthday) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password', '$birthDay')";
+            $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password, Birthday, status) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password', '$birthDay', '$status')";
     
             if ($conn->query($sql_user) === TRUE) {
                 // Get the last inserted ID
@@ -377,35 +408,108 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!-- Function for Password -->
 <script>
-const passwordInput = document.getElementById('new_password');
-const passwordRequirementError = document.getElementById('password-requirement-error');
+// Function for Lacking password characters
+    const passwordInput = document.getElementById('new_password');
+    const passwordRequirementError = document.getElementById('password-requirement-error');
 
-passwordInput.addEventListener('input', function() {
-    if (passwordInput.value.length < 8) {
-        passwordRequirementError.style.display = 'block';
-        passwordRequirementError.textContent = 'Password must be at least 8 characters long.';
-    } else {
-        passwordRequirementError.style.display = 'none';
-    }
-});
+    passwordInput.addEventListener('input', function() {
+        if (passwordInput.value.length < 8) {
+            passwordRequirementError.style.display = 'block';
+            passwordRequirementError.textContent = 'Password must be at least 8 characters long.';
+        } else {
+            passwordRequirementError.style.display = 'none';
+        }
+    
+    });
+
 
 // Function for Show password
-function showPassword() {
-    var passwordInput = document.getElementById('new_password');
-    var togglePasswordIcon = document.getElementById('togglePassword');
+    function showPassword() {
+        var passwordInput = document.getElementById('new_password');
+        var togglePasswordIcon = document.getElementById('togglePassword');
 
-    if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        togglePasswordIcon.classList.remove('bi-eye-slash');
-        togglePasswordIcon.classList.add('bi-eye');
-    } else {
-        passwordInput.type = "password";
-        togglePasswordIcon.classList.remove('bi-eye');
-        togglePasswordIcon.classList.add('bi-eye-slash');
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePasswordIcon.classList.remove('bi-eye-slash');
+            togglePasswordIcon.classList.add('bi-eye');
+        } else {
+            passwordInput.type = "password";
+            togglePasswordIcon.classList.remove('bi-eye');
+            togglePasswordIcon.classList.add('bi-eye-slash');
+        }
+    }
+
+// Function for show password in confirm password
+function togglePasswordVisibility(inputId, buttonId) {
+  const passwordInput = document.getElementById(inputId);
+  const passwordButton = document.getElementById(buttonId);
+
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    passwordButton.classList.remove('bi-eye-slash');
+    passwordButton.classList.add('bi-eye');
+  } else {
+    passwordInput.type = 'password';
+    passwordButton.classList.remove('bi-eye');
+    passwordButton.classList.add('bi-eye-slash');
+  }
+}
+    
+
+// If the password is not matched
+
+    const confirmPasswordInput = document.getElementById('confirm_new_password');
+
+    // Get the error message container
+    const errorMessageContainer = document.getElementById('confirm-password-error');
+
+// Add an event listener to the confirm password input field
+confirmPasswordInput.addEventListener('input', () => {
+  // Get the password and confirm password values
+  const password = passwordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
+
+  // Check if the password and confirm password match
+  if (password !== confirmPassword) {
+    // Display an error message
+    errorMessageContainer.textContent = 'The password and confirm password fields must match.';
+    errorMessageContainer.style.display = 'block';
+    confirmPasswordInput.classList.add('is-invalid');
+  } else {
+    // Hide the error message
+    errorMessageContainer.style.display = 'none';
+    confirmPasswordInput.classList.remove('is-invalid');
+  }
+    });
+
+
+// If the username is already taken print an error message
+async function checkUsernameAvailability(username) {
+    try {
+        // Make an AJAX request to the server to check if the username is available
+        const response = await fetch('login.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username })
+        });
+
+        const data = await response.json();
+
+        // If the response indicates the username is available, return true
+        return data.available;
+    } catch (error) {
+        console.error(error);
+        return false;
     }
 }
 </script>
 <?php ob_end_flush(); ?>
+
+
+
+
 
 
 </body>
