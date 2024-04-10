@@ -122,6 +122,10 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
+                                                        <label for="mobile_number" class="form-label"><b>Date of Birth</b></label>
+                                                        <input type="date" class="form-control" id="birthDate" name="birthDay" placeholder="" aria-label="Enter Date of Birth">
+                                                    </div>
+                                                    <div class="mb-3">
                                                         <label for="mobile_number" class="form-label"><b>Mobile Number</b></label>
                                                         <input type="text" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" aria-label="Enter mobile number">
                                                     </div>
@@ -138,6 +142,7 @@
                                                         <input type="password" class="form-control" id="new_password" name="SgnUp_Password_1" placeholder="Create a new password" aria-label="Create a new password" >
                                                         <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_new_password"></button>
                                                     </div>
+                                                    <div id="new_password_error" class="invalid-feedback">asdads</div>
                                                     <label for="confirm_new_password" class="form-label"><b>Confirm New Password</b></label>
                                                     <div class="input-group mb-3">
                                                         <input type="password" class="form-control" id="confirm_new_password" name="SgnUp_Password_2" placeholder="Confirm new password" aria-label="Confirm new password" >
@@ -156,7 +161,7 @@
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button class="btn btn-success d-grid gap-2 col-6 mx-auto" name="signup" type="submit" value="sign_up">Sign Up</button>
+                                                <button class="btn btn-success d-grid gap-2 col-6 mx-auto" name="signup" type="submit" value="sign_up" id="signup">Sign Up</button>
                                             </div>
                                         </div>
                                     </div>
@@ -228,6 +233,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = trim($_POST['username']);
         $password1 = trim($_POST['SgnUp_Password_1']);
         $password2 = trim($_POST['SgnUp_Password_2']);
+        $birthDay = date('Y-m-d', strtotime($_POST['birthDay']));
+
     
         if (empty($first_name) || empty($middle_name) || empty($last_name) || empty($purok) || empty($zone) || empty($mobile_number) || empty($email) || empty($username) || empty($password1) || empty($password2)) {
             echo "<div class='alert alert-warning mt-3'>Error: Signup Failed is incomplete.</div>" ;
@@ -265,7 +272,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conn->begin_transaction();
     
             // Insert into user table without the verifyImage_path
-            $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password')";
+            $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password, Birthday) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password', '$birthDay')";
     
             if ($conn->query($sql_user) === TRUE) {
                 // Get the last inserted ID
@@ -362,7 +369,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 ?>
+
+<!-- Function for Password -->
+<script>
+// Get the form element
+const form = document.querySelector('form');
+
+// Get the password input fields
+const loginPasswordInput = document.getElementById('Lgn_Password');
+const signupPasswordInput = document.getElementById('new_password');
+const confirmPasswordInput = document.getElementById('confirm_new_password');
+
+// Get the error message elements
+const newPasswordErrorMessage = document.getElementById('new_password_error');
+const confirmPasswordErrorMessage = document.getElementById('confirm_new_password_error');
+
+// Add an event listener to the form's submit event
+form.addEventListener('submit', function(event) {
+    
+  // Check if the sign-up button was clicked
+  if (event.submitter.name === 'signup') {
+
+    // Get the values of the sign-up password input fields
+    const newPassword = signupPasswordInput.value.trim();
+    const confirmPassword = confirmPasswordInput.value.trim();
+
+    // Check if the new password is at least 6 characters long
+    if (newPassword.length < 6) {
+      // If the password is less than 6 characters, prevent the form from being submitted
+      event.preventDefault();
+
+      // Set the error message text
+      signupPasswordInput.classList.add('is-invalid');
+      newPasswordErrorMessage.textContent = 'Password must be at least 6 characters long.';
+
+    } else {
+      // If the password is valid, remove the error message
+      signupPasswordInput.classList.remove('is-invalid');
+      newPasswordErrorMessage.textContent = '';
+
+      // Check if the confirm password matches the new password
+      if (confirmPassword !== newPassword) {
+
+        // If the passwords don't match, prevent the form from being submitted
+        event.preventDefault();
+
+        // Set the error message text
+        confirmPasswordInput.classList.add('is-invalid');
+        confirmPasswordErrorMessage.textContent = 'Passwords do not match.';
+
+      } else {
+        // If the passwords match, remove the error message
+        confirmPasswordInput.classList.remove('is-invalid');
+        confirmPasswordErrorMessage.textContent = '';
+      }
+    }
+  }
+});
+</script>
 <?php ob_end_flush(); ?>
+
+
 </body>
 
 </html>
