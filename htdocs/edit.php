@@ -100,7 +100,11 @@ if (isset($_GET['itemID'])) {
                                         </select>
                                     </div>
                                     <div class="invalid-feedback">⚠️ Please select an availability option.</div>
-
+                                    <div class="mb-3">
+                                        <label for="itemQuantity" class="form-label"><i class="bi bi-box"></i> *Item Quantity</label>
+                                        <input type="number" class="form-control" id="itemQuantity" name="itemQuantity" value="<?php echo $item['itemQuantity']; ?>">
+                                        <div class="invalid-feedback">⚠️ Please enter the item quantity.</div>
+                                    </div>
                                     <div class="mb-3">
                                         <label class="form-label"><i class="bi bi-arrow-repeat"></i> *Open For:</label>
                                         <div class="form-check">

@@ -46,27 +46,78 @@
              </div>
              <div class="modal-footer">
                  <div class="d-flex justify-content-start align-items-center flex-grow-1">
-                 <p class="mb-0"><i class="bi bi-box"></i> Quantity: <span id="modalItemQuantity"></span> Item/s Left!</p>
+                     <p class="mb-0"><i class="bi bi-box"></i> Quantity: <span id="modalItemQuantity"></span> Item/s Left!</p>
                  </div>
                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                      <i class="bi bi-x"></i> Close
                  </button>
-                 <!-- Edit button -->
-                 <button type="button" class="btn btn-primary" onclick="editItem()">
-                     <i class="bi bi-pencil-fill"></i> Edit
+                 <button style="display: none;" type="button" class="btn btn-primary" onclick="removeCart()">
+                     <i class="bi bi-cart-plus"></i> Redirect
                  </button>
+                 <button type="button" class="btn btn-primary" onclick="redirectCart()">
+                     <i class="bi bi-cart-plus"></i> Remove
+                 </button>
+                 <!-- Edit button -->
+                 <button type="button" class="btn btn-primary" onclick="openItem()">
+                     <i class="bi bi-pencil-fill"></i> Open
+                 </button>
+
              </div>
          </div>
      </div>
  </div>
  <script>
-     function editItem() {
-         // Get the item ID from the modal
-         var itemID = document.getElementById('modalItemID').textContent;
-
-         // Redirect to edit.php with the item ID as query parameter
-         window.location.href = 'edit.php?itemID=' + encodeURIComponent(itemID);
+     function redirectCart() {
+         removeCart();
+         window.location.href = 'cart.php';
      }
+
+     function removeCart() {
+         var itemID = document.getElementById('modalItemID').textContent.trim();
+         $.ajax({
+             type: 'POST',
+             url: 'removecart.php',
+             data: {
+                 itemID: itemID
+             },
+             dataType: 'json',
+             success: function(response) {
+                 console.log('Success callback function triggered');
+                 console.log(response); // Log the response object
+
+                 // Check if removal was successful
+                 if (response.status === 'success') {
+                     // Redirect the user to the cart.php page
+                     window.location.href = 'cart.php';
+                 } else {
+                     // Handle removal error
+                     console.error(response.message);
+                     alert('Error: ' + response.message);
+                 }
+             },
+             error: function(xhr, status, error) {
+                 // Handle AJAX error
+                 console.error(xhr.responseText);
+             }
+         });
+     }
+ </script>
+ <script>
+     function openItem() {
+    // Get the item ID and availability from the modal
+    var itemID = document.getElementById('modalItemID').textContent;
+    var itemAvailability = document.getElementById('modalItemAvailability').textContent.trim();
+
+    // Check if the item availability is "Available"
+    if (itemAvailability === 'Available') {
+        // Redirect to itemdetail.php with the item ID as query parameter
+        window.location.href = 'itemdetail.php?itemID=' + encodeURIComponent(itemID);
+    } else {
+        // Optionally display a message or take alternative action
+        alert('This item is not Available .');
+    }
+}
+
  </script>
 
  <script>

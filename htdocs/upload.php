@@ -6,6 +6,7 @@ include "1db.php";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get the form data
     $itemName = $_POST['itemName'];
+    $itemQuantity = $_POST['itemQuantity'];
     $itemDescription = $_POST['itemDescription'];
     $category = $_POST['category'];
     if ($category === 'Others') {
@@ -85,12 +86,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Update the database with the new item information
             if ($isValid) {
-                $sqlInsert = "INSERT INTO item (itemName, ItemDescription, category, itemCondition, itemAvailability, itemImage_path, buyPrice, borrowPrice, borrowDuration, userID, requestType, DateTimePosted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $sqlInsert = "INSERT INTO item (itemName, ItemDescription, category, itemCondition, itemAvailability, itemImage_path, buyPrice, borrowPrice, borrowDuration, userID, requestType, DateTimePosted, itemQuantity ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sqlInsert);
 
 
                 // Bind parameters
-                $stmt->bind_param("ssssssddisss", $itemName, $itemDescription, $category, $itemCondition, $itemAvailability, $newFileName, $buyPrice, $borrowPrice, $borrowDuration, $userID, $requestType, $currentDateTime);
+                $stmt->bind_param("ssssssddisssi", $itemName, $itemDescription, $category, $itemCondition, $itemAvailability, $newFileName, $buyPrice, $borrowPrice, $borrowDuration, $userID, $requestType, $currentDateTime, $itemQuantity);
 
 
                 if ($stmt->execute()) {

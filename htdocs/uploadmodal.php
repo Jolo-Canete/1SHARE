@@ -39,12 +39,18 @@
                             <option value="Others">Others</option>
                             <!-- Add more options as needed -->
                         </select>
-                        <br>
                         <div id="specifyCategoryInput" style="display: none;">
                             <label for="otherCategory" class="form-label"><i class="bi bi-tags"></i> *Specify Category:</label>
                             <input type="text" class="form-control" id="otherCategory" placeholder="Enter other category">
                         </div>
                         <div class="invalid-feedback">⚠️ Please select a category.</div>
+                        <br>
+                        <div class="mb-3">
+                            <label for="itemQuantity" class="form-label"><i class="bi bi-box-arrow-down"></i> *Item Quantity:</label>
+                            <input type="number" class="form-control" id="itemQuantity" min="1" placeholder="Enter item quantity" required>
+                        </div>
+                        <div class="invalid-feedback">⚠️ Please add a Quantity.</div>
+
                     </div>
                     <div class="mb-3">
                         <label for="itemCondition" class="form-label"><i class="bi bi-gem"></i> *Item Condition:</label>
@@ -110,6 +116,7 @@
         var formData = new FormData();
         formData.append('fileToUpload', $('#itemPicture')[0].files[0]);
         formData.append('itemName', $('#itemName').val());
+        formData.append('itemQuantity', parseInt($('#itemQuantity').val()));
         formData.append('itemDescription', $('#itemDescription').val());
         formData.append('category', $('#category').val());
         // Check for "Others" category
@@ -137,6 +144,11 @@
             $('#itemPicture').addClass('is-invalid');
             isValid = false;
         }
+        if (!$('#itemQuantity').val()) {
+            $('#itemQuantity').addClass('is-invalid');
+            isValid = false;
+        }
+
         if (!$('#itemName').val()) {
             $('#itemName').addClass('is-invalid');
             isValid = false;

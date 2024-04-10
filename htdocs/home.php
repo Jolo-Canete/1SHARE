@@ -1,6 +1,6 @@
 <?php
-        include "nav.php";
-        ?>
+include "nav.php";
+?>
 
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-   
+
 </head>
 
 <style>
@@ -96,7 +96,7 @@
 
 <body>
     <header>
-      
+
     </header>
 
     <main>
@@ -111,6 +111,7 @@
                     </div>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
+                        <img src="pictures/6615085d4a2dd.jpg" class="d-block w-100" alt="Image Description">
                             <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
                                 <rect width="100%" height="100%" fill="#777" />
                             </svg>
@@ -124,6 +125,7 @@
                             </div>
                         </div>
                         <div class="carousel-item">
+                        <img src="pictures/6615075310df0.jpg" class="d-block w-100" alt="Image Description">
                             <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
                                 <rect width="100%" height="100%" fill="#777" />
                             </svg>
@@ -137,6 +139,7 @@
                             </div>
                         </div>
                         <div class="carousel-item">
+                        <img src="pictures/6615080ef37e9.jpg" class="d-block w-100" alt="Image Description">
                             <svg class="bd-placeholder-img" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
                                 <rect width="100%" height="100%" fill="#777" />
                             </svg>

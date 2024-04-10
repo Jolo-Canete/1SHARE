@@ -1,58 +1,49 @@
 <?php
-    include "nav.php";
+include "nav.php";
 ?>
 <!-- Run the Database -->
 
-<?php 
-    $sql = "SELECT * FROM user where userID = $user_id";
-    $query = mysqli_query($conn, $sql);
+<?php
+$sql = "SELECT * FROM user where userID = $user_id";
+$query = mysqli_query($conn, $sql);
 
-    // Fetch the Data
-    $user = array();
+// Fetch the Data
+$user = array();
 
-    while($userRow = mysqli_fetch_assoc($query)) {
-        $userData = array(
-            'firstName' => $userRow['firstName'],
-            'middleName' => $userRow['middleName'],
-            'lastName' => $userRow['lastName'],
-            'contactNumber' => $userRow['contactNumber'],
-            'zone' => $userRow['zone'],
-            'purok' => $userRow['purok'],
-            'dateJoined' => $userRow['dateJoined'],
-            'userEmail' => $userRow['userEmail'],
-            'status' => $userRow['status'],
-            'userRating' => $userRow['userRating'],
-            'userImage_path' => $userRow['userEmail'],
-        );
-    
-        array_push($user, $userData);
-    }
-        
+while ($userRow = mysqli_fetch_assoc($query)) {
+    $userData = array(
+        'firstName' => $userRow['firstName'],
+        'middleName' => $userRow['middleName'],
+        'lastName' => $userRow['lastName'],
+        'contactNumber' => $userRow['contactNumber'],
+        'zone' => $userRow['zone'],
+        'purok' => $userRow['purok'],
+        'dateJoined' => $userRow['dateJoined'],
+        'userEmail' => $userRow['userEmail'],
+        'status' => $userRow['status'],
+        'userRating' => $userRow['userRating'],
+        'userImage_path' => $userRow['userEmail'],
+    );
+
+    array_push($user, $userData);
+}
+
 
 ?>
-        
+
 <!doctype html>
 <html lang="en">
 
 <head>
-    <title>Settings</title>
+    <title>Title</title>
+    <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <!-- Bootstrap CSS-->
+
+    <!-- Bootstrap CSS v5.2.1 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <!--- Bootstrap Icon --->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
-
 
     <style>
-        .list-group-item {
-            border-bottom: none;
-        }
-
         .data {
             background-color: #f8f9fa;
             border-radius: 10px;
@@ -60,90 +51,208 @@
             margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+
+        .list-group-item {
+            border: none;
+            border-radius: 0;
+            color: #333;
+            border-radius: 0;
+            text-align: left;
+        }
+
+        .list-group-item.active {
+            color: #212529;
+            font-weight: 600;
+            background-color: transparent;
+        }
     </style>
 
 </head>
 
 <body>
+    <header>
+        <!-- place navbar here -->
+    </header>
 
     <main>
         <div class="page-content" id="content">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <p class="h1 mt-2">My Settings</p>
-                    <div class="mb-3"></div>
+            <div class="container">
+                <div class="col">
+                    <div class="h1 mt-2 mb-3">
+                        My Settings
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2">
+                        <div class="d-flex">
+                            <div class="list-group" id="list-tab" role="tablist">
+                                <a class="list-group-item list-group-item-action active" id="list-account-list" data-bs-toggle="list" href="#list-account" role="tab" aria-controls="list-account">Account Info</a>
+                                <a class="list-group-item list-group-item-action" id="list-privacy-list" data-bs-toggle="list" href="#list-privacy" role="tab" aria-controls="list-privacy">Privacy</a>
+                                <a class="list-group-item list-group-item-action" id="list-termsandconditions-list" data-bs-toggle="list" href="#list-termsandconditions" role="tab" aria-controls="list-termsandconditions">Terms and Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-10">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="list-account" role="tabpanel" aria-labelledby="list-account-list">
+                                <h3 class="mb-2">Account Information</h3>
+                                <div class="card shadow">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">First Name:</div>
+                                                    <span class="text-dark"><?php echo ucfirst($userData['firstName']); ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">Middle Name:</div>
+                                                    <span class="text-dark"><?php echo ucfirst($userData['middleName']); ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">Last Name:</div>
+                                                    <span class="text-dark"><?php echo ucfirst($userData['lastName']); ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">Date of Birth:</div>
+                                                    <span class="text-dark">October 25, 1995</span>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">Date Joined:</div>
+                                                    <span class="text-dark">January 1, 2024</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">Purok:</div>
+                                                    <span class="text-dark"><?php echo $userData['purok']; ?></span>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">Zone:</div>
+                                                    <span class="text-dark"><?php echo $userData['zone']; ?></span>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">Email:</div>
+                                                    <span class="text-dark"><?php echo $userData['userEmail']; ?></span>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">Contact Number:</div>
+                                                    <span class="text-dark"><?php echo $userData['contactNumber']; ?></span>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">Username:</div>
+                                                    <span class="text-dark">Bobords</span>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
+                                                        <i class="bi bi-pencil-fill"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="fw-bold text-secondary me-2">Status:</div>
+                                                    <span class="text-primary"><b>Verified</b><span class="text-secondary mx-2"><small>last January 1, 2024</small></span>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-privacy" role="tabpanel" aria-labelledby="list-privacy-list">
+                        <h3 class="mb-2">Privacy</h3>
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="fw-bold text-secondary me-2">Password:</div>
+                                            <span class="text-dark">**********************</span>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <h3 class="mb-2 mt-3">Transaction History</h3>
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="fw-bold text-secondary me-2">Transaction History</div>
+                                            <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
+                                                <i class="bi bi-lock-fill"></i>
+                                            </button>
+                                        </div>
+                                        <div class="text-secondary me-2">By unlocking your transaction history, your transactions can be seen by anyone.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-2">
-                    <div class="list-group list-group-flush">
-                        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                            Account Info
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action">
-                            Privacy
-                        </a>
-                        <!--- Add more if needed --->
-                    </div>
-                </div>
-                <div class="col-10">
-                    <p class="h3">Account Info</p>
-                    <div class="data">
-                        <p class="h6 text-secondary d-flex">Name: &nbsp;
-                        <span class="text-dark"> 
-                            <?php echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName']) . '. &nbsp; ' . ucfirst($userData['lastName']);    ?>  
-                        </span>
-                        <span class="bi bi-pencil-fill text-end ms-auto"></span>
-                        <div class="mb-2"></div>
-                        </p>
-                        <p class="h6 text-secondary d-flex">Email: &nbsp;
-                            <span class="text-dark" id="data-display">canete.jolo@gmail.com</span>
-                            <span class="bi bi-pencil-fill text-end ms-auto" data-bs-toggle="modal" data-bs-target="#editModal_email"></span>
-                        <div class="mb-2"></div>
-                        </p>
-                        <p class="h6 text-secondary d-flex">Phone: &nbsp;
-                            <span class="text-dark">09203513491</span>
-                            <span class="bi bi-pencil-fill text-end ms-auto"></span>
-                        <div class="mb-2"></div>
-                        </p>
-                        <p class="h6 text-secondary d-flex">Address: &nbsp;
-                            <span class="text-dark">Zone 11, Purok 26-A, Curvada</span>
-                            <span class="bi bi-pencil-fill text-end ms-auto"></span>
-                        <div class="mb-2"></div>
-                        </p>
-                        <p class="h6 text-secondary d-flex">Status: &nbsp;
-                            <span class="badge bg-primary text-white rounded-pill">Verified</span>
-                        <div class="mb-2"></div>
-                        </p>
-                    </div>
-                    <p class="h3">Login Method</p>
-                    <div class="data">
-                        <p class="h6 text-secondary d-flex">Password: &nbsp;
-                            <span class="text-dark">**********</span>
-                            <span class="bi bi-pencil-fill text-end ms-auto"></span>
-                        <div class="mb-2"></div>
-                        </p>
-                    </div>
-                </div>
+            <div class="tab-pane fade" id="list-termsandconditions" role="tabpanel" aria-labelledby="list-termsandconditions-list">
+                <!-- Terms and Conditions content goes here -->
             </div>
+        </div>
+        </div>
+        </div>
+        </div>
         </div>
     </main>
 
-    <!-- Edit Modal for Email -->
-    <div class="modal fade" id="editModal_email" tabindex="-1" aria-labelledby="editModalLabel_email" aria-hidden="true">
-        <div class="modal dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel_email">Edit Email</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-            </div>
-        </div>
+    <footer>
+        <!-- place footer here -->
+    </footer>
     </div>
+
     <!-- Bootstrap JavaScript Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
-  
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 
 </html>
