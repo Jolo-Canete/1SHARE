@@ -140,7 +140,7 @@ if (isset($_GET['itemID'])) {
                                         <label for="borrowDuration" class="form-label"><i class="bi bi-clock"></i> Borrow Duration(Days):</label>
                                         <input type="number" class="form-control" id="borrowDuration" name="borrowDuration" value="<?php echo $item['borrowDuration']; ?>">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="submit"  id="submitButton" value="Submit" class="btn btn-primary">Save Changes</button>
                         </form>
                     </div>
                 </div>
@@ -150,14 +150,16 @@ if (isset($_GET['itemID'])) {
             function uploadItem(event) {
                 event.preventDefault(); // Prevent the default form submission
 
+                // Disable the submit button to prevent multiple submissions
+                $('#submitButton').prop('disabled', true);
+
                 // Get the form data
                 var formData = new FormData(document.getElementById('editItemForm'));
-                
+
                 if (document.getElementById('itemPicture').files.length > 0) {
                     // Append the file to the formData
                     formData.append('itemPicture', document.getElementById('itemPicture').files[0]);
                 }
-
 
                 // Send the form data to the server using AJAX
                 $.ajax({
@@ -170,7 +172,6 @@ if (isset($_GET['itemID'])) {
                         // Check if the response contains 'success'
                         if (response.indexOf('success') !== -1) {
                             alert('Successfully Edited An Item');
-
                             // Redirect to the additem.php page
                             window.location.href = 'additem.php';
                         } else {
@@ -181,6 +182,10 @@ if (isset($_GET['itemID'])) {
                     error: function(xhr, status, error) {
                         // Handle the edit error
                         alert('Error editing item: ' + error);
+                    },
+                    complete: function() {
+                        // Re-enable the submit button after form submission is complete
+                        $('#submitButton').prop('disabled', false);
                     }
                 });
             }

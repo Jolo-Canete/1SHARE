@@ -8,7 +8,7 @@ include "nav.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Inventory</title>
+    <title>My Items</title>
 
 
     <style>
@@ -39,7 +39,7 @@ include "nav.php";
             <div class="row">
                 <div class="col">
                     <!-- Upload Button on the left -->
-                    <button id="but" type="button" class="btn btn btn-outline-success btn-add mb-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                    <button id="butter" type="button" class="btn btn btn-outline-success btn-add mb-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadModal">
                         <i class="bi bi-plus"></i> Add New Item
                     </button>
                 </div>
@@ -47,7 +47,7 @@ include "nav.php";
                     <!-- Sort Dropdowns -->
                     <div class="d-flex justify-content-end">
                         <div class="btn-group me-2">
-                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 Sort by Availability
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
@@ -57,7 +57,7 @@ include "nav.php";
                             </ul>
                         </div>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                 Sort by Upload Date
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
@@ -70,7 +70,7 @@ include "nav.php";
             </div>
             <div class="container">
                 <div class="container-box">
-                    <div class="row row-cols-1 row-cols-md-6 g-4">
+                    <div class="row row-cols-1 row-cols-md-5 g-4">
                         <?php if (empty($items)) { ?>
                             <div class="col">
                                 <div class="card">
