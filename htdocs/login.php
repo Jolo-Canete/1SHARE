@@ -18,6 +18,7 @@ input[type=number]::-webkit-outer-spin-button {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!--- Bootstrap Icons --->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -25,7 +26,8 @@ input[type=number]::-webkit-outer-spin-button {
 </head>
 
 <body>
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
     <header>
         <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
@@ -56,7 +58,7 @@ input[type=number]::-webkit-outer-spin-button {
                                 <label for="email_address"><b>Email Address</b></label>
                                 <div class="input-group flex-nowrap">
                                     <span class="input-group-text" id="addon-wrapping">@</span>
-                                    <input type="text" class="form-control" name="Lgn_Username" placeholder="Email Address or Mobile Number" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
+                                    <input type="text" class="form-control" name="Lgn_Username" placeholder="Email Address or Username" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
 
                                 </div>
                                 <div class="mb-3"></div>
@@ -335,79 +337,97 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // Login form
-    if (isset($_POST['login'])) {
-        $username = trim($_POST['Lgn_Username']);
-        $password = trim($_POST['Lgn_Password']);
+// Login form
+if (isset($_POST['login'])) {
+    $login = trim($_POST['Lgn_Username']);
+    $password = trim($_POST['Lgn_Password']);
 
-    if (empty($username) || empty($password)) { 
-        echo "<div class='alert alert-warning mt-3'>username or password is empty.</div>" ;
+    if (empty($login) || empty($password)) { 
+        echo "<div class='alert alert-warning mt-3'>Username or email, and password are required.</div>" ;
         return;
     }
 
+    try {
         // Prepare the MySQL query
-        $sql = "SELECT * FROM user WHERE username = '$username'";
-        $result = $conn->query($sql);
-
-        // og ang piste mo palpak
-        if ($result === false) {
-            echo "Error executing the query: " . $conn->error;
-            return;
+        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $sql = "SELECT * FROM user WHERE userEmail = '$login'";
+        } else {
+            $sql = "SELECT * FROM user WHERE username = '$login'";
         }
+
+        $result = $conn->query($sql);
 
         // Check if the user exists and the password is correct
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $stored_password = $row["password"];
-            $user_id = $row["userID"]; 
+            $storedPassword = $row["password"];
+            $userId = $row["userID"]; 
 
             // Verify the password
-            if (password_verify($password, $stored_password)) {
-                 // Login successful, store user information in the session
-            $_SESSION['user_id'] = $user_id;
-            $_SESSION['username'] = $row['username'];
-            $_SESSION['email'] = $row['userEmail'];
+            if (password_verify($password, $storedPassword)) {
+                // Login successful, store user information in the session
+                $_SESSION['user_id'] = $userId;
+                $_SESSION['username'] = $row['username'];
+                $_SESSION['email'] = $row['userEmail'];
                 // Login successful, redirect to the home page
-                echo '<script>alert("You have successfully logged in ' . $username . '"); window.location.href = "home.php"; </script>';
-                exit();
+                header('Location: loading.php');
             } else {
                 // Invalid password
                 echo '
-                            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-                            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                            </symbol>
+                <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                            <use xlink:href="#exclamation-triangle-fill"/>
                         </svg>
-                        <div class="alert alert-danger d-flex align-items-center" role="alert">
-                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                </svg>
                         <div>
-                        Relax, try to remember your password again. If not try to reset your password.
+                            Try to remember your password again. If not, try to reset your password.
                         </div>
-                    </div> ';
+                    </div>
+                ';
+             return;
             }
+           
         } else {
             // User not found
             echo '
-            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                </symbol>
+            <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                        <use xlink:href="#exclamation-triangle-fill"/>
+                    </svg>
             </svg>
-        <div class="alert alert-danger d-flex align-items-center" role="alert">
-            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-            <div>
-                User not Found.
-            </div>
-        </div>
+                    <div>
+                        User not Found.
+                    </div>
+                </div>
             ';
+            return;
         }
+    } catch (Exception $e) {
+        // Log the error
+        error_log('Error during login: ' . $e->getMessage());
+        echo '
+        <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                    <use xlink:href="#exclamation-triangle-fill"/>
+                </svg>
+        </svg>
+                <div>
+                    An error occurred during login. Please try again later.
+                </div>
+            </div>
+        ';
     }
+}
  
 
 
 
 ?>
 
-<!-- Function for Password -->
+<!-- Function for sign up Password -->
 <script>
 // Function for Lacking password characters
     const passwordInput = document.getElementById('new_password');
@@ -512,7 +532,7 @@ async function checkUsernameAvailability(username) {
 
 
 
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>
