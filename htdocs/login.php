@@ -1,6 +1,5 @@
-<?php ob_start(); session_start(); include('1db.php');
+<?php ob_start(); session_start(); include('1db.php');?>
 
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,11 +8,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login/Sign Up</title>
 <style>
-
+/* Hide the button from input number */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!--- Bootstrap Icons --->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -21,7 +26,8 @@
 </head>
 
 <body>
-
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
     <header>
         <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
@@ -52,7 +58,7 @@
                                 <label for="email_address"><b>Email Address</b></label>
                                 <div class="input-group flex-nowrap">
                                     <span class="input-group-text" id="addon-wrapping">@</span>
-                                    <input type="text" class="form-control" name="Lgn_Username" placeholder="Email Address or Mobile Number" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
+                                    <input type="text" class="form-control" name="Lgn_Username" placeholder="Email Address or Username" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
 
                                 </div>
                                 <div class="mb-3"></div>
@@ -122,8 +128,12 @@
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
+                                                        <label for="mobile_number" class="form-label"><b>Date of Birth</b></label>
+                                                        <input type="date" class="form-control" id="birthDate" name="birthDay" placeholder="" aria-label="Enter Date of Birth">
+                                                    </div>
+                                                    <div class="mb-3">
                                                         <label for="mobile_number" class="form-label"><b>Mobile Number</b></label>
-                                                        <input type="text" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" aria-label="Enter mobile number">
+                                                        <input type="number" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" aria-label="Enter mobile number">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="email_address" class="form-label"><b>Email Address</b></label>
@@ -131,17 +141,25 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="username" class="form-label"><b>Username</b></label>
-                                                        <input type="text" name="username"  class="form-control" id="username"placeholder="Create your own username" aria-label="Create your own username">
+                                                        <input type="text" name="username"  class="form-control" id="username" placeholder="Create your own username" aria-label="Create your own username">
+                                                        <div id="username-error" class="text-danger" style="display: none;"></div>
                                                     </div>
+                                                    <div class="mb-3">
                                                     <label for="new_password" class="form-label"><b>New Password</b></label>
                                                     <div class="input-group mb-3">
-                                                        <input type="password" class="form-control" id="new_password" name="SgnUp_Password_1" placeholder="Create a new password" aria-label="Create a new password" >
-                                                        <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_new_password"></button>
+                                                        <input type="password" class="form-control" id="new_password" name="SgnUp_Password_1" placeholder="Create a new password" aria-label="Create a new password" minlength="8">
+                                                        <button class="btn btn-outline-secondary bi bi-eye-slash" type="button" id="see_new_password" onclick="togglePasswordVisibility('new_password', 'see_new_password')"></button>
                                                     </div>
+                                                    <div id="password-requirement-error" class="text-danger" style="display: none;">Password must be at least 8 characters long.</div>  
+                                                    </div>
+                                                    </div>
+                                                    <div class="mb-3">
                                                     <label for="confirm_new_password" class="form-label"><b>Confirm New Password</b></label>
                                                     <div class="input-group mb-3">
                                                         <input type="password" class="form-control" id="confirm_new_password" name="SgnUp_Password_2" placeholder="Confirm new password" aria-label="Confirm new password" >
-                                                        <button class="btn btn-outline-secondary bi bi-eye" type="button" id="see_confirmed_password"></button>
+                                                        <button class="btn btn-outline-secondary bi bi-eye-slash" type="button" id="see_confirmed_password" onclick="togglePasswordVisibility('confirm_new_password', 'see_confirmed_password')"></button>
+                                                    </div>
+                                                    <div id="confirm-password-error" class="text-danger" style="display: none;"></div>
                                                     </div>
                                                     <label for="" class="form-label"><b>Proof of Residency</b></label>
                                                     <div class="mb-3">
@@ -154,10 +172,11 @@
                                                     </div>
 
                                                 </div>
-                                            </div>
+                                            
                                             <div class="modal-footer">
-                                                <button class="btn btn-success d-grid gap-2 col-6 mx-auto" name="signup" type="submit" value="sign_up">Sign Up</button>
+                                                <button type="submit" class="btn btn-success d-grid gap-2 col-6 mx-auto" name="signup" value="sign_up" id="signup">Sign Up</button>
                                             </div>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -179,6 +198,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['forgetPass'])) {
         $username = trim($_POST['Lgn_Username']);
         $password = trim($_POST['Lgn_Password']);
+    
         if (empty($username)) { 
             echo "<div class='alert alert-warning mt-3'>Please enter your username.</div>" ;
             return;
@@ -211,10 +231,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo '<div class="alert alert-danger" role="alert">
                     User not Found.
                   </div>';
+                  return;
             }
-
+        }
     }
-}
+
 
     if (isset($_POST['signup'])) {
         // Gather the Input data
@@ -228,12 +249,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = trim($_POST['username']);
         $password1 = trim($_POST['SgnUp_Password_1']);
         $password2 = trim($_POST['SgnUp_Password_2']);
+        $birthDay = date('Y-m-d', strtotime($_POST['birthDay']));
+        $status = "Unverified";
+
     
-        if (empty($first_name) || empty($middle_name) || empty($last_name) || empty($purok) || empty($zone) || empty($mobile_number) || empty($email) || empty($username) || empty($password1) || empty($password2)) {
+        if (empty($first_name) || empty($middle_name) || empty($last_name) || empty($purok) || empty($zone) || empty($mobile_number) || empty($email) || empty($username) || empty($password1) || empty($password2) || empty($birthDay)) {
             echo "<div class='alert alert-warning mt-3'>Error: Signup Failed is incomplete.</div>" ;
             return;
         }
-    
+
+        // If the user is already taken
+        $sql = "SELECT * FROM user WHERE username = '$username'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            echo '<div class="alert alert-danger mt-3">Username is already taken.</div>';
+            return;
+        }
+
+        // If the password is less than 8 characters
+        if (strlen($password1) < 8) {
+            echo '<div class="alert alert-danger mt-3">Password must be at least 8 characters long.</div>';
+            return;
+        }
+
+        // // If the email is already taken
+        // $sql = "SELECT * FROM user WHERE userEmail = '$email'";
+        // $result = $conn->query($sql);
+        // if ($result->num_rows > 0) {
+        //     echo '<div class="alert alert-danger mt-3">Email is already taken.</div>';
+        //     return;
+        // }
+
         // Upload Image to the different directory
         $targetDirectory = "verify/";
         if (!file_exists($targetDirectory)) {
@@ -256,7 +302,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
         // Check if password matched
         if ($password1 !== $password2) {
-            echo 'Password does not match';
+            echo '<div class="alert alert-danger mt-3">Password does not match.</div>';
         } else {
             // rename the password
             $default_password = password_hash($password1, PASSWORD_DEFAULT);
@@ -265,7 +311,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conn->begin_transaction();
     
             // Insert into user table without the verifyImage_path
-            $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password')";
+            $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password, Birthday, status) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password', '$birthDay', '$status')";
     
             if ($conn->query($sql_user) === TRUE) {
                 // Get the last inserted ID
@@ -291,78 +337,202 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // Login form
-    if (isset($_POST['login'])) {
-        $username = trim($_POST['Lgn_Username']);
-        $password = trim($_POST['Lgn_Password']);
+// Login form
+if (isset($_POST['login'])) {
+    $login = trim($_POST['Lgn_Username']);
+    $password = trim($_POST['Lgn_Password']);
 
-    if (empty($username) || empty($password)) { 
-        echo "<div class='alert alert-warning mt-3'>username or password is empty.</div>" ;
+    if (empty($login) || empty($password)) { 
+        echo "<div class='alert alert-warning mt-3'>Username or email, and password are required.</div>" ;
         return;
     }
 
+    try {
         // Prepare the MySQL query
-        $sql = "SELECT * FROM user WHERE username = '$username'";
-        $result = $conn->query($sql);
-
-        // og ang piste mo palpak
-        if ($result === false) {
-            echo "Error executing the query: " . $conn->error;
-            return;
+        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
+            $sql = "SELECT * FROM user WHERE userEmail = '$login'";
+        } else {
+            $sql = "SELECT * FROM user WHERE username = '$login'";
         }
+
+        $result = $conn->query($sql);
 
         // Check if the user exists and the password is correct
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
-            $stored_password = $row["password"];
-            $user_id = $row["userID"]; 
+            $storedPassword = $row["password"];
+            $userId = $row["userID"]; 
 
             // Verify the password
-            if (password_verify($password, $stored_password)) {
-                 // Login successful, store user information in the session
-            $_SESSION['user_id'] = $user_id;
-            $_SESSION['username'] = $row['username'];
-            $_SESSION['email'] = $row['userEmail'];
+            if (password_verify($password, $storedPassword)) {
+                // Login successful, store user information in the session
+                $_SESSION['user_id'] = $userId;
+                $_SESSION['username'] = $row['username'];
+                $_SESSION['email'] = $row['userEmail'];
                 // Login successful, redirect to the home page
-                echo '<script>alert("You have successfully logged in ' . $username . '"); window.location.href = "home.php"; </script>';
-                exit();
+                header('Location: loading.php');
             } else {
                 // Invalid password
                 echo '
-                            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-                            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                            </symbol>
+                <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+                    <div class="alert alert-danger d-flex align-items-center" role="alert">
+                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                            <use xlink:href="#exclamation-triangle-fill"/>
                         </svg>
-                        <div class="alert alert-danger d-flex align-items-center" role="alert">
-                        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+                </svg>
                         <div>
-                        Relax, try to remember your password again. If not try to reset your password.
+                            Try to remember your password again. If not, try to reset your password.
                         </div>
-                    </div> ' . $row['password'];
+                    </div>
+                ';
+             return;
             }
+           
         } else {
             // User not found
             echo '
-            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
-                <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
-                </symbol>
+            <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+                <div class="alert alert-danger d-flex align-items-center" role="alert">
+                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                        <use xlink:href="#exclamation-triangle-fill"/>
+                    </svg>
             </svg>
-        <div class="alert alert-danger d-flex align-items-center" role="alert">
-            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-            <div>
-                User not Found.
-            </div>
-        </div>
+                    <div>
+                        User not Found.
+                    </div>
+                </div>
             ';
+            return;
         }
+    } catch (Exception $e) {
+        // Log the error
+        error_log('Error during login: ' . $e->getMessage());
+        echo '
+        <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+                    <use xlink:href="#exclamation-triangle-fill"/>
+                </svg>
+        </svg>
+                <div>
+                    An error occurred during login. Please try again later.
+                </div>
+            </div>
+        ';
     }
+}
  
 
 
 
 ?>
+
+<!-- Function for sign up Password -->
+<script>
+// Function for Lacking password characters
+    const passwordInput = document.getElementById('new_password');
+    const passwordRequirementError = document.getElementById('password-requirement-error');
+
+    passwordInput.addEventListener('input', function() {
+        if (passwordInput.value.length < 8) {
+            passwordRequirementError.style.display = 'block';
+            passwordRequirementError.textContent = 'Password must be at least 8 characters long.';
+        } else {
+            passwordRequirementError.style.display = 'none';
+        }
+    
+    });
+
+
+// Function for Show password
+    function showPassword() {
+        var passwordInput = document.getElementById('new_password');
+        var togglePasswordIcon = document.getElementById('togglePassword');
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePasswordIcon.classList.remove('bi-eye-slash');
+            togglePasswordIcon.classList.add('bi-eye');
+        } else {
+            passwordInput.type = "password";
+            togglePasswordIcon.classList.remove('bi-eye');
+            togglePasswordIcon.classList.add('bi-eye-slash');
+        }
+    }
+
+// Function for show password in confirm password
+function togglePasswordVisibility(inputId, buttonId) {
+  const passwordInput = document.getElementById(inputId);
+  const passwordButton = document.getElementById(buttonId);
+
+  if (passwordInput.type === 'password') {
+    passwordInput.type = 'text';
+    passwordButton.classList.remove('bi-eye-slash');
+    passwordButton.classList.add('bi-eye');
+  } else {
+    passwordInput.type = 'password';
+    passwordButton.classList.remove('bi-eye');
+    passwordButton.classList.add('bi-eye-slash');
+  }
+}
+    
+
+// If the password is not matched
+
+    const confirmPasswordInput = document.getElementById('confirm_new_password');
+
+    // Get the error message container
+    const errorMessageContainer = document.getElementById('confirm-password-error');
+
+// Add an event listener to the confirm password input field
+confirmPasswordInput.addEventListener('input', () => {
+  // Get the password and confirm password values
+  const password = passwordInput.value;
+  const confirmPassword = confirmPasswordInput.value;
+
+  // Check if the password and confirm password match
+  if (password !== confirmPassword) {
+    // Display an error message
+    errorMessageContainer.textContent = 'The password and confirm password fields must match.';
+    errorMessageContainer.style.display = 'block';
+    confirmPasswordInput.classList.add('is-invalid');
+  } else {
+    // Hide the error message
+    errorMessageContainer.style.display = 'none';
+    confirmPasswordInput.classList.remove('is-invalid');
+  }
+    });
+
+
+// If the username is already taken print an error message
+async function checkUsernameAvailability(username) {
+    try {
+        // Make an AJAX request to the server to check if the username is available
+        const response = await fetch('login.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username })
+        });
+
+        const data = await response.json();
+
+        // If the response indicates the username is available, return true
+        return data.available;
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+}
+</script>
 <?php ob_end_flush(); ?>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>
