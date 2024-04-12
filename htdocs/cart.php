@@ -82,7 +82,7 @@ if (isset($_SESSION['user_id'])) {
                                             echo "<span class='badge $badgeColor rounded-pill'>$availability</span>";
                                             ?>
                                         </p>
-                                        <p class="text-start text-secondary">Quantity: <?php echo $item['quantity']; ?></p>
+                                        <p class="text-start text-secondary"><b>Quantity:</b> <?php echo $item['quantity']; ?></p>
                                     </div>
                                 </div>
                             </div>

@@ -56,6 +56,15 @@ body {
     background-color: #e9ecef;
 }
 
+#butter {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #fff;
+    border: 2px solid #28a745;
+    border-radius: 20px;
+    transition: all 0.3s ease-in-out;
+}
+
 #but {
     background-color: #28a745;
     border-color: #28a745;

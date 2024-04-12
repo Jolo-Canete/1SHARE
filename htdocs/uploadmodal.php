@@ -6,6 +6,12 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <div id="loadingIndicator" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); z-index:9999;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div id="loadingMessage" class="text-center mt-2">Uploading...</div>
+                </div>
                 <form id="uploadForm">
                     <div class="mb-3 <?php echo isset($errors['itemPicture']) ? 'has-error' : ''; ?>">
                         <label for="itemPicture" class="form-label"><i class="bi bi-image"></i> *Item Picture:</label>
@@ -112,6 +118,9 @@
 
 <script>
     function uploadItem() {
+        // Disable the submit button to prevent multiple submissions
+        $('#but').prop('disabled', true);
+
         // Get the form data
         var formData = new FormData();
         formData.append('fileToUpload', $('#itemPicture')[0].files[0]);
@@ -126,6 +135,8 @@
             if (!otherCategory) {
                 $('#otherCategory').addClass('is-invalid');
                 isValid = false;
+                // Re-enable the submit button
+                $('#but').prop('disabled', false);
                 return; // Stop further processing if category is not valid
             } else {
                 formData.append('otherCategory', otherCategory);
@@ -169,7 +180,6 @@
             $('.form-check-input[name="requestType"]').closest('.form-check').addClass('is-invalid');
             isValid = false;
         }
-
 
         // Check for "Buy" request type
         if (requestTypes.includes('Buy')) {
@@ -225,9 +235,10 @@
         }
 
         if (!isValid) {
+            // Re-enable the submit button
+            $('#but').prop('disabled', false);
             return;
         }
-
 
         // Send the form data to the server
         $.ajax({
@@ -255,10 +266,13 @@
             error: function(xhr, status, error) {
                 // Handle the upload error
                 alert('Error uploading file: ' + error);
+            },
+            complete: function() {
+                // Re-enable the submit button after form submission is complete
+                $('#but').prop('disabled', false);
             }
         });
     }
-
     // Show/hide the price field based on the request type
     $('input[name="requestType"]').on('change', function() {
         var selectedRequestTypes = getSelectedRequestTypes();

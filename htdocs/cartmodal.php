@@ -19,34 +19,34 @@
                          <h5 id="modalItemName"></h5>
 
                          <!-- Other Item Details -->
-                         <p><i class="bi bi-tags-fill"></i> Category: <span id="modalItemCategory"></span></p>
-                         <p><i class="bi bi-card-text"></i> Description: <span id="modalItemDescription"></span></p>
-                         <p><i class="bi bi-hammer"></i> Condition: <span id="modalItemCondition"></span></p>
-                         <p><i class="bi bi-check-circle-fill"></i> Availability: <span id="modalItemAvailability"></span></p>
+                         <p><i class="bi bi-tags-fill"></i> <b>Category:</b> <span id="modalItemCategory"></span></p>
+                         <p><i class="bi bi-card-text"></i> <b>Description:</b> <span id="modalItemDescription"></span></p>
+                         <p><i class="bi bi-hammer"></i> <b>Condition:</b> <span id="modalItemCondition"></span></p>
+                         <p><i class="bi bi-check-circle-fill"></i> <b>Availability:</b> <span id="modalItemAvailability"></span></p>
                          <p style="display: none;"><i class="bi bi-check-circle-fill"></i> Item ID: <span id="modalItemID"></span></p>
 
-                         <p><i class="bi bi-arrow-repeat"></i> Open For: <span id="modalItemRequestType"></span></p>
+                         <p><i class="bi bi-arrow-repeat"></i> <b>Open For:</b> <span id="modalItemRequestType"></span></p>
 
                          <!-- Display Buy Price field if request type is Buy -->
                          <div id="buyField" style="display: none;">
-                             <p><i class="bi bi-cash-coin"></i> Sell Price: ₱<span id="modalBuyPrice"></span></p>
+                             <p><i class="bi bi-cash-coin"></i> <b>Sell Price:</b> ₱<span id="modalBuyPrice"></span></p>
                          </div>
 
                          <!-- Display Borrow Price and Borrowed Duration fields if request type is Borrow -->
                          <div id="borrowFields" style="display: none;">
-                             <p><i class="bi bi-cash"></i> Borrow Price: ₱<span id="modalBorrowPrice"></span></p>
-                             <p><i class="bi bi-clock"></i> Borrowed Duration: <span id="modalBorrowDuration"></span> Day/s</p>
+                             <p><i class="bi bi-cash"></i> <b>Borrow Price:</b> </b>₱<span id="modalBorrowPrice"></span></p>
+                             <p><i class="bi bi-clock"></i> <b>Borrowed Duration:</b> <span id="modalBorrowDuration"></span> Day/s</p>
                          </div>
 
 
                          <!-- Display Date Time Posted -->
-                         <p><i class="bi bi-calendar"></i> Date Time Posted: <span id="modalDateTimePosted"></span></p>
+                         <p><i class="bi bi-calendar"></i> <b>Date Time Posted:</b> <span id="modalDateTimePosted"></span></p>
                      </div>
                  </div>
              </div>
              <div class="modal-footer">
                  <div class="d-flex justify-content-start align-items-center flex-grow-1">
-                     <p class="mb-0"><i class="bi bi-box"></i> Quantity: <span id="modalItemQuantity"></span> Item/s Left!</p>
+                     <p class="mb-0"><b><i class="bi bi-box"></i> <b>Quantity:</b> </b><span id="modalItemQuantity"></span> Item/s Left!</p>
                  </div>
                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                      <i class="bi bi-x"></i> Close
