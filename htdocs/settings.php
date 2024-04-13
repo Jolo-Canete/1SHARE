@@ -72,9 +72,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
 
             <div class="container">
                 <div class="col">
-                    <div class="h1 mt-2 mb-3">
-                        My Settings
-                    </div>
+                <h1 class="text-center mb-4 mt-3"><i class="bi-gear"></i> SETTINGS</h1>
                 </div>
 
                 <!--- Tab List --->
@@ -94,7 +92,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="list-account" role="tabpanel" aria-labelledby="list-account-list">
                                 <h3 class="mb-2">Account Information</h3>
-                                <div class="card shadow">
+                                <div class="card shadow-lg border-0">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-4 mb-3">
@@ -201,7 +199,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade" id="list-termsandconditions" role="tabpanel" aria-labelledby="list-termsandconditions-list">
                                     <h3 class="mb-4">Terms and Conditions</h3>
-                                    <div class="card shadow-sm mb-4">
+                                    <div class="card shadow-lg mb-4 border-0">
                                         <div class="card-body">
                                             <?php include "termsandcondition.php"; ?>
                                         </div>
@@ -213,7 +211,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                         <!--- Privacy Tab Pane --->
                         <div class="tab-pane fade" id="list-privacy" role="tabpanel" aria-labelledby="list-privacy-list">
                             <h3 class="mb-4">Privacy</h3>
-                            <div class="card border-0 shadow-sm mb-4">
+                            <div class="card border-0 shadow-lg mb-4">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="fw-bold text-secondary me-2">Password:</div>

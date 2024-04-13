@@ -10,12 +10,12 @@ include "nav.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Items</title>
 
-
     <style>
         <?php
         include "additem.css";
         ?>
     </style>
+
 </head>
 
 <body>
@@ -69,17 +69,29 @@ include "nav.php";
                 </div>
             </div>
             <div class="container">
-                <div class="container-box">
-                    <div class="row row-cols-1 row-cols-md-5 g-4">
-                        <?php if (empty($items)) { ?>
-                            <div class="col">
-                                <div class="card">
-                                    <div class="card-body text-center">
-                                        <h5 class="card-title">No Item Owned</h5>
+                <?php if (empty($items)) { ?>
+                    <div class="no-item" id="no-item">
+                        <div class="row justify-content-center">
+                            <div class="col d-flex justify-content-center">
+                                <div class="card w-75 mb-3 border-0">
+                                    <div class="card-body">
+                                        <h1 class="card-title text-center">No Items</h1>
+                                        <p class="card-text text-center text-secondary">
+                                            It seems that you don't own any items yet. Try adding an Item!
+                                        </p>
+                                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                            <button id="butter" type="button" class="btn btn btn-outline-success btn-add mb-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                                                <i class="bi bi-plus"></i> Add New Item
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        <?php } else { ?>
+                        </div>
+                    </div>
+                <?php } else { ?>
+                    <div class="container-box">
+                        <div class="row row-cols-1 row-cols-md-5 g-4">
                             <?php foreach ($items as $item) { ?>
                                 <!-- Item Card -->
                                 <div class="col">
@@ -100,8 +112,8 @@ include "nav.php";
                                 </div>
                             <?php } ?>
                         <?php } ?>
+                        </div>
                     </div>
-                </div>
             </div>
 
             <!-- Item Detail Modal -->

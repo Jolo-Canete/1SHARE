@@ -38,20 +38,26 @@ include "upper.php";
     <!-- Vertical navbar -->
     <div class="vertical-nav bg-dark" id="sidebar">
         <div class="py-4 px-3">
-            <a class="h4 text-light link-offset-2 link-underline link-underline-opacity-0" href="home.php">
-                <img src="picture/logo.png" alt="I S H A R E logo" style="width: 60px; height: 60px;">
-                I S H A R E
-            </a>
-            <div class="mb-3"></div>
+            <br><br>
             <div class="media d-flex align-items-center"><img src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" alt="..." style="width: 60px; height: 60px;" class="mr-3 rounded-circle img-thumbnail shadow-sm">
                 <div class="media-body">
-                    <h4 class="m-0 text-light">&nbsp; Jolo A. Cañete</h4>
-                    <p class="font-weight-light text-secondary mb-0">&nbsp; Resident</p>
+                    <h4 class="m-0 text-light">
+                        <?php
+                        $sql1 = "SELECT * FROM user WHERE userID = '$user_id'";
+                        $result1 = $conn->query($sql1);
+                        $user = $result1->fetch_assoc();
+                        if ($user) {
+                            echo '<h4 class="m-0 text-light">&nbsp;&nbsp;' . $user['username'] . '</h4>';
+                        } else {
+                            echo '<h4 class="m-0 text-light">&nbsp;&nbsp;User not found</h4>';
+                        }
+                        ?></h4>
+                    <p class="font-weight-light text-secondary mb-0">&nbsp;&nbsp; Resident</p>
                 </div>
             </div>
         </div>
 
-        <ul class="nav flex-column bg-dark mb-0">
+        <ul class="nav flex-column bg-dark">
             <li class="nav-item">
                 <a href="home.php" class="nav-link text-light font-italic">
                     <i class="bi bi-house-door text-light fa-fw"></i>
@@ -68,6 +74,12 @@ include "upper.php";
                 <a href="additem.php" class="nav-link text-light font-italic">
                     <i class="bi bi-box text-light fa-fw"></i>
                     Inventory
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="transaction.php" class="nav-link text-light font-italic">
+                    <i class="bi bi-arrow-repeat text-light fa-fw"></i>
+                    Transaction
                 </a>
             </li>
             <li class="nav-item">
@@ -104,6 +116,11 @@ include "upper.php";
         <div class="page-content" id="content">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
+                    <Div><a class="h4 text-light link-offset-2 link-underline link-underline-opacity-0" href="home.php">
+
+                            <img src="picture/logo.png" alt="I S H A R E logo" style="width: 50px; height: 40px;">
+                            I S H A R E</Div>
+                    </a>
                     <button id="sidebarCollapse" type="button" class="btn btn-outline-secondary shadow-sm px-4 me-3"><i class="fa fa-bars mr-2"></i></button>
                     <script>
                         $(function() {
@@ -126,7 +143,8 @@ include "upper.php";
                                 <div class="input-group-append">
                                     <button class="btn rounded-0" type="button" style="background-color: #212529; border-color: white;" onclick="performSearch()">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-search" viewBox="0 0 16 16">
-                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" /></svg>
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                        </svg>
                                     </button>
                                 </div>
                             </div>
@@ -190,3 +208,4 @@ include "upper.php";
 </body>
 
 </html>
+<br><br>

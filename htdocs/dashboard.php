@@ -29,7 +29,7 @@
 
 
   <div class="container my-5">
-    <h1 class="mb-4">Engagement Dashboard</h1>
+  <h1 class="text-center mb-4 mt-3"><i class="bi-speedometer2"></i> DASHBOARD</h1>
     
     <div class="row mb-4">
       <div class="col-md-6">
