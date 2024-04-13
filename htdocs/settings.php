@@ -35,8 +35,10 @@ while ($userRow = mysqli_fetch_assoc($query)) {
 <html lang="en">
 
 <head>
-    <title>Title</title>
+    <title>Settings</title>
     <!-- Required meta tags -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <style>
@@ -61,6 +63,9 @@ while ($userRow = mysqli_fetch_assoc($query)) {
             font-weight: 600;
             background-color: transparent;
         }
+        .modal-dialog {
+      max-width: 600px;
+    }
     </style>
 
 </head>
@@ -157,8 +162,8 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                                             <div class="col-md-6 mb-3">
                                                 <div class="d-flex align-items-center">
                                                     <div class="fw-bold text-secondary me-2">Email:</div>
-                                                    <span class="text-dark"><?php echo $userData['userEmail']; ?></span>
-                                                    <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
+                                                    <span class="text-dark" id="data-display"><?php echo $userData['userEmail']; ?></span>
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm ms-auto"  data-bs-toggle="modal" data-bs-target="#editModal_email">
                                                         <i class="bi bi-pencil-fill"></i>
                                                     </button>
                                                 </div>
@@ -253,12 +258,15 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                 </div>
             </div>
         </div>
+    <!-- modals for interactive pens -->
+    <?php include 'setting_modals.php'; ?> 
         
     </main>
 
     <footer>
         <!-- place footer here -->
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 

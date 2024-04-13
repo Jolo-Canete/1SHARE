@@ -55,10 +55,10 @@ input[type=number]::-webkit-outer-spin-button {
                         <div class="mb-3">
                             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>"  enctype="multipart/form-data">
                                 <!--- Login --->
-                                <label for="email_address"><b>Email Address</b></label>
+                                <label for="email_address"><b>Username</b></label>
                                 <div class="input-group flex-nowrap">
-                                    <span class="input-group-text" id="addon-wrapping">@</span>
-                                    <input type="text" class="form-control" name="Lgn_Username" placeholder="Email Address or Username" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
+                                    <span class="input-group-text" id="addon-wrapping"><ion-icon name="call-outline"></ion-icon></span>
+                                    <input type="text" class="form-control" name="Lgn_Username" placeholder="Phone Number or Username" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
 
                                 </div>
                                 <div class="mb-3"></div>
@@ -133,7 +133,7 @@ input[type=number]::-webkit-outer-spin-button {
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="mobile_number" class="form-label"><b>Mobile Number</b></label>
-                                                        <input type="number" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" aria-label="Enter mobile number">
+                                                        <input type="number" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" aria-label="Enter mobile number" min="0">
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="email_address" class="form-label"><b>Email Address</b></label>
@@ -185,6 +185,8 @@ input[type=number]::-webkit-outer-spin-button {
                         </form>
 
                         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+                        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+                        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
                         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
 <!-- Create database first before operating -->
@@ -198,12 +200,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['forgetPass'])) {
         $username = trim($_POST['Lgn_Username']);
         $password = trim($_POST['Lgn_Password']);
-    
+
+
+        // If empty username
         if (empty($username)) { 
             echo "<div class='alert alert-warning mt-3'>Please enter your username.</div>" ;
             return;
         }
-    
+
+     
             // Prepare the MySQL query
             $sql = "SELECT * FROM user WHERE username = '$username'";
             $result = $conn->query($sql);
@@ -272,13 +277,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return;
         }
 
-        // // If the email is already taken
-        // $sql = "SELECT * FROM user WHERE userEmail = '$email'";
-        // $result = $conn->query($sql);
-        // if ($result->num_rows > 0) {
-        //     echo '<div class="alert alert-danger mt-3">Email is already taken.</div>';
-        //     return;
-        // }
+        // If the email is already taken
+        $sql = "SELECT * FROM user WHERE userEmail = '$email'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            echo '<div class="alert alert-danger mt-3">Email is already taken.</div>';
+            return;
+        }
 
         // Upload Image to the different directory
         $targetDirectory = "verify/";
@@ -349,10 +354,10 @@ if (isset($_POST['login'])) {
 
     try {
         // Prepare the MySQL query
-        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
-            $sql = "SELECT * FROM user WHERE userEmail = '$login'";
+        if (preg_match("/^[0-9]{11}$/", $login)) {
+            $sql = "SELECT * FROM user WHERE contactNumber = TRIM('$login')";
         } else {
-            $sql = "SELECT * FROM user WHERE username = '$login'";
+            $sql = "SELECT * FROM user WHERE username = TRIM('$login')";
         }
 
         $result = $conn->query($sql);
@@ -382,6 +387,7 @@ if (isset($_POST['login'])) {
                 </svg>
                         <div>
                             Try to remember your password again. If not, try to reset your password.
+                            '. $row['contactNumber'].'
                         </div>
                     </div>
                 ';
