@@ -14,6 +14,7 @@ $user_id = $_SESSION['user_id'];
 $username = $_SESSION['username'];
 $email = $_SESSION['email'];
 
+
 $sql = "SELECT * FROM item WHERE itemAvailability = 'Available'";
 
 $result = $conn->query($sql);

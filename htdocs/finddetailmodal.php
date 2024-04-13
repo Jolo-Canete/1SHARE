@@ -25,35 +25,35 @@
                <h5 id="modalItemName"></h5>
 
                <!-- Other Item Details -->
-               <p class="text-secondary"><i class="bi bi-tags-fill"></i> <b>Category:</b> <span class="text-dark" id="modalItemCategory"></span></p>
-               <p class="text-secondary"><i class="bi bi-card-text"></i> <b>Description:</b> <span class="text-dark" id="modalItemDescription"></span></p>
-               <p class="text-secondary"><i class="bi bi-hammer"></i> <b>Condition:</b> <span class="text-dark" id="modalItemCondition"></span></p>
-               <p class="text-secondary"><i class="bi bi-check-circle-fill"></i> <b>Availability:</b> <span class="text-dark" id="modalItemAvailability"></span></p>
+               <p><i class="bi bi-tags-fill"></i> <b>Category:</b> <span class="text-dark" id="modalItemCategory"></span></p>
+               <p><i class="bi bi-card-text"></i> <b>Description:</b> <span class="text-dark" id="modalItemDescription"></span></p>
+               <p><i class="bi bi-hammer"></i> <b>Condition:</b> <span class="text-dark" id="modalItemCondition"></span></p>
+               <p><i class="bi bi-check-circle-fill"></i> <b>Availability:</b> <span class="text-dark" id="modalItemAvailability"></span></p>
                <p style="display: none;"><i class="bi bi-check-circle-fill"></i> <b>Item ID:</b> <span class="text-dark" id="modalItemID"></span></p>
 
-               <p class="text-secondary"><i class="bi bi-arrow-repeat"></i> <b>Open For:</b> <span class="text-dark" id="modalItemRequestType"></span></p>
+               <p><i class="bi bi-arrow-repeat"></i> <b>Open For:</b> <span class="text-dark" id="modalItemRequestType"></span></p>
 
                <!-- Display Buy Price field if request type is Buy -->
                <div id="buyField" style="display: none;">
-                 <p class="text-secondary"><i class="bi bi-cash-coin"></i> <b>Sell Price:</b> ₱<span class="text-dark" id="modalBuyPrice"></span></p>
+                 <p><i class="bi bi-cash-coin"></i> <b>Sell Price:</b> ₱<span class="text-dark" id="modalBuyPrice"></span></p>
                </div>
 
                <!-- Display Borrow Price and Borrowed Duration fields if request type is Borrow -->
                <div id="borrowFields" style="display: none;">
-                 <p class="text-secondary"><i class="bi bi-cash"></i> <b>Borrow Price:</b> ₱<span class="text-dark" id="modalBorrowPrice"></span></p>
-                 <p class="text-secondary"><i class="bi bi-clock"></i> <b>Borrowed Duration:</b> <span class="text-dark" id="modalBorrowDuration"></span> Day/s</p>
+                 <p><i class="bi bi-cash"></i> <b>Borrow Price:</b> ₱<span class="text-dark" id="modalBorrowPrice"></span></p>
+                 <p><i class="bi bi-clock"></i> <b>Borrowed Duration:</b> <span class="text-dark" id="modalBorrowDuration"></span> Day/s</p>
                </div>
 
 
                <!-- Display Date Time Posted -->
-               <p class="text-secondary"><i class="bi bi-calendar"></i> <b>Date Time Posted:</b> <span class="text-dark" id="modalDateTimePosted"></span></p>
+               <p><i class="bi bi-calendar"></i> <b>Date Time Posted:</b> <span class="text-dark" id="modalDateTimePosted"></span></p>
              </div>
            </div>
          </div>
          <div class="modal-footer">
            <div class="d-flex justify-content-start align-items-center flex-grow-1">
              <p class="mb-0 text-secondary"><i class="bi bi-box"></i> <b>Quantity:</b> <span class="text-dark" id="modalItemQuantity"></span> Item/s Left!</p>
-           </div>
+            </div>
            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
              <i class="bi bi-x"></i> Close
            </button>
@@ -116,6 +116,8 @@
        document.getElementById('modalContent').style.display = 'none';
        document.getElementById('loadingIndicator').style.display = 'block';
        document.getElementById('cartButton').style.display = 'none';
+       document.getElementById('editButton').style.display = 'none';
+
 
        document.getElementById('modalItemImage').src = "pictures/" + itemImagePath;
 
@@ -171,6 +173,8 @@
 
            // Show edit button
            document.getElementById('cartButton').style.display = 'block';
+           document.getElementById('editButton').style.display = 'block';
+
 
            document.getElementById('modalDateTimePosted').textContent = formattedDate;
          },

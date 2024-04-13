@@ -204,8 +204,8 @@ if (isset($_GET['search_term'])) {
                                         </div>
                                         <hr>
                                         <div>
-                                            <p class="mb-0 text-secondary"><i class="bi bi-tags-fill"></i> <small><b>Category:</b> <?php echo $item['category']; ?></small></p>
-                                            <p class="text-secondary mb-0"><i class="bi bi-arrow-repeat"></i> <small><b>Open For:</b> <?php echo $item['requestType']; ?></small></p>
+                                            <p class="mb-0 text-secondary"><i class="bi bi-tags-fill"></i> <small><b></b> <?php echo $item['category']; ?></small></p>
+                                            <p class="text-secondary mb-0"><i class="bi bi-arrow-repeat"></i> <small><b></b> <?php echo $item['requestType']; ?></small></p>
                                         </div>
                                         <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
                                         <p class="text-start text-secondary">

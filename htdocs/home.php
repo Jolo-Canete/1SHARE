@@ -64,7 +64,7 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
 
     /* Carousel Image Height */
     .carousel-item {
-        height: 38rem;
+        height: 40rem;
     }
 
     .carousel-item>img {
@@ -171,20 +171,19 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                 <!--- Categories --->
                 <div class="row">
                     <div class="col">
-                        <p class="h1"><b>TOP CATEGORIES</b></p>
+                        <h1 class="text-dark">TOP CATEGORIES</h1>
                     </div>
                 </div>
                 <div class="row">
                     <?php foreach ($topCategories as $category) { ?>
                         <div class="col">
-                            <a href="finditem.php?sort_by=item_category&category=<?php echo urlencode($category['category']); ?>" class="box-link">
+                            <a href="finditem.php?sort_by=item_category&category=<?php echo urlencode($category['category']); ?>" class="box-link text-decoration-none">
                                 <div class="box">
                                     <?php
                                     $randomImage = getRandomItemImage($conn, $category['category']);
                                     ?>
                                     <img src="pictures/<?php echo $randomImage; ?>" class="bd-placeholder-img rounded-circle" width="100" height="100" alt="<?php echo $category['category']; ?>">
-                                    <div class="mb-2"></div>
-                                    <div class="h3" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><?php echo $category['category']; ?></div>
+                                    <div class="h3 text-dark" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><?php echo $category['category']; ?></div>
                                 </div>
                             </a>
                         </div>
@@ -231,8 +230,8 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                                                 </div>
                                                 <hr>
                                                 <div>
-                                                    <p class="mb-0 text-secondary"><i class="bi bi-tags-fill"></i> <small><b>Category:</b> <?php echo $item['category']; ?></small></p>
-                                                    <p class="text-secondary mb-0"><i class="bi bi-arrow-repeat"></i> <small><b>Open For:</b> <?php echo $item['requestType']; ?></small></p>
+                                                    <p class="mb-0 text-secondary"><i class="bi bi-tags-fill"></i> <small> <?php echo $item['category']; ?></small></p>
+                                                    <p class="text-secondary mb-0"><i class="bi bi-arrow-repeat"></i> <small> <?php echo $item['requestType']; ?></small></p>
                                                 </div>
                                                 <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
                                                 <p class="text-start text-secondary">
@@ -259,8 +258,6 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                     <div class="row justify-content-center">
                         <div class="col-auto"> <a class="btn btn-outline-dark" href="finditem.php" role="button">See More</a> </div>
                     </div>
-
-
             </footer>
     </main>
     </div>
