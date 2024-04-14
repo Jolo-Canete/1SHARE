@@ -40,29 +40,36 @@ if (isset($_SESSION['user_id'])) {
         <?php
         include "additem.css";
         ?>
- .no-item {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-    }
+        .no-item {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
 
-    .no-item .card {
-        box-shadow: none;
-        border: none;
-    }
+        .no-item .card {
+            box-shadow: none;
+            border: none;
+        }
 
-    .no-item .card-title {
-        margin-top: 0;
-        font-size: 24px;
-    }
+        .no-item .card-title {
+            margin-top: 0;
+            font-size: 24px;
+        }
 
-    .no-item .card-text {
-        margin-bottom: 10px;
-    }
+        .no-item .card-text {
+            margin-bottom: 10px;
+        }
 
-    .no-item .btn {
-        width: 200px;
-    }
+        .no-item .btn {
+            width: 200px;
+        }
+
+        .card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
     </style>
 
 </head>
@@ -89,39 +96,37 @@ if (isset($_SESSION['user_id'])) {
                         </div>
                     </div>
                 </div>
-                <?php } else {
-                while ($item = $result->fetch_assoc()) { ?>
-                    <div class="container-box">
-                        <div class="row row-cols-1 row-cols-md-6 g-4">
-                            <!-- Item Card -->
-                            <div class="col">
-                                <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>')">
-                                    <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
-                                    <div class="card-body">
+            <?php } else { ?>
+                <div class="row row-cols-1 row-cols-md-5 g-4">
+                    <?php while ($item = $result->fetch_assoc()) { ?>
+                        <!-- Item Card -->
+                        <div class="col">
+                            <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>')">
+                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
+                                <div class="card-body d-flex flex-column justify-content-between">
+                                    <div>
                                         <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
                                         <p class="text-start text-secondary">
                                             <?php
                                             $availability = $item['itemAvailability'];
-                                            $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
+                                            $badgeColor = ($availability == 'Available') ? 'bg-success-subtle text-success-emphasis' : 'bg-danger-subtle text-danger-emphasis';
                                             echo "<span class='badge $badgeColor rounded-pill'>$availability</span>";
                                             ?>
                                         </p>
-                                        <p class="text-start text-secondary"><b>Quantity:</b> <?php echo $item['quantity']; ?></p>
                                     </div>
+                                    <p class="text-start text-secondary mb-0"><b>Quantity:</b> <?php echo $item['quantity']; ?></p>
                                 </div>
                             </div>
-
-                    <?php }
-            } ?>
                         </div>
-                    </div>
-                    <?php
-                    include "cartmodal.php";
-                    ?>
+                    <?php } ?>
+                </div>
+            <?php } ?>
         </div>
 
-
-
+        <?php
+        include "cartmodal.php";
+        ?>
+    </div>
 </body>
 
 </html>

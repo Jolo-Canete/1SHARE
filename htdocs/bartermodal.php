@@ -153,7 +153,7 @@ if (isset($_SESSION['user_id'])) {
                     console.log(response);
                     if (response === "Success") {
                         alert("Successful");
-                        window.location.href = "request.php";
+                        window.location.href = "pending.php";
                     }
                 },
                 error: function(xhr, status, error) {

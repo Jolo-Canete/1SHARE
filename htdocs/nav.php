@@ -59,52 +59,66 @@ include "upper.php";
 
         <ul class="nav flex-column bg-dark">
             <li class="nav-item">
-                <a href="home.php" class="nav-link text-light font-italic">
-                    <i class="bi bi-house-door text-light fa-fw"></i>
-                    Home
-                </a>
+                <a href="home.php" class="nav-link text-light font-italic"> <i class="bi bi-house-door text-light fa-fw"></i>Home</a>
             </li>
             <li class="nav-item">
-                <a href="profile.php" class="nav-link text-light font-italic">
-                    <i class="bi bi-person-circle text-light fa-fw"></i>
-                    Profile
-                </a>
+                <a href="profile.php" class="nav-link text-light font-italic"> <i class="bi bi-person-circle text-light fa-fw"></i>Profile</a>
             </li>
             <li class="nav-item">
-                <a href="additem.php" class="nav-link text-light font-italic">
-                    <i class="bi bi-box text-light fa-fw"></i>
-                    Inventory
+                <a href="additem.php" class="nav-link text-light font-italic"> <i class="bi bi-box text-light fa-fw"></i>Inventory</a>
+            </li>
+            <li class="nav-item nav-item-request">
+                <a class="nav-link text-light font-italic d-flex align-items-center justify-content-between collapsed" data-bs-toggle="collapse" href="#transaction-collapse" aria-expanded="false">
+                    <span> <i class="bi bi-arrow-repeat text-light fa-fw"></i>Transaction </span><i class="bi bi-chevron-down text-light" style="font-size: 1rem;"></i>
                 </a>
+                <div class="collapse" id="transaction-collapse">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item">
+                            <a href="tranOngoing.php" class="nav-link text-light font-italic nav-collapse-item">
+                                <i class="bi-clock-history" style="font-size: 1rem;"></i>Ongoing
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="tranSuccessful.php" class="nav-link text-light font-italic nav-collapse-item">
+                                <i class="bi-check-circle" style="font-size: 1rem;"></i>Successful
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item nav-item-request">
+                <a class="nav-link text-light font-italic d-flex align-items-center justify-content-between collapsed" data-bs-toggle="collapse" href="#request-collapse" aria-expanded="false">
+                    <span> <i class="bi bi-card-checklist text-light fa-fw"></i>Request </span><i class="bi bi-chevron-down text-light" style="font-size: 1rem;"></i>
+                </a>
+                <div class="collapse" id="request-collapse">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item">
+                            <a href="incoming.php" class="nav-link text-light font-italic nav-collapse-item">
+                                <i class="bi-box-arrow-down" style="font-size: 1rem;"></i>Incoming
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pending.php" class="nav-link text-light font-italic nav-collapse-item">
+                                <i class="bi-clock-history" style="font-size: 1rem;"></i>Pending
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="successful.php" class="nav-link text-light font-italic nav-collapse-item">
+                                <i class="bi-check-circle" style="font-size: 1rem;"></i>Successful
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a href="cart.php" class="nav-link text-light font-italic"> <i class="bi-cart text-light fa-fw"></i>Cart</a>
             </li>
             <li class="nav-item">
-                <a href="transaction.php" class="nav-link text-light font-italic">
-                    <i class="bi bi-arrow-repeat text-light fa-fw"></i>
-                    Transaction
-                </a>
+                <a href="dashboard.php" class="nav-link text-light font-italic"> <i class="bi bi-speedometer2 text-light fa-fw"></i>Dashboard</a>
             </li>
             <li class="nav-item">
-                <a href="request.php" class="nav-link text-light font-italic">
-                    <i class="bi-card-checklist text-light fa-fw"></i>
-                    Request Approval
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="cart.php" class="nav-link text-light font-italic">
-                    <i class="bi-cart text-light fa-fw"></i>
-                    Cart
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="dashboard.php" class="nav-link text-light font-italic">
-                    <i class="bi bi-speedometer2 text-light fa-fw"></i>
-                    Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="settings.php" class="nav-link text-light font-italic">
-                    <i class="bi bi-gear text-light fa-fw"></i>
-                    Settings
-                </a>
+                <a href="settings.php" class="nav-link text-light font-italic"> <i class="bi bi-gear text-light fa-fw"></i>Settings</a>
             </li>
         </ul>
     </div>

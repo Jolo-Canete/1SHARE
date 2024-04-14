@@ -90,30 +90,29 @@ include "nav.php";
                         </div>
                     </div>
                 <?php } else { ?>
-                    <div class="container-box">
-                        <div class="row row-cols-1 row-cols-md-5 g-4">
+                        <div class="row row-cols-1 row-cols-md-6 g-4">
                             <?php foreach ($items as $item) { ?>
                                 <!-- Item Card -->
                                 <div class="col">
                                     <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>')">
-                                        <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
+                                        <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>" style="border-radius: 0px;">
                                         <div class="card-body">
                                             <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
                                             <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
                                             <p class="text-start text-secondary">
                                                 <?php
                                                 $availability = $item['itemAvailability'];
-                                                $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
+                                                $badgeColor = ($availability == 'Available') ? 'bg-success-subtle text-success-emphasis' : 'bg-danger-subtle text-danger-emphasis';
                                                 echo "<span class='badge $badgeColor rounded-pill'>$availability</span>";
                                                 ?>
                                             </p>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             <?php } ?>
                         <?php } ?>
                         </div>
-                    </div>
             </div>
 
             <!-- Item Detail Modal -->
