@@ -30,7 +30,7 @@
  <body>
  <div class="container">
 
-         <h4>Last Updated: <a href="#">March 24, 2024</a></h4>
+         <h4 class="mt-0">Last Updated: <a href="#">March 24, 2024</a></h4>
          <p>This platform is designed to connect residents within our barangay for seamless borrowing, buying, and bartering of items. By joining, you agree to the following terms and conditions:</p>
 
          <h4>1. Eligibility</h4>

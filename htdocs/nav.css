@@ -7,7 +7,10 @@ body {
 }
 
 .navbar {
-
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     z-index: 1000;
 }
 
@@ -24,12 +27,20 @@ body {
     color: #fff;
 }
 
+#sidebarCollapse {
+
+    margin-left: 20px;
+}
+
 .sidebar.collapsed .nav-text {
     display: block;
+    margin-left: 260px;
+
 }
 
 .nav-item {
     transition: background-color 0.3s ease;
+
 }
 
 .nav-link svg {
@@ -60,7 +71,7 @@ body {
 }
 
 .vertical-nav .nav-link {
-    padding: 10px;
+    padding: 8px;
     margin-left: 10px;
     text-decoration: none;
     display: block;
@@ -72,6 +83,19 @@ body {
     border-radius: 0.25rem;
     transition: all 0.3s ease-in-out;
     width: 260px;
+}
+
+.vertical-nav .nav-link:hover {
+    background-color: #808080;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease-in-out;
+    width: 256px;
+}
+
+/* Custom CSS for the collapsed items under the "Request" section */
+.nav-item-request .nav-collapse-item:hover {
+    width: 240px;
+    /* Adjust the width as needed */
 }
 
 #clam:hover {
@@ -96,6 +120,7 @@ body {
     width: 100%;
     margin: 0;
 }
+
 
 @media (max-width: 768px) {
     #sidebar {

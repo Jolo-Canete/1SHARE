@@ -16,135 +16,157 @@
                 <div id="modalContent" style="display: none;">
                     <div class="row">
                         <div class="col-md-6">
-                            <img id="modalItemImage" src="" alt="" class="img-fluid rounded">
+                            <img id="modalItemImage" src="" alt="" class="img-fluid h-100 w-100" style="border-radius: 0px;">
                         </div>
-
                         <div class="col-md-6">
                             <!-- Item Name -->
-                            <h5 id="modalItemName"></h5>
-
+                            <h5 class="h5" id="modalItemName"></h5>
+                            <p><span class="text-dark" id="modalItemDescription"></span></p>
                             <!-- Other Item Details -->
-                            <p class="text-secondary"><i class="bi bi-tags-fill"></i> <b>Category:</b> <span class="text-dark" id="modalItemCategory"></span></p>
-                            <p class="text-secondary"><i class="bi bi-card-text"></i> <b>Description:</b> <span class="text-dark" id="modalItemDescription"></span></p>
-                            <p class="text-secondary"><i class="bi bi-hammer"></i> <b>Condition:</b> <span class="text-dark" id="modalItemCondition"></span></p>
-                            <p class="text-secondary"><i class="bi bi-check-circle-fill"></i> <b>Availability:</b> <span class="text-dark" id="modalItemAvailability"></span></p>
-                            <p style="display: none;"><i class="bi bi-check-circle-fill"></i> Item ID: <span id="modalItemID"></span></p>
+                            <table class="table table-borderless">
+                                <tr>
+                                    <td><i class="bi bi-tags text-dark"></i> <b>Category</b> </td>
+                                    <td><span class="text-dark" id="modalItemCategory"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-hammer text-dark"></i> <b>Condition</b></td>
+                                    <td><span class="text-dark" id="modalItemCondition"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-check-circle-fill text-dark"></i> <b>Availability</b></td>
+                                    <td><span class="text-dark" id="modalItemAvailability"></span></td>
+                                </tr>
+                                <tr style="display: none;">
+                                    <td><i class="bi bi-check-circle-fill text-dark"></i> <b>Item ID</b></td>
+                                    <td><span class="text-dark" id="modalItemID"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><i class="bi bi-arrow-repeat text-dark"></i> <b>Open For</b></td>
+                                    <td><span class="text-dark" id="modalItemRequestType"></span></td>
+                                </tr>
 
-                            <p class="text-secondary"><i class="bi bi-arrow-repeat"></i> <b>Open For:</b> <span class="text-dark" id="modalItemRequestType"></span> </p>
+                                <tbody id="buyField">
+                                    <tr>
+                                        <td><i class="bi bi-cash-coin text-dark"></i> <b>Sell Price</b></td>
+                                        <td>₱<span class="text-dark" id="modalBuyPrice"></span></td>
+                                    </tr>
+                                </tbody>
 
-                            <!-- Display Buy Price field if request type is Buy -->
-                            <div id="buyField" style="display: none;">
-                                <p class="text-secondary"><i class="bi bi-cash-coin"></i> <b>Sell Price:</b> ₱<span class="text-dark" id="modalBuyPrice"></span></p>
-                            </div>
+                                <tbody id="borrowFields">
+                                    <tr>
+                                        <td><i class="bi bi-cash text-dark"></i> <b>Borrow Price</b></td>
+                                        <td>₱<span class="text-dark" id="modalBorrowPrice"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="bi bi-clock text-dark"></i> <b>Borrowed Duration</b></td>
+                                        <td><span class="text-dark" id="modalBorrowDuration"></span> Day/s</td>
+                                    </tr>
+                                </tbody>
 
-                            <!-- Display Borrow Price and Borrowed Duration fields if request type is Borrow -->
-                            <div id="borrowFields" style="display: none;">
-                                <p class="text-secondary"><i class="bi bi-cash"></i> <b>Borrow Price:</b> ₱<span class="text-dark" id="modalBorrowPrice"></span></p>
-                                <p class="text-secondary"><i class="bi bi-clock"></i> <b>Borrowed Duration:</b> <span class="text-dark" id="modalBorrowDuration"></span> Day/s</p>
-                            </div>
-
-                            <!-- Display Date Time Posted -->
-                            <p class="text-secondary"><i class="bi bi-calendar"></i> <b>Date & Time Posted:</b> <span class="text-dark" id="modalDateTimePosted"></span></p>
+                                <tr>
+                                    <td><i class="bi bi-calendar text-dark"></i> <b>Date Time Posted</b></td>
+                                    <td><span class="text-dark" id="modalDateTimePosted"></span></td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <div class="d-flex justify-content-start align-items-center flex-grow-1">
-                    <p class="mb-0 text-secondary"><i class="bi bi-box"></i> <b>Quantity:</b> <span class="text-dark" id="modalItemQuantity"></span> Item/s Left</p>
+                <div class="modal-footer">
+                    <div class="d-flex justify-content-start align-items-center flex-grow-1">
+                        <p class="mb-0"><i class="bi bi-box"></i> <b>Quantity:</b> <span id="modalItemQuantity"></span> Item/s Left</p>
+                    </div>
+                    <button id="editButton" type="button" class="btn btn-primary" onclick="editItem()" style="display: none;">
+                        <i class="bi bi-pencil-fill"></i> Edit
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x"></i> Close
+                    </button>
                 </div>
-                <button id="editButton" type="button" class="btn btn-primary" onclick="editItem()" style="display: none;">
-                    <i class="bi bi-pencil-fill"></i> Edit
-                </button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="bi bi-x"></i> Close
-                </button>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    function editItem() {
-        // Get the item ID from the modal
-        var itemID = document.getElementById('modalItemID').textContent;
+    <script>
+        function editItem() {
+            // Get the item ID from the modal
+            var itemID = document.getElementById('modalItemID').textContent;
 
-        // Redirect to edit.php with the item ID as query parameter
-        window.location.href = 'edit.php?itemID=' + encodeURIComponent(itemID);
-    }
-</script>
+            // Redirect to edit.php with the item ID as query parameter
+            window.location.href = 'edit.php?itemID=' + encodeURIComponent(itemID);
+        }
+    </script>
 
-<script>
-    function populateModal(itemName, itemImagePath, itemAvailability, requestType) {
-        document.getElementById('modalContent').style.display = 'none';
-        document.getElementById('loadingIndicator').style.display = 'block';
-        document.getElementById('editButton').style.display = 'none';
+    <script>
+        function populateModal(itemName, itemImagePath, itemAvailability, requestType) {
+            document.getElementById('modalContent').style.display = 'none';
+            document.getElementById('loadingIndicator').style.display = 'block';
+            document.getElementById('editButton').style.display = 'none';
 
 
-        // Update item image
-        document.getElementById('modalItemImage').src = "pictures/" + itemImagePath;
+            // Update item image
+            document.getElementById('modalItemImage').src = "pictures/" + itemImagePath;
 
-        // AJAX request to fetch item details based on item image path
-        $.ajax({
-            type: 'POST',
-            url: 'get_item_details.php',
-            data: {
-                itemImagePath: itemImagePath
-            },
-            dataType: 'json',
-            success: function(response) {
-                // Populate modal with fetched item details
-                document.getElementById('loadingIndicator').style.display = 'none';
+            // AJAX request to fetch item details based on item image path
+            $.ajax({
+                type: 'POST',
+                url: 'get_item_details.php',
+                data: {
+                    itemImagePath: itemImagePath
+                },
+                dataType: 'json',
+                success: function(response) {
+                    // Populate modal with fetched item details
+                    document.getElementById('loadingIndicator').style.display = 'none';
 
-                document.getElementById('modalItemID').textContent = response.itemID;
-                document.getElementById('modalItemQuantity').textContent = response.itemQuantity;
-                document.getElementById('modalItemName').textContent = response.itemName;
-                document.getElementById('modalItemCategory').textContent = response.category;
-                document.getElementById('modalItemDescription').textContent = response.ItemDescription;
-                document.getElementById('modalItemCondition').textContent = response.itemCondition;
-                document.getElementById('modalItemAvailability').textContent = itemAvailability;
-                document.getElementById('modalItemRequestType').textContent = requestType;
+                    document.getElementById('modalItemID').textContent = response.itemID;
+                    document.getElementById('modalItemQuantity').textContent = response.itemQuantity;
+                    document.getElementById('modalItemName').textContent = response.itemName;
+                    document.getElementById('modalItemCategory').textContent = response.category;
+                    document.getElementById('modalItemDescription').textContent = response.ItemDescription;
+                    document.getElementById('modalItemCondition').textContent = response.itemCondition;
+                    document.getElementById('modalItemAvailability').textContent = itemAvailability;
+                    document.getElementById('modalItemRequestType').textContent = requestType;
 
-                // Show/hide appropriate price fields based on the request type
-                if (requestType.includes('Buy')) {
-                    document.getElementById('buyField').style.display = 'block';
-                    document.getElementById('modalBuyPrice').textContent = parseFloat(response.buyPrice).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");; // Format to 2 decimal places
-                } else {
-                    document.getElementById('buyField').style.display = 'none';
+                    // Show/hide appropriate price fields based on the request type
+                    if (requestType.includes('Buy')) {
+                        $("#buyField").show();
+                        $("#modalBuyPrice").text(parseFloat(response.buyPrice).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                    } else {
+                        $("#buyField").hide();
+                    }
+
+                    if (requestType.includes('Borrow')) {
+                        $("#borrowFields").show();
+                        $("#modalBorrowPrice").text(parseFloat(response.borrowPrice).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+                        $("#modalBorrowDuration").text(parseFloat(response.borrowDuration));
+                    } else {
+                        $("#borrowFields").hide();
+                    }
+
+                    var datePosted = new Date(response.DateTimePosted);
+                    var formattedDate = datePosted.toLocaleString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+
+
+                    document.getElementById('modalDateTimePosted').textContent = formattedDate;
+                    // Show modal content
+                    document.getElementById('modalContent').style.display = 'block';
+
+                    // Show edit button
+                    document.getElementById('editButton').style.display = 'block';
+                },
+
+                error: function(xhr, status, error) {
+                    // Handle error
+                    console.error(xhr.responseText);
                 }
-
-                if (requestType.includes('Borrow')) {
-                    document.getElementById('borrowFields').style.display = 'block';
-                    document.getElementById('modalBorrowPrice').textContent = parseFloat(response.borrowPrice).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");; // Format to 2 decimal places
-                    document.getElementById('modalBorrowDuration').textContent = parseFloat(response.borrowDuration); // Format to 2 decimal places
-                } else {
-                    document.getElementById('borrowFields').style.display = 'none';
-                }
-
-                var datePosted = new Date(response.DateTimePosted);
-                var formattedDate = datePosted.toLocaleString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                });
-
-
-                document.getElementById('modalDateTimePosted').textContent = formattedDate;
-                // Show modal content
-                document.getElementById('modalContent').style.display = 'block';
-
-                // Show edit button
-                document.getElementById('editButton').style.display = 'block';
-            },
-
-            error: function(xhr, status, error) {
-                // Handle error
-                console.error(xhr.responseText);
-            }
-        });
-    }
-</script>
+            });
+        }
+    </script>
