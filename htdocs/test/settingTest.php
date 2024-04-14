@@ -21,8 +21,8 @@
             <h5 class="card-title">Interactive Pencil-Fill</h5>
             <p class="card-text" id="data-display">This is the data to be edited.</p>
             <div class="d-flex align-items-center">
-              <span class="bi bi-pencil-fill text-primary" data-bs-toggle="modal" data-bs-target="#editModal_email"></span>
-              <span class="ms-2 text-muted">Click to edit</span>
+              <span class="bi bi-pencil-fill text-primary" data-bs-toggle="modal" data-bs-target="#editModal_email">
+              <span class="ms-2 text-muted">Click to edit</span></span>
             </div>
           </div>
         </div>
@@ -31,7 +31,7 @@
   </div>
 
   <!-- Edit Modal -->
-  <div class="modal fade" id="editModal_email" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal fade" id="editModal_email" tabindex="-1" aria-labelledby="editModalLabel_email" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

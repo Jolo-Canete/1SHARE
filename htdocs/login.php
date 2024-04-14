@@ -57,10 +57,10 @@ include('1db.php'); ?>
                         <div class="mb-3">
                             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
                                 <!--- Login --->
-                                <label for="email_address"><b>Email Address</b></label>
+                                <label for="email_address"><b>Username</b></label>
                                 <div class="input-group flex-nowrap">
-                                    <span class="input-group-text" id="addon-wrapping">@</span>
-                                    <input type="text" class="form-control" name="Lgn_Username" placeholder="Email Address or Username" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
+                                    <span class="input-group-text" id="addon-wrapping"><ion-icon name="call-outline"></ion-icon></span>
+                                    <input type="text" class="form-control" name="Lgn_Username" placeholder="Phone Number or Username" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
 
                                 </div>
                                 <div class="mb-3"></div>
@@ -355,10 +355,10 @@ if (isset($_POST['login'])) {
 
     try {
         // Prepare the MySQL query
-        if (filter_var($login, FILTER_VALIDATE_EMAIL)) {
-            $sql = "SELECT * FROM user WHERE userEmail = '$login'";
+        if (preg_match("/^[0-9]{11}$/", $login)) {
+            $sql = "SELECT * FROM user WHERE contactNumber = TRIM('$login')";
         } else {
-            $sql = "SELECT * FROM user WHERE username = '$login'";
+            $sql = "SELECT * FROM user WHERE username = TRIM('$login')";
         }
 
         $result = $conn->query($sql);
@@ -388,6 +388,7 @@ if (isset($_POST['login'])) {
                 </svg>
                         <div>
                             Try to remember your password again. If not, try to reset your password.
+                            '. $row['contactNumber'].'
                         </div>
                     </div>
                 ';
