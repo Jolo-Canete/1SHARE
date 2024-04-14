@@ -116,6 +116,10 @@ $time = $dateTime[1];
         .modal-dialog {
       max-width: 600px;
     }
+
+    #unverified {
+        color: #EE4B2B !important;
+    }
     </style>
 
 </head>
@@ -239,9 +243,19 @@ $time = $dateTime[1];
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="fw-bold text-secondary me-2">Status:</div><?php if($userData['status'] === 'Unverified') {echo '<span class="text-primary"><b>Unverified</b>' . '<span class="text-secondary mx-2"><small>DATE: '. $dateJoinedMonth . '&nbsp;' .  $dateJoinedHour.':'. $dateJoinedMinute.  '</small></span>';} else {echo '<span class="text-primary"><b>Verified</b>' . '<span class="text-secondary mx-2"><small>DATE: '. $dateJoinedMonth . '&nbsp;' .  $dateJoinedHour.':'. $dateJoinedMinute.  '</small></span>';} ?>
-                                                </div>
+                                            <div class="d-flex align-items-center">
+                                            <div class="fw-bold text-secondary me-2">Status:</div>
+                                            <?php 
+                                            if($userData['status'] === 'Unverified') {
+                                                echo '<span class="text-primary" id="unverified"><b>Unverified</b></span>';
+                                            } else {
+                                                echo '<span class="text-primary"><b>Verified</b></span>';
+                                            }
+                                            ?>
+                                            <span class="text-dark me-2 ms-2"><?php echo $dateJoinedMonth .'&nbsp;'. $dateJoinedDay.',&nbsp;'. $dateJoinedYear; ?></span>
+                                            <div class="fw-bold text-secondary me-2 ms-2">Time:</div>
+                                            <span class="text-dark"><?php echo $dateJoinedHour.':'.$dateJoinedMinute;?></span>
+                                        </div>
                                             </div>
                                         </div>
                                     </div>
