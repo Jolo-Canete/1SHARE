@@ -157,6 +157,7 @@
     .table-wrapper {
       width: 103%;
       margin: 0 auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     }
 
     .table thead th,
@@ -192,9 +193,6 @@
               <div>
                 <div class="flex-grow-1 d-flex justify-content-between align-items-center">
                   <h2 class="mb-0 fw-bold">Jolo A. Cañete</h2>
-                  <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#reportUserModal">
-                    <i class="bi bi-flag fs-5"></i>
-                  </button>
                 </div>
                 <div class="text-secondary">Resident</div>
                 <div>
@@ -225,31 +223,6 @@
             </div>
           </div>
         </div>
-
-        <!--- Report User Modal --->
-        <div class="modal fade" id="reportUserModal" tabindex="-1" aria-labelledby="reportUserModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="reportUserModalLabel">Report User</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <label class="form-label"><b>Please specify your reason for reporting this account</b></label>
-                <textarea class="form-control" aria-label="Report reason"></textarea>
-                <label class="form-label mt-3"><b>Upload a screenshot for evidence/proof</b></label>
-                <div class="input-group">
-                  <input type="file" class="form-control" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Report</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--- End of Report User Modal --->
 
         <!--- Tab --->
         <ul class="nav nav-underline mt-4 ms-4 justify-content-between" id="myTab" role="tablist">

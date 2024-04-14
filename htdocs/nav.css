@@ -27,15 +27,15 @@ body {
     color: #fff;
 }
 
-#sidebarCollapse{
+#sidebarCollapse {
 
-margin-left: 20px;
+    margin-left: 20px;
 }
 
 .sidebar.collapsed .nav-text {
     display: block;
     margin-left: 260px;
-    
+
 }
 
 .nav-item {
@@ -85,6 +85,18 @@ margin-left: 20px;
     width: 260px;
 }
 
+.vertical-nav .nav-link:hover {
+    background-color: #808080;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease-in-out;
+    width: 256px;
+}
+
+/* Custom CSS for the collapsed items under the "Request" section */
+.nav-item-request .nav-collapse-item:hover {
+    width: 240px;
+    /* Adjust the width as needed */
+}
 
 #clam:hover {
     color: #808080;

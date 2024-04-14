@@ -51,30 +51,6 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
         overflow-x: hidden;
     }
 
-    /* Carousel */
-    .carousel {
-        margin-bottom: 2rem;
-    }
-
-    /* Carousel Caption */
-    .carousel-caption {
-        bottom: 3rem;
-        z-index: 10;
-    }
-
-    /* Carousel Image Height */
-    .carousel-item {
-        height: 40rem;
-    }
-
-    .carousel-item>img {
-        position: absolute;
-        top: 0;
-        right: 0;
-        min-width: 100%;
-        height: 38rem;
-    }
-
     /* Box */
     .box {
         background-color: #f8f9fa;
@@ -100,26 +76,42 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
         color: #f8de7e;
     }
 
-    /* Responsive CSS */
-
-    @media (min-width: 40em) {
-
-        /* Bump up size of carousel content */
-        .carousel-caption p {
-            margin-bottom: 1.25rem;
-            font-size: 1.25rem;
-            line-height: 1.4;
-        }
-
-        .featurette-heading {
-            font-size: 50px;
-        }
+    .card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border-radius: 0px;
     }
 
-    @media (min-width: 62em) {
-        .featurette-heading {
-            margin-top: 7rem;
-        }
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .item:hover {
+        transform: translateY(-5px);
+        transition: transform 0.4s;
+    }
+
+    .item img {
+        border-radius: 5px;
+        margin-bottom: 10px;
+        width: 300px;
+        height: 300px;
+        object-fit: cover;
+    }
+
+    .item .content {
+        text-align: center;
+    }
+
+    .item h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .item p {
+        font-size: 1.2rem;
+        color: #666;
     }
 </style>
 
@@ -130,76 +122,72 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
 
     <main>
         <div class="page-content" id="content">
-            <div class="mt-3"></div>
+            <div class="mt-4"></div>
             <div class="container">
                 <?php
                 // SQL query to retrieve three random available items excluding those posted by the current user
-                $carouselSql = "SELECT * FROM item WHERE itemAvailability = 'Available' AND userID != '$user_id' ORDER BY RAND() LIMIT 3";
-                $carouselResult = $conn->query($carouselSql);
+                $carouselSql = "SELECT * FROM item WHERE itemAvailability = 'Available' AND userID != ? ORDER BY RAND() LIMIT 4";
+                $stmt = $conn->prepare($carouselSql);
+                $stmt->bind_param("i", $user_id);
+                $stmt->execute();
+                $carouselResult = $stmt->get_result();
                 $carouselItems = $carouselResult->fetch_all(MYSQLI_ASSOC);
                 ?>
-
-                <div id="myCarousel" class="carousel slide" data-bs-ride="carousel">
-                    <div class="carousel-indicators">
-                        <?php for ($i = 0; $i < count($carouselItems); $i++) { ?>
-                            <button type="button" data-bs-target="#myCarousel" data-bs-slide-to="<?php echo $i; ?>" <?php echo $i === 0 ? 'class="active"' : ''; ?> aria-label="Slide <?php echo $i + 1; ?>"></button>
-                        <?php } ?>
+                <div class="col">
+                    <div class="text-dark">
+                        <h1 class="display-4 fw-bold text-dark text-center">ADD TO CART NOW!</h1>
+                        <p class="lead text-secondary text-center mb-5">Explore our items and add to cart now!</p>
                     </div>
-                    <div class="carousel-inner">
-                        <?php foreach ($carouselItems as $index => $item) { ?>
-                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
-                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="d-block w-100" alt="Image Description">
-                                <div class="container-fluid">
-                                    <div class="carousel-caption text-start w-100">
-                                        <div class="bg-dark bg-opacity-75 w-100 px-4 py-2 rounded">
-                                            <h1 class="display-1 font-weight-bold text-shadow-lg text-white" style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);"><?php echo $item['itemName']; ?></h1>
-                                        </div>
-                                        <!-- Button to open item detail page -->
-                                        <p><a class="btn btn-sm btn-primary mt-2" href="itemdetail.php?id=<?php echo $item['itemID']; ?>">View Details</a></p>
-                                    </div>
-                                </div>
+                </div>
+                <div class="row">
+                    <?php foreach ($carouselItems as $index => $item) { ?>
+                        <div class="col-6 col-md-3 item">
+                            <img src="pictures/<?php echo $item['itemImage_path']; ?>" alt="<?php echo $item['itemName']; ?>" class="img-fluid shadow-lg">
+                            <div class="content">
+                                <h3 class="display-4 fw-bold text-dark text-center mb-1"><?php echo $item['itemName']; ?></h3>
+                                <p><a class="link-offset-2 link-underline link-underline-opacity-0 text-secondary lead" href="itemdetail.php?id=<?php echo $item['itemID']; ?>"><small>Shop Now</small></a></p>
                             </div>
-                        <?php } ?>
-                    </div> <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    </button>
-                </div>
-
-                <!--- Categories --->
-                <div class="row">
-                    <div class="col">
-                        <h1 class="text-dark">TOP CATEGORIES</h1>
-                    </div>
-                </div>
-                <div class="row">
-                    <?php foreach ($topCategories as $category) { ?>
-                        <div class="col">
-                            <a href="finditem.php?sort_by=item_category&category=<?php echo urlencode($category['category']); ?>" class="box-link text-decoration-none">
-                                <div class="box">
-                                    <?php
-                                    $randomImage = getRandomItemImage($conn, $category['category']);
-                                    ?>
-                                    <img src="pictures/<?php echo $randomImage; ?>" class="bd-placeholder-img rounded-circle" width="100" height="100" alt="<?php echo $category['category']; ?>">
-                                    <div class="h3 text-dark" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><?php echo $category['category']; ?></div>
-                                </div>
-                            </a>
                         </div>
                     <?php } ?>
                 </div>
-                <!--- End of Category --->
-
+                <!--- Categories --->
                 <div class="row">
                     <div class="col">
-                        <p class="h1 border-bottom border-dark border-5 p-2 text-center">DAILY DISCOVER</p>
+                        <div class="text-dark">
+                            <h1 class="display-4 fw-bold text-dark text-center">TOP CATEGORIES</h1>
+                            <p class="lead text-secondary text-center mb-0">Explore our top category of items</p>
+                        </div>
                     </div>
-                </div>
-                <!--- Item Display --->
-                <div class="container">
-                    <div class="container-box">
-                        <div class="row row-cols-1 row-cols-md-5 g-4">
+                    <div class="row row-cols-3 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4">
+                        <?php foreach ($topCategories as $category) { ?>
+                            <div class="col">
+                                <a href="finditem.php?sort_by=item_category&category=<?php echo urlencode($category['category']); ?>" class="text-decoration-none">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body text-center">
+                                            <?php
+                                            $randomImage = getRandomItemImage($conn, $category['category']);
+                                            ?>
+                                            <img src="pictures/<?php echo $randomImage; ?>" class="img-fluid rounded-circle mb-3" width="100" height="100" alt="<?php echo $category['category']; ?>">
+                                            <h5 class="card-title text-dark" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><?php echo $category['category']; ?></h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php } ?>
+                    </div>
+                    <!--- End of Category --->
+
+                    <div class="row">
+                        <div class="col">
+                            <div class="py-4 px-3 text-white">
+                                <h1 class="display-4 fw-bold text-dark text-center">DAILY DISCOVER</h1>
+                                <p class="lead text-center text-secondary">Explore our daily selection of items</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--- Item Display --->
+                    <div class="container">
+                        <div class="row row-cols-3 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4">
                             <?php if (empty($items)) { ?>
                                 <div class="col">
                                     <div class="card">
@@ -213,7 +201,7 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                                     <!-- Item Card -->
                                     <div class="col">
                                         <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>', '<?php echo $item['itemID']; ?>')">
-                                            <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
+                                            <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>" style="border-radius: 0px;">
                                             <div class="card-body">
                                                 <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
                                                 <div class="rating">
@@ -228,7 +216,7 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                                                     <label for="star1"><i class="fas fa-star"></i></label>
                                                     <input type="radio" name="rating" id="star1" value="1">
                                                 </div>
-                                                <hr>
+                                                <div class="mb-2"></div>
                                                 <div>
                                                     <p class="mb-0 text-secondary"><i class="bi bi-tags-fill"></i> <small> <?php echo $item['category']; ?></small></p>
                                                     <p class="text-secondary mb-0"><i class="bi bi-arrow-repeat"></i> <small> <?php echo $item['requestType']; ?></small></p>
@@ -247,21 +235,20 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                                 <?php } ?>
                             <?php } ?>
                         </div>
+                        <?php include "finddetailmodal.php"; ?>
                     </div>
-                    <?php include "finddetailmodal.php"; ?>
                 </div>
-            </div>
 
-            <footer>
-                <div class="container">
-                    <div class="mt-3"></div>
-                    <div class="row justify-content-center">
-                        <div class="col-auto"> <a class="btn btn-outline-dark" href="finditem.php" role="button">See More</a> </div>
-                    </div>
-            </footer>
+                <footer>
+                    <div class="container">
+                        <div class="mt-3"></div>
+                        <div class="row justify-content-center">
+                            <div class="col-auto"> <a class="btn btn-outline-dark" href="finditem.php" role="button">See More</a> </div>
+                            <div class="mb-2"></div>
+                        </div>
+                </footer>
     </main>
     </div>
-
 </body>
 
 </html>
