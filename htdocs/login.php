@@ -316,7 +316,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conn->begin_transaction();
     
             // Insert into user table without the verifyImage_path
-            $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password, Birthday, status) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password', '$birthDay', '$status')";
+            $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password, birthDay, status) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password', '$birthDay', '$status')";
     
             if ($conn->query($sql_user) === TRUE) {
                 // Get the last inserted ID
@@ -349,7 +349,6 @@ if (isset($_POST['login'])) {
 
     if (empty($login) || empty($password)) { 
         echo "<div class='alert alert-warning mt-3'>Username or email, and password are required.</div>" ;
-        return;
     }
 
     try {
