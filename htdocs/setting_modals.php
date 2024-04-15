@@ -37,6 +37,30 @@
     </div>
 </div>
 
+<!-- Modal for Birthday -->
+<div class="modal fade" id="editModal_birthdate" tabindex="-1" aria-labelledby="editModal_Birthday" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModal_Birthday">Edit Birthday</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="" method="post">
+                    <div class="mb-3">
+                        <label for="editModal_Birthday_input" class="form-label">Birthday to be Edited: <br> (Cannot be changed for 40 days upon submit) </label>
+                        <input type="date" name="editBirthday" id="editModal_Birthday_Input" class="form-control" >
+                    </div>
+                
+            </div>
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" name="submitEdit_Birthday">Save changes</button>
+            </div>
+            </form>
+</div>
+
 
 
 
@@ -73,10 +97,28 @@
                     echo "<script>alert('Email Update Failed')</script>";
                 }
             }
-
-        }     
+        }
         
+        if(isset($_POST['submitEdit_Birthday'])) {
+            $Birthday = trim($_POST['editBirthday']);
+            
 
+            if (empty($Birthday)) {
+                echo "<script>alert('Birthday cannot be empty')</script>";
+            } else {
+
+                $Birthday =  date('Y-m-d', strtotime($_POST['editBirthday']));
+
+                $sql = "UPDATE user SET birthDay = '$Birthday' WHERE userID = '$user_id'";
+                $result = mysqli_query($conn, $sql);
+                if ($result) {
+                    echo "<script>alert('Birthday Updated Successfully')</script>";
+                    echo "<script>window.location.href='settings.php'</script>";
+                } else {
+                    echo "<script>alert('Birthday Update Failed')</script>";
+                }
+            }
+        }
     }
 
 

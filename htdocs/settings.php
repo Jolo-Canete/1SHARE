@@ -42,42 +42,28 @@ $asteriskPassword = str_repeat("*", strlen($hashedPassword));
 $dateTime = explode(" ", $userData['dateJoined']);
 $date = $dateTime[0];
 $time = $dateTime[1];
-
-    // Format the integer date into string
-    $date = date("Y-m-d", strtotime($date));
-    $dateJoinedNum = date("m", strtotime($date));
-    $dateJoinedName = date('F', mktime(0, 0, 0, $dateJoinedNum, 10));
-
-    // Compile the output
-    $Date = str_replace($dateJoinedNum, $dateJoinedName, $date);
-
-    // Seperate the date
-    $dateJoined = explode("-", $Date);
-    $dateJoinedYear = $dateJoined[0];
-    $dateJoinedMonth = $dateJoined[1];
-    $dateJoinedDay = $dateJoined[2];
-
-    // Seperate the Time
+    // Convert the data to a timestamp
+    $dateTimeStamp = strtotime($date);
+    // Extract the year, month name, and day
+    $dateJoinedYear = date('Y', $dateTimeStamp);
+    $dateJoinedMonth = date('F', $dateTimeStamp);
+    $dateJoinedDay = date('j', $dateTimeStamp);
+    
+    // Split the Time from datetime
     $time = explode(":", $time);
     $dateJoinedHour = $time[0];
     $dateJoinedMinute = $time[1];
     $dateJoinedSecond = $time[2];
+    
 // Format the Birthdate to Date
     $Birthday = $userData['birthDay'];
-    // Convert the integer date to string
-    $Birthday = date("Y-m-d", strtotime($Birthday));
-    $monthNum = date("m", strtotime($Birthday));
-    $monthName = date('F', mktime(0, 0, 0, $monthNum, 10));
+        // Convert the date to a timestamp
+        $BirthdayTimestamp = strtotime($Birthday);
 
-    // Final Output
-    $BirthDay = str_replace($monthNum, $monthName, $Birthday);
-
-    // Seperate the date
-    $Birthday = explode("-", $BirthDay);
-    $birthYear = $Birthday[0];
-    $birthMonth = $Birthday[1];
-    $birthDay = $Birthday[2];
-
+        // Extract the year, month name, and day
+        $birthYear = date('Y', $BirthdayTimestamp);
+        $birthMonth = date('F', $BirthdayTimestamp);
+        $birthDay = date('j', $BirthdayTimestamp);
 
 ?>
 
