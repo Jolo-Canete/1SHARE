@@ -1,4 +1,4 @@
-<?php ob_start();
+php<?php ob_start();
 session_start();
 include('1db.php'); ?>
 

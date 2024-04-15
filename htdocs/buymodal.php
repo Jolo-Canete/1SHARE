@@ -76,7 +76,7 @@
                     console.log(response);
                     if (response === "Success") {
                         alert("Successful");
-                        window.location.href = "request.php";
+                        window.location.href = "pending.php";
                     } else {
                         alert("Error: " + response);
                     }
