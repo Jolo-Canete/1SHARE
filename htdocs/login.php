@@ -271,6 +271,14 @@ if (isset($_POST['signup'])) {
         echo '<div class="alert alert-danger mt-3">Username is already taken.</div>';
         return;
     }
+    
+    // If the email is already taken
+    $sql = "SELECT * FROM user WHERE userEmail = '$email'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        echo '<div class="alert alert-danger mt-3">Email is already taken.</div>';
+        return;
+    }
 
     // If the password is less than 8 characters
     if (strlen($password1) < 8) {
@@ -278,13 +286,7 @@ if (isset($_POST['signup'])) {
         return;
     }
 
-    // // If the email is already taken
-    // $sql = "SELECT * FROM user WHERE userEmail = '$email'";
-    // $result = $conn->query($sql);
-    // if ($result->num_rows > 0) {
-    //     echo '<div class="alert alert-danger mt-3">Email is already taken.</div>';
-    //     return;
-    // }
+
 
     // Upload Image to the different directory
     $targetDirectory = "verify/";
