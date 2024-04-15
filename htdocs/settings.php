@@ -71,8 +71,12 @@ while ($userRow = mysqli_fetch_assoc($query)) {
         <div class="page-content" id="content">
 
             <div class="container">
-                <div class="col">
-                <h1 class="text-center mb-4 mt-3"><i class="bi-gear"></i> SETTINGS</h1>
+            <div class="row">
+                    <div class="col">
+                        <div class="text-dark">
+                            <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-3"><i class="bi bi-gear" style="font-size: 2.8rem;"></i> SETTINGS</h1>
+                        </div>
+                    </div>
                 </div>
 
                 <!--- Tab List --->
@@ -91,8 +95,12 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                     <div class="col-10">
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="list-account" role="tabpanel" aria-labelledby="list-account-list">
-                                <h3 class="mb-2">Account Information</h3>
-                                <div class="card shadow-lg border-0">
+
+                        <div class="text-dark">
+                            <h3 class="fw-bold text-dark text-start mt-3 mb-1">Account Information</h3>
+                        </div>
+
+                                <div class="card shadow-sm border-1">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-4 mb-3">
@@ -198,8 +206,10 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                         <div class="col-12">
                             <div class="tab-content" id="nav-tabContent">
                                 <div class="tab-pane fade" id="list-termsandconditions" role="tabpanel" aria-labelledby="list-termsandconditions-list">
-                                    <h3 class="mb-4">Terms and Conditions</h3>
-                                    <div class="card shadow-lg mb-4 border-0">
+                                <div class="text-dark">
+                            <h3 class="fw-bold text-dark text-start mt-3 mb-1">Terms and Condition</h3>
+                        </div>
+                                    <div class="card shadow-sm mb-4 border-1">
                                         <div class="card-body">
                                             <?php include "termsandcondition.php"; ?>
                                         </div>
@@ -210,8 +220,10 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                         <!--- End of Terms and Conditions Tab Pane --->
                         <!--- Privacy Tab Pane --->
                         <div class="tab-pane fade" id="list-privacy" role="tabpanel" aria-labelledby="list-privacy-list">
-                            <h3 class="mb-4">Privacy</h3>
-                            <div class="card border-0 shadow-lg mb-4">
+                        <div class="text-dark">
+                            <h3 class="fw-bold text-dark text-start mt-3 mb-1">Privacy</h3>
+                        </div>
+                            <div class="card border-1 shadow-sm mb-4">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="fw-bold text-secondary me-2">Password:</div>
@@ -222,7 +234,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                                     </div>
                                 </div>
                             </div>
-                            <div class="card border-0 shadow-sm mb-4">
+                            <div class="card border-1 shadow-sm mb-4">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="fw-bold text-secondary me-2">Transaction History</div>
@@ -233,7 +245,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                                     <p class="text-dark mb-0">By unlocking your Transaction History, your transactions can be seen by anyone.</p>
                                 </div>
                             </div>
-                            <div class="card border-0 shadow-sm mb-4">
+                            <div class="card border-1 shadow-sm mb-4">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="fw-bold text-secondary me-2">Item Owned</div>

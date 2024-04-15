@@ -81,10 +81,12 @@ if (isset($_GET['search_term'])) {
             color: #f8de7e;
         }
 
-        <?php include "additem.css"; ?>.card {
+        <?php include "additem.css"; ?>
+        .card {
             height: 100%;
             display: flex;
             flex-direction: column;
+            border-radius: 0px;
         }
 
         .card-body {
@@ -99,15 +101,19 @@ if (isset($_GET['search_term'])) {
             overflow: hidden;
             text-overflow: ellipsis;
         }
-    </style>
 
+        .dropdown-menu a.dropdown-item:hover {
+            background-color: #e9ecef;
+            padding-left: 1rem;
+            transition: background-color 0.3s, color 0.3s, font-weight 0.3s, padding-left 0.3s;
+        }
+    </style>
 
 </head>
 
 <body>
 
     <div class="page-content" id="content">
-
         <br>
 
         <!-- Display the search term if it's set -->
@@ -122,7 +128,7 @@ if (isset($_GET['search_term'])) {
                     <div class="d-grid gap-2 d-md-block">
                         <!-- Category Dropdown -->
                         <div class="btn-group">
-                            <button id="item_category" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button id="item_category" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
                                 Category
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="item_category">
@@ -140,7 +146,7 @@ if (isset($_GET['search_term'])) {
 
                         <!-- Sorting Dropdown (Date Uploaded) -->
                         <div class="btn-group">
-                            <button id="sort_by_item" type="button" class="btn btn-outline-dark rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button id="sort_by_item" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
                                 Sort By: Date Uploaded
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="sort_by_item">
@@ -152,7 +158,7 @@ if (isset($_GET['search_term'])) {
 
                         <!-- Sorting Dropdown (Open For) -->
                         <div class="btn-group">
-                            <button id="sort_by_open_for" type="button" class="btn btn-outline-dark rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button id="sort_by_open_for" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
                                 Sort By: Open For
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="sort_by_open_for">
@@ -171,59 +177,59 @@ if (isset($_GET['search_term'])) {
 
         <!--- Item Display --->
         <div class="container">
-            <div class="container-box">
-                <div class="row row-cols-1 row-cols-md-5 g-4">
-                    <?php if (empty($items)) { ?>
+            <div class="row row-cols-1 row-cols-md-6 g-4">
+                <?php if (empty($items)) { ?>
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">No Item</h5>
+                            </div>
+                        </div>
+                    </div>
+                <?php } else { ?>
+                    <?php foreach ($items as $item) { ?>
+
+                        <!-- Item Card -->
                         <div class="col">
-                            <div class="card">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title">No Item</h5>
+                            <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>', '<?php echo $item['itemID']; ?>')">
+                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>" style="border-radius: 0px;">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
+                                    <div class="rating">
+                                        <label for="star5"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" id="star5" value="5">
+                                        <label for="star4"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" id="star4" value="4">
+                                        <label for="star3"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" id="star3" value="3">
+                                        <label for="star2"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" id="star2" value="2">
+                                        <label for="star1"><i class="fas fa-star"></i></label>
+                                        <input type="radio" name="rating" id="star1" value="1">
+                                    </div>
+                                    <div class="mb-2"></div>
+                                    <div>
+                                        <p class="text-secondary mb-0"><i class="bi bi-tags-fill"></i> <small><b></b> <?php echo $item['category']; ?></small></p>
+                                        <p class="text-secondary mb-0"><i class="bi bi-arrow-repeat"></i> <small><b></b> <?php echo $item['requestType']; ?></small></p>
+                                    </div>
+                                    <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
+                                    <p class="text-start text-secondary mb-0">
+                                        <?php
+                                        $availability = $item['itemAvailability'];
+                                        $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
+                                        echo "<span style='display: none;' class='badge $badgeColor rounded-pill'>$availability</span>";
+                                        ?>
+                                    </p>
                                 </div>
                             </div>
                         </div>
-                    <?php } else { ?>
-                        <?php foreach ($items as $item) { ?>
-                            
-                            <!-- Item Card -->
-                            <div class="col">
-                                <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>', '<?php echo $item['itemID']; ?>')">
-                                    <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
-                                        <div class="rating">
-                                            <label for="star5"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star5" value="5">
-                                            <label for="star4"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star4" value="4">
-                                            <label for="star3"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star3" value="3">
-                                            <label for="star2"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star2" value="2">
-                                            <label for="star1"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star1" value="1">
-                                        </div>
-                                        <hr>
-                                        <div>
-                                            <p class="mb-0 text-secondary"><i class="bi bi-tags-fill"></i> <small><b></b> <?php echo $item['category']; ?></small></p>
-                                            <p class="text-secondary mb-0"><i class="bi bi-arrow-repeat"></i> <small><b></b> <?php echo $item['requestType']; ?></small></p>
-                                        </div>
-                                        <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
-                                        <p class="text-start text-secondary">
-                                            <?php
-                                            $availability = $item['itemAvailability'];
-                                            $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
-                                            echo "<span style='display: none;' class='badge $badgeColor rounded-pill'>$availability</span>";
-                                            ?>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } ?>
                     <?php } ?>
-                </div>
+                <?php } ?>
             </div>
             <?php include "finddetailmodal.php"; ?>
         </div>
+        <!--- End of Item Display --->
+        
     </div>
 </body>
 

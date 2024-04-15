@@ -29,83 +29,90 @@
     </div>
 </div>
 <script>
-    $(document).ready(function() {
-        $('#requestedButton').click(function() {
-            if (!validateDateTime()) {
-                alert("Please select a date and time between 7am to 5pm on weekdays.");
-                return;
-            }
+  $(document).ready(function() {
+    $('#requestedButton').click(function() {
+        if (!validateDateTime()) {
+            alert("Please select a date and time between 7am to 5pm on weekdays.");
+            return;
+        }
 
-            $('#borrowForm').submit();
-        });
-
-        $('#borrowForm').submit(function(e) {
-            e.preventDefault(); // Prevent form submission
-
-            // Get date and time of meet
-            var dateTimeMeet = $('#date_time_meets').val();
-
-            // Check if the date and time field is empty
-            if (!dateTimeMeet) {
-                alert("Please select a date and time.");
-                return;
-            }
-
-            // Check if the selected time is in the future
-            var selectedDateTime = new Date(dateTimeMeet).getTime();
-            var currentDateTime = new Date().getTime();
-            if (selectedDateTime <= currentDateTime) {
-                alert("Please select a time in the future.");
-                return; // Exit the function
-            }
-
-            var itemId = "<?php echo isset($itemID) ? $itemID : ''; ?>";
-
-            $('#requestedButton').prop('disabled', true);
-
-            // AJAX POST request
-            $.ajax({
-                type: 'POST',
-                url: 'processborrow.php', // PHP script to handle the data
-                data: {
-                    dateTimeMeet: dateTimeMeet,
-                    itemId: itemId
-                },
-                success: function(response) {
-                    // Handle response from the server
-                    console.log(response);
-                    if (response === "Success") {
-                        alert("Successful");
-                        window.location.href = "request.php";
-                    } else {
-                        alert("Error: " + response);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Handle errors
-                    console.error(xhr.responseText);
-                    alert("An error occurred while processing your request. Please try again later.");
-                    $('#requestedButton').prop('disabled', false);
-                }
-            });
-        });
+        $('#borrowForm').submit();
     });
 
-    function validateDateTime() {
-        var selectedDateTime = new Date($('#date_time_meets').val());
+    $('#borrowForm').submit(function(e) {
+        e.preventDefault(); // Prevent form submission
 
-        // Check if selected day is a weekday (Monday to Friday)
-        var dayOfWeek = selectedDateTime.getDay();
-        if (dayOfWeek === 0 || dayOfWeek === 6) { // 0 is Sunday, 6 is Saturday
-            return false;
+        // Get date and time of meet
+        var dateTimeMeet = $('#date_time_meets').val();
+
+        // Check if the date and time field is empty
+        if (!dateTimeMeet) {
+            alert("Please select a date and time.");
+            return;
         }
 
-        // Check if selected time is between 7am to 5pm
-        var selectedTime = selectedDateTime.getHours();
-        if (selectedTime < 7 || selectedTime >= 17) {
-            return false;
+        // Check if the selected time is in the future
+        var selectedDateTime = new Date(dateTimeMeet).getTime();
+        var currentDateTime = new Date().getTime();
+        if (selectedDateTime <= currentDateTime) {
+            alert("Please select a time in the future.");
+            return; // Exit the function
         }
 
-        return true;
+        var itemId = "<?php echo isset($itemID) ? $itemID : ''; ?>";
+
+        $('#requestedButton').prop('disabled', true);
+
+        // AJAX POST request
+        $.ajax({
+            type: 'POST',
+            url: 'processborrow.php', // PHP script to handle the data
+            data: {
+                dateTimeMeet: dateTimeMeet,
+                itemId: itemId
+            },
+            success: function(response) {
+                // Handle response from the server
+                console.log(response);
+                if (response === "Success") {
+                    // Check if the selected time is within the valid range
+                    if (validateDateTime()) {
+                        alert("Successful");
+                        window.location.href = "pending.php";
+                    } else {
+                        alert("The request was made outside of the valid time range (7am to 5pm on weekdays).");
+                        $('#requestedButton').prop('disabled', false);
+                    }
+                } else {
+                    alert("Error: " + response);
+                    $('#requestedButton').prop('disabled', false);
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle errors
+                console.error(xhr.responseText);
+                alert("An error occurred while processing your request. Please try again later.");
+                $('#requestedButton').prop('disabled', false);
+            }
+        });
+    });
+});
+
+function validateDateTime() {
+    var selectedDateTime = new Date($('#date_time_meets').val());
+
+    // Check if selected day is a weekday (Monday to Friday)
+    var dayOfWeek = selectedDateTime.getDay();
+    if (dayOfWeek === 0 || dayOfWeek === 6) { // 0 is Sunday, 6 is Saturday
+        return false;
     }
+
+    // Check if selected time is between 7am to 5pm
+    var selectedTime = selectedDateTime.getHours();
+    if (selectedTime < 7 || selectedTime >= 17) {
+        return false;
+    }
+
+    return true;
+}
 </script>
