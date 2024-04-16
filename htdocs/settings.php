@@ -42,42 +42,28 @@ $asteriskPassword = str_repeat("*", strlen($hashedPassword));
 $dateTime = explode(" ", $userData['dateJoined']);
 $date = $dateTime[0];
 $time = $dateTime[1];
-
-    // Format the integer date into string
-    $date = date("Y-m-d", strtotime($date));
-    $dateJoinedNum = date("m", strtotime($date));
-    $dateJoinedName = date('F', mktime(0, 0, 0, $dateJoinedNum, 10));
-
-    // Compile the output
-    $Date = str_replace($dateJoinedNum, $dateJoinedName, $date);
-
-    // Seperate the date
-    $dateJoined = explode("-", $Date);
-    $dateJoinedYear = $dateJoined[0];
-    $dateJoinedMonth = $dateJoined[1];
-    $dateJoinedDay = $dateJoined[2];
-
-    // Seperate the Time
+    // Convert the data to a timestamp
+    $dateTimeStamp = strtotime($date);
+    // Extract the year, month name, and day
+    $dateJoinedYear = date('Y', $dateTimeStamp);
+    $dateJoinedMonth = date('F', $dateTimeStamp);
+    $dateJoinedDay = date('j', $dateTimeStamp);
+    
+    // Split the Time from datetime
     $time = explode(":", $time);
     $dateJoinedHour = $time[0];
     $dateJoinedMinute = $time[1];
     $dateJoinedSecond = $time[2];
+    
 // Format the Birthdate to Date
     $Birthday = $userData['birthDay'];
-    // Convert the integer date to string
-    $Birthday = date("Y-m-d", strtotime($Birthday));
-    $monthNum = date("m", strtotime($Birthday));
-    $monthName = date('F', mktime(0, 0, 0, $monthNum, 10));
+        // Convert the date to a timestamp
+        $BirthdayTimestamp = strtotime($Birthday);
 
-    // Final Output
-    $BirthDay = str_replace($monthNum, $monthName, $Birthday);
-
-    // Seperate the date
-    $Birthday = explode("-", $BirthDay);
-    $birthYear = $Birthday[0];
-    $birthMonth = $Birthday[1];
-    $birthDay = $Birthday[2];
-
+        // Extract the year, month name, and day
+        $birthYear = date('Y', $BirthdayTimestamp);
+        $birthMonth = date('F', $BirthdayTimestamp);
+        $birthDay = date('j', $BirthdayTimestamp);
 
 ?>
 
@@ -115,6 +101,10 @@ $time = $dateTime[1];
         }
         .modal-dialog {
       max-width: 600px;
+    }
+
+    #unverified {
+        color: #EE4B2B !important;
     }
     </style>
 
@@ -194,7 +184,7 @@ $time = $dateTime[1];
                                                     <div class="fw-bold text-secondary me-2">Purok:</div>
                                                     <span class="text-dark"><?php echo $userData['purok']; ?></span>
                                                     <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
-                                                        <i class="bi bi-pencil-fill"></i>
+                                                        <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_Purok" ></i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -203,7 +193,7 @@ $time = $dateTime[1];
                                                     <div class="fw-bold text-secondary me-2">Zone:</div>
                                                     <span class="text-dark"><?php echo $userData['zone']; ?></span>
                                                     <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
-                                                        <i class="bi bi-pencil-fill"></i>
+                                                        <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_Zone"></i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -223,7 +213,7 @@ $time = $dateTime[1];
                                                     <div class="fw-bold text-secondary me-2">Contact Number:</div>
                                                     <span class="text-dark"><?php echo $userData['contactNumber']; ?></span>
                                                     <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
-                                                        <i class="bi bi-pencil-fill"></i>
+                                                        <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_ContactNumber"></i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -232,16 +222,26 @@ $time = $dateTime[1];
                                             <div class="col-md-6 mb-3">
                                                 <div class="d-flex align-items-center">
                                                     <div class="fw-bold text-secondary me-2">Username:</div>
-                                                    <span class="text-dark"><?php echo $userData['username'] ?></span>
+                                                    <span class="text-dark"><?php echo ucfirst($userData['username']); ?></span>
                                                     <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
-                                                        <i class="bi bi-pencil-fill"></i>
+                                                        <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_Username"></i>
                                                     </button>
                                                 </div>
                                             </div>
                                             <div class="col-md-6 mb-3">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="fw-bold text-secondary me-2">Status:</div><?php if($userData['status'] === 'Unverified') {echo '<span class="text-primary"><b>Unverified</b>' . '<span class="text-secondary mx-2"><small>DATE: '. $dateJoinedMonth . '&nbsp;' .  $dateJoinedHour.':'. $dateJoinedMinute.  '</small></span>';} else {echo '<span class="text-primary"><b>Verified</b>' . '<span class="text-secondary mx-2"><small>DATE: '. $dateJoinedMonth . '&nbsp;' .  $dateJoinedHour.':'. $dateJoinedMinute.  '</small></span>';} ?>
-                                                </div>
+                                            <div class="d-flex align-items-center">
+                                            <div class="fw-bold text-secondary me-2">Status:</div>
+                                            <?php 
+                                            if($userData['status'] === 'Unverified') {
+                                                echo '<span class="text-primary" id="unverified"><b>Unverified</b></span>';
+                                            } else {
+                                                echo '<span class="text-primary"><b>Verified</b></span>';
+                                            }
+                                            ?>
+                                            <span class="text-dark me-2 ms-2"><?php echo $dateJoinedMonth .'&nbsp;'. $dateJoinedDay.',&nbsp;'. $dateJoinedYear; ?></span>
+                                            <div class="fw-bold text-secondary me-2 ms-2">Time:</div>
+                                            <span class="text-dark"><?php echo $dateJoinedHour.':'.$dateJoinedMinute;?></span>
+                                        </div>
                                             </div>
                                         </div>
                                     </div>
@@ -273,9 +273,10 @@ $time = $dateTime[1];
                                         <div class="fw-bold text-secondary me-2">Password:</div>
                                         <span class="text-dark flex-grow-1" title="The number of asterisks doesn't represent your actual password length. It's hashed for your security."><? echo $asteriskPassword; ?></span>
                                         <button type="button" class="btn btn-outline-secondary btn-sm">
-                                            <i class="bi bi-pencil-fill"></i>
+                                            <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_Password"></i>
                                         </button>
                                     </div>
+                                    <small class="text-muted">Your password is securely hashed and stored.</small>
                                 </div>
                             </div>
                             <div class="card border-0 shadow-sm mb-4">

@@ -264,11 +264,33 @@ if (isset($_POST['signup'])) {
         return;
     }
 
+    // If the phone number is already taken
+    $sql_PhoneNum = "SELECT * FROM user WHERE contactNumber = '$mobile_number'";
+    $PhoneNum = $conn->query($sql_PhoneNum);
+    if ($PhoneNum->num_rows > 0) {
+        echo '<div class="alert alert-danger mt-3">Phone Number Cannot be used.</div>';
+        return;
+    }elseif (strlen($mobile_number) < 11) {
+        echo '<div class="alert alert-danger mt-3">Contact Number must be 11 digits </div>';
+        return;
+    } elseif (strlen($mobile_number) > 11) {
+        echo '<div class="alert alert-danger mt-3">Contact Number should only be 11 digits </div>';
+        return;
+    }
+
     // If the user is already taken
     $sql = "SELECT * FROM user WHERE username = '$username'";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         echo '<div class="alert alert-danger mt-3">Username is already taken.</div>';
+        return;
+    }
+    
+    // If the email is already taken
+    $sql = "SELECT * FROM user WHERE userEmail = '$email'";
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        echo '<div class="alert alert-danger mt-3">Email is already taken.</div>';
         return;
     }
 
@@ -278,13 +300,6 @@ if (isset($_POST['signup'])) {
         return;
     }
 
-    // // If the email is already taken
-    // $sql = "SELECT * FROM user WHERE userEmail = '$email'";
-    // $result = $conn->query($sql);
-    // if ($result->num_rows > 0) {
-    //     echo '<div class="alert alert-danger mt-3">Email is already taken.</div>';
-    //     return;
-    // }
 
     // Upload Image to the different directory
     $targetDirectory = "verify/";
@@ -541,6 +556,8 @@ if (isset($_POST['login'])) {
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>
