@@ -184,7 +184,7 @@ $time = $dateTime[1];
                                                     <div class="fw-bold text-secondary me-2">Purok:</div>
                                                     <span class="text-dark"><?php echo $userData['purok']; ?></span>
                                                     <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
-                                                        <i class="bi bi-pencil-fill"></i>
+                                                        <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_Purok" ></i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -193,7 +193,7 @@ $time = $dateTime[1];
                                                     <div class="fw-bold text-secondary me-2">Zone:</div>
                                                     <span class="text-dark"><?php echo $userData['zone']; ?></span>
                                                     <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
-                                                        <i class="bi bi-pencil-fill"></i>
+                                                        <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_Zone"></i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -213,7 +213,7 @@ $time = $dateTime[1];
                                                     <div class="fw-bold text-secondary me-2">Contact Number:</div>
                                                     <span class="text-dark"><?php echo $userData['contactNumber']; ?></span>
                                                     <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
-                                                        <i class="bi bi-pencil-fill"></i>
+                                                        <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_ContactNumber"></i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -222,9 +222,9 @@ $time = $dateTime[1];
                                             <div class="col-md-6 mb-3">
                                                 <div class="d-flex align-items-center">
                                                     <div class="fw-bold text-secondary me-2">Username:</div>
-                                                    <span class="text-dark"><?php echo $userData['username'] ?></span>
+                                                    <span class="text-dark"><?php echo ucfirst($userData['username']); ?></span>
                                                     <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
-                                                        <i class="bi bi-pencil-fill"></i>
+                                                        <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_Username"></i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -273,9 +273,10 @@ $time = $dateTime[1];
                                         <div class="fw-bold text-secondary me-2">Password:</div>
                                         <span class="text-dark flex-grow-1" title="The number of asterisks doesn't represent your actual password length. It's hashed for your security."><? echo $asteriskPassword; ?></span>
                                         <button type="button" class="btn btn-outline-secondary btn-sm">
-                                            <i class="bi bi-pencil-fill"></i>
+                                            <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_Password"></i>
                                         </button>
                                     </div>
+                                    <small class="text-muted">Your password is securely hashed and stored.</small>
                                 </div>
                             </div>
                             <div class="card border-0 shadow-sm mb-4">
