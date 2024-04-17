@@ -11,7 +11,7 @@
 
     // Check the connection
         if ($conn ->connect_error) {
-            die("Connection Failed nigga" . $conn->connect_error);
+            die("Connection Failed broskie" . $conn->connect_error);
         }
 
 

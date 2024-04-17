@@ -83,7 +83,7 @@
                 <form action="" method="post">
                     <div class="mb-3">
                         <label for="editModal_Birthday_input" class="form-label">Purok to be edited:</label>
-                        <input type="text" name="editPurok" id="editModal_Purok_Input" class="form-control" placeholder="ex. Purok 21, Curvada" >
+                        <input type="number" name="editPurok" id="editModal_Purok_Input" class="form-control" placeholder="ex. 3" >
                     </div>
                 
             </div>
@@ -109,7 +109,7 @@
                 <form action="" method="post">
                     <div class="mb-3">
                         <label for="editModal_Zone_Input" class="form-label">Zone to be edited:</label>
-                        <input type="text" name="editZone" id="editModal_Zone_Input" class="form-control" placeholder="ex. Zone 3" >
+                        <input type="number" name="editZone" id="editModal_Zone_Input" class="form-control" placeholder="ex. 3" >
                     </div>
                 
             </div>
