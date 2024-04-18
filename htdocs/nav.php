@@ -173,9 +173,6 @@ include "upper.php";
             <li class="nav-item">
                 <a href="settings.php" class="nav-link text-light font-italic"> <i class="bi bi-gear text-light fa-fw"></i>Settings</a>
             </li>
-            <li class="nav-item">
-                <a href="itemreview.php" class="nav-link text-light font-italic"> <i class="bi bi-gear text-light fa-fw"></i>Review</a>
-            </li>
         </ul>
     </div>
 
