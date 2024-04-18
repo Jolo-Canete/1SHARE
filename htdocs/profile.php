@@ -1,4 +1,64 @@
-<?php include 'nav.php'; ?>
+<?php include 'nav.php'; include '1db.php'; ?>
+<?php 
+$sql = "SELECT * FROM user where userID = $user_id";
+$query = mysqli_query($conn, $sql);
+
+// Fetch the Data
+$user = array();
+
+while ($userRow = mysqli_fetch_assoc($query)) {
+    $userData = array(
+        'firstName' => $userRow['firstName'],
+        'middleName' => $userRow['middleName'],
+        'lastName' => $userRow['lastName'],
+        'contactNumber' => $userRow['contactNumber'],
+        'zone' => $userRow['zone'],
+        'purok' => $userRow['purok'],
+        'dateJoined' => $userRow['dateJoined'],
+        'userEmail' => $userRow['userEmail'],
+        'status' => $userRow['status'],
+        'userRating' => $userRow['userRating'],
+        'userImage_path' => $userRow['userEmail'],
+        'username' => $userRow['username'],
+        'password' => $userRow['password'],
+        'birthDay' => $userRow['birthDay'],
+        'position' => $userRow['position'],
+    );
+
+    array_push($user, $userData);
+
+// Split the DATETIME
+$dateTime = explode(" ", $userData['dateJoined']);
+$date = $dateTime[0];
+$time = $dateTime[1];
+    // Convert the data to a timestamp
+    $dateTimeStamp = strtotime($date);
+    // Extract the year, month name, and day
+    $dateJoinedYear = date('Y', $dateTimeStamp);
+    $dateJoinedMonth = date('F', $dateTimeStamp);
+    $dateJoinedDay = date('j', $dateTimeStamp);
+    
+    // Split the Time from datetime
+    $time = explode(":", $time);
+    $dateJoinedHour = $time[0];
+    $dateJoinedMinute = $time[1];
+    $dateJoinedSecond = $time[2];
+    
+// Format the Birthdate to Date
+    $Birthday = $userData['birthDay'];
+        // Convert the date to a timestamp
+        $BirthdayTimestamp = strtotime($Birthday);
+
+        // Extract the year, month name, and day
+        $birthYear = date('Y', $BirthdayTimestamp);
+        $birthMonth = date('F', $BirthdayTimestamp);
+        $birthDay = date('j', $BirthdayTimestamp);
+}
+
+
+
+
+?>
 
 
 <!DOCTYPE html>
@@ -261,11 +321,18 @@
 
               <div>
                 <div class="flex-grow-1 d-flex justify-content-between align-items-center">
-                  <h2 class="mb-0 fw-bold">Jolo A. Cañete</h2>
+                  <h2 class="mb-0 fw-bold"><? echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName'][0]). '.&nbsp;' . ucfirst($userData['lastName'])?></h2>
                 </div>
-                <div class="text-secondary">Resident</div>
+                <div class="text-secondary"><? echo $userData['position'] ?></div>
                 <div>
-                  <span class="badge text-bg-primary rounded-pill">Verified</span>
+                 <?php 
+                    if($userData['status'] === 'Unverified' || $userData['status'] === null) {
+                       echo ' <span class="badge text-bg-primary rounded-pill bg-danger">Unverified';
+                       } else {
+                         echo ' <span class="badge text-bg-primary rounded-pill">Verified';
+                         }
+                  
+                  ?></span>
                 </div>
               </div>
             </div>
@@ -286,9 +353,9 @@
 
           <div class="col mt-4">
             <div class="d-flex align-items-center text-secondary">
-              <span class="bi-envelope">&nbsp; canete.jolo@gmail.com</span>
-              <span class="bi-map ms-4">&nbsp; Purok 31, Zone 13</span>
-              <span class="bi-telephone ms-4">&nbsp; 09203513491</span>
+              <span class="bi-envelope">&nbsp; <? echo $userData['userEmail'] ?></span>
+              <span class="bi-map ms-4">&nbsp; <? echo 'Purok '. $userData['purok'] .',&nbsp; Zone '. $userData['zone'] ?></span>
+              <span class="bi-telephone ms-4">&nbsp; <? echo $userData['contactNumber'] ?></span>
             </div>
           </div>
         </div>
@@ -320,21 +387,29 @@
                     <div class="row mb-3">
                       <div class="col-sm-6">
                         <label for="firstName" class="form-label text-secondary"><b>First Name</b></label>
-                        <div class="form-box" readonly><b>Jolo</b></div>
+                        <div class="form-box" readonly><b><? echo ucfirst($userData['firstName']) ?></b></div>
                       </div>
                       <div class="col-sm-6">
-                        <label for="lastName" class="form-label text-secondary"><b>Last Name</b></label>
-                        <div class="form-box" readonly><b>Cañete</b></div>
+                        <label for="lastName" class="form-label text-secondary"><b>Middle Name</b></label>
+                        <div class="form-box" readonly><b><? echo ucfirst($userData['middleName']) ?></b></div>
                       </div>
                     </div>
                     <div class="row mb-3">
                       <div class="col-sm-6">
                         <label for="status" class="form-label text-secondary"><b>Status</b></label>
-                        <div class="form-box text-primary" readonly><b>Verified</b><span class="text-secondary mx-2"><small>last January 1, 2024</small></span></div>
+                          <!-- Create a statement if status is verified or not -->
+                          <? 
+                            if($userData['status'] === 'Unverified' || $userData['status'] === null) {
+                              echo ' <div class="form-box text-primary text-danger" readonly><b>Unverified';
+                               } else {
+                                echo ' <div class="form-box text-primary" readonly><b>Verified';
+                              }
+                          ?>
+                        </b><span class="text-secondary mx-2"><small>last January 1, 2024</small></span></div>
                       </div>
                       <div class="col-sm-6">
                         <label for="dateJoined" class="form-label text-secondary"><b>Date Joined</b></label>
-                        <div class="form-box" readonly><b>January 1, 2024</b></div>
+                        <div class="form-box" readonly><b><? echo $dateJoinedMonth .'&nbsp;' . $dateJoinedDay . ',&nbsp;' . $dateJoinedYear; ?></b></div>
                       </div>
                     </div>
                   </div>
@@ -347,21 +422,21 @@
                     <div class="row mb-3">
                       <div class="col-sm-6">
                         <label for="email" class="form-label text-secondary"><b>Email</b></label>
-                        <div class="form-box" readonly><b>canete.jolo@ici.edu.ph</b></div>
+                        <div class="form-box" readonly><b><? echo $userData['userEmail'] ?></b></div>
                       </div>
                       <div class="col-sm-6">
                         <label for="contactNumber" class="form-label text-secondary"><b>Contact Number</b></label>
-                        <div class="form-box" readonly><b>09203513491</b></div>
+                        <div class="form-box" readonly><b><? echo $userData['contactNumber'] ?></b></div>
                       </div>
                     </div>
                     <div class="row mb-3">
                       <div class="col-sm-6">
                         <label for="purok" class="form-label text-secondary"><b>Purok</b></label>
-                        <div class="form-box" readonly><b>31</b></div>
+                        <div class="form-box" readonly><b><? echo $userData['purok'] ?></b></div>
                       </div>
                       <div class="col-sm-6">
                         <label for="zone" class="form-label text-secondary"><b>Zone</b></label>
-                        <div class="form-box" readonly><b>13</b></div>
+                        <div class="form-box" readonly><b><? echo  $userData['zone'] ?></b></div>
                       </div>
                     </div>
                   </div>

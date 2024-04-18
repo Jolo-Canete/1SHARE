@@ -72,7 +72,7 @@ include "upper.php";
                         $result1 = $conn->query($sql1);
                         $user = $result1->fetch_assoc();
                         if ($user) {
-                            echo '<h4 class="m-0 text-light">&nbsp;&nbsp;' . $user['username'] . '</h4>';
+                            echo '<h4 class="m-0 text-light">&nbsp;&nbsp;' . ucfirst($user['username']) . '</h4>';
                         } else {
                             echo '<h4 class="m-0 text-light">&nbsp;&nbsp;User not found</h4>';
                         }

@@ -5,7 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+<<<<<<< HEAD
  
+=======
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+>>>>>>> e650f70dc561300c42502363742e2504a723232a
   <style>
     /* For input Number */
         input[type=number]::-webkit-inner-spin-button,
@@ -82,7 +87,11 @@
                 <form action="" method="post">
                     <div class="mb-3">
                         <label for="editModal_Birthday_input" class="form-label">Purok to be edited:</label>
+<<<<<<< HEAD
                         <input type="text" name="editPurok" id="editModal_Purok_Input" class="form-control" placeholder="ex. Purok 21, Curvada" >
+=======
+                        <input type="number" name="editPurok" id="editModal_Purok_Input" class="form-control" placeholder="ex. 3" >
+>>>>>>> e650f70dc561300c42502363742e2504a723232a
                     </div>
                 
             </div>
@@ -108,7 +117,11 @@
                 <form action="" method="post">
                     <div class="mb-3">
                         <label for="editModal_Zone_Input" class="form-label">Zone to be edited:</label>
+<<<<<<< HEAD
                         <input type="text" name="editZone" id="editModal_Zone_Input" class="form-control" placeholder="ex. Zone 3" >
+=======
+                        <input type="number" name="editZone" id="editModal_Zone_Input" class="form-control" placeholder="ex. 3" >
+>>>>>>> e650f70dc561300c42502363742e2504a723232a
                     </div>
                 
             </div>
@@ -205,6 +218,11 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> e650f70dc561300c42502363742e2504a723232a
 
 
 

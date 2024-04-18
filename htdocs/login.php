@@ -259,6 +259,7 @@ if (isset($_POST['signup'])) {
     $password2 = trim($_POST['SgnUp_Password_2']);
     $birthDay = date('Y-m-d', strtotime($_POST['birthDay']));
     $status = "Unverified";
+    $position = "Resident";
 
 
     if (empty($first_name) || empty($middle_name) || empty($last_name) || empty($purok) || empty($zone) || empty($mobile_number) || empty($email) || empty($username) || empty($password1) || empty($password2) || empty($birthDay)) {
@@ -334,7 +335,7 @@ if (isset($_POST['signup'])) {
         $conn->begin_transaction();
 
         // Insert into user table without the verifyImage_path
-        $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password, Birthday, status) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password', '$birthDay', '$status')";
+        $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password, Birthday, status, position) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password', '$birthDay', '$status', '$position')";
 
         if ($conn->query($sql_user) === TRUE) {
             // Get the last inserted ID
