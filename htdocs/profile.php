@@ -22,7 +22,6 @@ while ($userRow = mysqli_fetch_assoc($query)) {
         'username' => $userRow['username'],
         'password' => $userRow['password'],
         'birthDay' => $userRow['birthDay'],
-        'position' => $userRow['position'],
     );
 
     array_push($user, $userData);
@@ -323,7 +322,7 @@ $time = $dateTime[1];
                 <div class="flex-grow-1 d-flex justify-content-between align-items-center">
                   <h2 class="mb-0 fw-bold"><? echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName'][0]). '.&nbsp;' . ucfirst($userData['lastName'])?></h2>
                 </div>
-                <div class="text-secondary"><? echo $userData['position'] ?></div>
+                <div class="text-secondary">Resident</div>
                 <div>
                  <?php 
                     if($userData['status'] === 'Unverified' || $userData['status'] === null) {
