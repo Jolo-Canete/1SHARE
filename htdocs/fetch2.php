@@ -30,16 +30,58 @@ if (isset($_GET['requestId'])) {
         $requestDateTime = $row['request_DateTime'];
         $dateMeet = $row['DateTimeMeet'];
         $buyPrice = number_format($row['buyPrice'], 2);
+        $quantity = $row['quantity'];
+        $totals = $row['buyPrice'] * $row['quantity']; 
+        $total =      number_format($totals, 2);
 
         // Output the modal content
         ?>
+
+<style>
+            .modal .table-responsive {
+                margin-top: 20px;
+            }
+
+            .modal .table {
+                border-radius: 0px;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .modal .table th,
+            .modal .table td {
+                padding: 12px 16px;
+            }
+
+            .modal .table th {
+                background-color: #f5f5f5;
+                font-weight: bold;
+                color: #333;
+            }
+
+            .modal .table td {
+                background-color: #fff;
+                color: #666;
+            }
+
+            .modal .table .bi {
+                font-size: 1.2rem;
+                margin-right: 8px;
+                vertical-align: middle;
+            }
+
+            .modal .table .badge {
+                font-size: 0.9rem;
+                padding: 4px 8px;
+            }
+        </style>
         <div class="row">
             <!-- Item picture and request detail -->
             <div class="col-md-12">
                 <!-- Item picture -->
-                <h5 class="fw-bold mb-3 text-center">Requested Item:</h5>
+                <h4 class="fw-bold text-dark text-center mb-2">Requested Item</h4>
                 <div class="text-center mb-3">
-                    <img src="pictures/<?php echo $itemImage; ?>" class="img-fluid rounded" alt="Item Image" style="max-width: 300px;">
+                    <img src="pictures/<?php echo $itemImage; ?>" class="img-fluid shadow-sm" alt="Item Image" style="max-width: 300px;">
                 </div>
 
                 <!-- Request detail -->
@@ -47,7 +89,7 @@ if (isset($_GET['requestId'])) {
                     <table class="table table-bordered table-striped">
                         <tbody>
                             <tr>
-                                <th><span class="bi bi-box"></span> Item Name</th>
+                                <th><span class="bi bi-card-heading"></span> Item Name</th>
                                 <td class="text-center"><?php echo $itemName; ?></td>
                             </tr>
                             <tr>
@@ -72,6 +114,14 @@ if (isset($_GET['requestId'])) {
                             <tr>
                                 <th><span class="bi bi-cash-coin"></span> Buy Price</th>
                                 <td class="text-center">₱<?php echo $buyPrice; ?></td>
+                            </tr>
+                            <tr>
+                                <th><span class="bi bi-box"></span> Item Requested Quantity</th>
+                                <td class="text-center"><?php echo $quantity; ?></td>
+                            </tr>
+                            <tr>
+                                <th><span class="bi bi-cash"></span> Price Total:</th>
+                                <td class="text-center">₱<?php echo $total; ?></td>
                             </tr>
                         </tbody>
                     </table>

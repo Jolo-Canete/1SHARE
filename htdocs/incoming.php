@@ -45,10 +45,10 @@ include "nav.php";
 <body>
 
     <div class="page-content" id="content">
-        <div class="container mt-5">
+        <div class="container">
             <?php
-            // Modify the query to filter requests based on the logged-in user's ID
-            $query = "SELECT r.requestID, r.requestType, i.itemName, u.username
+            // Modify the query to include the request_DateTime column
+            $query = "SELECT r.requestID, r.requestType, i.itemName, u.username, r.request_DateTime
                       FROM Request r 
                       JOIN item i ON r.itemID = i.itemID 
                       JOIN user u ON r.userID = u.userID 
@@ -57,9 +57,30 @@ include "nav.php";
 
             if ($result->num_rows > 0) {
             ?>
-                <div class="mt-3">
-                    <div class="h2"><i class="bi bi-box-arrow-down me-2"></i> Incoming Request</div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="text-dark">
+                            <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-0"><i class="bi bi-box-arrow-down" style="font-size: 2.8rem;"></i> INCOMING REQUESTS</h1>
+                        </div>
+                    </div>
                 </div>
+                <br><br>
+            <div class="row mb-3">
+                <div class="col-auto">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sort by Request Type
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-sort-type="all">All</a></li>
+                            <li><a class="dropdown-item" href="#" data-sort-type="borrow">Borrow</a></li>
+                            <li><a class="dropdown-item" href="#" data-sort-type="barter">Barter</a></li>
+                            <li><a class="dropdown-item" href="#" data-sort-type="buy">Buy</a></li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="table-wrapper">
                     <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
                         <thead>
@@ -67,17 +88,22 @@ include "nav.php";
                                 <th>Request Type</th>
                                 <th>Item Name</th>
                                 <th>Requester</th>
+                                <th>Request Date and Time</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
                             // Assuming $result contains the query result
                             while ($row = $result->fetch_assoc()) {
+                                // Format the request_DateTime column
+                                $requestDateTime = new DateTime($row['request_DateTime']);
+                                $formattedRequestDateTime = $requestDateTime->format('l, F j, Y H:i:s');
                             ?>
                                 <tr class="table-row table-light" data-bs-toggle="modal" data-bs-target="<?php echo ($row['requestType'] == 'Barter') ? '#reqbartermodal' : (($row['requestType'] == 'Buy') ? '#buyModal' : '#borrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>">
                                     <td><?php echo $row['requestType']; ?></td>
                                     <td><?php echo $row['itemName']; ?></td>
                                     <td><?php echo $row['username']; ?></td>
+                                    <td><?php echo $formattedRequestDateTime; ?></td>
                                 </tr>
                                 <p style="display: none;"><?php echo $row['requestID']; ?></p>
                             <?php
@@ -91,9 +117,8 @@ include "nav.php";
             } else {
                 echo "<div class='jumbotron jumbotron-fluid bg-light text-center'>
             <div class='container'>
-                <h1 class='display-4'>No Requests Found</h1>
-                <p class='lead'>Looks like there are no incoming requests at the moment. Keep checking back!</p>
-                <hr class='my-4'>
+                <h1 class='display-4 mt-5'>No Requests Found</h1>
+                <p class='lead text-secondary'>Looks like there are no incoming requests at the moment. Keep checking back!</p>
             </div>
         </div>";
             }
@@ -153,6 +178,41 @@ include "nav.php";
                 });
             });
         </script>
+        <script>
+                    $(document).ready(function() {
+                        // Add event listeners to the sorter buttons
+                        $('[data-sort-type]').click(function() {
+                            var sortType = $(this).data('sort-type');
+                            sortTable(sortType, 'all');
+                        });
+
+                        $('[data-sort-status]').click(function() {
+                            var sortStatus = $(this).data('sort-status');
+                            sortTable('all', sortStatus);
+                        });
+
+                        function sortTable(sortType, sortStatus) {
+                            // Get all the table rows
+                            var rows = $('tbody tr.table-row');
+
+                            // Filter the rows based on the selected sort type and status
+                            rows.each(function() {
+                                var requestType = $(this).find('td:first').text();
+                                var meetingStatus = $(this).find('td:eq(4)').text();
+
+                                if (sortType === 'all' || requestType.toLowerCase() === sortType.toLowerCase()) {
+                                    if (sortStatus === 'all' || (sortStatus === 'current' && meetingStatus.includes('Upcoming')) || (sortStatus === 'past' && !meetingStatus.includes('Upcoming'))) {
+                                        $(this).show();
+                                    } else {
+                                        $(this).hide();
+                                    }
+                                } else {
+                                    $(this).hide();
+                                }
+                            });
+                        }
+                    });
+                </script>
 </body>
 
 </html>

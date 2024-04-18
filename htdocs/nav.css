@@ -6,6 +6,20 @@ body {
     overflow-x: hidden;
 }
 
+.btn.btn-primary {
+    padding: 0.5rem 1rem;
+}
+
+.btn.btn-primary i.fas.fa-bell {
+    font-size: 1.25rem;
+    margin-right: 0.5rem;
+}
+
+.btn.btn-primary .badge {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .navbar {
     position: fixed;
     top: 0;
@@ -28,7 +42,6 @@ body {
 }
 
 #sidebarCollapse {
-
     margin-left: 20px;
 }
 

@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve data from the AJAX request
     $dateTimeMeet = $_POST['dateTimeMeet'];
     $itemId = $_POST['itemId']; // Assuming itemId is sent via AJAX
+    $quantity = $_POST['quantity']; // Retrieve the quantity input
 
     // Ensure $user_id is defined and contains the correct user ID
     if (isset($_SESSION['user_id'])) {
@@ -19,15 +20,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Insert into request table
         $requestDateTime = date('Y-m-d H:i:s'); // Current date and time
-        $userId = $user_id;
 
         // Prepare the insert query for request table
-        $insertRequestQuery = "INSERT INTO Request (status, RequestType, request_DateTime, userID, itemID) 
-                            VALUES ('pending', 'Buy', ?, ?, ?)";
+        $insertRequestQuery = "INSERT INTO Request (status, requestType, quantity, request_DateTime, userID, itemID) 
+                            VALUES ('pending', 'Buy', ?, ?, ?, ?)";
 
         // Prepare and bind parameters for the insert query
         $stmt = $conn->prepare($insertRequestQuery);
-        $stmt->bind_param("sss", $requestDateTime, $userId, $itemId);
+        $stmt->bind_param("ssii", $quantity, $requestDateTime, $user_id, $itemId);
 
         // Execute the insert query for request table
         if ($stmt->execute()) {
@@ -66,5 +66,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo "Invalid request"; // Return message for invalid request method
 }
-
 ?>

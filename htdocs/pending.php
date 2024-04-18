@@ -45,114 +45,173 @@ include "nav.php";
 <body>
 
     <div class="page-content" id="content">
-        <div class="container mt-5">
+        <div class="container">
             <?php
             // Query to fetch the pending requests for the logged-in user
-            $query = "SELECT r.requestID, r.requestType, i.itemName, u.username 
+            $query = "SELECT r.requestID, r.requestType, i.itemName, u.username AS itemOwner, r.request_DateTime
                       FROM Request r
                       JOIN item i ON r.itemID = i.itemID
-                      JOIN user u ON r.userID = u.userID
+                      JOIN user u ON i.userID = u.userID
                       WHERE r.userID = $user_id AND r.status = 'Pending'";
             $result = $conn->query($query);
 
             if ($result->num_rows > 0) {
             ?>
-                <div class="mt-3">
-                    <div class="h2"><i class="bi bi-box-arrow-right me-2"></i> Pending Request</div>
+                <div class="row">
+                    <div class="col">
+                        <div class="text-dark">
+                            <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-0"><i class="bi bi-clock-history" style="font-size: 2.8rem;"></i> PENDING REQUESTS</h1>
+                        </div>
+                    </div>
                 </div>
-                <div class="table-wrapper">
-                    <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
-                        <thead>
-                            <tr class="table-dark">
-                                <th>Request Type</th>
-                                <th>Item Name</th>
-                                <th>Requester</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            // Assuming $result contains the query result
-                            while ($row = $result->fetch_assoc()) {
-                            ?>
-                                <tr class="table-row table-light" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>">
-                                    <td><?php echo $row['requestType']; ?></td>
-                                    <td><?php echo $row['itemName']; ?></td>
-                                    <td><?php echo $row['username']; ?></td>
-                                </tr>
-                                <p style="display: none;"><?php echo $row['requestID']; ?></p>
-                            <?php
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
+                <br><br>
+                <div class="row mb-3">
+                    <div class="col-auto">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Sort by Request Type
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" data-sort-type="all">All</a></li>
+                                <li><a class="dropdown-item" href="#" data-sort-type="borrow">Borrow</a></li>
+                                <li><a class="dropdown-item" href="#" data-sort-type="barter">Barter</a></li>
+                                <li><a class="dropdown-item" href="#" data-sort-type="buy">Buy</a></li>
+                            </ul>
+                        </div>
+                    </div>
 
-            <?php
+                    <div class="table-wrapper">
+                        <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
+                            <thead>
+                                <tr class="table-dark">
+                                    <th>Request Type</th>
+                                    <th>Item Name</th>
+                                    <th>Item Owner</th>
+                                    <th>Request Date and Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                // Assuming $result contains the query result
+                                while ($row = $result->fetch_assoc()) {
+                                    // Format the request_DateTime column
+                                    $requestDateTime = new DateTime($row['request_DateTime']);
+                                    $formattedRequestDateTime = $requestDateTime->format('l, F j, Y H:i:s');
+                                ?>
+                                    <tr class="table-row table-light" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>">
+                                        <td><?php echo $row['requestType']; ?></td>
+                                        <td><?php echo $row['itemName']; ?></td>
+                                        <td><?php echo $row['itemOwner']; ?></td>
+                                        <td><?php echo $formattedRequestDateTime; ?></td>
+                                    </tr>
+                                    <p style="display: none;"><?php echo $row['requestID']; ?></p>
+                                <?php
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <?php
             } else {
                 echo "<div class='jumbotron jumbotron-fluid bg-light text-center'>
             <div class='container'>
-                <h1 class='display-4'>No Pending Requests</h1>
-                <p class='lead'>Looks like there are no pending requests at the moment.</p>
-                <hr class='my-4'>
+                <h1 class='display-4 mt-5'>No Pending Requests</h1>
+                <p class='lead text-secondary'>Looks like there are no pending requests at the moment.</p>
             </div>
         </div>";
             }
-            ?>
+                ?>
 
-        </div>
-        <div>
-            <?php
-            include "reqsbuymodal.php";
-            ?>
-        </div>
-        <div>
-            <?php
-            include "reqsbartermodal.php";
-            ?>
-        </div>
-        <div>
-            <?php
-            include "reqsborrowmodal.php";
-            ?>
-        </div>
+                </div>
+                <div>
+                    <?php
+                    include "reqsbuymodal.php";
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    include "reqsbartermodal.php";
+                    ?>
+                </div>
+                <div>
+                    <?php
+                    include "reqsborrowmodal.php";
+                    ?>
+                </div>
 
-        <script>
-            $(document).ready(function() {
-                $('.modal').on('show.bs.modal', function(event) {
-                    var button = $(event.relatedTarget);
-                    var requestId = button.data('request-id');
-                    var modal = $(this);
+                <script>
+                    $(document).ready(function() {
+                        $('.modal').on('show.bs.modal', function(event) {
+                            var button = $(event.relatedTarget);
+                            var requestId = button.data('request-id');
+                            var modal = $(this);
 
-                    // Show the loading indicator
-                    modal.find('.modal-body').html('<div class="modal-loading"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
+                            // Show the loading indicator
+                            modal.find('.modal-body').html('<div class="modal-loading"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>');
 
-                    // Use the requestId to fetch the request details based on the modal ID
-                    var fetchUrl = '';
-                    if (modal.attr('id') === 'reqbartermodal') {
-                        fetchUrl = 'patch.php';
-                    } else if (modal.attr('id') === 'reqBuyModal') {
-                        fetchUrl = 'patch2.php';
-                    } else if (modal.attr('id') === 'reqBorrowModal') {
-                        fetchUrl = 'patch1.php';
-                    }
+                            // Use the requestId to fetch the request details based on the modal ID
+                            var fetchUrl = '';
+                            if (modal.attr('id') === 'reqbartermodal') {
+                                fetchUrl = 'patch.php';
+                            } else if (modal.attr('id') === 'reqBuyModal') {
+                                fetchUrl = 'patch2.php';
+                            } else if (modal.attr('id') === 'reqBorrowModal') {
+                                fetchUrl = 'patch1.php';
+                            }
 
-                    $.ajax({
-                        type: 'GET',
-                        url: fetchUrl,
-                        data: {
-                            requestId: requestId
-                        },
-                        success: function(response) {
-                            // Update the modal content with the fetched request details
-                            modal.find('.modal-body').html(response);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error(xhr.responseText);
+                            $.ajax({
+                                type: 'GET',
+                                url: fetchUrl,
+                                data: {
+                                    requestId: requestId
+                                },
+                                success: function(response) {
+                                    // Update the modal content with the fetched request details
+                                    modal.find('.modal-body').html(response);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(xhr.responseText);
+                                }
+                            });
+                        });
+                    });
+                </script>
+                <script>
+                    $(document).ready(function() {
+                        // Add event listeners to the sorter buttons
+                        $('[data-sort-type]').click(function() {
+                            var sortType = $(this).data('sort-type');
+                            sortTable(sortType, 'all');
+                        });
+
+                        $('[data-sort-status]').click(function() {
+                            var sortStatus = $(this).data('sort-status');
+                            sortTable('all', sortStatus);
+                        });
+
+                        function sortTable(sortType, sortStatus) {
+                            // Get all the table rows
+                            var rows = $('tbody tr.table-row');
+
+                            // Filter the rows based on the selected sort type and status
+                            rows.each(function() {
+                                var requestType = $(this).find('td:first').text();
+                                var meetingStatus = $(this).find('td:eq(4)').text();
+
+                                if (sortType === 'all' || requestType.toLowerCase() === sortType.toLowerCase()) {
+                                    if (sortStatus === 'all' || (sortStatus === 'current' && meetingStatus.includes('Upcoming')) || (sortStatus === 'past' && !meetingStatus.includes('Upcoming'))) {
+                                        $(this).show();
+                                    } else {
+                                        $(this).hide();
+                                    }
+                                } else {
+                                    $(this).hide();
+                                }
+                            });
                         }
                     });
-                });
-            });
-        </script>
+                </script>
 </body>
 
 </html>

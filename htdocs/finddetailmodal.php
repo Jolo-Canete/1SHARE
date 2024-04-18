@@ -72,11 +72,11 @@
              </div>
            </div>
          </div>
-         <div class="modal-footer">
+         <div class="modal-footer mt-3">
            <div class="d-flex justify-content-start align-items-center flex-grow-1">
              <p class="mb-0 text-dark"><i class="bi bi-box"></i> <b>Quantity:</b> <span class="text-dark" id="modalItemQuantity"></span> Item/s Left</p>
            </div>
-           <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
              <i class="bi bi-x"></i> Close
            </button>
            <button id="cartButton" type="button" class="btn btn-primary btn-sm" onclick="openCart()">

@@ -55,7 +55,11 @@ if (isset($_GET['itemID'])) {
 <body>
     <div class="page-content" id="content">
         <div class="container my-4">
-            <h1 class="mb-4">Item Details</h1>
+        <div class="col">
+                        <div class="text-dark">
+                            <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-3"><i class="bi bi-info-circle" style="font-size: 2.8rem;"></i> ITEM DETAILS</h1>
+                        </div>
+                    </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="mb-3">

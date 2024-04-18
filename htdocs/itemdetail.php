@@ -111,6 +111,12 @@ if (isset($_GET['itemID'])) {
                             <br>
                             <div class="row">
                                 <div class="col">
+                                    <p class="text-start"><i class="bi bi-box-seam"></i> <b>Quantity: </b><?php echo $item['itemQuantity']; ?></p>
+                                </div>
+                            </div>
+                          
+                            <div class="row">
+                                <div class="col">
                                     <p class="text-start"><i class="bi bi-tag"></i> <b>Category: </b><?php echo $item['category']; ?></p>
                                 </div>
                             </div>

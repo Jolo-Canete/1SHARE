@@ -128,7 +128,7 @@ if (isset($_GET['search_term'])) {
                     <div class="d-grid gap-2 d-md-block">
                         <!-- Category Dropdown -->
                         <div class="btn-group">
-                            <button id="item_category" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button id="item_category" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
                                 Category
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="item_category">
@@ -146,7 +146,7 @@ if (isset($_GET['search_term'])) {
 
                         <!-- Sorting Dropdown (Date Uploaded) -->
                         <div class="btn-group">
-                            <button id="sort_by_item" type="button" class="btn btn-outline-dark rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button id="sort_by_item" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
                                 Sort By: Date Uploaded
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="sort_by_item">
@@ -158,7 +158,7 @@ if (isset($_GET['search_term'])) {
 
                         <!-- Sorting Dropdown (Open For) -->
                         <div class="btn-group">
-                            <button id="sort_by_open_for" type="button" class="btn btn-outline-dark rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button id="sort_by_open_for" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
                                 Sort By: Open For
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="sort_by_open_for">

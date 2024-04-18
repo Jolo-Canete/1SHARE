@@ -26,20 +26,45 @@ include "upper.php";
 </style>
 
 <body>
+    <!-- Navbar content -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Notifications</h5>
+            <h3 class="offcanvas-title" id="offcanvasRightLabel">Notifications</h3>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body">
-            ...
+        <hr>
+        <div class="offcanvas-body" id="notificationContainer">
+            <!-- Notifications will be dynamically added here -->
         </div>
+        <script>
+            $(document).ready(function() {
+                // Function to fetch notifications
+                function fetchNotifications() {
+                    $.ajax({
+                        type: 'GET',
+                        url: 'notif.php',
+                        success: function(response) {
+                            $('#notificationContainer').html(response); // Update notifications section
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(error);
+                        }
+                    });
+                }
+
+                // Call fetchNotifications function initially
+                fetchNotifications();
+
+                // Refresh notifications every 30 seconds
+                setInterval(fetchNotifications, 30000); // Adjust time interval as needed
+            });
+        </script>
     </div>
     <!-- Vertical navbar -->
     <div class="vertical-nav bg-dark" id="sidebar">
         <div class="py-4 px-3">
             <br><br>
-            <div class="media d-flex align-items-center"><img src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" alt="..." style="width: 60px; height: 60px;" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+            <div class="media d-flex align-items-center"><img src="<?php echo !empty($itemImage_path) ? 'picture/' . $itemImage_path : 'picture/' . getUserProfilePicPaths($user_id); ?>" alt="..." style="width: 60px; height: 60px;" class="mr-3 rounded-circle img-thumbnail shadow-sm">
                 <div class="media-body">
                     <h4 class="m-0 text-light">
                         <?php
@@ -56,6 +81,24 @@ include "upper.php";
                 </div>
             </div>
         </div>
+        <?php
+        // PHP function to fetch logged-in user's profile picture path from the database
+        function getUserProfilePicPaths($user_id)
+        {
+            global $conn; // Access the database connection
+
+            // Prepare and execute query to fetch user's profile picture path
+            $stmt = $conn->prepare("SELECT userImage_path FROM user WHERE userID = ?");
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $stmt->bind_result($userImage_path);
+            $stmt->fetch();
+            $stmt->close();
+
+            // Return the profile picture path or a default path if not found
+            return isset($userImage_path) ? $userImage_path : "picture/default.png";
+        }
+        ?>
 
         <ul class="nav flex-column bg-dark">
             <li class="nav-item">
@@ -83,6 +126,11 @@ include "upper.php";
                                 <i class="bi-check-circle" style="font-size: 1rem;"></i>Successful
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="tranCancel.php" class="nav-link text-light font-italic nav-collapse-item">
+                                <i class="bi bi-x-circle" style="font-size: 1rem;"></i>Canceled
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -107,6 +155,11 @@ include "upper.php";
                                 <i class="bi-check-circle" style="font-size: 1rem;"></i>Successful
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="unsuccessful.php" class="nav-link text-light font-italic nav-collapse-item">
+                                <i class="bi bi-x-circle" style="font-size: 1rem;"></i>Unsuccessful
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -119,6 +172,9 @@ include "upper.php";
             </li>
             <li class="nav-item">
                 <a href="settings.php" class="nav-link text-light font-italic"> <i class="bi bi-gear text-light fa-fw"></i>Settings</a>
+            </li>
+            <li class="nav-item">
+                <a href="itemreview.php" class="nav-link text-light font-italic"> <i class="bi bi-gear text-light fa-fw"></i>Review</a>
             </li>
         </ul>
     </div>
@@ -180,15 +236,69 @@ include "upper.php";
                 <div class="collapse navbar-collapse justify-content-end" id="navbarsExample02">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="#" style="padding: 10px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRightLabel">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
-                                </svg>
+                            <a class="nav-link" href="#" style="padding: 10px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                <button type="button" class="btn text-white position-relative d-flex align-items-center">
+                                    <i class="fas fa-bell fs-5"></i>
+                                    <?php
+
+                                    // Check if the user is logged in
+                                    if (!isset($_SESSION['user_id'])) {
+                                        // If the user is not logged in, redirect them to the login page
+                                        header("Location: login.php");
+                                        exit;
+                                    }
+
+                                    // If the user is logged in, retrieve their information from the session
+                                    $logged_in_user_id = $_SESSION['user_id'];
+
+                                    // Query to get the count of requests with null dismiss attribute for the logged-in user
+                                    $request_count_query = "SELECT COUNT(*) as request_count 
+                        FROM Request r
+                        JOIN item i ON r.itemID = i.itemID
+                        WHERE r.userID = $logged_in_user_id 
+                        AND i.userID != $logged_in_user_id
+                        AND r.status != 'pending'
+                        AND r.dismiss IS NULL";
+                                    $request_count_result = mysqli_query($conn, $request_count_query);
+
+                                    if ($request_count_result === false) {
+                                        echo "Error executing request_count_query: " . mysqli_error($conn);
+                                    } else {
+                                        $request_count_row = mysqli_fetch_assoc($request_count_result);
+                                        $request_count = ($request_count_row) ? $request_count_row['request_count'] : 0;
+                                    }
+
+
+                                    $item_count_query = "SELECT COUNT(*) as item_count
+                     FROM Request r
+                     JOIN item i ON r.itemID = i.itemID
+                     WHERE r.incomingDismiss IS NULL
+                     AND r.userID != $logged_in_user_id
+                     AND i.userID = $logged_in_user_id";
+                                    $item_count_result = mysqli_query($conn, $item_count_query);
+
+                                    if ($item_count_result === false) {
+                                        echo "Error executing item_count_query: " . mysqli_error($conn);
+                                    } else {
+                                        $item_count_row = mysqli_fetch_assoc($item_count_result);
+                                        $item_count = ($item_count_row) ? $item_count_row['item_count'] : 0;
+                                    }
+
+                                    // Calculate the total unread messages count
+                                    $total_unread_count = $request_count + $item_count;
+                                    ?>
+
+
+                                    <!-- Display the unread messages count -->
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="<?php echo $total_unread_count == 0 ? 'display: none;' : ''; ?>">
+                                        <?php echo ($total_unread_count > 0) ? $total_unread_count : ''; ?>
+                                        <span class="visually-hidden">unread messages</span>
+                                    </span>
+                                </button>
                             </a>
                         </li>
-
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center" href="#" style="padding: 10px;" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link d-flex align-items-center" href="#" style="padding: 14px;" data-bs-toggle="dropdown" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-gear-fill me-2" viewBox="0 0 16 16">
                                     <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.86z" />
                                 </svg>

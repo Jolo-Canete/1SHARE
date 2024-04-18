@@ -5,7 +5,7 @@ if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
     // Query to fetch all items owned by the user
-    $sql_owned_items = "SELECT * FROM item WHERE userID = $user_id";
+    $sql_owned_items = "SELECT * FROM item WHERE userID = $user_id AND itemAvailability = 'Available'";
     $result_owned_items = mysqli_query($conn, $sql_owned_items);
 }
 ?>
@@ -41,7 +41,7 @@ if (isset($_SESSION['user_id'])) {
                                 <div class="row row-cols-5">
                                     <?php
                                     // Query to fetch all items owned by the user
-                                    $sql_owned_items = "SELECT * FROM item WHERE userID = $user_id";
+                                    $sql_owned_items = "SELECT * FROM item WHERE userID = $user_id AND itemAvailability = 'Available'";
                                     $result_owned_items = mysqli_query($conn, $sql_owned_items);
                                     if (mysqli_num_rows($result_owned_items) > 0) {
                                         while ($row_owned_item = mysqli_fetch_assoc($result_owned_items)) {
@@ -98,77 +98,85 @@ if (isset($_SESSION['user_id'])) {
     }
 </script>
 <script>
-    $(document).ready(function() {
-        $('#requestButton').click(function() {
-            if (!validateDateTime()) {
+$(document).ready(function() {
+    $('#requestButton').click(function() {
+        if (!validateDateTime()) {
                 alert("Please select a date and time between 7am to 5pm on weekdays.");
                 return;
             }
 
-            // Manually trigger form submission
-            $('#barterForm').submit();
+            if (!validateQuantity()) {
+                return;
+            }
+
+        // Manually trigger form submission
+        $('#barterForm').submit();
+    });
+
+    $('#barterForm').submit(function(e) {
+        e.preventDefault(); // Prevent form submission
+
+        // Gather selected item IDs
+        var selectedItems = [];
+        $('input[name="selectedItems[]"]:checked').each(function() {
+            selectedItems.push($(this).val());
         });
 
-        $('#barterForm').submit(function(e) {
-            e.preventDefault(); // Prevent form submission
+        // Check if at least one item is selected
+        if (selectedItems.length === 0) {
+            alert("Please select at least 1 item to continue this request.");
+            return; // Exit the function
+        }
 
-            // Gather selected item IDs
-            var selectedItems = [];
-            $('input[name="selectedItems[]"]:checked').each(function() {
-                selectedItems.push($(this).val());
-            });
+        // Get date and time of meet
+        var dateTimeMeet = $('#date_time_meet').val();
 
-            // Check if at least one item is selected
-            if (selectedItems.length === 0) {
-                alert("Please select at least 1 item to continue this request.");
-                return; // Exit the function
+        if (!dateTimeMeet) {
+                alert("Please select a date and time.");
+                return;
             }
 
-            // Get date and time of meet
-            var dateTimeMeet = $('#date_time_meet').val();
+        // Check if the selected time is in the future
+        var selectedDateTime = new Date(dateTimeMeet).getTime();
+        var currentDateTime = new Date().getTime();
+        if (selectedDateTime <= currentDateTime) {
+            alert("Please select a time in the future.");
+            return; // Exit the function
+        }
 
-            // Check if the selected time is in the future
-            var selectedDateTime = new Date(dateTimeMeet).getTime();
-            var currentDateTime = new Date().getTime();
-            if (selectedDateTime <= currentDateTime) {
-                alert("Please select a time in the future.");
-                return; // Exit the function
-            }
+        var itemId = "<?php echo $itemID; ?>"; // Assuming $itemID is defined above
+        $('#requestButton').prop('disabled', true);
 
-            var itemId = "<?php echo $itemID; ?>"; // Assuming $itemID is defined above
-            $('#requestButton').prop('disabled', true);
-
-
-            // AJAX POST request
-            $.ajax({
-                type: 'POST',
-                url: 'processbarter.php', // PHP script to handle the data
-                data: {
-                    selectedItems: selectedItems,
-                    dateTimeMeet: dateTimeMeet,
-                    itemId: itemId
-                },
-                success: function(response) {
-                    // Handle response from the server
-                    console.log(response);
-                    if (response === "Success") {
-                        alert("Successful");
-                        window.location.href = "pending.php";
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Handle errors
-                    console.error(xhr.responseText);
-                    alert("An error occurred while processing your request. Please try again later.");
-                    $('#requestButton').prop('disabled', false);
-
+        // AJAX POST request
+        $.ajax({
+            type: 'POST',
+            url: 'processbarter.php', // PHP script to handle the data
+            data: {
+                selectedItems: selectedItems,
+                dateTimeMeet: dateTimeMeet,
+                itemId: itemId
+            },
+            success: function(response) {
+                // Handle response from the server
+                console.log(response);
+                if (response === "Success") {
+                    alert("Successful");
+                    window.location.href = "pending.php";
                 }
-            });
+            },
+            error: function(xhr, status, error) {
+                // Handle errors
+                console.error(xhr.responseText);
+                alert("An error occurred while processing your request. Please try again later.");
+                $('#requestButton').prop('disabled', false);
+
+            }
         });
     });
 
-    function validateDateTime() {
-        var selectedDateTime = new Date($('#date_time_meet').val());
+    
+function validateDateTime() {
+        var selectedDateTime = new Date($('#date_time_meets').val());
 
         // Check if selected day is a weekday (Monday to Friday)
         var dayOfWeek = selectedDateTime.getDay();
@@ -184,6 +192,21 @@ if (isset($_SESSION['user_id'])) {
 
         return true;
     }
+
+    function validateQuantity() {
+        var quantity = $('#quantity').val();
+        var maxQuantity = parseInt($('#maxQuantity').text());
+
+        if (quantity <= 1 && quantity >= maxQuantity) {
+            alert("The quantity must be between 1 and " + maxQuantity + ".");
+            return false;
+        }
+
+        return true;
+    }
+});
+
+
 </script>
 
 

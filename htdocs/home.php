@@ -142,12 +142,24 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                 <div class="row">
                     <?php foreach ($carouselItems as $index => $item) { ?>
                         <div class="col-6 col-md-3 item">
-                            <img src="pictures/<?php echo $item['itemImage_path']; ?>" alt="<?php echo $item['itemName']; ?>" class="img-fluid shadow-lg">
-                            <div class="content">
-                                <h3 class="display-4 fw-bold text-dark text-center mb-1"><?php echo $item['itemName']; ?></h3>
-                                <p><a class="link-offset-2 link-underline link-underline-opacity-0 text-secondary lead" href="itemdetail.php?id=<?php echo $item['itemID']; ?>"><small>Shop Now</small></a></p>
+                            <div class="clickable-item" data-url="itemdetail.php?itemID=<?php echo $item['itemID']; ?>">
+                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" alt="<?php echo $item['itemName']; ?>" class="img-fluid shadow-lg">
+                                <div class="content">
+                                    <h3 class="display-4 fw-bold text-dark text-center mb-1"><?php echo $item['itemName']; ?></h3>
+                                    <p><a class="link-offset-2 link-underline link-underline-opacity-0 text-secondary lead" href="itemdetail.php?itemID=<?php echo $item['itemID']; ?>"><small>Shop Now</small></a></p>
+                                </div>
                             </div>
                         </div>
+
+                        <script>
+                            $(document).ready(function() {
+                                $(".clickable-item").click(function() {
+                                    var url = $(this).data("url");
+                                    window.location = url;
+                                });
+                            });
+                        </script>
+
                     <?php } ?>
                 </div>
                 <!--- Categories --->

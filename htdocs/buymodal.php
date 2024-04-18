@@ -18,13 +18,18 @@
                             <input class="form-control" type="text" value="Barangay Hall/Gym" aria-label="Barangay Hall/Gym" readonly>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="quantity" class="form-label"><b>Quantity(<?php echo $item['itemQuantity'] ?> Max)</b> <span class="text-danger">*</span></label>
+                            <input type="number" id="aquantity" name="quantity" class="form-control" min="1" max="0">
+                        </div>
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" id="buyRequestButton" class="btn btn-primary">Request</button>
             </div>
             </form>
-
         </div>
     </div>
 </div>
@@ -33,6 +38,10 @@
         $('#buyRequestButton').click(function() {
             if (!validateDateTimeForBuyRequest()) {
                 alert("Please select a date and time between 7am to 5pm on weekdays.");
+                return;
+            }
+
+            if (!validateQuantity()) {
                 return;
             }
 
@@ -69,7 +78,8 @@
                 url: 'processbuy.php', // PHP script to handle the data
                 data: {
                     dateTimeMeet: dateTimeMeet,
-                    itemId: itemId
+                    itemId: itemId,
+                    quantity: $('#aquantity').val()
                 },
                 success: function(response) {
                     // Handle response from the server
@@ -103,6 +113,18 @@
         // Check if selected time is between 7am to 5pm
         var selectedTime = selectedDateTime.getHours();
         if (selectedTime < 7 || selectedTime >= 17) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateQuantity() {
+        var quantity = $('#aquantity').val();
+        var maxQuantity = parseInt($('#maxQuantity').text());
+
+        if (quantity <= 1 && quantity >= maxQuantity) {
+            alert("The quantity must be between 1 and " + maxQuantity + ".");
             return false;
         }
 
