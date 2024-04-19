@@ -257,7 +257,7 @@ $time = $dateTime[1];
                     <i class="bi bi-flag fs-5"></i>
                   </button>
                 </div>
-                <div class="text-secondary"><? echo $userData['position'] ?></div>
+                <div class="text-secondary">Resident</div>
                 <div>
                  <?php 
                     if($userData['status'] === 'Unverified' || $userData['status'] === null) {
