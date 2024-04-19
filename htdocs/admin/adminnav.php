@@ -18,7 +18,7 @@
 
 <style>
     <?php
-    include "admin/adminnav.css";
+    include "./adminnav.css";
     ?>
 </style>
 

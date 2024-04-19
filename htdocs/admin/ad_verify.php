@@ -1,3 +1,8 @@
+<?php 
+include "./1db.php";
+ini_set('display_errors', 1);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,7 +50,7 @@
 
 <body>
     <main>
-    <?php include "admin/adminnav.php" ?>
+    <?php include "./adminnav.php" ?>
         <div class="page-content" id="content">
             <div class="container">
                 <div class="row">
