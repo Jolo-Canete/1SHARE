@@ -81,8 +81,7 @@ if (isset($_GET['search_term'])) {
             color: #f8de7e;
         }
 
-        <?php include "additem.css"; ?>
-        .card {
+        <?php include "additem.css"; ?>.card {
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -123,114 +122,161 @@ if (isset($_GET['search_term'])) {
             <?php if (isset($_GET['search_term'])) { ?>
                 <p>You've searched for: <?php echo htmlspecialchars($_GET['search_term']); ?></p>
             <?php } ?>
-            <div class="row">
-                <div class="col-custom-column">
-                    <div class="d-grid gap-2 d-md-block">
-                        <!-- Category Dropdown -->
-                        <div class="btn-group">
-                            <button id="item_category" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Category
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="item_category">
-                                <li><a class="dropdown-item" href="?sort_by=item_category&category=all">All</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Toys">Toys</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Cloths">Cloths</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Kitchen Utensils">Kitchen Utensils</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Tools">Tools</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Sports Items">Sports Items</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=item_category&category=School Supply">School Supply</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=item_category&category=Others">Others</a></li>
-                            </ul>
-                        </div>
-                        &nbsp;
-
-                        <!-- Sorting Dropdown (Date Uploaded) -->
-                        <div class="btn-group">
-                            <button id="sort_by_item" type="button" class="btn btn-outline-dark rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sort By: Date Uploaded
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="sort_by_item">
-                                <li><a class="dropdown-item" href="?sort_by=date_uploaded&order=desc">Most Recent</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=date_uploaded&order=asc">Least Recent</a></li>
-                            </ul>
-                        </div>
-                        &nbsp;&nbsp;
-
-                        <!-- Sorting Dropdown (Open For) -->
-                        <div class="btn-group">
-                            <button id="sort_by_open_for" type="button" class="btn btn-outline-dark rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sort By: Open For
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="sort_by_open_for">
-                                <li><a class="dropdown-item" href="?sort_by=open_for&open_for=all">All</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Barter">Barter</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Borrow">Borrow</a></li>
-                                <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Buy">Buy</a></li>
-                            </ul>
+            <div class="d-md-none">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-4">
+                        <div class="d-md-block">
+                            <div class="btn-group">
+                                <button id="item_category" type="button" class="btn btn-outline-dark btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">Category</button>
+                                <ul class="dropdown-menu dropdown-menu-sm" aria-labelledby="item_category">
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=all">All</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Toys">Toys</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Cloths">Cloths</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Kitchen Utensils">Kitchen Utensils</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Tools">Tools</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Sports Items">Sports Items</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=School Supply">School Supply</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Others">Others</a></li>
+                                </ul>
+                            </div>
+                            &nbsp;
+                            <div class="btn-group">
+                                <button id="sort_by_item" type="button" class="btn btn-outline-dark btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">Date Uploaded</button>
+                                <ul class="dropdown-menu dropdown-menu-sm" aria-labelledby="sort_by_item">
+                                    <li><a class="dropdown-item" href="?sort_by=date_uploaded&order=desc">Most Recent</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=date_uploaded&order=asc">Least Recent</a></li>
+                                </ul>
+                            </div>
+                            &nbsp;&nbsp;
+                            <div class="btn-group">
+                                <button id="sort_by_open_for" type="button" class="btn btn-outline-dark btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">Open For</button>
+                                <ul class="dropdown-menu dropdown-menu-sm" aria-labelledby="sort_by_open_for">
+                                    <li><a class="dropdown-item" href="?sort_by=open_for&open_for=all">All</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Barter">Barter</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Borrow">Borrow</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Buy">Buy</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <br>
-        <!--- End of Dropdown --->
+       
 
-        <!--- Item Display --->
-        <div class="container">
-            <div class="row row-cols-1 row-cols-md-6 g-4">
-                <?php if (empty($items)) { ?>
-                    <div class="col">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">No Item</h5>
+            <div class="d-none d-md-block">
+
+                <!--- End of Dropdown --->
+                <div class="row">
+                    <div class="col-custom-column">
+                        <div class="d-grid gap-2 d-md-block">
+                            <!-- Category Dropdown -->
+                            <div class="btn-group">
+                                <button id="item_category" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
+                                    Category
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="item_category">
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=all">All</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Toys">Toys</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Cloths">Cloths</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Kitchen Utensils">Kitchen Utensils</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Tools">Tools</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Sports Items">Sports Items</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=School Supply">School Supply</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=item_category&category=Others">Others</a></li>
+                                </ul>
+                            </div>
+                            &nbsp;
+
+                            <!-- Sorting Dropdown (Date Uploaded) -->
+                            <div class="btn-group">
+                                <button id="sort_by_item" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
+                                    Sort By: Date Uploaded
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="sort_by_item">
+                                    <li><a class="dropdown-item" href="?sort_by=date_uploaded&order=desc">Most Recent</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=date_uploaded&order=asc">Least Recent</a></li>
+                                </ul>
+                            </div>
+                            &nbsp;&nbsp;
+
+                            <!-- Sorting Dropdown (Open For) -->
+                            <div class="btn-group">
+                                <button id="sort_by_open_for" type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
+                                    Sort By: Open For
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="sort_by_open_for">
+                                    <li><a class="dropdown-item" href="?sort_by=open_for&open_for=all">All</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Barter">Barter</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Borrow">Borrow</a></li>
+                                    <li><a class="dropdown-item" href="?sort_by=open_for&open_for=Buy">Buy</a></li>
+                                </ul>
                             </div>
                         </div>
                     </div>
-                <?php } else { ?>
-                    <?php foreach ($items as $item) { ?>
+                </div>
+            </div>
+            <br>
+            <!--- End of Dropdown --->
 
-                        <!-- Item Card -->
+            <!--- Item Display --->
+            <div class="container">
+                <div class="row row-cols-2 row-cols-md-6 g-4">
+                    <?php if (empty($items)) { ?>
                         <div class="col">
-                            <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>', '<?php echo $item['itemID']; ?>')">
-                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>" style="border-radius: 0px;">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
-                                    <div class="rating">
-                                        <label for="star5"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star5" value="5">
-                                        <label for="star4"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star4" value="4">
-                                        <label for="star3"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star3" value="3">
-                                        <label for="star2"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star2" value="2">
-                                        <label for="star1"><i class="fas fa-star"></i></label>
-                                        <input type="radio" name="rating" id="star1" value="1">
-                                    </div>
-                                    <div class="mb-2"></div>
-                                    <div>
-                                        <p class="text-secondary mb-0"><i class="bi bi-tags-fill"></i> <small><b></b> <?php echo $item['category']; ?></small></p>
-                                        <p class="text-secondary mb-0"><i class="bi bi-arrow-repeat"></i> <small><b></b> <?php echo $item['requestType']; ?></small></p>
-                                    </div>
-                                    <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
-                                    <p class="text-start text-secondary mb-0">
-                                        <?php
-                                        $availability = $item['itemAvailability'];
-                                        $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
-                                        echo "<span style='display: none;' class='badge $badgeColor rounded-pill'>$availability</span>";
-                                        ?>
-                                    </p>
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">No Item</h5>
                                 </div>
                             </div>
                         </div>
+                    <?php } else { ?>
+                        <?php foreach ($items as $item) { ?>
+
+                            <!-- Item Card -->
+                            <div class="col">
+                                <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>', '<?php echo $item['itemID']; ?>')">
+                                    <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>" style="border-radius: 0px;">
+                                    <div class="card-body">
+                                        <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
+                                        <div class="rating">
+                                            <label for="star5"><i class="fas fa-star"></i></label>
+                                            <input type="radio" name="rating" id="star5" value="5">
+                                            <label for="star4"><i class="fas fa-star"></i></label>
+                                            <input type="radio" name="rating" id="star4" value="4">
+                                            <label for="star3"><i class="fas fa-star"></i></label>
+                                            <input type="radio" name="rating" id="star3" value="3">
+                                            <label for="star2"><i class="fas fa-star"></i></label>
+                                            <input type="radio" name="rating" id="star2" value="2">
+                                            <label for="star1"><i class="fas fa-star"></i></label>
+                                            <input type="radio" name="rating" id="star1" value="1">
+                                        </div>
+                                        <div class="mb-2"></div>
+                                        <div>
+                                            <p class="text-secondary mb-0"><i class="bi bi-tags-fill"></i> <small><b></b> <?php echo $item['category']; ?></small></p>
+                                            <p class="text-secondary mb-0"><i class="bi bi-arrow-repeat"></i> <small><b></b> <?php echo $item['requestType']; ?></small></p>
+                                        </div>
+                                        <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
+                                        <p class="text-start text-secondary mb-0">
+                                            <?php
+                                            $availability = $item['itemAvailability'];
+                                            $badgeColor = ($availability == 'Available') ? 'bg-success -subtle text-light -emphasis' : 'bg-danger -subtle text-light -emphasis';
+                                            echo "<span style='display: none;' class='badge $badgeColor rounded-pill'>$availability</span>";
+                                            ?>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
                     <?php } ?>
-                <?php } ?>
+                </div>
+                <?php include "finddetailmodal.php"; ?>
             </div>
-            <?php include "finddetailmodal.php"; ?>
+            <!--- End of Item Display --->
+
         </div>
-        <!--- End of Item Display --->
-        
-    </div>
 </body>
 
 </html>
+<div class="d-md-none">
+    <br><br>
+    </div>

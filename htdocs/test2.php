@@ -1,80 +1,213 @@
-<div class="container-fluid">
-    <div class="row">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <div><a class="h4 text-light link-offset-2 link-underline link-underline-opacity-0" href="home.php">
-                        <img src="picture/logo.png" alt="I S H A R E logo" style="width: 50px; height: 40px;">
-                        I S H A R E</div></a>
-                <button id="sidebarCollapse" type="button" class="btn btn-outline-secondary shadow-sm px-4 me-3"><i class="fa fa-bars mr-2"></i></button>
-                <script>
-                    $(function() {
-                        // Sidebar toggle behavior
-                        $("#sidebarCollapse").on("click", function() {
-                            $("#sidebar, #content").toggleClass("active");
-                        });
-                    });
-                </script>
-                <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-
-                    <a id="clam" class="navbar-brand" href="finditem.php">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-shop" viewBox="0 0 16 16" style="margin-bottom: 3px;">
-                            <path d="M0 2.5A.5.5 0 0 1 .5 2H2a.5.5 0 0 1 .485.379L2.89 4H14.5a.5.5 0 0 1 .485.621l-1.5 6A.5.5 0 0 1 13 11H4a.5.5 0 0 1-.485-.379L1.61 3H.5a.5.5 0 0 1-.5-.5M3.14 5l.5 2H5V5zM6 5v2h2V5zm3 0v2h2V5zm3 0v2h1.36l.5-2zm1.11 3H12v2h.61zM11 8H9v2h2zM8 8H6v2h2zM5 8H3.89l.5 2H5zm0 5a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0m9-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2m-2 1a2 2 0 1 1 4 0 2 2 0 0 1-4 0" />
-                        </svg>
-                        Find Items
-                    </a>
-                    <form role="search" class="w-50 d-flex" action="finditem.php" method="GET">
-                        <div class="input-group">
-                            <input class="form-control rounded-0" type="search" placeholder="Search" aria-label="Search" id="searchInput" name="search_term">
-                            <div class="input-group-append">
-                                <button class="btn rounded-0" type="button" style="background-color: #212529; border-color: white;" onclick="performSearch()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" class="bi bi-search" viewBox="0 0 16 16">
-                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <script>
-                        function performSearch() {
-                            var searchInput = document.getElementById('searchInput');
-                            var searchTerm = searchInput.value.trim();
-
-                            if (searchTerm !== '') {
-                                window.location.href = 'finditem.php?search_term=' + encodeURIComponent(searchTerm);
-                            }
-                        }
-                    </script>
-                </div>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarsExample02">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" style="padding: 10px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRightLabel">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bell" viewBox="0 0 16 16">
-                                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5 5 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901" />
-                                </svg>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center" href="#" style="padding: 10px;" data-bs-toggle="dropdown" aria-expanded="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" class="bi bi-gear-fill me-2" viewBox="0 0 16 16">
-                                    <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.86z" />
-                                </svg>
-                            </a>
-                            <div class="dropdown">
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark rounded-3 p-2 shadow w-220px">
-                                    <li><a class="dropdown-item rounded-2" href="#">Help</a></li>
-                                    <li><a class="dropdown-item rounded-2" href="settings.php">Settings</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item rounded-2 text-danger" href="?logout=true">Log Out</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+<!-- Item Detail Modal -->
+<div class="modal fade item-detail" id="itemDetailModal" tabindex="-1" aria-labelledby="itemDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header bg-dark text-white">
+        <h5 class="modal-title fs-6" id="itemDetailModalLabel">
+          <i class="bi bi-info-circle-fill"></i> Item Details
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-3">
+        <div id="loadingIndicator" style="display: none; text-align: center;">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <div id="modalContent" style="display: none;">
+          <div class="row">
+            <div class="col-12" style="max-height: 200px; overflow: hidden;">
+              <img id="modalItemImage" src="your_image_url.jpg" alt="" class="img-fluid" style="object-fit: cover; width: 100%; border-radius: 0px;">
             </div>
-        </nav>
+            <div class="col-12 mt-3">
+              <!-- Item Name -->
+              <h5 class="h6" id="modalItemName"></h5>
+              <p><span class="text-dark fs-7" id="modalItemDescription"></span></p>
+              <!-- Other Item Details -->
+              <table class="table table-borderless fs-7">
+                <tr>
+                  <td><i class="bi bi-tags text-dark"></i> <b>Category</b> </td>
+                  <td><span class="text-dark" id="modalItemCategory"></span></td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-hammer text-dark"></i> <b>Condition</b></td>
+                  <td><span class="text-dark" id="modalItemCondition"></span></td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-check-circle-fill text-dark"></i> <b>Availability</b></td>
+                  <td><span class="text-dark" id="modalItemAvailability"></span></td>
+                </tr>
+                <tr style="display: none;">
+                  <td><i class="bi bi-check-circle-fill text-dark"></i> <b>Item ID</b></td>
+                  <td><span class="text-dark" id="modalItemID"></span></td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-arrow-repeat text-dark"></i> <b>Open For</b></td>
+                  <td><span class="text-dark" id="modalItemRequestType"></span></td>
+                </tr>
+
+                <tbody id="buyField">
+                  <tr>
+                    <td><i class="bi bi-cash-coin text-dark"></i> <b>Sell Price</b></td>
+                    <td>₱<span class="text-dark" id="modalBuyPrice"></span></td>
+                  </tr>
+                </tbody>
+
+                <tbody id="borrowFields">
+                  <tr>
+                    <td><i class="bi bi-cash text-dark"></i> <b>Borrow Price</b></td>
+                    <td>₱<span class="text-dark" id="modalBorrowPrice"></span></td>
+                  </tr>
+                  <tr>
+                    <td><i class="bi bi-clock text-dark"></i> <b>Borrowed Duration</b></td>
+                    <td><span class="text-dark" id="modalBorrowDuration"></span> Day/s</td>
+                  </tr>
+                </tbody>
+
+                <tr>
+                  <td><i class="bi bi-calendar text-dark"></i> <b>Date Time Posted</b></td>
+                  <td><span class="text-dark" id="modalDateTimePosted"></span></td>
+                </tr>
+                <tr>
+                  <td><i class="bi bi-box"></i> <b>Quantity</b></td>
+                  <td><span class="text-dark" id="modalItemQuantity"></span> Item/s Left</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer mt-2">
+          <button type="button" class="btn btn-secondary fs-7" data-bs-dismiss="modal">
+            <i class="bi bi-x"></i> Close
+          </button>
+          <button id="cartButton" type="button" class="btn btn-primary btn-sm fs-7" onclick="openCart()">
+            <i class="bi bi-cart-plus"></i> Add To Cart
+          </button>
+          <button id="editButton" type="button" class="btn btn-primary btn-sm fs-7" onclick="openItem()">
+            <i class="bi bi-pencil-fill"></i> Open
+          </button>
+          <div id="cart-popup" class="cart-popup hidden fs-7">
+            Added to Cart <i class="fa fa-shopping-cart"></i>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+
+<script>
+  function openItem() {
+    var itemID = document.getElementById('modalItemID').textContent;
+    window.location.href = 'itemdetail.php?itemID=' + encodeURIComponent(itemID);
+  }
+
+  function showCartPopup() {
+    var popup = document.getElementById('cart-popup');
+    popup.classList.remove('hidden');
+    setTimeout(function() {
+      popup.classList.add('hidden');
+    }, 2000); // Show for 2 seconds
+  }
+
+  function openCart() {
+    var itemID = document.getElementById('modalItemID').textContent;
+    $.ajax({
+      type: 'POST',
+      url: 'cartfunc.php',
+      data: {
+        itemID: itemID
+      },
+      success: function(response) {
+        console.log(response);
+        showCartPopup();
+      },
+      error: function(xhr, status, error) {
+        console.error(xhr.responseText);
+      }
+    });
+  }
+</script>
+
+<script>
+  function populateModal(itemName, itemImagePath, itemAvailability, requestType) {
+    const modalContentEl = document.getElementById('modalContent');
+    const loadingIndicatorEl = document.getElementById('loadingIndicator');
+    const cartButtonEl = document.getElementById('cartButton');
+    const editButtonEl = document.getElementById('editButton');
+
+    modalContentEl.style.display = 'none';
+    loadingIndicatorEl.style.display = 'block';
+    cartButtonEl.style.display = 'none';
+    editButtonEl.style.display = 'none';
+
+    const modalItemImageEl = document.getElementById('modalItemImage');
+    modalItemImageEl.src = `pictures/${itemImagePath}`;
+
+    $.ajax({
+      type: 'POST',
+      url: 'get_item_details.php',
+      data: {
+        itemImagePath
+      },
+      dataType: 'json',
+      success: (response) => {
+        loadingIndicatorEl.style.display = 'none';
+        modalContentEl.style.display = 'block';
+
+        document.getElementById('modalItemID').textContent = response.itemID;
+        document.getElementById('modalItemQuantity').textContent = response.itemQuantity;
+        document.getElementById('modalItemName').textContent = response.itemName;
+        document.getElementById('modalItemCategory').textContent = response.category;
+        document.getElementById('modalItemDescription').textContent = response.ItemDescription;
+        document.getElementById('modalItemCondition').textContent = response.itemCondition;
+        document.getElementById('modalItemAvailability').textContent = itemAvailability;
+        document.getElementById('modalItemRequestType').textContent = requestType;
+
+        if (requestType.includes('Buy')) {
+          $("#buyField").show();
+          $("#modalBuyPrice").text(parseFloat(response.buyPrice).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        } else {
+          $("#buyField").hide();
+        }
+
+        if (requestType.includes('Borrow')) {
+          $("#borrowFields").show();
+          $("#modalBorrowPrice").text(parseFloat(response.borrowPrice).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+          $("#modalBorrowDuration").text(parseFloat(response.borrowDuration));
+        } else {
+          $("#borrowFields").hide();
+        }
+
+        const datePosted = new Date(response.DateTimePosted);
+        document.getElementById('modalDateTimePosted').textContent = formatDateTime(datePosted);
+
+        cartButtonEl.style.display = 'block';
+        editButtonEl.style.display = 'block';
+      },
+      error: (xhr, status, error) => {
+        console.error(xhr.responseText);
+        showErrorMessage('An error occurred while fetching item details. Please try again later.');
+      }
+    });
+  }
+
+  function formatPrice(price) {
+    return `₱ ${price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+  }
+
+  function formatDateTime(date) {
+    return date.toLocaleString('en-US', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  }
+
+  function showErrorMessage(message) {
+    alert(message);
+  }
+</script>

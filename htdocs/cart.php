@@ -76,7 +76,13 @@ if (isset($_SESSION['user_id'])) {
 
 <body>
     <div class="page-content" id="content">
-        <h1 class="text-center mb-4 mt-3"><i class="bi bi-cart-fill"></i> CART</h1>
+    <div class="row">
+                    <div class="col">
+                        <div class="text-dark">
+                            <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-0"><i class="bi bi-cart" style="font-size: 2.8rem;"></i> MY CART</h1>
+                        </div>
+                    </div>
+                </div>
         <div class="container my-5">
             <?php if ($result->num_rows === 0) { ?>
                 <div class="no-item" id="no-item">
@@ -89,7 +95,7 @@ if (isset($_SESSION['user_id'])) {
                                         It seems that you don't have any items in you cart yet. Start exploring and engaging with items in our community!
                                     </p>
                                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                                        <a href="home.php" class="btn btn-outline-dark me-md-2" type="button">Find Items</a>
+                                        <a href="finditem.php" class="btn btn-outline-dark me-md-2" type="button">Find Items</a>
                                     </div>
                                 </div>
                             </div>
@@ -97,12 +103,12 @@ if (isset($_SESSION['user_id'])) {
                     </div>
                 </div>
             <?php } else { ?>
-                <div class="row row-cols-1 row-cols-md-5 g-4">
+                <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
                     <?php while ($item = $result->fetch_assoc()) { ?>
                         <!-- Item Card -->
                         <div class="col">
                             <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>')">
-                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>">
+                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>" style="border-radius: 0px;">
                                 <div class="card-body d-flex flex-column justify-content-between">
                                     <div>
                                         <h5 class="card-title"><?php echo $item['itemName']; ?></h5>

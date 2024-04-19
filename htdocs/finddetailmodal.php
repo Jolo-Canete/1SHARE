@@ -16,9 +16,10 @@
          </div>
          <div id="modalContent" style="display: none;">
            <div class="row">
-             <div class="col-md-6">
-               <img id="modalItemImage" src="" alt="" class="img-fluid h-100 w-100" style="border-radius: 0px;">
+             <div class="col-md-6" style="width: 339px; height: 339px; overflow: hidden;">
+               <img id="modalItemImage" src="your_image_url.jpg" alt="" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%; border-radius: 0px;">
              </div>
+
              <div class="col-md-6">
                <!-- Item Name -->
                <h5 class="h5" id="modalItemName"></h5>
@@ -62,29 +63,34 @@
                      <td><i class="bi bi-clock text-dark"></i> <b>Borrowed Duration</b></td>
                      <td><span class="text-dark" id="modalBorrowDuration"></span> Day/s</td>
                    </tr>
+
                  </tbody>
 
                  <tr>
                    <td><i class="bi bi-calendar text-dark"></i> <b>Date Time Posted</b></td>
                    <td><span class="text-dark" id="modalDateTimePosted"></span></td>
                  </tr>
+                 <tr>
+                   <td><i class="bi bi-box"></i> <b>Quantity</b></td>
+                   <td><span class="text-dark" id="modalItemQuantity"></span> Item/s Left</td>
+                 </tr>
                </table>
              </div>
            </div>
          </div>
-         <div class="modal-footer">
-           <div class="d-flex justify-content-start align-items-center flex-grow-1">
-             <p class="mb-0 text-dark"><i class="bi bi-box"></i> <b>Quantity:</b> <span class="text-dark" id="modalItemQuantity"></span> Item/s Left</p>
-           </div>
-           <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+         <div class="d-flex justify-content-center mt-4">
+           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
              <i class="bi bi-x"></i> Close
            </button>
+           &nbsp;
            <button id="cartButton" type="button" class="btn btn-primary btn-sm" onclick="openCart()">
              <i class="bi bi-cart-plus"></i> Add To Cart
            </button>
+           &nbsp;
            <button id="editButton" type="button" class="btn btn-primary btn-sm" onclick="openItem()">
              <i class="bi bi-pencil-fill"></i> Open
            </button>
+           &nbsp;
            <div id="cart-popup" class="cart-popup hidden">
              Added to Cart <i class="fa fa-shopping-cart"></i>
            </div>
