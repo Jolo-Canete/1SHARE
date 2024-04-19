@@ -59,7 +59,9 @@ include('1db.php'); ?>
                                 <!--- Login --->
                                 <label for="email_address"><b>Username</b></label>
                                 <div class="input-group flex-nowrap">
-                                    <span class="input-group-text" id="addon-wrapping"><ion-icon name="call-outline"></ion-icon></span>
+                                <span class="input-group-text" id="addon-wrapping">
+                                        <div class="bi-person-fill"></div>
+                                    </span>
                                     <input type="text" class="form-control" name="Lgn_Username" placeholder="Phone Number or Username" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
 
                                 </div>

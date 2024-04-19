@@ -18,101 +18,124 @@
                             <input class="form-control" type="text" value="Barangay Hall/Gym" aria-label="Barangay Hall/Gym" readonly>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="quantity" class="form-label"><b>Quantity(<span id="maxQuantity"><?php echo isset($item['itemQuantity']) ? $item['itemQuantity'] : '0'; ?></span> Max)</b> <span class="text-danger">*</span></label>
+                            <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="requestedButton" class="btn btn-primary">Request</button>
+                </div>
+                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" id="requestedButton" class="btn btn-primary">Request</button>
-            </div>
-            </form>
-
         </div>
     </div>
 </div>
 <script>
-  $(document).ready(function() {
-    $('#requestedButton').click(function() {
-        if (!validateDateTime()) {
-            alert("Please select a date and time between 7am to 5pm on weekdays.");
-            return;
-        }
+    $(document).ready(function() {
+        $('#requestedButton').click(function() {
+            if (!validateDateTime()) {
+                alert("Please select a date and time between 7am to 5pm on weekdays.");
+                return;
+            }
 
-        $('#borrowForm').submit();
-    });
+            if (!validateQuantity()) {
+                return;
+            }
 
-    $('#borrowForm').submit(function(e) {
-        e.preventDefault(); // Prevent form submission
+            $('#borrowForm').submit();
+        });
 
-        // Get date and time of meet
-        var dateTimeMeet = $('#date_time_meets').val();
+        $('#borrowForm').submit(function(e) {
+            e.preventDefault(); // Prevent form submission
 
-        // Check if the date and time field is empty
-        if (!dateTimeMeet) {
-            alert("Please select a date and time.");
-            return;
-        }
+            // Get date and time of meet
+            var dateTimeMeet = $('#date_time_meets').val();
 
-        // Check if the selected time is in the future
-        var selectedDateTime = new Date(dateTimeMeet).getTime();
-        var currentDateTime = new Date().getTime();
-        if (selectedDateTime <= currentDateTime) {
-            alert("Please select a time in the future.");
-            return; // Exit the function
-        }
+            // Check if the date and time field is empty
+            if (!dateTimeMeet) {
+                alert("Please select a date and time.");
+                return;
+            }
 
-        var itemId = "<?php echo isset($itemID) ? $itemID : ''; ?>";
+            // Check if the selected time is in the future
+            var selectedDateTime = new Date(dateTimeMeet).getTime();
+            var currentDateTime = new Date().getTime();
+            if (selectedDateTime <= currentDateTime) {
+                alert("Please select a time in the future.");
+                return; // Exit the function
+            }
 
-        $('#requestedButton').prop('disabled', true);
+            var itemId = "<?php echo isset($itemID) ? $itemID : ''; ?>";
 
-        // AJAX POST request
-        $.ajax({
-            type: 'POST',
-            url: 'processborrow.php', // PHP script to handle the data
-            data: {
-                dateTimeMeet: dateTimeMeet,
-                itemId: itemId
-            },
-            success: function(response) {
-                // Handle response from the server
-                console.log(response);
-                if (response === "Success") {
-                    // Check if the selected time is within the valid range
-                    if (validateDateTime()) {
-                        alert("Successful");
-                        window.location.href = "pending.php";
+            $('#requestedButton').prop('disabled', true);
+
+            // AJAX POST request
+            $.ajax({
+                type: 'POST',
+                url: 'processborrow.php', // PHP script to handle the data
+                data: {
+                    dateTimeMeet: dateTimeMeet,
+                    itemId: itemId,
+                    quantity: $('#quantity').val() // Include quantity in the data
+                },
+                success: function(response) {
+                    // Handle response from the server
+                    console.log(response);
+                    if (response === "Success") {
+                        // Check if the selected time is within the valid range
+                        if (validateDateTime()) {
+                            alert("Successful");
+                            window.location.href = "pending.php";
+                        } else {
+                            alert("The request was made outside of the valid time range (7am to 5pm on weekdays).");
+                            $('#requestedButton').prop('disabled', false);
+                        }
                     } else {
-                        alert("The request was made outside of the valid time range (7am to 5pm on weekdays).");
+                        alert("Error: " + response);
                         $('#requestedButton').prop('disabled', false);
                     }
-                } else {
-                    alert("Error: " + response);
+                },
+                error: function(xhr, status, error) {
+                    // Handle errors
+                    console.error(xhr.responseText);
+                    alert("An error occurred while processing your request. Please try again later.");
                     $('#requestedButton').prop('disabled', false);
                 }
-            },
-            error: function(xhr, status, error) {
-                // Handle errors
-                console.error(xhr.responseText);
-                alert("An error occurred while processing your request. Please try again later.");
-                $('#requestedButton').prop('disabled', false);
-            }
+            });
         });
     });
-});
 
-function validateDateTime() {
-    var selectedDateTime = new Date($('#date_time_meets').val());
+    function validateDateTime() {
+        var selectedDateTime = new Date($('#date_time_meets').val());
 
-    // Check if selected day is a weekday (Monday to Friday)
-    var dayOfWeek = selectedDateTime.getDay();
-    if (dayOfWeek === 0 || dayOfWeek === 6) { // 0 is Sunday, 6 is Saturday
-        return false;
+        // Check if selected day is a weekday (Monday to Friday)
+        var dayOfWeek = selectedDateTime.getDay();
+        if (dayOfWeek === 0 || dayOfWeek === 6) { // 0 is Sunday, 6 is Saturday
+            return false;
+        }
+
+        // Check if selected time is between 7am to 5pm
+        var selectedTime = selectedDateTime.getHours();
+        if (selectedTime < 7 || selectedTime >= 17) {
+            return false;
+        }
+
+        return true;
     }
 
-    // Check if selected time is between 7am to 5pm
-    var selectedTime = selectedDateTime.getHours();
-    if (selectedTime < 7 || selectedTime >= 17) {
-        return false;
-    }
+    function validateQuantity() {
+        var quantity = $('#quantity').val();
+        var maxQuantity = parseInt($('#maxQuantity').text());
 
-    return true;
-}
+        if (quantity <= 1 && quantity >= maxQuantity) {
+            alert("The quantity must be between 1 and " + maxQuantity + ".");
+            return false;
+        }
+
+        return true;
+    }
 </script>

@@ -44,13 +44,51 @@ if (isset($_GET['requestId'])) {
 
         // Output the modal content
 ?>
+        <style>
+            .modal .table-responsive {
+                margin-top: 20px;
+            }
+
+            .modal .table {
+                border-radius: 0px;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .modal .table th,
+            .modal .table td {
+                padding: 12px 16px;
+            }
+
+            .modal .table th {
+                background-color: #f5f5f5;
+                font-weight: bold;
+                color: #333;
+            }
+
+            .modal .table td {
+                background-color: #fff;
+                color: #666;
+            }
+
+            .modal .table .bi {
+                font-size: 1.2rem;
+                margin-right: 8px;
+                vertical-align: middle;
+            }
+
+            .modal .table .badge {
+                font-size: 0.9rem;
+                padding: 4px 8px;
+            }
+        </style>
         <div class="row">
             <!-- Right side: Item picture and request detail -->
             <div class="col-md-6">
                 <!-- Item picture -->
-                <h5 class="fw-bold mb-3">Requested Item:</h5>
+                <h4 class="fw-bold text-dark text-center mb-2">Requested Item</h4>
                 <div class="text-center mb-3">
-                    <img src="pictures/<?php echo $itemImage; ?>" class="img-fluid rounded" alt="Item Image" style="max-width: 300px;">
+                    <img src="pictures/<?php echo $itemImage; ?>" class="img-fluid shadow-sm" alt="Item Image" style="max-width: 300px; border-radius: 0px;">
                 </div>
 
                 <!-- Request detail -->
@@ -58,7 +96,7 @@ if (isset($_GET['requestId'])) {
                     <table class="table table-bordered table-striped">
                         <tbody>
                             <tr>
-                                <th><span class="bi bi-box"></span>&nbsp;Item Name</th>
+                                <th><span class="bi bi-card-heading"></span> Item Name</th>
                                 <td class="text-center"><?php echo $itemName; ?></td>
                             </tr>
                             <tr>
@@ -87,7 +125,7 @@ if (isset($_GET['requestId'])) {
 
             <!-- Left side: Requester's items from the barter table -->
             <div class="col-md-6">
-                <h5 class="fw-bold mb-3">Requester's Items:</h5>
+            <h4 class="fw-bold text-dark text-center mb-2">Requester's Item</h4>
                 <div class="row gy-4">
                     <?php
                     // Output item details
@@ -95,9 +133,9 @@ if (isset($_GET['requestId'])) {
                         echo "<div class='col-md-6'>
                                 <div class='card h-100 shadow-sm'>
                                     <a href='detail.php?itemID=$item1_id' target='_blank' class='card-link'>
-                                        <img src='pictures/$item1_image' class='card-img-top' alt='Item 1 Image'>
+                                        <img src='pictures/$item1_image' class='card-img-top' alt='Item 1 Image' style='border-radius: 0px;'>
                                         <div class='card-body'>
-                                            <h5 class='card-title'><span class='bi bi-arrow-left-right'></span> <strong></strong> $item1_name</h5>
+                                            <h5 class='card-title'><span class='bi bi-arrow-left-right' style='font-size: 0.8rem;'></span> <strong></strong> $item1_name</h5>
                                         </div>
                                     </a>
                                 </div>
@@ -107,9 +145,9 @@ if (isset($_GET['requestId'])) {
                         echo "<div class='col-md-6'>
                                 <div class='card h-100 shadow-sm'>
                                     <a href='detail.php?itemID=$item2_id' target='_blank' class='card-link'>
-                                        <img src='pictures/$item2_image' class='card-img-top' alt='Item 2 Image'>
+                                        <img src='pictures/$item2_image' class='card-img-top' alt='Item 2 Image'style='border-radius: 0px;'>
                                         <div class='card-body'>
-                                            <h5 class='card-title'><span class='bi bi-arrow-left-right'></span> <strong></strong> $item2_name</h5>
+                                            <h5 class='card-title'><span class='bi bi-arrow-left-right' style='font-size: 0.8rem;'></span> <strong></strong> $item2_name</h5>
                                         </div>
                                     </a>
                                 </div>
@@ -119,9 +157,9 @@ if (isset($_GET['requestId'])) {
                         echo "<div class='col-md-6'>
                                 <div class='card h-100 shadow-sm'>
                                     <a href='detail.php?itemID=$item3_id' target='_blank' class='card-link'>
-                                        <img src='pictures/$item3_image' class='card-img-top' alt='Item 3 Image'>
+                                        <img src='pictures/$item3_image' class='card-img-top' alt='Item 3 Image'style='border-radius: 0px;'>
                                         <div class='card-body'>
-                                            <h5 class='card-title'><span class='bi bi-arrow-left-right'></span> <strong></strong> $item3_name</h5>
+                                            <h5 class='card-title'><span class='bi bi-arrow-left-right' style='font-size: 0.8rem;'></span> <strong></strong> $item3_name</h5>
                                         </div>
                                     </a>
                                 </div>
@@ -131,7 +169,6 @@ if (isset($_GET['requestId'])) {
                 </div>
             </div>
         </div>
-        <hr class="my-4">
         <div class="d-flex justify-content-center">
             <div class="d-flex align-items-center">
                 <span class="bi bi-arrow-left me-2" style="font-size: 1.5rem;"></span>

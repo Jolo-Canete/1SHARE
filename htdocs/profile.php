@@ -22,7 +22,6 @@ while ($userRow = mysqli_fetch_assoc($query)) {
         'username' => $userRow['username'],
         'password' => $userRow['password'],
         'birthDay' => $userRow['birthDay'],
-        'position' => $userRow['position'],
     );
 
     array_push($user, $userData);
@@ -59,20 +58,6 @@ $time = $dateTime[1];
 
 
 ?>
-
-<!--- Preview the uploaded image --->
-<script>
-  function previewImage(input) {
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
-      reader.onload = function(e) {
-        $('#imagePreview').attr('src', e.target.result);
-        $('#imagePreview').show();
-      }
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
-</script>
 
 
 <!DOCTYPE html>
@@ -217,7 +202,7 @@ $time = $dateTime[1];
     .table-wrapper {
       width: 103%;
       margin: 0 auto;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .table thead th,
@@ -247,9 +232,92 @@ $time = $dateTime[1];
         <div class="row justify-content-center">
           <div class="col-md-12">
             <div class="d-flex align-items-center">
+
+              <!-- HTML Markup -->
               <div class="profile-avatar me-3">
-                <img src="https://github.com/mdo.png" class="rounded-circle" style="width: 150px; height: 150px;">
+                <label for="profile-pic-upload">
+                  <input type="file" id="profile-pic-upload" style="display: none;" onchange="previewImage(this);">
+                  <img id="profile-pic-preview" src="<?php echo !empty($itemImage_path) ? 'picture/' . $itemImage_path : 'picture/' . getUserProfilePicPath($user_id); ?>" class="rounded-circle" style="width: 150px; height: 150px; cursor: pointer;" alt="Profile Picture">
+                </label>
+                <div id="upload-buttons" style="display: none;">
+                  <br>
+                  <button onclick="saveProfilePicture()">Save</button>
+                  <button onclick="cancelUpload()">Cancel</button>
+                </div>
               </div>
+
+              <script>
+                // JavaScript for image preview and showing/hiding buttons
+                function previewImage(input) {
+                  if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+
+                    reader.onload = function(e) {
+                      document.getElementById('profile-pic-preview').src = e.target.result;
+                      document.getElementById('upload-buttons').style.display = 'block'; // Show upload buttons
+                    }
+
+                    reader.readAsDataURL(input.files[0]);
+                  }
+                }
+
+                function cancelUpload() {
+                  document.getElementById('profile-pic-upload').value = "";
+                  document.getElementById('profile-pic-preview').src = "<?php echo getUserProfilePicPath($user_id); ?>";
+                  document.getElementById('upload-buttons').style.display = 'none'; // Hide upload buttons
+                }
+
+                function saveProfilePicture() {
+                  var file = $('#profile-pic-upload')[0].files[0];
+                  if (file) {
+                    var formData = new FormData();
+                    formData.append('profile_pic', file);
+
+                    // Send AJAX request to upload image and update database
+                    $.ajax({
+                      url: 'upload_profile_pic.php',
+                      type: 'POST',
+                      data: formData,
+                      processData: false,
+                      contentType: false,
+                      success: function(response) {
+                        // Handle response here, if needed
+                        console.log(response);
+                        // Reload the page upon successful upload
+                        location.reload();
+                      },
+                      error: function(xhr, status, error) {
+                        // Handle error here
+                        console.error(xhr.responseText);
+                      }
+                    });
+                  }
+                }
+
+                // Add click event listener to the profile picture preview image
+                $('#profile-pic-preview').click(function() {
+                  saveProfilePicture();
+                });
+              </script>
+              <?php
+              // PHP function to fetch logged-in user's profile picture path from the database
+              function getUserProfilePicPath($user_id)
+              {
+                global $conn; // Access the database connection
+
+                // Prepare and execute query to fetch user's profile picture path
+                $stmt = $conn->prepare("SELECT userImage_path FROM user WHERE userID = ?");
+                $stmt->bind_param("i", $user_id);
+                $stmt->execute();
+                $stmt->bind_result($userImage_path);
+                $stmt->fetch();
+                $stmt->close();
+
+                // Return the profile picture path or a default path if not found
+                return isset($userImage_path) ? $userImage_path : "picture/default.png";
+              }
+              ?>
+
               <div>
                 <div class="flex-grow-1 d-flex justify-content-between align-items-center">
                   <h2 class="mb-0 fw-bold"><? echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName'][0]). '.&nbsp;' . ucfirst($userData['lastName'])?></h2>
@@ -272,19 +340,19 @@ $time = $dateTime[1];
             </div>
           </div>
           <div class="rating ms-3">
-                    <label for="star5"><i class="fas fa-star "></i></label>
-                    <input type="radio" name="rating" id="star5" value="5">
-                    <label for="star4"><i class="fas fa-star"></i></label>
-                    <input type="radio" name="rating" id="star4" value="4">
-                    <label for="star3"><i class="fas fa-star"></i></label>
-                    <input type="radio" name="rating" id="star3" value="3">
-                    <label for="star2"><i class="fas fa-star"></i></label>
-                    <input type="radio" name="rating" id="star2" value="2">
-                    <label for="star1"><i class="fas fa-star"></i></label>
-                    <input type="radio" name="rating" id="star1" value="1">
-                    <span class="text-warning ms-2">5/5</span>
-                  </div>
-                  
+            <label for="star5"><i class="fas fa-star "></i></label>
+            <input type="radio" name="rating" id="star5" value="5">
+            <label for="star4"><i class="fas fa-star"></i></label>
+            <input type="radio" name="rating" id="star4" value="4">
+            <label for="star3"><i class="fas fa-star"></i></label>
+            <input type="radio" name="rating" id="star3" value="3">
+            <label for="star2"><i class="fas fa-star"></i></label>
+            <input type="radio" name="rating" id="star2" value="2">
+            <label for="star1"><i class="fas fa-star"></i></label>
+            <input type="radio" name="rating" id="star1" value="1">
+            <span class="text-warning ms-2">5/5</span>
+          </div>
+
           <div class="col mt-4">
             <div class="d-flex align-items-center text-secondary">
               <span class="bi-envelope">&nbsp; <? echo $userData['userEmail'] ?></span>
