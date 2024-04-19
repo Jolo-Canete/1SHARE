@@ -91,7 +91,7 @@ include "nav.php";
                         </div>
                     </div>
                 <?php } else { ?>
-                    <div class="row row-cols-1 row-cols-md-6 g-4">
+                    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
                         <?php foreach ($items as $item) { ?>
                             <!-- Item Card -->
                             <div class="col">
@@ -115,6 +115,7 @@ include "nav.php";
                     <?php } ?>
                     </div>
             </div>
+           
 
             <!-- Item Detail Modal -->
             <div> <?php
@@ -126,6 +127,9 @@ include "nav.php";
                 include "uploadmodal.php";
                 ?>
             </div>
+        
+                
+     
 
             <script>
                 function sortByAvailability(filter) {

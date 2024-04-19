@@ -116,13 +116,11 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
 </style>
 
 <body>
-    <header>
-
-    </header>
+  
 
     <main>
         <div class="page-content" id="content">
-            <div class="mt-4"></div>
+            <div class="mt-5"></div>
             <div class="container">
                 <?php
                 // SQL query to retrieve three random available items excluding those posted by the current user
@@ -251,14 +249,7 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                     </div>
                 </div>
 
-                <footer>
-                    <div class="container">
-                        <div class="mt-3"></div>
-                        <div class="row justify-content-center">
-                            <div class="col-auto"> <a class="btn btn-outline-dark" href="finditem.php" role="button">See More</a> </div>
-                            <div class="mb-2"></div>
-                        </div>
-                </footer>
+              
     </main>
     </div>
 </body>

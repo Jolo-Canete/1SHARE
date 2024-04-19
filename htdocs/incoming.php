@@ -39,6 +39,8 @@ include "nav.php";
             align-items: center;
             height: 200px;
         }
+
+      
     </style>
 </head>
 
@@ -66,9 +68,8 @@ include "nav.php";
                     </div>
                 </div>
                 <br><br>
-            <div class="row mb-3">
-                <div class="col-auto">
-                    <div class="btn-group">
+                <div class="d-flex flex-column flex-md-row justify-content-md-start mb-3">
+                    <div class="btn-group mb-2 mb-md-0 me-md-2">
                         <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             Sort by Request Type
                         </button>
@@ -81,7 +82,7 @@ include "nav.php";
                     </div>
                 </div>
 
-                <div class="table-wrapper">
+                <div class="table-responsive">
                     <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
                         <thead>
                             <tr class="table-dark">
@@ -179,40 +180,40 @@ include "nav.php";
             });
         </script>
         <script>
-                    $(document).ready(function() {
-                        // Add event listeners to the sorter buttons
-                        $('[data-sort-type]').click(function() {
-                            var sortType = $(this).data('sort-type');
-                            sortTable(sortType, 'all');
-                        });
+            $(document).ready(function() {
+                // Add event listeners to the sorter buttons
+                $('[data-sort-type]').click(function() {
+                    var sortType = $(this).data('sort-type');
+                    sortTable(sortType, 'all');
+                });
 
-                        $('[data-sort-status]').click(function() {
-                            var sortStatus = $(this).data('sort-status');
-                            sortTable('all', sortStatus);
-                        });
+                $('[data-sort-status]').click(function() {
+                    var sortStatus = $(this).data('sort-status');
+                    sortTable('all', sortStatus);
+                });
 
-                        function sortTable(sortType, sortStatus) {
-                            // Get all the table rows
-                            var rows = $('tbody tr.table-row');
+                function sortTable(sortType, sortStatus) {
+                    // Get all the table rows
+                    var rows = $('tbody tr.table-row');
 
-                            // Filter the rows based on the selected sort type and status
-                            rows.each(function() {
-                                var requestType = $(this).find('td:first').text();
-                                var meetingStatus = $(this).find('td:eq(4)').text();
+                    // Filter the rows based on the selected sort type and status
+                    rows.each(function() {
+                        var requestType = $(this).find('td:first').text();
+                        var meetingStatus = $(this).find('td:eq(4)').text();
 
-                                if (sortType === 'all' || requestType.toLowerCase() === sortType.toLowerCase()) {
-                                    if (sortStatus === 'all' || (sortStatus === 'current' && meetingStatus.includes('Upcoming')) || (sortStatus === 'past' && !meetingStatus.includes('Upcoming'))) {
-                                        $(this).show();
-                                    } else {
-                                        $(this).hide();
-                                    }
-                                } else {
-                                    $(this).hide();
-                                }
-                            });
+                        if (sortType === 'all' || requestType.toLowerCase() === sortType.toLowerCase()) {
+                            if (sortStatus === 'all' || (sortStatus === 'current' && meetingStatus.includes('Upcoming')) || (sortStatus === 'past' && !meetingStatus.includes('Upcoming'))) {
+                                $(this).show();
+                            } else {
+                                $(this).hide();
+                            }
+                        } else {
+                            $(this).hide();
                         }
                     });
-                </script>
+                }
+            });
+        </script>
 </body>
 
 </html>

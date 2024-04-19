@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -18,7 +18,7 @@
 
 <style>
     <?php
-    include "nav.css";
+    include "admin/adminnav.css";
     ?>
 </style>
 
@@ -33,41 +33,50 @@
                 </div>
             </div>
         </div>
-
         <ul class="nav flex-column bg-dark">
-            <li class="nav-item">
-                <a href="ad_residents.php" class="nav-link text-light font-italic"> <i class="bi bi-people text-light fa-fw"></i>Residents</a>
+        <li class="nav-item">
+                <a href="ad_dashboard.php" class="nav-link text-light font-italic"> <i class="bi bi-speedometer2 text-light fa-fw"></i>Dashboard
+                <span class="badge rounded-pill bg-danger" style="margin-left: 4.6rem;">2<span class="visually-hidden">unread notifications</span>
+            </a>
             </li>
             <li class="nav-item">
-                <a href="ad_items.php" class="nav-link text-light font-italic"> <i class="bi bi-box-seam text-light fa-fw"></i>Items</a>
+                <a href="ad_residents.php" class="nav-link text-light font-italic"> <i class="bi bi-people text-light fa-fw"></i>Residents 
+                <span class="badge rounded-pill bg-danger" style="margin-left: 5.1rem;">2<span class="visually-hidden">unread notifications</span>
+            </a>
             </li>
             <li class="nav-item">
-                <a href="ad_verify.php" class="nav-link text-light font-italic"> <i class="bi bi-person-check text-light fa-fw"></i>Verify</a>
+                <a href="ad_items.php" class="nav-link text-light font-italic"> <i class="bi bi-box-seam text-light fa-fw"></i>Items
+                <span class="badge rounded-pill bg-danger" style="margin-left: 6.9rem;">2<span class="visually-hidden">unread notifications</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="ad_verify.php" class="nav-link text-light font-italic"> <i class="bi bi-person-check text-light fa-fw"></i>Verify
+                <span class="badge rounded-pill bg-danger" style="margin-left: 6.9rem;">99+<span class="visually-hidden">unread notifications</span></a>
             </li>
             <li class="nav-item nav-item-request">
                 <a class="nav-link text-light font-italic d-flex align-items-center justify-content-between collapsed" data-bs-toggle="collapse" href="#report-collapse" aria-expanded="true">
-                    <span> <i class="bi bi-flag text-light fa-fw"></i>Report </span><i class="bi bi-chevron-down text-light" style="font-size: 1rem;"></i>
+                    <span> <i class="bi bi-flag text-light fa-fw"></i>Report <span class="badge rounded-pill bg-danger" style="margin-left: 6.5rem;">4<span class="visually-hidden">unread notifications</span></span>
                 </a>
                 <div class="collapse" id="report-collapse">
                     <ul class="nav flex-column ms-3">
                         <li class="nav-item">
                             <a href="ad_userReport.php" class="nav-link text-light font-italic nav-collapse-item">
                                 <i class="bi bi-file-earmark-person" style="font-size: 1rem;"></i>User Report
+                                <span class="badge rounded-pill bg-danger" style="margin-left: 3.6rem;">2<span class="visually-hidden">unread notifications</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="ad_itemReport.php" class="nav-link text-light font-italic nav-collapse-item">
                                 <i class="bi bi-patch-exclamation" style="font-size: 1rem;"></i>Item Report
+                                <span class="badge rounded-pill bg-danger" style="margin-left: 3.6rem;">2<span class="visually-hidden">unread notifications</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </li>
             <li class="nav-item">
-                <a href="ad_dashboard.php" class="nav-link text-light font-italic"> <i class="bi bi-speedometer2 text-light fa-fw"></i>Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a href="ad_settings.php" class="nav-link text-light font-italic"> <i class="bi bi-gear text-light fa-fw"></i>Settings</a>
+                <a href="ad_settings.php" class="nav-link text-light font-italic"> <i class="bi bi-gear text-light fa-fw"></i>Settings
+                <span class="badge rounded-pill bg-danger" style="margin-left: 5.9rem;">2<span class="visually-hidden">unread notifications</span>
+            </a>
             </li>
         </ul>
     </div>
