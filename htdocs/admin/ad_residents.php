@@ -182,9 +182,9 @@
                                         // echo '<td>' . $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . ' ' . $dateVerifiedHour . ':' . $dateVerifiedMinute . ':' . $dateVerifiedSecond . '</td>';
                                         echo '<td>' . $dateVerifiedDisplay . '</td>';
                                         echo '<td class="text-center">';
-                                        echo '<button class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-' .$rowUser['userID'] . '" aria-expanded="false" aria-controls="itemReportDetails-' .$rowUser['userID'] . '">';
+                                        echo '<a href="./resident_details/user_details.php?userID='. $rowUser['userID']. '" class="btn btn-sm border-0">';
                                         echo '<i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>';
-                                        echo '</button></td>';
+                                        echo '</a></td>';
                                         echo '</tr>';
                                     }
                                 } else {
