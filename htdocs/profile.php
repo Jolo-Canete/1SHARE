@@ -318,7 +318,10 @@ while ($userRow = mysqli_fetch_assoc($query)) {
 
               <div>
                 <div class="flex-grow-1 d-flex justify-content-between align-items-center">
-                  <h2 class="mb-0 fw-bold"><? echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName'][0]) . '.&nbsp;' . ucfirst($userData['lastName']) ?></h2>
+                <h2 class="mb-0 fw-bold"><? echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName'][0]) . '.&nbsp;' . ucfirst($userData['lastName']) ?></h2>
+                  <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#reportUserModal">
+                    <i class="bi bi-flag fs-5"></i>
+                  </button>
                 </div>
                 <div class="text-secondary">Resident</div>
                 <div>
@@ -361,28 +364,28 @@ while ($userRow = mysqli_fetch_assoc($query)) {
           </ul>
           <!--- Tab Content --->
 
-          <!--- Details --->
-          <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-              <div class="h2 d-flex align-items-center mt-3"><i class="bi bi-person me-2"></i> Details</div>
-              <div class="row">
-                <div class="col-md-6 mt-3">
-                  <div class="card mb-4 shadow">
-                    <div class="card-header"><b>Personal Information</b></div>
-                    <div class="card-body">
-                      <div class="row mb-3">
-                        <div class="col-sm-6">
-                          <label for="firstName" class="form-label text-secondary"><b>First Name</b></label>
-                          <div class="form-box" readonly><b><? echo ucfirst($userData['firstName']) ?></b></div>
-                        </div>
-                        <div class="col-sm-6">
-                          <label for="lastName" class="form-label text-secondary"><b>Middle Name</b></label>
-                          <div class="form-box" readonly><b><? echo ucfirst($userData['middleName']) ?></b></div>
-                        </div>
+        <!--- Details --->
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+            <div class="h2 d-flex align-items-center mt-3"><i class="bi bi-person me-2"></i> Details</div>
+            <div class="row">
+              <div class="col-md-6 mt-3">
+                <div class="card mb-4 shadow">
+                  <div class="card-header"><b>Personal Information</b></div>
+                  <div class="card-body">
+                    <div class="row mb-3">
+                      <div class="col-sm-6">
+                        <label for="firstName" class="form-label text-secondary"><b>First Name</b></label>
+                        <div class="form-box" readonly><b><? echo ucfirst($userData['firstName']) ?></b></div>
                       </div>
-                      <div class="row mb-3">
-                        <div class="col-sm-6">
-                          <label for="status" class="form-label text-secondary"><b>Status</b></label>
+                      <div class="col-sm-6">
+                        <label for="lastName" class="form-label text-secondary"><b>Middle Name</b></label>
+                        <div class="form-box" readonly><b><? echo ucfirst($userData['middleName']) ?></b></div>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-sm-6">
+                        <label for="status" class="form-label text-secondary"><b>Status</b></label>
                           <!-- Create a statement if status is verified or not -->
                           <?
                           if ($userData['status'] === 'Unverified' || $userData['status'] === null) {
@@ -592,6 +595,29 @@ while ($userRow = mysqli_fetch_assoc($query)) {
 
   <footer>
   </footer>
+<!-- Modal For Report User -->
+<div class="modal fade" id="reportUserModal" tabindex="-1" aria-labelledby="reportUserModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="reportUserModalLabel">Report User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <label class="form-label"><b>Please specify your reason for reporting this account</b></label>
+                <textarea class="form-control" aria-label="Report reason"></textarea>
+                <label class="form-label mt-3"><b>Upload a screenshot for evidence/proof</b></label>
+                <div class="input-group">
+                  <input type="file" class="form-control" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Report</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
 </body>
 
