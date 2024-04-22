@@ -59,12 +59,17 @@ include "nav.php";
             ?>
                 <div class="row">
                     <div class="col">
-                        <div class="text-dark">
+                    <div class="d-none d-md-block text-dark">
                             <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-0"><i class="bi bi-clock-history" style="font-size: 2.8rem;"></i> PENDING REQUESTS</h1>
+                            <br>
                         </div>
                     </div>
+                    </div>
+                    <div class="d-md-none text-dark">
+                    <h6 class="display-7 fw-bold text-dark text-center mt-4 mb-0"><i class="bi bi-clock-history" style="font-size: 1rem;"></i> PENDING REQUESTS</h6>
                 </div>
-                <br><br>
+                </div>
+                <br>
                 <div class="row mb-3">
                     <div class="col-auto">
                         <div class="btn-group">

@@ -49,7 +49,6 @@ body {
     top: 0;
     left: 0;
     box-shadow: 5px 0 5px rgba(0, 0, 0, 0.2);
-    transition: all 0.4s;
     z-index: 999;
 }
 
@@ -63,13 +62,13 @@ body {
     margin-left: 10px;
     text-decoration: none;
     display: block;
-    transition: all 0.3s ease-in-out;
 }
 
 .vertical-nav .nav-link:hover {
     background-color: #808080;
     border-radius: 0.25rem;
     transition: all 0.3s ease-in-out;
+
 }
 
 #clam {

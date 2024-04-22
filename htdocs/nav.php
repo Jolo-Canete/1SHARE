@@ -136,6 +136,11 @@ include "upper.php";
                                 <i class="bi bi-x-circle" style="font-size: 1rem;"></i>Canceled
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="tranFailed.php" class="nav-link text-light font-italic nav-collapse-item">
+                                <i class="bi bi-clipboard-x" style="font-size: 1rem;"></i>Failed
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>
@@ -236,7 +241,7 @@ include "upper.php";
 
                                 <!-- Mobile version -->
                                 <a id="clamMobile" class="btn btn-outline-secondary shadow-sm px-1 py-1 me-2 ms-2 d-none d-md-block" href="finditem.php">
-                                    <i class="">Find Items</i>
+                                    <i class=""></i> Find Items
                                 </a>
                             </div>
 
@@ -251,9 +256,8 @@ include "upper.php";
                                 </script>
                             </button>
 
-                            <a id="clam" class="btn btn-outline-secondary shadow-sm px-3 me-2 ms-5 d-none d-md-block" href="finditem.php">
-                                <i class="bi bi-shop"></i>
-                                Find Items
+                            <a id="clam" class="btn btn-outline-secondary shadow-sm px-3 me-2 ms-5 d-none d-md-flex" href="finditem.php">
+                                <i class="bi bi-shop"></i>&nbsp; Find Items
                             </a>
                         </div>
 
@@ -305,9 +309,9 @@ include "upper.php";
                                 <div class="input-group w-100">
                                     <input class="form-control rounded-0" type="search" placeholder="Search" aria-label="Search" id="searchInput" name="search_term">
                                     <div class="input-group-append">
-                                        <button class="btn rounded-0" type="button" style="background-color: #212529; border-color: white;" onclick="performSearch()">
-                                            <i class="bi bi-search text-white"></i>
-                                        </button>
+                                    <a href="#" onclick="performSearchs()" class="btn rounded-0 d-inline-block d-md-none" style="background-color: #212529; border-color: white;">
+    <i class="bi bi-search text-white"></i>
+</a>
                                     </div>
                                 </div>
                             </form>
@@ -317,6 +321,16 @@ include "upper.php";
 
                 <script>
                     function performSearch() {
+                        var searchInput = document.getElementById('searchInput');
+                        var searchTerm = searchInput.value.trim();
+
+                        if (searchTerm !== '') {
+                            window.location.href = 'finditem.php?search_term=' + encodeURIComponent(searchTerm);
+                        }
+                    }
+                </script>
+                 <script>
+                    function performSearchs() {
                         var searchInput = document.getElementById('searchInput');
                         var searchTerm = searchInput.value.trim();
 

@@ -60,29 +60,26 @@ if (isset($_GET['logout'])) {
     <title>Document</title>
 </head>
 <body>
-<!-- Navigation -->
 <header class="p-3 text-bg-dark">
     <div class="container">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <a href="login.php" class="navbar-brand" style="margin-left: 50px;">
-                    <img src="picture/logo.png" alt="I-SHARE Logo" style="height: 30px;">
-                    I S H A R E
-                </a>
-            </ul>
-            <!-- If the user is logged in or not -->
-                <div class="text-end">
-                    <?php if(empty($username)) { ?>
-                        <button type="button" class="btn btn-primary me-2">Login</button>
-                        <button type="button" class="btn btn-success">Sign-up</button>
-                    <?php } else { ?>
-                        <a href="?logout=true" class="btn btn-danger">Log out</a>
-                    <?php } ?>
-                </div>
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
+            <a href="login.php" class="navbar-brand d-flex align-items-center">
+                <img src="picture/logo.png" alt="I-SHARE Logo" style="height: 30px;">
+                <span class="ms-2">I S H A R E</span>
+            </a>
+            <div class="text-center text-md-end">
+                <?php if(empty($username)) { ?>
+                    <button type="button" class="btn btn-primary me-2">Login</button>
+                    <button type="button" class="btn btn-success">Sign-up</button>
+                <?php } else { ?>
+                    <a href="?logout=true" class="btn btn-danger m-3 w-100 w-md-auto">Back To Login</a>
+                <?php } ?>
             </div>
         </div>
     </div>
 </header>
+
+
 
         <?php
         // Display errors

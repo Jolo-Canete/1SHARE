@@ -25,7 +25,7 @@
                          <p><i class="bi bi-check-circle-fill"></i> <b>Availability:</b> <span id="modalItemAvailability"></span></p>
                          <p style="display: none;"><i class="bi bi-check-circle-fill"></i> Item ID: <span id="modalItemID"></span></p>
 
-                         <p><i class="bi bi-arrow-repeat"></i> <b>Open For:</b> <span id="modalItemRequestType"></span></p>
+                         <p><i class="bi bi-arrow-repeat"></i> <b>Request Type:</b> <span id="modalItemRequestType"></span></p>
 
                          <!-- Display Buy Price field if request type is Buy -->
                          <div id="buyField" style="display: none;">
