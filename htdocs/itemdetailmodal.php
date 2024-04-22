@@ -25,14 +25,10 @@
                             <h5 class="h5" id="modalItemName"></h5>
                             <p><span class="text-dark" id="modalItemDescription"></span></p>
                             <!-- Other Item Details -->
-                            <table class="table table-borderless">
+                            <table class="table table-borderless ">
                                 <tr>
                                     <td><i class="bi bi-tags text-dark"></i> <b>Category</b> </td>
                                     <td><span class="text-dark" id="modalItemCategory"></span></td>
-                                </tr>
-                                <tr>
-                                    <td><i class="bi bi-hammer text-dark"></i> <b>Condition</b></td>
-                                    <td><span class="text-dark" id="modalItemCondition"></span></td>
                                 </tr>
                                 <tr>
                                     <td><i class="bi bi-check-circle-fill text-dark"></i> <b>Availability</b></td>
@@ -43,7 +39,7 @@
                                     <td><span class="text-dark" id="modalItemID"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><i class="bi bi-arrow-repeat text-dark"></i> <b>Open For</b></td>
+                                    <td><i class="bi bi-arrow-repeat text-dark"></i> <b>Request Type</b></td>
                                     <td><span class="text-dark" id="modalItemRequestType"></span></td>
                                 </tr>
 
@@ -69,15 +65,16 @@
                                     <td><i class="bi bi-calendar text-dark"></i> <b>Date Time Posted</b></td>
                                     <td><span class="text-dark" id="modalDateTimePosted"></span></td>
                                 </tr>
+                                <tr>
+                                    <td><i class="bi bi-box"></i> <b>Quantity</b></td>
+                                    <td><span class="text-dark" id="modalItemQuantity">Item/s Left</span></td>
+                                </tr>
                             </table>
                         </div>
                     </div>
                 </div>
+                <div class="modal-footer fixed">
                 <div class="d-flex justify-content-center mt-4">
-                    <div class="d-flex justify-content-start align-items-center flex-grow-1">
-                        <p class="mb-0"><i class="bi bi-box"></i> <b>Quantity:</b> <span id="modalItemQuantity"></span> Item/s Left</p>
-                    </div>
-                    &nbsp;
 
                     <button id="editButton" type="button" class="btn btn-primary" onclick="editItem()" style="display: none;">
                         <i class="bi bi-pencil-fill"></i> Edit
@@ -87,6 +84,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="bi bi-x"></i> Close
                     </button>
+                </div>
                 </div>
             </div>
         </div>
@@ -129,7 +127,6 @@
                     document.getElementById('modalItemName').textContent = response.itemName;
                     document.getElementById('modalItemCategory').textContent = response.category;
                     document.getElementById('modalItemDescription').textContent = response.ItemDescription;
-                    document.getElementById('modalItemCondition').textContent = response.itemCondition;
                     document.getElementById('modalItemAvailability').textContent = itemAvailability;
                     document.getElementById('modalItemRequestType').textContent = requestType;
 

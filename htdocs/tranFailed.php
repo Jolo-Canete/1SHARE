@@ -48,12 +48,16 @@ include "nav.php";
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <div class="text-dark">
+                    <div class="d-none d-md-block text-dark">
                         <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-0"><i class="bi bi-file-excel" style="font-size: 2.8rem;"></i> FAILED TRANSACTIONS</h1>
+                    <br>
                     </div>
+                    <div class="d-md-none text-dark">
+                    <h6 class="display-7 fw-bold text-dark text-center mt-4 mb-0"><i class="bi bi-file-excel" style="font-size: 1rem;"></i> FAILED TRANSACTIONS</h6>
+                </div>
                 </div>
             </div>
-            <br><br>
+            <br>
             <div class="row mb-3">
                 <div class="col-auto">
                     <div class="btn-group">
@@ -97,7 +101,7 @@ include "nav.php";
                                 <th>Request Type</th>
                                 <th>Item Name</th>
                                 <th>Item Owner</th>
-                                <th>Date Time Cancelled</th>
+                                <th>Date Time Failed</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -124,8 +128,8 @@ include "nav.php";
             } else {
                 echo "<div class='jumbotron jumbotron-fluid bg-light text-center'>
             <div class='container'>
-                <h1 class='display-4 mt-5'>No Cancelled Transaction</h1>
-                <p class='lead text-secondary'>Looks like there are no cancelled transaction at the moment.</p>
+                <h1 class='display-4 mt-5'>No Failed Transaction</h1>
+                <p class='lead text-secondary'>Looks like there are no failed transaction at the moment.</p>
             </div>
         </div>";
             }

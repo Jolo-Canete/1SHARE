@@ -28,10 +28,7 @@
                         <input type="text" class="form-control <?php echo isset($errors['itemName']) ? 'is-invalid' : ''; ?>" id="itemName" placeholder="Enter item name" required>
                         <div class="invalid-feedback">⚠️ Please enter an item name.</div>
                     </div>
-                    <div class="mb-3">
-                        <label for="itemDescription" class="form-label"><i class="bi bi-card-text"></i> <b>Item Description</b></label>
-                        <input type="text" class="form-control" id="itemDescription" placeholder="Enter item description">
-                    </div>
+                    <div class="mb-3"> <label for="itemDescription" class="form-label"><i class="bi bi-card-text"></i> <b>Item Description</b></label> <textarea class="form-control" id="itemDescription" placeholder="Enter item description"></textarea> </div>
                     <div class="mb-3">
                         <label for="category" class="form-label"><i class="bi bi-tags"></i> <b>Category</b> <span class="text-danger">*</span></label>
                         <select class="form-select <?php echo isset($errors['category']) ? 'is-invalid' : ''; ?>" id="category" required>
@@ -59,11 +56,6 @@
 
                     </div>
                     <div class="mb-3">
-                        <label for="itemCondition" class="form-label"><i class="bi bi-gem"></i> <b>Item Condition</b> <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control <?php echo isset($errors['itemCondition']) ? 'is-invalid' : ''; ?>" id="itemCondition" placeholder="Enter item condition (e.g. new, old, good, bad)" required>
-                        <div class="invalid-feedback">⚠️ Please enter the item condition.</div>
-                    </div>
-                    <div class="mb-3">
                         <label for="itemAvailability" class="form-label"><i class="bi bi-check2-circle"></i> <b>Availability</b> <span class="text-danger">*</span></label>
                         <select class="form-select <?php echo isset($errors['itemAvailability']) ? 'is-invalid' : ''; ?>" id="itemAvailability" required>
                             <option value="" selected>Select an option...</option>
@@ -73,7 +65,7 @@
                         <div class="invalid-feedback">⚠️ Please select an availability option.</div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label"><i class="bi bi-arrow-repeat"></i> <b>Open For</b> <span class="text-danger">*</span></label>
+                        <label class="form-label"><i class="bi bi-arrow-repeat"></i> <b>Request Type</b> <span class="text-danger">*</span></label>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="Barter" name="requestType" id="requestTypeBarter">
                             <label class="form-check-label" for="requestTypeBarter">

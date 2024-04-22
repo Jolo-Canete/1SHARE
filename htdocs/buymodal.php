@@ -21,12 +21,12 @@
                     <div class="row">
                         <div class="col-6 mb-3">
                             <label for="quantity" class="form-label"><b>Quantity(<?php echo $item['itemQuantity'] ?> Max)</b> <span class="text-danger">*</span></label>
-                            <input type="number" id="aquantity" name="quantity" class="form-control" min="1" max="0">
+                            <input type="number" id="aquantity" name="quantity" class="form-control" min="1" max="0" required>
                         </div>
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary ms-2" data-bs-target="#itemDetailModal" data-bs-toggle="modal">Go Back</button>
                 <button type="button" id="buyRequestButton" class="btn btn-primary">Request</button>
             </div>
             </form>

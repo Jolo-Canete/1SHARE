@@ -42,13 +42,13 @@ include "nav.php";
 
         <div class="container">
             <div class="row">
-                <div class="col">
+                <div class="col-md-4 col-12 mb-3">
                     <!-- Upload Button on the left -->
                     <button id="butter" type="button" class="btn btn btn-outline-success btn-add mb-3 rounded-pill" data-bs-toggle="modal" data-bs-target="#uploadModal">
                         <i class="bi bi-plus"></i> Add New Item
                     </button>
                 </div>
-                <div class="col">
+                <div class="col-md-8 col-12 mb-3 mb-3">
                     <!-- Sort Dropdowns -->
                     <div class="d-flex justify-content-end">
                         <div class="btn-group me-2">

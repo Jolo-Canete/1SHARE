@@ -48,12 +48,16 @@ include "nav.php";
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <div class="text-dark">
+                    <div class="d-none d-md-block text-dark">
                         <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-0"><i class="bi bi-check-circle" style="font-size: 2.8rem;"></i> SUCCESSFUL TRANSACTIONS</h1>
+                        <br>
                     </div>
+                    <div class="d-md-none text-dark">
+                    <h6 class="display-7 fw-bold text-dark text-center mt-4 mb-0"><i class="bi bi-check-circle" style="font-size: 1rem;"></i> SUCCESSFUL TRANSACTIONS</h6>
+                </div>
                 </div>
             </div>
-            <br><br>
+            <br>
             <div class="row mb-3">
                 <div class="col-auto">
                     <div class="btn-group">

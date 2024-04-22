@@ -133,13 +133,13 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                 ?>
                 <div class="col">
                     <div class="text-dark">
-                        <h1 class="display-4 fw-bold text-dark text-center">ADD TO CART NOW!</h1>
+                        <h1 class="display-4 fw-bold text-dark text-center">RECENT ITEMS</h1>
                         <p class="lead text-secondary text-center mb-5">Explore our items and add to cart now!</p>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row row-cols-sm-1">
                     <?php foreach ($carouselItems as $index => $item) { ?>
-                        <div class="col-6 col-md-3 item">
+                        <div class="col-6 col-md-3 col-sm-1 item">
                             <div class="clickable-item" data-url="itemdetail.php?itemID=<?php echo $item['itemID']; ?>">
                                 <img src="pictures/<?php echo $item['itemImage_path']; ?>" alt="<?php echo $item['itemName']; ?>" class="img-fluid shadow-lg">
                                 <div class="content">
@@ -197,7 +197,7 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                     </div>
                     <!--- Item Display --->
                     <div class="container">
-                        <div class="row row-cols-3 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4">
+                        <div class="row row-cols-2 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4">
                             <?php if (empty($items)) { ?>
                                 <div class="col">
                                     <div class="card">
