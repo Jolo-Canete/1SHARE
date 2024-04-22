@@ -87,7 +87,7 @@
                                         <tr>
                                             <td>Laptop</td>
                                             <td>@lionking</td>
-                                            <td></td>
+                                            <td>Febraury 15, 2060</td>
                                             <td class="text-center">
                                                 <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-1" aria-expanded="false" aria-controls="itemReportDetails-1">
                                                     <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
@@ -111,7 +111,7 @@
                                         <tr>
                                             <td>Kettle Korn</td>
                                             <td>katulgonko</td>
-                                            <td></td>
+                                            <td>January 21, 2023</td>
                                             <td class="text-center">
                                                 <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-2" aria-expanded="false" aria-controls="itemReportDetails-2">
                                                     <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>

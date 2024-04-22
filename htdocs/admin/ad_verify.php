@@ -1,6 +1,14 @@
 <?php 
-include "./1db.php";
+include "./1db.php"; include "./adminnav.php";
+
+// Check errors
 ini_set('display_errors', 1);
+
+// Get the Unverfied users
+$sqlUnverified = "SELECT * FROM user WHERE COALESCE(status, 'UnVerified') = 'UnVerified'";
+$resultVerified = $conn->query($sqlUnverified);
+
+// Get the image path for the UnVerified proof
 
 ?>
 <!DOCTYPE html>
@@ -21,9 +29,7 @@ ini_set('display_errors', 1);
             padding-top: 1rem;
         }
 
-        .table {
-            table-layout: fixed;
-        }
+        
 
         .table th,
         .table td {
@@ -33,32 +39,29 @@ ini_set('display_errors', 1);
             text-overflow: ellipsis;
         }
 
-        .table th:nth-child(5),
+.table th:nth-child(5),
 .table td:nth-child(5),
 .table th:nth-child(6),
 .table td:nth-child(6) {
-    width: 1%;
+    width: 3%;
 }
 
 .table th,
 .table td {
     width: calc((100% - 16%) / 29);
 }
+
     </style>
 
 </head>
 
 <body>
     <main>
-    <?php include "./adminnav.php" ?>
         <div class="page-content" id="content">
             <div class="container">
                 <div class="row">
                     <div class="col-3">
                         <form class="input-group mb-3">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="bi bi-search"></i>
                             </button>
                         </form>
                     </div>
@@ -79,102 +82,68 @@ ini_set('display_errors', 1);
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="card" style="width: 78.5rem;">
+                        <div class="card" style="width: 100%;">
                             <div class="card-header">
-                                <b>List of Residents</b>
+                                <b>List of  Unverified Residents</b>
                             </div>
                             <div class="card-body">
                                 <div class="row justify-content-between">
-                                    <div class="col-auto">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
-                                                Status
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-item" href="#">Verified</a></li>
-                                                <li><a class="dropdown-item" href="#">Not Verified</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                     <div class="col-auto">
                                         <form class="d-flex">
                                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                                         </form>
                                     </div>
                                 </div>
-                                <div class="mb-3"></div>
-                                <table class="table table-bordered">
+                                <div class="mb-3"> <!--Just a necessity blank space --> </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-fixed w-100">
                                     <thead>
                                         <tr>
-                                            <th>First Name</th>
-                                            <th>Middle Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                            <th class="text-center">Purok</th>
-                                            <th class="text-center">Zone</th>
-                                            <th>Proof of Residency</th>
-                                            <th>Action</th>
+                                        <th class="col-2">Resident's Name</th>
+                                        <th>Username</th>
+                                        <th class="text-center">Purok</th>
+                                        <th class="text-center">Zone</th>
+                                        <th>Proof of Residency</th>
+                                        <th class="text-center" colspan="2">Action</th>
                                         </tr>
                                     </thead>
+                                    <form action="" method="post">
                                     <tbody>
-                                        <tr>
-                                            <td>Climinten Ivy</td>
-                                            <td>Chrysantemum</td>
-                                            <td>Roses</td>
-                                            <td>climintenroses</td>
-                                            <td class="text-center">1</td>
-                                            <td class="text-center">2</td>
-                                            <td></td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-1" aria-expanded="false" aria-controls="itemReportDetails-1">
-                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr class="collapse" id="itemReportDetails-1">
-                                            <td colspan="4">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nescafe</td>
-                                            <td>Stick</td>
-                                            <td>Coffeee</td>
-                                            <td>nescafeoriginal</td>
-                                            <td class="text-center">2</td>
-                                            <td class="text-center">3</td>
-                                            <td></td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-2" aria-expanded="false" aria-controls="itemReportDetails-2">
-                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr class="collapse" id="itemReportDetails-2">
-                                            <td colspan="4">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <?php 
+                                            // Loop the Unverified users
+                                            if($resultVerified->num_rows > 0){
+                                                while($rowVerified = $resultVerified->fetch_assoc()){
+                                                    echo '<tr>';
+                                                    echo '<td>' . ucfirst($rowVerified['firstName']) . ' '. ucfirst($rowVerified['lastName']) . '</td>';
+                                                    echo '<td>' . $rowVerified['username'] . '</td>';
+                                                    echo '<td class="text-center">' . ucfirst($rowVerified['purok']) . '</td>';
+                                                    echo '<td class="text-center">' . ucfirst($rowVerified['zone']) . '</td>';
+
+                                                    // Get the image from the verify folder
+                                                    echo '<td align="center">';
+                                                    echo '<img src="../verify/'.$rowVerified['verifyImage_path'] .'" alt="Verification Image" width="100" height="100">';
+                                                    echo '</td>';
+                                                    
+                                                    // Continue with the verify button
+                                                    echo '<td class="text-center">' .
+                                                    '<form method="post" action="ad_verify.php">' .
+                                                    '<input type="hidden" name="residentID" value="' . $rowVerified['userID'] . '">' .
+                                                    '<button type="submit" name="verifyResident" class="btn btn-sm border-0 has-tooltip" title="Verify Resident"><i class="bi bi-person-check" style="font-size: 1rem; color: #0D6EFD;"></i></button>' .
+                                                    '</form>' .
+                                                    '</td>';
+                                                
+                                                echo '<td class="text-center">' .
+                                                    '<button type="submit" class="btn btn-sm border-0 has-tooltip" title="Reject Resident" name="deleteResident"><i class="bi bi-x-circle" style="font-size: 1rem; color: #dc3545;"></i></button>' .
+                                                    '</td>';
+                                                }
+                                            }
+                                            
+                                            
+                                            
+                                            ?>
                                     </tbody>
                                 </table>
+                            </div>
                                 <div class="row align-items-center">
                                     <div class="col-3">
                                         <div class="row g-2">
@@ -219,11 +188,41 @@ ini_set('display_errors', 1);
         </div>
         </div>
     </main>
+    <!-- Modal for Actions -->
 
     <footer>
         <!-- place footer here -->
     </footer>
+    <!-- Update the user status -->
+<?php 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(isset($_POST['verifyResident'])) {
+        $userID = $_POST['residentID'];
 
+    // Update the user to Verified
+    $updateStatus = 'Verified';
+    // Get the current time stamp
+    $dateVerified = date('Y-m-d H:i:s');
+
+    // Prepare the sql statement
+    $sqlUpdateStatus = "UPDATE user SET status = '$updateStatus', dateVerified = '$dateVerified' WHERE userID = '$userID'";
+        
+    // Run the sql statement
+    $query = $conn->query($sqlUpdateStatus);
+
+    // Refresh the File
+    echo "<script>alert('Congratulations!, New User has been registered')</script>";
+    echo "<script>window.location.href='./ad_verify.php'</script>";
+
+
+    
+    }
+
+
+}
+
+
+?>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var numRowsInput = document.getElementById("numRowsInput");
@@ -231,7 +230,7 @@ ini_set('display_errors', 1);
             var tableRows = document.querySelectorAll("tbody tr");
             var showLimited = true;
 
-            function toggleRows() {
+            function toggleRows() {htdocs/admin/ad_verify.php
                 var numRowsToShow = parseInt(numRowsInput.value);
                 if (isNaN(numRowsToShow) || numRowsToShow <= 0) {
                     alert("Please enter a valid number of rows.");
