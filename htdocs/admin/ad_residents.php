@@ -19,7 +19,7 @@
         }
 
         .card-header {
-            background-color: #0D6EFD;
+            background-color: #899499;
             color: white;
             font-size: 1.25rem;
         }
