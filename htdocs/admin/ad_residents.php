@@ -1,3 +1,11 @@
+<?php include "./1db.php";
+
+ // Get all users
+ $sqlUser = "SELECT * from user";
+ $resultUser = $conn->query($sqlUser);
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +19,7 @@
         }
 
         .card-header {
-            background-color: #0D6EFD;
+            background-color: #899499;
             color: white;
             font-size: 1.25rem;
         }
@@ -50,17 +58,11 @@
 
 <body>
     <main>
-    <?php include "admin/adminnav.php" ?>
+    <?php include "./adminnav.php";?>
         <div class="page-content" id="content">
             <div class="container">
                 <div class="row">
                     <div class="col-3">
-                        <form class="input-group mb-3">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </form>
                     </div>
                     <div class="col-9 d-flex justify-content-end">
                         <div class="dropdown">
@@ -75,7 +77,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card" style="width: 78.5rem;">
+                <div class="card col-12">
                     <div class="card-header">
                         <b>List of Residents</b>
                     </div>
@@ -87,8 +89,9 @@
                                         Status
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#">Verified</a></li>
-                                        <li><a class="dropdown-item" href="#">Not Verified</a></li>
+                                        <li><a class="dropdown-item" href="#" data-status="all">All</a></li>
+                                        <li><a class="dropdown-item" href="#" data-status="verified">Verified</a></li>
+                                        <li><a class="dropdown-item" href="#" data-status="not-verified">Not Verified</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -98,8 +101,9 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="mb-3"></div>
-                        <table class="table table-bordered">
+                        <div class="card mt-3">
+                        <div class="table-responsive">
+                        <table class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
                                     <th>First Name</th>
@@ -112,73 +116,86 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Detective</td>
-                                    <td>Hakuna</td>
-                                    <td>Matata</td>
-                                    <td>@lionking</td>
-                                    <td><span class="badge bg-danger text-white rounded-pill">Not Verified</span></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="text-center">
-                                        <button class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-1" aria-expanded="false" aria-controls="itemReportDetails-1">
-                                            <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr class="collapse" id="itemReportDetails-1">
-                                    <td colspan="8">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <!-- Additional table rows go here -->
+                            <tbody id="user-table-body" >
+                                
+                                <? 
+                                // Run the Sql
+                                
+                                if ($resultUser->num_rows > 0) {
+                                    // Loop the results
+                                    while ($rowUser = $resultUser->fetch_assoc()) {
+                                        // Check if the user is verified or not
+                                            $statusBadgeClass = ($rowUser['status'] == "Verified") ? "bg-success" : "bg-danger";
+                                            $statusText = ($rowUser['status'] == "Verified") ? "Verified" : "Not Verified";
+                                
+                                        // Split the dateJoined DATETIME
+                                            $dateTimeJoined = explode(" ", $rowUser['dateJoined']);
+                                            $dateJoined = $dateTimeJoined[0];
+                                            $timeJoined = $dateTimeJoined[1];
+
+                                            
+                                        // Convert the dateJoined data to a timestamp
+                                            $dateJoinedTimeStamp = strtotime($dateJoined);
+
+                                        // Extract the year, month name, and day for dateJoined
+                                            $dateJoinedYear = date('Y', $dateJoinedTimeStamp);
+                                            $dateJoinedMonth = date('F', $dateJoinedTimeStamp);
+                                            $dateJoinedDay = date('j', $dateJoinedTimeStamp);
+
+                                        // Split the Time from dateJoined datetime
+                                            $timeJoinedParts = explode(":", $timeJoined);
+                                            $dateJoinedHour = $timeJoinedParts[0];
+                                            $dateJoinedMinute = $timeJoinedParts[1];
+                                            $dateJoinedSecond = $timeJoinedParts[2];
+                                
+                                        // Check if dateVerified is empty or null
+                                        if (empty($rowUser['dateVerified']) || $rowUser['dateVerified'] == "0000-00-00 00:00:00") {
+                                            $dateVerifiedDisplay = "Not yet Verified";
+                                        } else {
+                                            // Split the dateVerified DATETIME
+                                                $dateTimeVerified = explode(" ", $rowUser['dateVerified']);
+                                                $dateVerified = $dateTimeVerified[0];
+                                                $timeVerified = $dateTimeVerified[1];
+
+                                            // Convert the dateVerified data to a timestamp
+                                                $dateVerifiedTimeStamp = strtotime($dateVerified);
+
+                                            // Extract the year, month name, and day for dateVerified
+                                                $dateVerifiedYear = date('Y', $dateVerifiedTimeStamp);
+                                                $dateVerifiedMonth = date('F', $dateVerifiedTimeStamp);
+                                                $dateVerifiedDay = date('j', $dateVerifiedTimeStamp);
+
+                                            // Split the Time from dateVerified datetime
+                                                $timeVerifiedParts = explode(":", $timeVerified);
+                                                $dateVerifiedHour = $timeVerifiedParts[0];
+                                                $dateVerifiedMinute = $timeVerifiedParts[1];
+                                                $dateVerifiedSecond = $timeVerifiedParts[2];
+                                                $dateVerifiedDisplay = $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . ' ' . $dateVerifiedHour . ':' . $dateVerifiedMinute . ':' . $dateVerifiedSecond;
+                                            }
+                                
+                                        echo '<tr>';
+                                        echo '<td>' . ucfirst($rowUser['firstName']) . '</td>';
+                                        echo '<td>' . ucfirst($rowUser['middleName']) . '</td>';
+                                        echo '<td>' . ucfirst($rowUser['lastName']) . '</td>';
+                                        echo '<td>' . ucfirst($rowUser['username']) . '</td>';
+                                        echo '<td><span class="badge ' .$statusBadgeClass .' text-white rounded-pill">' .$statusText . '</span></td>';
+                                        echo '<td>' . $dateJoinedMonth . ' ' . $dateJoinedDay . ', ' . $dateJoinedYear . ' ' . $dateJoinedHour . ':' . $dateJoinedMinute .'</td>';
+                                        // echo '<td>' . $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . ' ' . $dateVerifiedHour . ':' . $dateVerifiedMinute . ':' . $dateVerifiedSecond . '</td>';
+                                        echo '<td>' . $dateVerifiedDisplay . '</td>';
+                                        echo '<td class="text-center">';
+                                        echo '<a href="./resident_details/user_details.php?userID='. $rowUser['userID']. '" class="btn btn-sm border-0">';
+                                        echo '<i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>';
+                                        echo '</a></td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='8'>No Users found.</td></tr>";
+                                }
+                                ?>
                             </tbody>
                         </table>
-                        <div class="row align-items-center">
-                            <div class="col-3">
-                                <div class="row g-2">
-                                    <div class="col">
-                                        <input type="number" id="numRowsInput" class="form-control form-control-sm me-2" placeholder="Number of Rows">
-                                    </div>
-                                    <div class="col">
-                                        <button id="toggleRowsButton" class="btn btn-primary btn-sm">Show Rows</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination justify-content-end mb-0">
-                                        <li class="page-item disabled">
-                                            <a class="page-link" href="#" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item active" aria-current="page">
-                                            <a class="page-link" href="#">1</a>
-                                        </li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#">3</a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="#" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

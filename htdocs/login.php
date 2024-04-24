@@ -340,7 +340,7 @@ if (isset($_POST['signup'])) {
 }
 
 
-// Login form
+
 // Login form
 if (isset($_POST['login'])) {
     $login = trim($_POST['Lgn_Username']);

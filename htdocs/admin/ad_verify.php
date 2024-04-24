@@ -1,12 +1,41 @@
+<?php 
+include "./1db.php"; include "./adminnav.php";
+
+// Check errors
+ini_set('display_errors', 1);
+
+// Get the current page number from the URL, or use 1 if not set
+$currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// Set the number of records to display per page
+$recordsPerPage = 5;
+
+// Calculate the offset for the SQL query based on the current page
+$offset = ($currentPage - 1) * $recordsPerPage;
+
+// Fetch the unverified users from the database, limiting the results based on the current page
+$sqlUnverified = "SELECT * FROM user WHERE COALESCE(status, 'UnVerified') = 'UnVerified' LIMIT $offset, $recordsPerPage";
+$resultVerified = $conn->query($sqlUnverified);
+
+// Get the total number of unverified users
+$totalRecords = $conn->query("SELECT COUNT(*) FROM user WHERE COALESCE(status, 'UnVerified') = 'UnVerified'")->fetch_row()[0];
+
+// Calculate the total number of pages
+$totalPages = ceil($totalRecords / $recordsPerPage);
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Verify</title>
+    <title>Resident Verification</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <style>
+
         #dropdownMenuButton.dropdown-toggle::after {
             display: none;
         }
@@ -16,9 +45,7 @@
             padding-top: 1rem;
         }
 
-        .table {
-            table-layout: fixed;
-        }
+        
 
         .table th,
         .table td {
@@ -28,32 +55,40 @@
             text-overflow: ellipsis;
         }
 
-        .table th:nth-child(5),
+.table th:nth-child(5),
 .table td:nth-child(5),
 .table th:nth-child(6),
 .table td:nth-child(6) {
-    width: 1%;
+    width: 3%;
 }
 
 .table th,
 .table td {
     width: calc((100% - 16%) / 29);
 }
+
+/* Hide the input number buttons */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Expand the textField of number */
+input[type=number] {
+    width: 200px;
+}
+
+
     </style>
-
 </head>
-
 <body>
     <main>
-    <?php include "admin/adminnav.php" ?>
         <div class="page-content" id="content">
             <div class="container">
                 <div class="row">
                     <div class="col-3">
                         <form class="input-group mb-3">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="bi bi-search"></i>
                             </button>
                         </form>
                     </div>
@@ -74,136 +109,98 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="card" style="width: 78.5rem;">
+                        <div class="card" style="width: 100%;">
                             <div class="card-header">
-                                <b>List of Residents</b>
+                                <b>List of  Unverified Residents</b>
                             </div>
                             <div class="card-body">
                                 <div class="row justify-content-between">
-                                    <div class="col-auto">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
-                                                Status
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-item" href="#">Verified</a></li>
-                                                <li><a class="dropdown-item" href="#">Not Verified</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
                                     <div class="col-auto">
                                         <form class="d-flex">
                                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                                         </form>
                                     </div>
                                 </div>
-                                <div class="mb-3"></div>
-                                <table class="table table-bordered">
+                                <div class="mb-3"> <!--Just a necessity blank space --> </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-fixed w-100">
                                     <thead>
                                         <tr>
-                                            <th>First Name</th>
-                                            <th>Middle Name</th>
-                                            <th>Last Name</th>
-                                            <th>Username</th>
-                                            <th class="text-center">Purok</th>
-                                            <th class="text-center">Zone</th>
-                                            <th>Proof of Residency</th>
-                                            <th>Action</th>
+                                        <th class="col-2">Resident's Name</th>
+                                        <th>Username</th>
+                                        <th class="text-center">Purok</th>
+                                        <th class="text-center">Zone</th>
+                                        <th>Proof of Residency</th>
+                                        <th class="text-center" colspan="2">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Climinten Ivy</td>
-                                            <td>Chrysantemum</td>
-                                            <td>Roses</td>
-                                            <td>climintenroses</td>
-                                            <td class="text-center">1</td>
-                                            <td class="text-center">2</td>
-                                            <td></td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-1" aria-expanded="false" aria-controls="itemReportDetails-1">
-                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr class="collapse" id="itemReportDetails-1">
-                                            <td colspan="4">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nescafe</td>
-                                            <td>Stick</td>
-                                            <td>Coffeee</td>
-                                            <td>nescafeoriginal</td>
-                                            <td class="text-center">2</td>
-                                            <td class="text-center">3</td>
-                                            <td></td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-2" aria-expanded="false" aria-controls="itemReportDetails-2">
-                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr class="collapse" id="itemReportDetails-2">
-                                            <td colspan="4">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <?php
+            // Loop through the fetched unverified users and display them in the table
+            if ($resultVerified->num_rows > 0) {
+                while ($rowVerified = $resultVerified->fetch_assoc()) {
+                    echo '<tr>';
+                    echo '<td>' . ucfirst($rowVerified['firstName']) . ' ' . ucfirst($rowVerified['lastName']) . '</td>';
+                    echo '<td>' . $rowVerified['username'] . '</td>';
+                    echo '<td class="text-center">' . ucfirst($rowVerified['purok']) . '</td>';
+                    echo '<td class="text-center">' . ucfirst($rowVerified['zone']) . '</td>';
+
+                    // Display the verification image
+                    echo '<td align="center">';
+                    echo '<img src="../verify/' . $rowVerified['verifyImage_path'] . '" alt="Verification Image" width="100" height="100">';
+                    echo '</td>';
+
+                    // Display the verify and delete buttons
+                    echo '<form action="" method="post">';
+                    echo '<td class="text-center">' .
+                        '<input type="hidden" id="residentID" name="userID" value="' . $rowVerified['userID'] . '">' .
+                        '<button type="submit" class="btn btn-sm border-0 has-tooltip" title="Verify Resident" name="verifyResident">
+                        <i class="bi bi-person-check" style="font-size: 1.5rem; color: #0D6EFD;"></i>
+                        </button>' .
+                        '</td>';
+                    echo '<td class="text-center">' .
+                        '<button type="submit" class="btn btn -sm border-0 has-tooltip" title="Reject Resident" name="deleteResident"><i class="bi bi-x-circle" style="font-size: 1.5rem; color: #dc3545;"></i></button>' .
+                        '</td>';
+                    echo '</form>';
+                    echo '</tr>';
+                }
+            }
+            ?>
                                     </tbody>
                                 </table>
+                            </div>
                                 <div class="row align-items-center">
                                     <div class="col-3">
-                                        <div class="row g-2">
-                                            <div class="col">
-                                                <input type="number" id="numRowsInput" class="form-control form-control-sm me-2" placeholder="Number of Rows">
-                                            </div>
-                                            <div class="col">
-                                                <button id="toggleRowsButton" class="btn btn-primary btn-sm">Show Rows</button>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <div class="col">
-                                        <nav aria-label="Page navigation">
-                                            <ul class="pagination justify-content-end mb-0">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" aria-label="Previous">
-                                                        <span aria-hidden="true">&laquo;</span>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item active" aria-current="page">
-                                                    <a class="page-link" href="#">1</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">3</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Next">
-                                                        <span aria-hidden="true">&raquo;</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
+<!-- Pagination -->
+<div class="col">
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-end mb-0">
+            <!-- Previous page link -->
+            <li class="page-item <?php echo ($currentPage == 1) ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?page=<?php echo $currentPage - 1; ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            <!-- Page number links -->
+            <?php
+            for ($i = 1; $i <= $totalPages; $i++) {
+                echo '<li class="page-item ' . ($currentPage == $i ? 'active' : '') . '">
+                        <a class="page-link" href="?page=' . $i . '">' . $i . '</a>
+                      </li>';
+            }
+            ?>
+
+            <!-- Next page link -->
+            <li class="page-item <?php echo ($currentPage == $totalPages) ? 'disabled' : ''; ?>">
+                <a class="page-link" href="?page=<?php echo $currentPage + 1; ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
                                 </div>
 
                             </div>
@@ -218,36 +215,166 @@
     <footer>
         <!-- place footer here -->
     </footer>
+    <!-- Update the user status -->
+<?php 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if(isset($_POST['verifyResident'])) {
+        $userID = trim($_POST['userID']);
+    
+    if(empty($userID)) {
+     // Refresh the File
+    echo "<script>alert('Cannot be verified due to empty value on the User ID')</script>";
+    return;
+    }
+    // Update the user to Verified
+    $updateStatus = 'Verified';
+    // Get the current time stamp
+    $dateVerified = date('Y-m-d H:i:s');
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var numRowsInput = document.getElementById("numRowsInput");
-            var button = document.getElementById("toggleRowsButton");
-            var tableRows = document.querySelectorAll("tbody tr");
-            var showLimited = true;
+    // Prepare the sql statement
+    $sqlUpdateStatus = "UPDATE user SET status = '$updateStatus', dateVerified = '$dateVerified' WHERE userID = '$userID'";
+        
+    // Run the sql statement
+    $query = $conn->query($sqlUpdateStatus);
 
-            function toggleRows() {
-                var numRowsToShow = parseInt(numRowsInput.value);
-                if (isNaN(numRowsToShow) || numRowsToShow <= 0) {
-                    alert("Please enter a valid number of rows.");
-                    return;
-                }
+    // Refresh the File
+    echo "<script>alert('Congratulations!, New User has been registered')</script>";
+    echo "<script>window.location.href='./ad_verify.php'</script>";
+  
+    }
 
-                for (var i = 0; i < tableRows.length; i++) {
-                    if (i >= numRowsToShow) {
-                        tableRows[i].classList.add("d-none");
-                    } else {
-                        tableRows[i].classList.remove("d-none");
-                    }
-                }
+// If the Admin does not want to verify the user
+    if(isset($_POST['deleteResident'])) {
+        $userID = trim($_POST['userID']);
 
-                button.textContent = showLimited ? "Show All Rows" : "Show Limited Rows";
-                showLimited = !showLimited;
+        // If the user ID is null
+        if(empty($userID)) {
+            // Refresh the File
+           echo "<script>alert('Cannot be verified due to empty value on the User ID')</script>";
+           return;
+           } else  {
+
+            // Delete the user
+            $sqlUpdateStatus = "DELETE FROM user WHERE userID = $userID";
+
+            // Execute the sql statement
+            if($conn->query($sqlUpdateStatus) === TRUE) {
+                // Delete the User
+                echo "<script>alert('Resident Account has been deleted due to failed verification')</script>";
+                echo "<script>window.location.href='./ad_verify.php'</script>";
+
+            } else {
+                echo '<div class="alert alert-danger mt-3">Resident Account cannot be deleted due to database error->' . $conn->error . ' </div>';
             }
+         }
+    }
+} 
+?>
 
-            button.addEventListener("click", toggleRows);
-        });
-    </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Get the necessary elements
+  
+  var tableRows = document.querySelectorAll("tbody tr");
+  var pageLinks = document.querySelectorAll(".page-link");
+  var prevLink = document.querySelector(".page-item.disabled .page-link");
+  var nextLink = document.querySelector(".page-item:not(.disabled) .page-link[aria-label='Next']");
+  var defaultRowsToShow = <?php echo $recordsPerPage; ?>; // Set the default number of rows to show
+  var currentPage = <?php echo $currentPage; ?>; // Initialize the current page to the current page number
+  var totalPages = <?php echo $totalPages; ?>; // Set the total number of pages
+
+  function updatePagination() {
+    // Calculate the current page based on the visible rows
+    currentPage = Math.ceil((tableRows.length - document.querySelectorAll("tbody tr:not(.d-none)").length) / defaultRowsToShow) + 1;
+
+    // Update the pagination links
+    for (var i = 0; i < pageLinks.length; i++) {
+      pageLinks[i].classList.remove("active");
+      if (i === currentPage - 1) {
+        pageLinks[i].classList.add("active");
+      }
+    }
+
+    // Update the "Previous" and "Next" links
+    if (currentPage === 1) {
+      prevLink.parentElement.classList.add("disabled");
+    } else {
+      prevLink.parentElement.classList.remove("disabled");
+    }
+
+    if (currentPage === totalPages) {
+      nextLink.parentElement.classList.add("disabled");
+    } else {
+      nextLink.parentElement.classList.remove("disabled");
+    }
+
+    // Update the page number links
+    var startPage = Math.max(currentPage - 2, 1);
+    var endPage = Math.min(startPage + 4, totalPages);
+
+    for (var i = 0; i < pageLinks.length; i++) {
+      if (i < endPage - startPage + 1) {
+        pageLinks[i].textContent = startPage + i;
+        pageLinks[i].href = "?page=" + (startPage + i);
+        pageLinks[i].style.display = "";
+        if (startPage + i === 1) {
+          pageLinks[i].parentElement.classList.remove("disabled");
+        }
+      } else {
+        pageLinks[i].style.display = "none";
+      }
+    }
+  }
+
+  // Add click event listeners to the pagination links
+  for (var i = 0; i < pageLinks.length; i++) {
+    pageLinks[i].addEventListener("click", function(event) {
+      event.preventDefault();
+      if (!this.parentElement.classList.contains("disabled")) {
+        var pageNumber = parseInt(this.textContent);
+        showPage(pageNumber);
+      }
+    });
+  }
+
+  // Add click event listeners to the "Previous" and "Next" links
+  prevLink.addEventListener("click", function(event) {
+    event.preventDefault();
+    if (!prevLink.parentElement.classList.contains("disabled")) {
+      showPage(currentPage - 1);
+    }
+  });
+
+  nextLink.addEventListener("click", function(event) {
+    event.preventDefault();
+    if (!nextLink.parentElement.classList.contains("disabled")) {
+      showPage(currentPage + 1);
+    }
+  });
+
+  function showPage(pageNumber) {
+    // Calculate the start and end index of the rows to show
+    var startIndex = (pageNumber - 1) * defaultRowsToShow;
+    var endIndex = startIndex + defaultRowsToShow;
+
+    // Show the rows for the selected page
+    for (var i = 0; i < tableRows.length; i++) {
+      if (i >= startIndex && i < endIndex) {
+        tableRows[i].style.display = ""; // Show the rows
+      } else {
+        tableRows[i].style.display = "none"; // Hide the rows
+      }
+    }
+
+    // Update the pagination links
+    updatePagination();
+  }
+
+  // Show the first page initially
+  showPage(1);
+});
+
+</script>
 </body>
 
 </html>
