@@ -2,7 +2,7 @@
 $userID = $_GET['userID'];
 
 // Run the mysql paramaters
-$sql = "SELECT * FROM user WHERE userID = $userID";
+$sql = "SELECT * FROM user WHERE userID = $userID ORDER BY status DESC";
 $query = mysqli_query($conn, $sql);
 
 // If the query returned false
@@ -197,8 +197,16 @@ input[type="number"]::-webkit-inner-spin-button {
                         </table>
                         <div class="d-flex justify-content-end mt-3">
                         <input type="submit" class="btn btn-primary me-2" name="exitSave" value="Save">
-                        <input type="submit" class="btn btn-warning me-2" name="save" value="Save but not exit">
-                        <input type="submit" class="btn btn-danger" name="discard" value="Discard">
+                        <input type="submit" class="btn btn-outline-primary me-2" name="save" value="Save but not exit">
+                        <input type="submit" class="btn btn-outline-danger me-3" name="discard" value="Discard">
+                        <!-- If the user is not verified input a delete user -->
+                        <?php 
+                            if($userData['status'] === 'Unverified' || $userData['status'] == null) {
+                                echo '<input type="submit" class="btn btn-danger" name="deleteUser" value="Delete User">';
+                            }
+                        
+                        
+                        ?>
                     </div>
                     </div>
 
@@ -423,6 +431,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "<script>window.location.href='../ad_residents.php'</script>";
     exit;
 }
+
+    // If the user is deleted
+    if(isset($_POST['deleteUser'])) {
+        $sqlDelete = "DELETE FROM user WHERE userID = $userID";
+
+        $resultUpdate = mysqli_query($conn, $sqlDelete);
+
+        if ($resultUpdate) {
+            echo "<script>alert('User Deleted Successfully')</script>";
+            echo "<script>window.location.href='../ad_residents.php'</script>";
+            exit;
+        } else {
+            echo "<script>alert('User Delete Failed')</script>";
+            return;
+        }
+    }
+
+
 
     }
 ?>
