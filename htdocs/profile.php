@@ -1,5 +1,6 @@
-<?php include 'nav.php'; include '1db.php'; ?>
-<?php 
+<?php include 'nav.php';
+include '1db.php'; ?>
+<?php
 $sql = "SELECT * FROM user where userID = $user_id";
 $query = mysqli_query($conn, $sql);
 
@@ -7,51 +8,51 @@ $query = mysqli_query($conn, $sql);
 $user = array();
 
 while ($userRow = mysqli_fetch_assoc($query)) {
-    $userData = array(
-        'firstName' => $userRow['firstName'],
-        'middleName' => $userRow['middleName'],
-        'lastName' => $userRow['lastName'],
-        'contactNumber' => $userRow['contactNumber'],
-        'zone' => $userRow['zone'],
-        'purok' => $userRow['purok'],
-        'dateJoined' => $userRow['dateJoined'],
-        'userEmail' => $userRow['userEmail'],
-        'status' => $userRow['status'],
-        'userRating' => $userRow['userRating'],
-        'userImage_path' => $userRow['userEmail'],
-        'username' => $userRow['username'],
-        'password' => $userRow['password'],
-        'birthDay' => $userRow['birthDay'],
-    );
+  $userData = array(
+    'firstName' => $userRow['firstName'],
+    'middleName' => $userRow['middleName'],
+    'lastName' => $userRow['lastName'],
+    'contactNumber' => $userRow['contactNumber'],
+    'zone' => $userRow['zone'],
+    'purok' => $userRow['purok'],
+    'dateJoined' => $userRow['dateJoined'],
+    'userEmail' => $userRow['userEmail'],
+    'status' => $userRow['status'],
+    'userRating' => $userRow['userRating'],
+    'userImage_path' => $userRow['userEmail'],
+    'username' => $userRow['username'],
+    'password' => $userRow['password'],
+    'birthDay' => $userRow['birthDay'],
+  );
 
-    array_push($user, $userData);
+  array_push($user, $userData);
 
-// Split the DATETIME
-$dateTime = explode(" ", $userData['dateJoined']);
-$date = $dateTime[0];
-$time = $dateTime[1];
-    // Convert the data to a timestamp
-    $dateTimeStamp = strtotime($date);
-    // Extract the year, month name, and day
-    $dateJoinedYear = date('Y', $dateTimeStamp);
-    $dateJoinedMonth = date('F', $dateTimeStamp);
-    $dateJoinedDay = date('j', $dateTimeStamp);
-    
-    // Split the Time from datetime
-    $time = explode(":", $time);
-    $dateJoinedHour = $time[0];
-    $dateJoinedMinute = $time[1];
-    $dateJoinedSecond = $time[2];
-    
-// Format the Birthdate to Date
-    $Birthday = $userData['birthDay'];
-        // Convert the date to a timestamp
-        $BirthdayTimestamp = strtotime($Birthday);
+  // Split the DATETIME
+  $dateTime = explode(" ", $userData['dateJoined']);
+  $date = $dateTime[0];
+  $time = $dateTime[1];
+  // Convert the data to a timestamp
+  $dateTimeStamp = strtotime($date);
+  // Extract the year, month name, and day
+  $dateJoinedYear = date('Y', $dateTimeStamp);
+  $dateJoinedMonth = date('F', $dateTimeStamp);
+  $dateJoinedDay = date('j', $dateTimeStamp);
 
-        // Extract the year, month name, and day
-        $birthYear = date('Y', $BirthdayTimestamp);
-        $birthMonth = date('F', $BirthdayTimestamp);
-        $birthDay = date('j', $BirthdayTimestamp);
+  // Split the Time from datetime
+  $time = explode(":", $time);
+  $dateJoinedHour = $time[0];
+  $dateJoinedMinute = $time[1];
+  $dateJoinedSecond = $time[2];
+
+  // Format the Birthdate to Date
+  $Birthday = $userData['birthDay'];
+  // Convert the date to a timestamp
+  $BirthdayTimestamp = strtotime($Birthday);
+
+  // Extract the year, month name, and day
+  $birthYear = date('Y', $BirthdayTimestamp);
+  $birthMonth = date('F', $BirthdayTimestamp);
+  $birthDay = date('j', $BirthdayTimestamp);
 }
 
 
@@ -168,11 +169,11 @@ $time = $dateTime[1];
       margin-right: 10px;
     }
 
-    .nav-underline {
+    #myTab {
       border-bottom: 2px solid #dee2e6;
     }
 
-    .nav-link {
+    #myTab .nav-link {
       color: #495057;
       font-weight: 600;
       padding: 0.5rem 1rem;
@@ -180,14 +181,14 @@ $time = $dateTime[1];
       transition: color 0.3s ease, border-color 0.3s ease;
     }
 
-    .nav-link.active,
-    .nav-link:hover {
+    #myTab .nav-link.active,
+    #myTab .nav-link:hover {
       color: #212529;
       border-bottom-color: #212529;
     }
 
-    .nav-link.active {
-      color: #fff;
+    #myTab .nav-link.active {
+      color: #212529;
     }
 
     .table-hover tbody tr.table-row:hover {
@@ -222,10 +223,7 @@ $time = $dateTime[1];
 
 
 <body>
-  <header>
-    <!-- place navbar here -->
-  </header>
-
+  <br>
   <main>
     <div class="page-content" id="content">
       <div class="container mt-4">
@@ -320,20 +318,20 @@ $time = $dateTime[1];
 
               <div>
                 <div class="flex-grow-1 d-flex justify-content-between align-items-center">
-                  <h2 class="mb-0 fw-bold"><? echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName'][0]). '.&nbsp;' . ucfirst($userData['lastName'])?></h2>
+                <h2 class="mb-0 fw-bold"><? echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName'][0]) . '.&nbsp;' . ucfirst($userData['lastName']) ?></h2>
                   <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#reportUserModal">
                     <i class="bi bi-flag fs-5"></i>
                   </button>
                 </div>
                 <div class="text-secondary">Resident</div>
                 <div>
-                 <?php 
-                    if($userData['status'] === 'Unverified' || $userData['status'] === null) {
-                       echo ' <span class="badge text-bg-primary rounded-pill bg-danger">Unverified';
-                       } else {
-                         echo ' <span class="badge text-bg-primary rounded-pill">Verified';
-                         }
-                  
+                  <?php
+                  if ($userData['status'] === 'Unverified' || $userData['status'] === null) {
+                    echo ' <span class="badge text-bg-primary rounded-pill bg-danger">Unverified';
+                  } else {
+                    echo ' <span class="badge text-bg-primary rounded-pill">Verified';
+                  }
+
                   ?></span>
                 </div>
               </div>
@@ -352,30 +350,19 @@ $time = $dateTime[1];
             <input type="radio" name="rating" id="star1" value="1">
             <span class="text-warning ms-2">5/5</span>
           </div>
-
-          <div class="col mt-4">
-            <div class="d-flex align-items-center text-secondary">
-              <span class="bi-envelope">&nbsp; <? echo $userData['userEmail'] ?></span>
-              <span class="bi-map ms-4">&nbsp; <? echo 'Purok '. $userData['purok'] .',&nbsp; Zone '. $userData['zone'] ?></span>
-              <span class="bi-telephone ms-4">&nbsp; <? echo $userData['contactNumber'] ?></span>
-            </div>
-          </div>
-        </div>
-
-        <!--- Tab --->
-        <ul class="nav nav-underline mt-4 ms-4 justify-content-between" id="myTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="details" aria-selected="true">Details</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="transaction-tab" data-bs-toggle="tab" data-bs-target="#transaction" type="button" role="tab" aria-controls="transaction" aria-selected="false">Transaction</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="itemowned-tab" data-bs-toggle="tab" data-bs-target="#itemowned" type="button" role="tab" aria-controls="itemowned" aria-selected="false">Item Owned</button>
-          </li>
-        </ul>
-
-        <!--- Tab Content --->
+          <!--- Tab --->
+          <ul class="nav nav-underline mt-4 ms-4 justify-content-between flex-wrap" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="details" aria-selected="true">Details</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="transaction-tab" data-bs-toggle="tab" data-bs-target="#transaction" type="button" role="tab" aria-controls="transaction" aria-selected="false">Transaction</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="itemowned-tab" data-bs-toggle="tab" data-bs-target="#itemowned" type="button" role="tab" aria-controls="itemowned" aria-selected="false">Item Owned</button>
+            </li>
+          </ul>
+          <!--- Tab Content --->
 
         <!--- Details --->
         <div class="tab-content" id="myTabContent">
@@ -392,26 +379,27 @@ $time = $dateTime[1];
                         <div class="form-box" readonly><b><? echo ucfirst($userData['firstName']) ?></b></div>
                       </div>
                       <div class="col-sm-6">
-                        <label for="lastName" class="form-label text-secondary"><b>Last Name</b></label>
-                        <div class="form-box" readonly><b><? echo ucfirst($userData['lastName']) ?></b></div>
+                        <label for="lastName" class="form-label text-secondary"><b>Middle Name</b></label>
+                        <div class="form-box" readonly><b><? echo ucfirst($userData['middleName']) ?></b></div>
                       </div>
                     </div>
                     <div class="row mb-3">
                       <div class="col-sm-6">
                         <label for="status" class="form-label text-secondary"><b>Status</b></label>
                           <!-- Create a statement if status is verified or not -->
-                          <? 
-                            if($userData['status'] === 'Unverified' || $userData['status'] === null) {
-                              echo ' <div class="form-box text-primary text-danger" readonly><b>Unverified';
-                               } else {
-                                echo ' <div class="form-box text-primary" readonly><b>Verified';
-                              }
+                          <?
+                          if ($userData['status'] === 'Unverified' || $userData['status'] === null) {
+                            echo ' <div class="form-box text-primary text-danger" readonly><b>Unverified';
+                          } else {
+                            echo ' <div class="form-box text-primary" readonly><b>Verified';
+                          }
                           ?>
-                        </b><span class="text-secondary mx-2"><small>last January 1, 2024</small></span></div>
+                          </b><span class="text-secondary mx-2"><small>last January 1, 2024</small></span>
+                        </div>
                       </div>
                       <div class="col-sm-6">
                         <label for="dateJoined" class="form-label text-secondary"><b>Date Joined</b></label>
-                        <div class="form-box" readonly><b><? echo $dateJoinedMonth .'&nbsp;' . $dateJoinedDay . ',&nbsp;' . $dateJoinedYear; ?></b></div>
+                        <div class="form-box" readonly><b><? echo $dateJoinedMonth . '&nbsp;' . $dateJoinedDay . ',&nbsp;' . $dateJoinedYear; ?></b></div>
                       </div>
                     </div>
                   </div>

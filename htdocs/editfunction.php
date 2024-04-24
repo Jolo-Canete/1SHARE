@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category = $_POST['category'];
     $itemQuantity = $_POST['itemQuantity'];
     $otherCategory = $_POST['otherCategory'] ?? '';
-    $itemCondition = $_POST['itemCondition'];
     $itemAvailability = $_POST['itemAvailability'];
 
     // Ensure session user_id is set
@@ -68,7 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                       ItemDescription = ?, 
                       itemQuantity = ?,
                       category = ?, 
-                      itemCondition = ?, 
                       itemAvailability = ?, 
                       buyPrice = ?, 
                       borrowPrice = ?, 
@@ -80,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($stmt) {
         // Bind parameters
-        $stmt->bind_param("ssisssddsssi", $itemName, $itemDescription, $itemQuantity, $category, $itemCondition, $itemAvailability, $buyPrice, $borrowPrice, $borrowDuration, $requestTypes, $itemImagePath, $itemID);
+        $stmt->bind_param("ssissddsssi", $itemName, $itemDescription, $itemQuantity, $category, $itemAvailability, $buyPrice, $borrowPrice, $borrowDuration, $requestTypes, $itemImagePath, $itemID);
 
         if ($stmt->execute()) {
             echo json_encode(["status" => "success", "message" => "Item updated successfully"]);

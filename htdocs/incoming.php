@@ -39,8 +39,6 @@ include "nav.php";
             align-items: center;
             height: 200px;
         }
-
-      
     </style>
 </head>
 
@@ -62,23 +60,29 @@ include "nav.php";
 
                 <div class="row">
                     <div class="col">
-                        <div class="text-dark">
+                    <div class="d-none d-md-block text-dark">
                             <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-0"><i class="bi bi-box-arrow-down" style="font-size: 2.8rem;"></i> INCOMING REQUESTS</h1>
+                            <br>
                         </div>
                     </div>
+                    <div class="d-md-none text-dark">
+                    <h6 class="display-7 fw-bold text-dark text-center mt-4 mb-0"><i class="bi bi-box-arrow-down" style="font-size: 1rem;"></i> INCOMING REQUESTS</h6>
                 </div>
-                <br><br>
-                <div class="d-flex flex-column flex-md-row justify-content-md-start mb-3">
-                    <div class="btn-group mb-2 mb-md-0 me-md-2">
-                        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Sort by Request Type
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" data-sort-type="all">All</a></li>
-                            <li><a class="dropdown-item" href="#" data-sort-type="borrow">Borrow</a></li>
-                            <li><a class="dropdown-item" href="#" data-sort-type="barter">Barter</a></li>
-                            <li><a class="dropdown-item" href="#" data-sort-type="buy">Buy</a></li>
-                        </ul>
+                </div>
+                <br>
+                <div class="row mb-3">
+                    <div class="col-auto">
+                        <div class="btn-group mb-2 mb-md-0 me-md-2">
+                            <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                Sort by Request Type
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" data-sort-type="all">All</a></li>
+                                <li><a class="dropdown-item" href="#" data-sort-type="borrow">Borrow</a></li>
+                                <li><a class="dropdown-item" href="#" data-sort-type="barter">Barter</a></li>
+                                <li><a class="dropdown-item" href="#" data-sort-type="buy">Buy</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 

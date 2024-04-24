@@ -7,7 +7,9 @@ if (isset($_POST['itemImagePath'])) {
     $itemImagePath = $_POST['itemImagePath'];
 
     // Prepare and execute query to fetch item details
-    $sql = "SELECT * FROM item WHERE itemImage_path = ?";
+    $sql = "SELECT i.*, u.username, u.contactNumber , u.userImage_path FROM item i 
+            INNER JOIN user u ON i.userID = u.userID 
+            WHERE i.itemImage_path = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $itemImagePath);
     $stmt->execute();

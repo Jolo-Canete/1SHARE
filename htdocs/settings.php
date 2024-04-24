@@ -119,8 +119,8 @@ $time = $dateTime[1];
 
                 <!--- Tab List --->
                 <div class="row">
-                    <div class="col-2">
-                        <div class="d-flex">
+                    <div class="col-lg-2 col-md-3 col-sm-3 mb-3">
+                        <div class="d-flex justify-content-center">
                             <div class="list-group" id="list-tab" role="tablist">
                                 <a class="list-group-item list-group-item-action active" id="list-account-list" data-bs-toggle="list" href="#list-account" role="tab" aria-controls="list-account">Account Info</a>
                                 <a class="list-group-item list-group-item-action" id="list-privacy-list" data-bs-toggle="list" href="#list-privacy" role="tab" aria-controls="list-privacy">Privacy</a>
@@ -130,10 +130,10 @@ $time = $dateTime[1];
                     </div>
 
                     <!--- Account Info Tab Pane --->
-                    <div class="col-10">
+                    <div class="col-lg-10 col-md-9 col-sm-9">
                         <div class="tab-content" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="list-account" role="tabpanel" aria-labelledby="list-account-list">
-                                <h3 class="mb-2">Account Information</h3>
+                                 <h3 class="mb-2">Account Information</h3>
                                 <div class="card shadow-lg border-0">
                                     <div class="card-body">
                                         <div class="row">
@@ -264,11 +264,11 @@ $time = $dateTime[1];
                         <!--- Privacy Tab Panel --->
                         <div class="tab-pane fade" id="list-privacy" role="tabpanel" aria-labelledby="list-privacy-list">
                             <h3 class="mb-4">Privacy</h3>
-                            <div class="card border-0 shadow-lg mb-4">
+                            <div class="card border-0 shadow-sm mb-4">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center mb-3">
                                         <div class="fw-bold text-secondary me-2">Password:</div>
-                                        <span class="text-dark flex-grow-1" title="The number of asterisks doesn't represent your actual password length. It's hashed for your security."><? echo $asteriskPassword; ?></span>
+                                        <span class="text-dark flex-grow-1" title="The number of asterisks doesn't represent your actual password length. It's hashed for your security."><? ?>***********</span>
                                         <button type="button" class="btn btn-outline-secondary btn-sm">
                                             <i class="bi bi-pencil-fill" data-bs-toggle="modal" data-bs-target="#editModal_Password"></i>
                                         </button>

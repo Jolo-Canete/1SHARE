@@ -44,151 +44,131 @@ include('1db.php'); ?>
 
     <div class="container my-5">
         <div class="row justify-content-center">
-            <div class="row justify-content-center">
-                <div class="col-4">
-                    <h1><b>
-                            <p class="text-center">I S H A R E</p>
-                        </b></h1>
-                </div>
-            </div>
-            <div class="col-4">
+            <div class="col-md-4 col-12">
+                <h1 class="text-center"><b>I S H A R E</b></h1>
                 <div class="card shadow p-3 mb-5 bg-body rounded-4">
                     <div class="card-body">
-                        <div class="mb-3">
-                            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
-                                <!--- Login --->
-                                <label for="email_address"><b>Username</b></label>
-                                <div class="input-group flex-nowrap">
-                                <span class="input-group-text" id="addon-wrapping">
-                                        <div class="bi-person-fill"></div>
-                                    </span>
-                                    <input type="text" class="form-control" name="Lgn_Username" placeholder="Phone Number or Username" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
-
-                                </div>
-                                <div class="mb-3"></div>
-                                <label for="password"><b>Password</b></label>
-                                <div class="input-group flex-nowrap">
-                                    <span class="input-group-text" id="addon-wrapping">
-                                        <div class="bi-lock-fill"></div>
-                                    </span>
-                                    <input type="password" class="form-control" name="Lgn_Password" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
-                                </div>
-                                <div class="mb-3"></div>
-                                <div class="d-grid gap-2">
-                                    <button id="loginButton" class="btn btn-primary" type="submit" name="login" value="login">Login</button>
-
-                                </div>
-                                <br>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-link" name="forgetPass">Forgot Password?</button>
-                                </div>
-                                <hr>
-                                <button type="button" class="btn btn-success d-grid gap-2 col-6 mx-auto" data-bs-toggle="modal" data-bs-target="#sign_up">
-                                    Sign Up
-                                </button>
-                                <!--- Sign Up --->
-                                <div class="modal fade" id="sign_up" tabindex="-1" aria-labelledby="sign_up" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-dark text-light">
-                                                <h5 class="modal-title text-light" id="sign_up">Sign Up</h5>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="mb-3">
-                                                            <label for="first_name" class="form-label"><b> First Name</b> <span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" placeholder="First name" id="first_name" name="first_name" aria-label="First name">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="middle_name" class="form-label"><b>Middle Name</b></label>
-                                                        <input type="text" class="form-control" placeholder="Middle name" id="middle_name" name="middle_name" aria-label="Middle name">
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="last_name" class="form-label"><b>Last Name</b> <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" placeholder="Last name" id="last_name" name="last_name" aria-label="Last name">
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="mb-3">
-                                                            <label for="purok" class="form-label"><b>Purok</b> <span class="text-danger">*</span></label>
-                                                            <select class="form-select" aria-label="Select your purok" name="purok">
-                                                                <option selected>Select your purok</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <label for="zone" class="form-label"><b>Zone</b> <span class="text-danger">*</span></label>
-                                                        <select class="form-select" aria-label="Select your zone" name="zone">
-                                                            <option selected>Select your zone</option>
-                                                            <option value="1">One</option>
-                                                            <option value="2">Two</option>
-                                                            <option value="3">Three</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="mobile_number" class="form-label"><b>Date of Birth</b> <span class="text-danger">*</span></label>
-                                                        <input type="date" class="form-control" id="birthDate" name="birthDay" placeholder="" aria-label="Enter Date of Birth">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="mobile_number" class="form-label"><b>Contact Number</b> <span class="text-danger">*</span></label>
-                                                        <input type="number" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter mobile number" aria-label="Enter mobile number">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="email_address" class="form-label"><b>Email Address</b> <span class="text-danger">*</span></label>
-                                                        <input type="text" class="form-control" id="email_address" name="email_address" placeholder="Enter your email address" aria-label="Enter your email address">
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="username" class="form-label"><b>Username</b> <span class="text-danger">*</span></label>
-                                                        <input type="text" name="username" class="form-control" id="username" placeholder="Create your own username" aria-label="Create your own username">
-                                                        <div id="username-error" class="text-danger" style="display: none;"></div>
-                                                    </div>
-                                                    <div class="mb-3">
-                                                        <label for="new_password" class="form-label"><b>New Password</b> <span class="text-danger">*</span></label>
-                                                        <div class="input-group mb-3">
-                                                            <input type="password" class="form-control" id="new_password" name="SgnUp_Password_1" placeholder="Create a new password" aria-label="Create a new password" minlength="8">
-                                                            <button class="btn btn-outline-secondary bi bi-eye-slash" type="button" id="see_new_password" onclick="togglePasswordVisibility('new_password', 'see_new_password')"></button>
-                                                        </div>
-                                                        <div id="password-requirement-error" class="text-danger" style="display: none;">Password must be at least 8 characters long.</div>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="confirm_new_password" class="form-label"><b>Confirm New Password</b> <span class="text-danger">*</span></label>
-                                                    <div class="input-group mb-3">
-                                                        <input type="password" class="form-control" id="confirm_new_password" name="SgnUp_Password_2" placeholder="Confirm new password" aria-label="Confirm new password">
-                                                        <button class="btn btn-outline-secondary bi bi-eye-slash" type="button" id="see_confirmed_password" onclick="togglePasswordVisibility('confirm_new_password', 'see_confirmed_password')"></button>
-                                                    </div>
-                                                    <div id="confirm-password-error" class="text-danger" style="display: none;"></div>
-                                                </div>
-                                                <label for="" class="form-label"><b>Proof of Residency</b> <span class="text-danger">*</span></label>
-                                                <div class="mb-3">
-                                                    <div class="input-group mb-3">
-                                                        <input type="file" class="form-control" name="fileToUpload" id="fileToUpload" accept="image/*">
-                                                    </div>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="confirm_SignUp" class="form-label">By clicking the <span class="badge text-bg-success">Sign Up</span> button, you agree to our <a href="termsandcondition.php">Terms and Condition</a> and <a href=""> Privacy Policy.</a> You may wait for the confirmation of your account through your local SK Chairman.</label>
-                                                </div>
-
-                                            </div>
-
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-success d-grid gap-2 col-6 mx-auto" name="signup" value="sign_up" id="signup">Sign Up</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+                            <!--- Login --->
+                            <label for="email_address"><b>Username</b></label>
+                            <div class="input-group flex-nowrap mb-3">
+                                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                <input type="text" class="form-control" name="Lgn_Username" placeholder="Phone Number or Username" aria-label="Email Address or Mobile Number" aria-describedby="addon-wrapping">
+                            </div>
+                            <label for="password"><b>Password</b></label>
+                            <div class="input-group flex-nowrap mb-3">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" class="form-control" name="Lgn_Password" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
+                            </div>
+                            <div class="d-grid gap-2 mb-3">
+                                <button id="loginButton" class="btn btn-primary" type="submit" name="login" value="login">Login</button>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-link" name="forgetPass">Forgot Password?</button>
+                            </div>
+                            <hr>
+                            <button type="button" class="btn btn-success d-grid gap-2 col-6 mx-auto mb-3" data-bs-toggle="modal" data-bs-target="#sign_up">Sign Up</button>
+                        </form>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>
+    </div>
+    <!--- Sign Up --->
+    <div class="modal fade" id="sign_up" tabindex="-1" aria-labelledby="sign_up" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-light">
+                    <h5 class="modal-title text-light" id="sign_up">Sign Up</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label"><b> First Name</b> <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="First name" id="first_name" name="first_name" aria-label="First name">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="middle_name" class="form-label"><b>Middle Name</b></label>
+                            <input type="text" class="form-control" placeholder="Middle name" id="middle_name" name="middle_name" aria-label="Middle name">
+                        </div>
+                        <div class="col">
+                            <label for="last_name" class="form-label"><b>Last Name</b> <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Last name" id="last_name" name="last_name" aria-label="Last name">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="purok" class="form-label"><b>Purok</b> <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="purok" name="purok" placeholder="Enter your purok" aria-label="Enter your purok">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="zone" class="form-label"><b>Zone</b> <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="zone" name="zone" placeholder="Enter your zone" aria-label="Enter your zone">
+                        </div>
+                        <div class="mb-3">
+                            <label for="birthDate" class="form-label"><b>Date of Birth</b> <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="birthDate" name="birthDay" placeholder="" aria-label="Enter Date of Birth">
+                        </div>
+                        <div class="mb-3">
+                            <label for="mobile_number" class="form-label"><b>Contact Number</b> <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="mobile_number" name="mobile_number" placeholder="Enter contact number" aria-label="Enter contact number">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email_address" class="form-label"><b>Email Address</b> <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="email_address" name="email_address" placeholder="Enter your email address" aria-label="Enter your email address">
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="form-label"><b>Username</b> <span class="text-danger">*</span></label>
+                            <input type="text" name="username" class="form-control" id="username" placeholder="Create your own username" aria-label="Create your own username">
+                            <div id="username-error" class="text-danger" style="display: none;"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="new_password" class="form-label"><b>New Password</b> <span class="text-danger">*</span></label>
+                            <div class="input-group mb-3">
+                                <input type="password" class="form-control" id="new_password" name="SgnUp_Password_1" placeholder="Create a new password" aria-label="Create a new password" minlength="8">
+                                <button class="btn btn-outline-secondary bi bi-eye-slash" type="button" id="see_new_password" onclick="togglePasswordVisibility('new_password', 'see_new_password')"></button>
+                            </div>
+                            <div id="password-requirement-error" class="text-danger" style="display: none;">Password must be at least 8 characters long.</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_new_password" class="form-label"><b>Confirm New Password</b> <span class="text-danger">*</span></label>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control" id="confirm_new_password" name="SgnUp_Password_2" placeholder="Confirm new password" aria-label="Confirm new password">
+                            <button class="btn btn-outline-secondary bi bi-eye-slash" type="button" id="see_confirmed_password" onclick="togglePasswordVisibility('confirm_new_password', 'see_confirmed_password')"></button>
+                        </div>
+                        <div id="confirm-password-error" class="text-danger" style="display: none;"></div>
+                    </div>
+                    <label for="" class="form-label"><b>Proof of Residency</b> <span class="text-danger">*</span></label>
+                    <div class="mb-3">
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" name="fileToUpload" id="fileToUpload" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_SignUp" class="form-label">By clicking the <span class="badge text-bg-success">Sign Up</span> button, you agree to our <a href="termsandcondition.php">Terms and Condition</a> and <a href=""> Privacy Policy.</a> You may wait for the confirmation of your account through your local SK Chairman.</label>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success d-grid gap-2 col-6 mx-auto" name="signup" value="sign_up" id="signup">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </form>
+    </div>
+    </div>
+    </div>
     </div>
 
 
@@ -273,7 +253,7 @@ if (isset($_POST['signup'])) {
     if ($PhoneNum->num_rows > 0) {
         echo '<div class="alert alert-danger mt-3">Phone Number Cannot be used.</div>';
         return;
-    }elseif (strlen($mobile_number) < 11) {
+    } elseif (strlen($mobile_number) < 11) {
         echo '<div class="alert alert-danger mt-3">Contact Number must be 11 digits </div>';
         return;
     } elseif (strlen($mobile_number) > 11) {
@@ -288,7 +268,7 @@ if (isset($_POST['signup'])) {
         echo '<div class="alert alert-danger mt-3">Username is already taken.</div>';
         return;
     }
-    
+
     // If the email is already taken
     $sql = "SELECT * FROM user WHERE userEmail = '$email'";
     $result = $conn->query($sql);
@@ -335,7 +315,7 @@ if (isset($_POST['signup'])) {
         $conn->begin_transaction();
 
         // Insert into user table without the verifyImage_path
-        $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password, Birthday, status, position) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password', '$birthDay', '$status', '$position')";
+        $sql_user = "INSERT INTO user (firstName, middleName, lastName, contactNumber, zone, purok, dateJoined, userEmail, username, password, Birthday, status) VALUES ('$first_name', '$middle_name', '$last_name', '$mobile_number', '$zone', '$purok', '$dateJoined', '$email', '$username', '$default_password', '$birthDay', '$status')";
 
         if ($conn->query($sql_user) === TRUE) {
             // Get the last inserted ID

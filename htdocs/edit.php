@@ -99,13 +99,6 @@ if (isset($_GET['itemID'])) {
                                         </div>
                                         <div class="invalid-feedback">⚠️ Please select a category.</div>
 
-                                        <!--- Item Condition --->
-                                        <div class="mb-3">
-                                            <label for="itemCondition" class="form-label"><i class="bi bi-gem"></i> <b>Item Condition </b><span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="itemCondition" name="itemCondition" value="<?php echo $item['itemCondition']; ?>">
-                                            <div class="invalid-feedback">⚠️ Please enter the item condition.</div>
-                                        </div>
-
                                         <!--- Item Availability --->
                                         <div class="mb-3">
                                             <label for="itemAvailability" class="form-label"><i class="bi bi-check2-circle"></i> <b>Availability </b> <span class="text-danger">*</span></label>
@@ -125,7 +118,7 @@ if (isset($_GET['itemID'])) {
 
                                         <!--- Item Open for --->
                                         <div class="mb-3">
-                                            <label class="form-label"><i class="bi bi-arrow-repeat"></i> <b>Open For</b> <span class="text-danger">*</span>
+                                            <label class="form-label"><i class="bi bi-arrow-repeat"></i> <b>Request Type</b> <span class="text-danger">*</span>
                                             </label>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" value="Barter" name="requestType[]" id="requestTypeBarter" <?php if (strpos($item['requestType'], 'Barter') !== false) echo 'checked'; ?>>

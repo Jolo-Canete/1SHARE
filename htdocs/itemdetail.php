@@ -39,7 +39,8 @@ if (isset($_GET['itemID'])) {
     <title>Item Detail</title>
     <style>
         <?php
-        include "additem.css"; ?>.review-container {
+        include "additem.css";
+        ?>.review-container {
             border: 1px solid #ddd;
             border-radius: 10px;
             padding: 20px;
@@ -89,15 +90,21 @@ if (isset($_GET['itemID'])) {
 <body>
 
     <div class="page-content" id="content">
-      
+
         <br>
         <div class="container text-center">
             <div class="row">
-                <div class="col-6">
+
+                <div class="d-none d-md-block col-12 col-md-6 ">
                     <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="rounded" style="max-width: 540px;" height="490px" alt="<?php echo $item['itemName']; ?>">
                 </div>
-                <div class="col-6">
-                    <div class="card overflow-auto shadow-lg p-3 mb-5 bg-body-tertiary rounded border-0" style="max-width: 530px; height: 30.7rem;">
+                <div class="d-md-none col-12 col-md-6 ">
+                    <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="img-fluid rounded" alt="<?php echo $item['itemName']; ?>">
+                    <br> <br>
+                </div>
+                <br>
+                <div class="col-12 col-md-6">
+                    <div class="d-md-block card overflow-auto shadow-sm p-3 mb-3 bg-body-tertiary rounded border-0" style="max-width: 530px; height: 30.7rem;">
                         <div class="card-body">
                             <div class="row">
                                 <div class="col">
@@ -131,7 +138,7 @@ if (isset($_GET['itemID'])) {
                                 </span>
                             </p>
 
-                            <p class="text-start"><i class="bi bi-arrow-repeat"></i> <b>Open For:</b>
+                            <p class="text-start"><i class="bi bi-arrow-repeat"></i> <b>Request Type:</b>
                                 <?php
                                 $requestTypes = explode(',', $item['requestType']);
                                 foreach ($requestTypes as $type) {
@@ -167,7 +174,7 @@ if (isset($_GET['itemID'])) {
                             </div>
                             <!-- Barter, Borrow, Buy Buttons -->
                             <hr>
-                            <div class="d-flex justify-content-between d-grid gap-2 col-4 mx-auto">
+                            <div class="d-flex justify-content-center d-grid gap-2 col-4 mx-auto">
                                 <button type="button" class="btn btn-outline-dark <?php echo !in_array('Barter', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>" data-bs-toggle="modal" data-bs-target="#barterModal" <?php echo !in_array('Barter', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>>Barter</button>
                                 <button type="button" class="btn btn-outline-success <?php echo !in_array('Borrow', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>" data-bs-toggle="modal" data-bs-target="#borrowModal" <?php echo !in_array('Borrow', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>>Borrow</button>
                                 <button type="button" class="btn btn-outline-danger <?php echo !in_array('Buy', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>" data-bs-toggle="modal" data-bs-target="#buyRequestModal" <?php echo !in_array('Buy', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>>Buy</button>
@@ -176,6 +183,44 @@ if (isset($_GET['itemID'])) {
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-12 col-md-10 offset-md-1">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <div class="text-center fw-bold">
+                                Write your Review
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <form action="">
+                                <div class="mb-3">
+                                    <label for="photoReview" class="form-label"><b>Add Photo (Optional)</b></label>
+                                    <input class="form-control" type="file" id="photoReview">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="writeReview" class="form-label"><b>Write your review</b></label>
+                                    <textarea class="form-control" id="writeReview" rows="3" placeholder="Would you like to write anything about this item?"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rate" class="form-label"><b>Rate:</b>
+                                        <i class="bi bi-star-fill text-warning" style="font-size: 1.2rem;"></i>
+                                        <i class="bi bi-star-fill text-warning ms-1" style="font-size: 1.2rem;"></i>
+                                        <i class="bi bi-star-fill text-warning ms-1" style="font-size: 1.2rem;"></i>
+                                        <i class="bi bi-star-fill text-warning ms-1" style="font-size: 1.2rem;"></i>
+                                        <i class="bi bi-star-fill text-warning ms-1" style="font-size: 1.2rem;"></i>
+                                    </label>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="card-footer">
+                            <div class="text-center">
+                                <button class="btn btn-primary">Submit Review</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3"></div>
         </div>
     </div>
     <div><?php
