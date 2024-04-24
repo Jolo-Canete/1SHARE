@@ -10,6 +10,7 @@
     <style>
         #dropdownMenuButton.dropdown-toggle::after {
             display: none;
+            
         }
 
         .expandable-row .collapse {

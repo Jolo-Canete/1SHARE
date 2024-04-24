@@ -133,6 +133,7 @@
                                             $dateJoined = $dateTimeJoined[0];
                                             $timeJoined = $dateTimeJoined[1];
 
+                                            
                                         // Convert the dateJoined data to a timestamp
                                             $dateJoinedTimeStamp = strtotime($dateJoined);
 

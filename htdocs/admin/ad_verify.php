@@ -274,6 +274,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   // Get the necessary elements
+  
   var tableRows = document.querySelectorAll("tbody tr");
   var pageLinks = document.querySelectorAll(".page-link");
   var prevLink = document.querySelector(".page-item.disabled .page-link");

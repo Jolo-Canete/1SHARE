@@ -10,6 +10,7 @@ if($resultUsers ->num_rows> 0) {
 
     while($rowUser = $resultUsers->fetch_assoc()) {
 
+        
         $allUsers = intval($rowUser['total_users']);
     }
 } else {

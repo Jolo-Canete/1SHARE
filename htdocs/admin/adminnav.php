@@ -61,6 +61,7 @@
                 <span class="badge rounded-pill bg-danger" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">99+</span>
                 <span class="visually-hidden">unread notifications</span>
             </a>
+            
         </li>
         <li class="nav-item nav-item-request">
             <a class="nav-link text-light font-italic d-flex align-items-center justify-content-between collapsed" data-bs-toggle="collapse" href="#report-collapse" aria-expanded="true">

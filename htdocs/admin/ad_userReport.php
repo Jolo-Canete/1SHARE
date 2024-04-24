@@ -12,6 +12,7 @@
             display: none;
         }
 
+        
         .expandable-row .collapse {
             border-top: 1px solid #dee2e6;
             padding-top: 1rem;

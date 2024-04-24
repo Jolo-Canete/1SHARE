@@ -102,6 +102,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
         .card-body {
             padding: 1.25rem;
+            
         }
 
 
