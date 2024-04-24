@@ -133,7 +133,6 @@
                                             $dateJoined = $dateTimeJoined[0];
                                             $timeJoined = $dateTimeJoined[1];
 
-                                            
                                         // Convert the dateJoined data to a timestamp
                                             $dateJoinedTimeStamp = strtotime($dateJoined);
 
@@ -170,7 +169,7 @@
                                                 $dateVerifiedHour = $timeVerifiedParts[0];
                                                 $dateVerifiedMinute = $timeVerifiedParts[1];
                                                 $dateVerifiedSecond = $timeVerifiedParts[2];
-                                                $dateVerifiedDisplay = $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . ' ' . $dateVerifiedHour . ':' . $dateVerifiedMinute . ':' . $dateVerifiedSecond;
+                                                $dateVerifiedDisplay = $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . ' ' . $dateVerifiedHour . ':' . $dateVerifiedMinute;
                                             }
                                 
                                         echo '<tr>';
@@ -179,8 +178,8 @@
                                         echo '<td>' . ucfirst($rowUser['lastName']) . '</td>';
                                         echo '<td>' . ucfirst($rowUser['username']) . '</td>';
                                         echo '<td><span class="badge ' .$statusBadgeClass .' text-white rounded-pill">' .$statusText . '</span></td>';
-                                        echo '<td>' . $dateJoinedMonth . ' ' . $dateJoinedDay . ', ' . $dateJoinedYear . ' ' . $dateJoinedHour . ':' . $dateJoinedMinute .'</td>';
-                                        // echo '<td>' . $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . ' ' . $dateVerifiedHour . ':' . $dateVerifiedMinute . ':' . $dateVerifiedSecond . '</td>';
+                                        // echo '<td>' . $dateJoinedMonth . ' ' . $dateJoinedDay . ', ' . $dateJoinedYear . ' ' . $dateJoinedHour . ':' . $dateJoinedMinute .'</td>';
+                                        echo '<td>' . $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . ' ' . $dateVerifiedHour . ':' . $dateVerifiedMinute . '</td>';
                                         echo '<td>' . $dateVerifiedDisplay . '</td>';
                                         echo '<td class="text-center">';
                                         echo '<a href="./resident_details/user_details.php?userID='. $rowUser['userID']. '" class="btn btn-sm border-0">';
