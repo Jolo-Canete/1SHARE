@@ -189,42 +189,77 @@ input[type=number] {
                 echo '</table>';
              ?>
                                 <!-- Get the navigation Links -->
-                                    <?php
-                                    // Display the pagination links
-                                    $total_pages = ceil($totalRows / $rows_per_page);
-                                    echo "<div class='row align-items-center'>";
-                                    echo "<div class='col'>";
-                                    echo "<nav aria-label='Page navigation'>";
-                                    echo "<ul class='pagination justify-content-end mb-0'>";
+                                <?php
 
-                                    // Add the "Previous" button (disabled)
-                                    echo "<li class='page-item disabled'>";
-                                    echo "<a class='page-link' href='#' aria-label='Previous'>";
-                                    echo "<span aria-hidden='true'>&laquo;</span>";
-                                    echo "</a>";
-                                    echo "</li>";
+if ($resultVerified->num_rows == 0) {
+    echo "<div class='alert alert-warning'>No unverified Residents found, Please go back.</div>";
+}
 
-                                    // Display the page numbers
-                                    for ($i = 1; $i <= $total_pages; $i++) {
-                                        $active = ($i == $currentPage) ? 'active' : '';
-                                        echo "<li class='page-item $active' aria-current='page'>";
-                                        echo "<a class='page-link' href='?page=$i'>$i</a>";
-                                        echo "</li>";
-                                    }
+// Display the pagination links
+$total_pages = ceil($totalRows / $rows_per_page);
+echo "<div class='row align-items-center'>";
+echo "<div class='col'>";
+echo "<nav aria-label='Page navigation'>";
+echo "<ul class='pagination justify-content-end mb-0'>";
 
-                                    // Add the "Next" button (disabled)
-                                    echo "<li class='page-item'>";
-                                    echo "<a class='page-link' href='#' aria-label='Next'>";
-                                    echo "<span aria-hidden='true'>&raquo;</span>";
-                                    echo "</a>";
-                                    echo "</li>";
 
-                                    echo "</ul>";
-                                    echo "</nav>";
-                                    echo "</div>";
-                                    echo "</div>";
-                                    ?>
-                                </div>
+// Add the "Previous" button
+if ($currentPage > 1) {
+    echo "<li class='page-item'>";
+    echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
+    echo "<span aria-hidden='true'>&laquo;</span>";
+    echo "</a>";
+    echo "</li>";
+} else {
+    echo "<li class='page-item disabled'>";
+    echo "<a class='page-link' href='#' aria-label='Previous'>";
+    echo "<span aria-hidden='true'>&laquo;</span>";
+    echo "</a>";
+    echo "</li>";
+}
+
+// Display the page numbers
+for ($i = 1; $i <= $total_pages; $i++) {
+    $active = ($i == $currentPage) ? 'active' : '';
+    $disabled = '';
+
+    // Check if the current page is empty
+    $sqlCount = "SELECT COUNT(*) AS count FROM user WHERE COALESCE(status, 'Unverified') = 'Unverified' LIMIT " . ($i - 1) * $rows_per_page . ", $rows_per_page";
+    $resultCount = $conn->query($sqlCount);
+    if ($resultCount->num_rows > 0) {
+        $rowCount = $resultCount->fetch_assoc();
+        if ($rowCount['count'] == 0) {
+            $disabled = 'disabled';
+        }
+    }
+    echo "<li class='page-item $active $disabled' aria-current='page'>";
+    echo "<a class='page-link' href='?page=$i'>$i</a>";
+    echo "</li>";
+}
+
+// Add the "Next" button
+if ($currentPage < $total_pages) {
+    echo "<li class='page-item'>";
+    echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "' aria-label='Next'>";
+    echo "<span aria-hidden='true'>&raquo;</span>";
+    echo "</a>";
+    echo "</li>";
+} else {
+    echo "<li class='page-item disabled'>";
+    echo "<a class='page-link' href='#' aria-label='Next'>";
+    echo "<span aria-hidden='true'>&raquo;</span>";
+    echo "</a>";
+    echo "</li>";
+}
+
+echo "</ul>";
+echo "</nav>";
+
+// Display an error message if the current page is empty
+
+echo "</div>";
+echo "</div>";
+?>                                </div>
                             </div>
                         </div>
                     </div>

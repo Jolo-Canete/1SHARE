@@ -95,11 +95,6 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-auto">
-                                <form class="d-flex">
-                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                </form>
-                            </div>
                         </div>
                         <div class="card mt-3">
                         <div class="table-responsive">
@@ -182,7 +177,7 @@
                                         echo '<td>' . $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . ' ' . $dateVerifiedHour . ':' . $dateVerifiedMinute . '</td>';
                                         echo '<td>' . $dateVerifiedDisplay . '</td>';
                                         echo '<td class="text-center">';
-                                        echo '<a href="./resident_details/user_details.php?userID='. $rowUser['userID']. '" class="btn btn-sm border-0">';
+                                        echo '<a href="./action/user_details.php?userID='. $rowUser['userID']. '" class="btn btn-sm border-0">';
                                         echo '<i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>';
                                         echo '</a></td>';
                                         echo '</tr>';

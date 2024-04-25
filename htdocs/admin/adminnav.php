@@ -26,10 +26,9 @@
 <div class="vertical-nav bg-dark" id="sidebar">
     <div class="py-4 px-3">
         <div class="media d-flex align-items-center">
-            <img src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" alt="..." style="width: 60px; height: 60px;" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+        <img src="../picture/default_admin.png" alt="..." style="width: 65px; height: 65px;" class="mr-3 rounded-circle img-thumbnail shadow-sm">
             <div class="media-body">
-                <h4 class="m-0 text-light ms-3">SK Pororo</h4>
-                <p class="font-weight-light text-secondary mb-0">&nbsp;&nbsp; Admin</p>
+                <h4 class="m-0 text-light ms-3">Admin</h4>
             </div>
         </div>
     </div>

@@ -419,7 +419,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($resultUpdate) {
         echo "<script>alert('User Changes successful')</script>";
-    echo "<script>window.location.href='../resident_details/user_details.php?userID=$userID'</script>";
+    echo "<script>window.location.href='../action/user_details.php?userID=$userID'</script>";
     } else {
         echo "<script>alert('User Update Failed')</script>";
         return;

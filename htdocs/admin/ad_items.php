@@ -1,4 +1,10 @@
-<?php include "./1db.php" ?>
+<?php include "./1db.php"; 
+
+// Get the selected user from the dropdown
+$selectedUser = isset($_POST['selectedUser']) ? $_POST['selectedUser'] : '';
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,13 +14,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <style>
-        #dropdownMenuButton.dropdown-toggle::after {
+    #dropdownMenuButton.dropdown-toggle::after {
             display: none;
+        }
+
+        .card-header {
+            background-color: #899499;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        .badge {
+            font-size: 0.8rem;
         }
 
         .expandable-row .collapse {
             border-top: 1px solid #dee2e6;
             padding-top: 1rem;
+        }
+
+        .collapse.show {
+            display: table-row;
+        }
+
+        .btn-outline-secondary {
+            border-radius: 0px;
+        }
+
+        .form-control {
+            border-radius: 0px;
         }
     </style>
 
@@ -27,12 +64,6 @@
             <div class="container">
             <div class="row">
                     <div class="col-3">
-                        <form class="input-group mb-3">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </form>
                     </div>
                     <div class="col-9 d-flex justify-content-end">
                         <div class="dropdown">
@@ -49,102 +80,63 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="card" style="width: 78.5rem;">
+                        <div class="card" style="width: 60.5rem;">
                             <div class="card-header">
                                 <b>List of Items</b>
                             </div>
                             
                             <div class="card-body">
+                            <!-- In php If the user want to get the owned item that is loooped  by specific user everytime he click the href links it will show it on the same page but if the $_GET is empty it will show all the items owned by every users -->
                                 <div class="row justify-content-between">
                                     <div class="col-auto">
                                         <div class="dropdown">
                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
-                                                Date
+                                                Owned By
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                                <li><button type="submit" name="selectedUser" value="" class="dropdown-item"></button></li>
+                                                <li><a class="dropdown-item" href="#">user 2</a></li>
+                                                <li><a class="dropdown-item" href="#">user 3</a></li>
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
-                                        <form class="d-flex">
-                                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                        </form>
-                                    </div>
                                 </div>
-                                <div class="mb-3"></div>
+                                <div class="card mt-3">
+                                <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>Item Name</th>
                                             <th>Posted By</th>
                                             <th>Item Posted</th>
-                                            <th>Action</th>
+                                            <th>Full Details</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="user-table-body">
                                         <tr>
-                                            <td>Laptop</td>
-                                            <td>@lionking</td>
-                                            <td>Febraury 15, 2060</td>
+                                            <td>Sa Pula sa Puti</td>
+                                            <td>Johnny Sins</td>
+                                            <td>January 20, 2024</td>
                                             <td class="text-center">
-                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-1" aria-expanded="false" aria-controls="itemReportDetails-1">
-                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                </a>
-                                            </td>
+                                            <a href= "./action/item_details.php" class="btn btn-sm border-0">
+                                            <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
+                                            </a></td>
                                         </tr>
-                                        <tr class="collapse" id="itemReportDetails-1">
-                                            <td colspan="4">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kettle Korn</td>
-                                            <td>katulgonko</td>
-                                            <td>January 21, 2023</td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-2" aria-expanded="false" aria-controls="itemReportDetails-2">
-                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr class="collapse" id="itemReportDetails-2">
-                                            <td colspan="4">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                        <?php 
+                                            // Get all items
+                                            $sql = "SELECT * FROM item ORDER BY DateTimePosted DESC";
+                                            $result = $conn->query($sql);
+
+
+                                        
+                                        
+                                        ?>
                                     </tbody>
                                 </table>
+                                </div>
+                                </div>
                                 <div class="row align-items-center">
                                 <div class="col-3">
-                                <div class="row g-2">
-                                    <div class="col">
-                                        <input type="number" id="numRowsInput" class="form-control form-control-sm me-2" placeholder="Number of Rows">
-                                    </div>
-                                    <div class="col">
-                                        <button id="toggleRowsButton" class="btn btn-primary btn-sm">Show Rows</button>
-                                    </div>
-                                </div>
                             </div>
                                     <div class="col">
                                         <nav aria-label="Page navigation">
