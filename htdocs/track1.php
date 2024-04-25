@@ -170,8 +170,8 @@ if (isset($_GET['requestId'])) {
                 ?>
 
                 <?php if ($requestType == 'Borrow') { ?>
-                    <button type="button" class="btn btn-success me-2 <?php echo $isItemHandedButtonEnabled ? '' : 'disabled'; ?>" id="openButton" onclick="redirect1()">Item Handed</button>
-                    <button type="button" class="btn btn-success me-2 <?php echo $isItemReturnedButtonEnabled ? '' : 'disabled'; ?>" id="openButton" onclick="redirect()">Item Returned</button>
+                    <button type="button" class="btn btn-success me-2 <?php echo $isItemHandedButtonEnabled ? '' : 'disabled'; ?>" id="openButton" onclick="redirect1()">Handed?</button>
+                    <button type="button" class="btn btn-success me-2 <?php echo $isItemReturnedButtonEnabled ? '' : 'disabled'; ?>" id="openButton" onclick="redirect()">Returned?</button>
                 <?php } ?>
 
 

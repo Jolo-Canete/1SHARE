@@ -80,7 +80,7 @@
                                         <tr>
                                             <th>Item Name</th>
                                             <th>Posted By</th>
-                                            <th>Item Posted</th>
+                                            <th>Date Item Posted</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -111,7 +111,7 @@
                                         </tr>
                                         <tr>
                                             <td>Kettle Korn</td>
-                                            <td>katulgonko</td>
+                                            <td>@lionking</td>
                                             <td>January 21, 2023</td>
                                             <td class="text-center">
                                                 <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-2" aria-expanded="false" aria-controls="itemReportDetails-2">

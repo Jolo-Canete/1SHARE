@@ -45,7 +45,9 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
 </head>
 
 <style>
-    <?php include "additem.css"; ?>body {
+    <?php include "additem.css"; ?>
+    <?php include "find.css"; ?>
+    body {
         padding-bottom: 1rem;
         min-height: 100vh;
         overflow-x: hidden;
@@ -107,76 +109,8 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
 
     <main>
         <div class="page-content" id="content">
-            <div class="mt-5"></div>
             <div class="container">
-                <?php
-                // SQL query to retrieve three random available items excluding those posted by the current user
-                $carouselSql = "SELECT * FROM item WHERE itemAvailability = 'Available' AND userID != ? ORDER BY RAND() LIMIT 4";
-                $stmt = $conn->prepare($carouselSql);
-                $stmt->bind_param("i", $user_id);
-                $stmt->execute();
-                $carouselResult = $stmt->get_result();
-                $carouselItems = $carouselResult->fetch_all(MYSQLI_ASSOC);
-                ?>
-                <div class="col">
-                    <div class="text-dark">
-                        <h1 class="display-4 fw-bold text-dark text-center">RECENT ITEMS</h1>
-                        <p class="lead text-secondary text-center mb-5">Explore our items and add to cart now!</p>
-                    </div>
-                </div>
-                <div class="row row-cols-2 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4">
-                    <?php foreach ($carouselItems as $index => $item) { ?>
-                        <div class="col-6 col-md-3 col-sm-1 item">
-                            <div class="card clickable-item" data-url="itemdetail.php?itemID=<?php echo $item['itemID']; ?>">
-                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" alt="<?php echo $item['itemName']; ?>" class="card-img-top shadow-lg" style="border-radius: 0px;">
-                                <div class="content">
-                                    <h5 class="fw-bold text-dark text-center mb-1 mt-3"><?php echo $item['itemName']; ?></h5>
-                                    <div class="text-center">
-                                        <p><a class="link-offset-2 link-underline link-underline-opacity-0 text-secondary lead" href="itemdetail.php?itemID=<?php echo $item['itemID']; ?>"><small>Shop Now</small></a></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <script>
-                            $(document).ready(function() {
-                                $(".clickable-item").click(function() {
-                                    var url = $(this).data("url");
-                                    window.location = url;
-                                });
-                            });
-                        </script>
-
-                    <?php } ?>
-                </div>
-                <!--- Categories --->
-                <div class="row mt-4">
-                    <div class="col">
-                        <div class="text-dark">
-                            <h1 class="display-4 fw-bold text-dark text-center">TOP CATEGORIES</h1>
-                            <p class="lead text-secondary text-center mb-0">Explore our top category of items</p>
-                        </div>
-                    </div>
-                    <div class="row row-cols-3 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4 mt-2">
-                        <?php foreach ($topCategories as $category) { ?>
-                            <div class="col">
-                                <a href="finditem.php?sort_by=item_category&category=<?php echo urlencode($category['category']); ?>" class="text-decoration-none">
-                                    <div class="card h-100 shadow-sm">
-                                        <div class="card-body text-center">
-                                            <?php
-                                            $randomImage = getRandomItemImage($conn, $category['category']);
-                                            ?>
-                                            <img id="category-image" src="pictures/<?php echo $randomImage; ?>" class="img-fluid rounded-circle mb-3" alt="<?php echo $category['category']; ?>">
-                                            <h5 class="card-title text-dark" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><?php echo $category['category']; ?></h5>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        <?php } ?>
-                    </div>
-                    <!--- End of Category --->
-
-                    <div class="row">
+            <div class="row">
                         <div class="col">
                             <div class="py-4 px-3 text-white">
                                 <h1 class="display-4 fw-bold text-dark text-center">DAILY DISCOVER</h1>
@@ -185,7 +119,6 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                         </div>
                     </div>
                     <!--- Item Display --->
-                    <div class="container">
                         <div class="row row-cols-2 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4">
                             <?php if (empty($items)) { ?>
                                 <div class="col">
@@ -235,10 +168,34 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                             <?php } ?>
                         </div>
                         <?php include "finddetailmodal.php"; ?>
+                <!--- Categories --->
+                <div class="row mt-4">
+                    <div class="col">
+                        <div class="text-dark">
+                            <h1 class="display-4 fw-bold text-dark text-center">TOP CATEGORIES</h1>
+                            <p class="lead text-secondary text-center mb-0">Explore our top category of items</p>
+                        </div>
                     </div>
+                    <div class="row row-cols-3 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4 mt-2">
+                        <?php foreach ($topCategories as $category) { ?>
+                            <div class="col">
+                                <a href="finditem.php?sort_by=item_category&category=<?php echo urlencode($category['category']); ?>" class="text-decoration-none">
+                                    <div class="card h-100 shadow-sm">
+                                        <div class="card-body text-center">
+                                            <?php
+                                            $randomImage = getRandomItemImage($conn, $category['category']);
+                                            ?>
+                                            <img id="category-image" src="pictures/<?php echo $randomImage; ?>" class="img-fluid rounded-circle mb-3" alt="<?php echo $category['category']; ?>">
+                                            <h5 class="card-title text-dark" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><?php echo $category['category']; ?></h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php } ?>
+                    </div>
+                    <div class="mb-3"></div>
+                    <!--- End of Category --->
                 </div>
-
-
     </main>
     </div>
 </body>

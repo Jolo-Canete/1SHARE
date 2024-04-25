@@ -46,8 +46,8 @@ if (isset($_GET['itemID'])) {
 <body>
     <div class="container my-5">
         <div class="page-content" id="content">
-            <div class="row">
-                <div class="col">
+            <div class="row-12">
+                <div class="col-12">
                     <div class="card" >
                         <div class="card-header">Edit Item</div>
                         <div class="card-body item-detail">

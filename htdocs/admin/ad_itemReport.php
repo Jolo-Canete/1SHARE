@@ -27,15 +27,7 @@
         <div class="page-content" id="content">
             <div class="container">
             <div class="row">
-                    <div class="col-3">
-                        <form class="input-group mb-3">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </form>
-                    </div>
-                    <div class="col-9 d-flex justify-content-end">
+                    <div class="col-12 d-flex justify-content-end">
                         <div class="dropdown">
                             <button class="btn border-0 text-dark p-0 mb-3 dropdown-toggle" type="button" style="font-size: 1.3rem;" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-gear"></i>
@@ -100,7 +92,7 @@
                                                 <div class="row">
                                                     <div class="col-md-6">
                                                         <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
+                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>Too small</textarea>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>

@@ -320,6 +320,7 @@ function fetchAllMonthlyData()
     // Initialize tables
     updateTables('your');
   </script>
+  
 </body>
 
 </html>

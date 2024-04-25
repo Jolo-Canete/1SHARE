@@ -17,6 +17,8 @@ if (isset($_SESSION['user_id'])) {
             <form id="barterForm">
                 <div class="modal-header bg-dark">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Barter</h1>
+                    <h1 style="display: none;" class="modal-title fs-5" id="barterItemID"></h1> 
+
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -78,7 +80,7 @@ if (isset($_SESSION['user_id'])) {
                     <br>
                     <div class="modal-buttons d-flex justify-content-end">
                         <button type="button" class="btn btn-secondary ms-2" data-bs-target="#itemDetailModal" data-bs-toggle="modal">Go Back</button>
-                        <button type="button" id="barterRequestButton" class="btn btn-primary ms-2">Request</button>
+                        <button type="button" id="requestButton" class="btn btn-primary ms-2">Request</button>
                     </div>
             </form>
         </div>
@@ -99,11 +101,29 @@ if (isset($_SESSION['user_id'])) {
     }
 </script>
 <script>
+    function openBarterModal(itemDetails, itemID) {
+        // Populate the barter modal with the item details
+        document.getElementById('barterItemID').textContent = itemDetails.itemID;
+        document.getElementById('barterItemName').textContent = itemDetails.itemName;
+        document.getElementById('barterItemQuantity').textContent = itemDetails.itemQuantity;
+        document.getElementById('barterItemCategory').textContent = itemDetails.category;
+        document.getElementById('barterItemDescription').textContent = itemDetails.ItemDescription;
 
-    
+        // Clear the previously selected items
+        $('input[name="selectedItems[]"]').prop('checked', false);
+
+        // Set the itemID in the modal
+        document.getElementById('try').textContent = itemID;
+
+
+        // Show the barter modal
+        $('#barterModal').modal('show');
+    }
+</script>
+<script>
     $(document).ready(function() {
-        $('#barterRequestButton').click(function() {
-            if (!validateDateTimeForBarterRequest()) {
+        $('#requestButton').click(function() {
+            if (!validateDateTime()) {
                 alert("Please select a date and time between 7am to 5pm on weekdays.");
                 return;
             }
@@ -118,6 +138,18 @@ if (isset($_SESSION['user_id'])) {
 
         $('#barterForm').submit(function(e) {
             e.preventDefault(); // Prevent form submission
+
+            // Gather selected item IDs
+            var selectedItems = [];
+            $('input[name="selectedItems[]"]:checked').each(function() {
+                selectedItems.push($(this).val());
+            });
+
+            // Check if at least one item is selected
+            if (selectedItems.length === 0) {
+                alert("Please select at least 1 item to continue this request.");
+                return; // Exit the function
+            }
 
             // Get date and time of meet
             var dateTimeMeet = $('#date_time_meet').val();
@@ -135,22 +167,10 @@ if (isset($_SESSION['user_id'])) {
                 return; // Exit the function
             }
 
-            // Gather selected item IDs
-            var selectedItems = [];
-            $('input[name="selectedItems[]"]:checked').each(function() {
-                selectedItems.push($(this).val());
-            });
+            var itemId = document.getElementById('barterItemID').textContent;
+            console.log('itemId:', itemId);
 
-            // Check if at least one item is selected
-            if (selectedItems.length === 0) {
-                alert("Please select at least 1 item to continue this request.");
-                return;
-            }
-
-            
-
-            var itemId = "<?php echo $itemID; ?>"; // Assuming $itemID is defined above
-            $('#barterRequestButton').prop('disabled', true);
+            $('#requestButton').prop('disabled', true);
 
             // AJAX POST request
             $.ajax({
@@ -167,48 +187,50 @@ if (isset($_SESSION['user_id'])) {
                     if (response === "Success") {
                         alert("Successful");
                         window.location.href = "pending.php";
+
                     }
                 },
                 error: function(xhr, status, error) {
                     // Handle errors
                     console.error(xhr.responseText);
                     alert("An error occurred while processing your request. Please try again later.");
-                    $('#barterRequestButton').prop('disabled', false);
+                    $('#requestButton').prop('disabled', false);
 
                 }
             });
         });
+
+
+        function validateDateTime() {
+            var selectedDateTime = new Date($('#date_time_meets').val());
+
+            // Check if selected day is a weekday (Monday to Friday)
+            var dayOfWeek = selectedDateTime.getDay();
+            if (dayOfWeek === 0 || dayOfWeek === 6) { // 0 is Sunday, 6 is Saturday
+                return false;
+            }
+
+            // Check if selected time is between 7am to 5pm
+            var selectedTime = selectedDateTime.getHours();
+            if (selectedTime < 7 || selectedTime >= 17) {
+                return false;
+            }
+
+            return true;
+        }
+
+        function validateQuantity() {
+            var quantity = $('#quantity').val();
+            var maxQuantity = parseInt($('#maxQuantity').text());
+
+            if (quantity <= 1 && quantity >= maxQuantity) {
+                alert("The quantity must be between 1 and " + maxQuantity + ".");
+                return false;
+            }
+
+            return true;
+        }
     });
-
-    function validateDateTimeForBarterRequest() {
-        var selectedDateTime = new Date($('#date_time_meet').val());
-
-        // Check if selected day is a weekday (Monday to Friday)
-        var dayOfWeek = selectedDateTime.getDay();
-        if (dayOfWeek === 0 || dayOfWeek === 6) { // 0 is Sunday, 6 is Saturday
-            return false;
-        }
-
-        // Check if selected time is between 7am to 5pm
-        var selectedTime = selectedDateTime.getHours();
-        if (selectedTime < 7 || selectedTime >= 17) {
-            return false;
-        }
-
-        return true;
-    }
-
-    function validateQuantity() {
-        var quantity = $('#aquantity').val();
-        var maxQuantity = parseInt($('#maxQuantity').text());
-
-        if (quantity <= 1 && quantity >= maxQuantity) {
-            alert("The quantity must be between 1 and " + maxQuantity + ".");
-            return false;
-        }
-
-        return true;
-    }
 </script>
 
 

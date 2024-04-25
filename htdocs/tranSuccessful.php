@@ -88,7 +88,7 @@ include "nav.php";
             LEFT JOIN borrow bo ON r.requestID = bo.requestID
             LEFT JOIN buy bu ON r.requestID = bu.requestID
             WHERE (r.userID = $user_id OR i.userID = $user_id)
-            AND r.complete IS NOT NULL";
+            AND r.complete IS NOT NULL ";
             $result = $conn->query($query);
 
             if ($result->num_rows > 0) {

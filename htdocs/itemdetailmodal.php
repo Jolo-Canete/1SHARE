@@ -73,7 +73,10 @@
                 </div>
                 <div class="mb-4"></div>
                 <div class="modal-footer">
-                    <button id="editButton" type="button" class="btn btn-primary" onclick="editItem()" style="display: none;">
+                <button id="cartButton" type="button" class="btn btn-primary ms-2 mb-2" onclick="openItem()">
+              More Details
+              </button>
+                    <button id="editButton" type="button" class="btn btn-primary ms-2 mb-2" onclick="editItem()" style="display: none;">
                         <i class="bi bi-pencil-fill"></i> Edit
                     </button>
                 </div>
@@ -82,6 +85,13 @@
     </div>
 
     <script>
+        function openItem() {
+            // Get the item ID from the modal
+            var itemID = document.getElementById('modalItemID').textContent;
+            
+            window.location.href = 'itemdetail.php?itemID=' + encodeURIComponent(itemID);
+        }
+
         function editItem() {
             // Get the item ID from the modal
             var itemID = document.getElementById('modalItemID').textContent;
@@ -96,6 +106,8 @@
             document.getElementById('modalContent').style.display = 'none';
             document.getElementById('loadingIndicator').style.display = 'block';
             document.getElementById('editButton').style.display = 'none';
+            document.getElementById('cartButton').style.display = 'none';
+
 
 
             // Update item image
@@ -155,6 +167,8 @@
 
                     // Show edit button
                     document.getElementById('editButton').style.display = 'block';
+                    document.getElementById('cartButton').style.display = 'block';
+
                 },
 
                 error: function(xhr, status, error) {

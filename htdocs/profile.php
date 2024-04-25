@@ -319,9 +319,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
               <div>
                 <div class="flex-grow-1 d-flex justify-content-between align-items-center">
                 <h2 class="mb-0 fw-bold"><? echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName'][0]) . '.&nbsp;' . ucfirst($userData['lastName']) ?></h2>
-                  <button type="button" class="btn btn-link text-danger" data-bs-toggle="modal" data-bs-target="#reportUserModal">
-                    <i class="bi bi-flag fs-5"></i>
-                  </button>
+                  
                 </div>
                 <div class="text-secondary">Resident</div>
                 <div>

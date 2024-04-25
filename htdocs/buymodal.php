@@ -3,6 +3,8 @@
         <div class="modal-content">
             <div class="modal-header bg-dark">
                 <h1 class="modal-title fs-5" id="buyRequestModalLabel">Buy Request</h1>
+                <h1 style="display: none;" class="modal-title fs-5" id="buyItemID"></h1>
+
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -20,7 +22,9 @@
                     </div>
                     <div class="row">
                         <div class="col-6 mb-3">
-                            <label for="quantity" class="form-label"><b>Quantity(<?php echo $item['itemQuantity'] ?> Max)</b> <span class="text-danger">*</span></label>
+                        <label for="quantity" class="form-label">
+                                <b>Quantity (<span id="buyItemQuantity"></span> Max)</b> <span class="text-danger">*</span>
+                            </label>
                             <input type="number" id="aquantity" name="quantity" class="form-control" min="1" max="<?php echo $item['itemQuantity']; ?>" required>
                         </div>
                     </div>
@@ -33,6 +37,17 @@
         </div>
     </div>
 </div>
+<script>
+    function openBuyModal(itemDetails, itemID) {
+        // Populate the borrow modal with the item details
+        document.getElementById('buyItemID').textContent = itemDetails.itemID;
+        document.getElementById('buyItemQuantity').textContent = itemDetails.itemQuantity;
+
+
+        // Show the borrow modal
+        $('#buyRequestModal').modal('show');
+    }
+</script>
 <script>
     $(document).ready(function() {
         $('#buyRequestButton').click(function() {
@@ -68,7 +83,10 @@
                 return; // Exit the function
             }
 
-            var itemId = "<?php echo isset($itemID) ? $itemID : ''; ?>";
+
+
+            var itemId = document.getElementById('buyItemID').textContent;
+            console.log('itemId:', itemId);
 
             $('#buyRequestButton').prop('disabled', true);
 
@@ -120,10 +138,10 @@
     }
 
     function validateQuantitybuy() {
-        var quantity = parseInt($('#aquantity').val());
-        var maxQuantity = parseInt('<?php echo $item['itemQuantity']; ?>');
+        var quantity = $('#aquantity').val();
+        var maxQuantity = parseInt($('#buyItemQuantity').text());
 
-        if (isNaN(quantity) || quantity < 1 || quantity > maxQuantity) {
+        if (quantity <= 0 || quantity > maxQuantity) {
             alert("The quantity must be 1 or between 1 and " + maxQuantity + ".");
             return false;
         }

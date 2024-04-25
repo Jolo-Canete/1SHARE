@@ -159,19 +159,19 @@ if (isset($_GET['requestId'])) {
             }
             ?>
 
-            <button type="button" class="btn btn-primary me-2 <?php echo $isButtonEnabled ? '' : 'disabled'; ?>" id="openButton" onclick="redirectToTransaction('<?php echo $requestType; ?>', '<?php echo $requestID; ?>')">Complete</button>
+            <button type="button" class="btn btn-primary me-2 <?php echo $isButtonEnabled ? '' : 'disabled'; ?>" id="openButton" onclick="redirectToTransaction('<?php echo $requestType; ?>', '<?php echo $requestID; ?>')">Confirmation</button>
 
             <script>
                 function redirectToTransaction(requestType, requestID) {
                     switch (requestType) {
                         case 'Barter':
-                            window.open('receivebarter.php?requestId=' + requestID, '_blank');
+                            window.open('receivebarter.php?requestId=' + requestID, );
                             break;
                         case 'Borrow':
-                            window.open('receiveborrow.php?requestId=' + requestID, '_blank');
+                            window.open('receiveborrow.php?requestId=' + requestID, );
                             break;
                         case 'Buy':
-                            window.open('receivebuy.php?requestId=' + requestID, '_blank');
+                            window.open('receivebuy.php?requestId=' + requestID, );
                             break;
                         default:
                             alert('Invalid request type.');

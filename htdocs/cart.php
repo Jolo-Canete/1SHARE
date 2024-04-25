@@ -39,8 +39,7 @@ if (isset($_SESSION['user_id'])) {
     <style>
         <?php
         include "additem.css";
-        ?>
-        .no-item {
+        ?>.no-item {
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
@@ -70,19 +69,21 @@ if (isset($_SESSION['user_id'])) {
             flex-direction: column;
             justify-content: space-between;
         }
+
+        <?php include "additem.css"; ?><?php include "find.css"; ?>
     </style>
 
 </head>
 
 <body>
     <div class="page-content" id="content">
-    <div class="row">
-                    <div class="col">
-                        <div class="text-dark">
-                            <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-0"><i class="bi bi-cart" style="font-size: 2.8rem;"></i> MY CART</h1>
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col">
+                <div class="text-dark">
+                    <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-0"><i class="bi bi-cart" style="font-size: 2.8rem;"></i> MY CART</h1>
                 </div>
+            </div>
+        </div>
         <div class="container my-5">
             <?php if ($result->num_rows === 0) { ?>
                 <div class="no-item" id="no-item">

@@ -330,32 +330,37 @@ WHEN r.requestType = 'Borrow' THEN CASE WHEN bo.DateTimeMeet <= NOW() THEN '<spa
 
 
                 <?php
-                $query = "SELECT r.requestID, r.requestType, i.itemName, i.borrowDuration, u.username AS itemOwner,
-                 CASE
-                     WHEN r.requestType = 'Barter' THEN b.DateTimeMeet
-                     WHEN r.requestType = 'Borrow' THEN bo.DateTimeMeet 
-                     WHEN r.requestType = 'Buy' THEN bu.DateTimeMeet
-                     ELSE NULL
-                 END AS DateTimeMeet,
-                 CASE
-                     WHEN r.requestType = 'Borrow' AND DATE_ADD(bo.DateTimeMeet, INTERVAL i.borrowDuration DAY) <= NOW() THEN '<span class=\"badge badge-danger\">Return</span>'
-                     WHEN r.requestType = 'Borrow' THEN CASE WHEN bo.DateTimeMeet <= NOW() THEN '<span class=\"badge badge-success\">Ongoing Borrow</span>' ELSE '<span class=\"badge badge-warning\">Upcoming</span>' END
-                     WHEN r.requestType = 'Barter' THEN CASE WHEN b.DateTimeMeet <= NOW() THEN '<span class=\"badge badge-success\">Ongoing</span>' ELSE '<span class=\"badge badge-warning\">Upcoming</span>' END
-                     WHEN r.requestType = 'Buy' THEN CASE WHEN bu.DateTimeMeet <= NOW() THEN '<span class=\"badge badge-success\">Ongoing</span>' ELSE '<span class=\"badge badge-warning\">Upcoming</span>' END
-                 END AS MeetingStatus,
-                 u_owner.contactNumber AS ownerContactNumber,
-                 u_requester.contactNumber AS requesterContactNumber
-                 FROM Request r
-                 JOIN item i ON r.itemID = i.itemID
-                 JOIN user u ON i.userID = u.userID
-                 LEFT JOIN barter b ON r.requestID = b.requestID
-                 LEFT JOIN borrow bo ON r.requestID = bo.requestID
-                 LEFT JOIN buy bu ON r.requestID = bu.requestID
-                 LEFT JOIN user u_owner ON i.userID = u_owner.userID
-                 LEFT JOIN user u_requester ON r.userID = u_requester.userID
-                 WHERE r.userID = $user_id  || i.userID = $user_id
-                 AND r.status = 'Accepted'
-                 AND r.remove IS NULL
+              $query = "SELECT r.requestID, r.requestType, i.itemName, i.borrowDuration, u.username AS itemOwner,
+              CASE
+                  WHEN r.requestType = 'Barter' THEN b.DateTimeMeet
+                  WHEN r.requestType = 'Borrow' THEN bo.DateTimeMeet 
+                  WHEN r.requestType = 'Buy' THEN bu.DateTimeMeet
+                  ELSE NULL
+              END AS DateTimeMeet,
+              CASE
+                  WHEN r.requestType = 'Borrow' AND DATE_ADD(bo.DateTimeMeet, INTERVAL i.borrowDuration DAY) <= NOW() THEN '<span class=\"badge badge-danger\">Return</span>'
+                  WHEN r.requestType = 'Borrow' THEN CASE WHEN bo.DateTimeMeet <= NOW() THEN '<span class=\"badge badge-success\">Ongoing Borrow</span>' ELSE '<span class=\"badge badge-warning\">Upcoming</span>' END
+                  WHEN r.requestType = 'Barter' THEN CASE WHEN b.DateTimeMeet <= NOW() THEN '<span class=\"badge badge-success\">Ongoing</span>' ELSE '<span class=\"badge badge-warning\">Upcoming</span>' END
+                  WHEN r.requestType = 'Buy' THEN CASE WHEN bu.DateTimeMeet <= NOW() THEN '<span class=\"badge badge-success\">Ongoing</span>' ELSE '<span class=\"badge badge-warning\">Upcoming</span>' END
+              END AS MeetingStatus,
+              r.complete,
+              r.failed,
+              u_owner.contactNumber AS ownerContactNumber,
+              u_requester.contactNumber AS requesterContactNumber
+              FROM Request r
+              JOIN item i ON r.itemID = i.itemID
+              JOIN user u ON i.userID = u.userID
+              LEFT JOIN barter b ON r.requestID = b.requestID
+              LEFT JOIN borrow bo ON r.requestID = bo.requestID
+              LEFT JOIN buy bu ON r.requestID = bu.requestID
+              LEFT JOIN user u_owner ON i.userID = u_owner.userID
+              LEFT JOIN user u_requester ON r.userID = u_requester.userID
+              WHERE (r.userID = $user_id  || i.userID = $user_id)
+              AND r.status = 'Accepted'
+              AND r.remove IS NULL
+              AND r.complete IS NULL
+              AND r.failed IS NULL
+
                  ORDER BY MeetingStatus ASC, COALESCE(b.DateTimeMeet, bo.DateTimeMeet, bu.DateTimeMeet) ASC";
                 $result = $conn->query($query);
 
