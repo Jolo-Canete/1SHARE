@@ -6,10 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
+
  
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+
 
   <style>
     /* For input Number */
@@ -122,6 +127,7 @@
 
                         <input type="number" name="editZone" id="editModal_Zone_Input" class="form-control" placeholder="ex. 3" >
 
+>>>>>>> 6c75927fbb2d69c3b7bd97856513a947261a4836
                     </div>
                 
             </div>
@@ -218,9 +224,12 @@
         </div>
     </div>
 </div>
+<<<<<<< HEAD
+=======
 
 
 
+>>>>>>> 6c75927fbb2d69c3b7bd97856513a947261a4836
 
 
 <!-- Php form to submit the edited data -->
@@ -417,12 +426,6 @@
         }
   
     }
-
-
-
-
-
-
 ?>
 
 <script>

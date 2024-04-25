@@ -1,8 +1,9 @@
+<?php include "./1db.php" ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <title>Admin User Report</title>
+    <title>Residents Reported</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -11,6 +12,7 @@
             display: none;
         }
 
+        
         .expandable-row .collapse {
             border-top: 1px solid #dee2e6;
             padding-top: 1rem;
@@ -21,7 +23,7 @@
 
 <body>
     <main>
-    <?php include "admin/adminnav.php" ?>
+    <?php include "./adminnav.php" ?>
         <div class="page-content" id="content">
             <div class="container">
             <div class="row">
@@ -50,7 +52,7 @@
                     <div class="col">
                         <div class="card" style="width: 78.5rem;">
                             <div class="card-header">
-                                <b>List of User Reported</b>
+                                <b>List of Resident Reported</b>
                             </div>
                             <div class="card-body">
                                 <div class="row justify-content-between">
@@ -77,7 +79,7 @@
                                     <thead>
                                         <tr>
                                             <th>Reported By</th>
-                                            <th>User Reported</th>
+                                            <th>Resident Reported</th>
                                             <th>Date Reported</th>
                                             <th>Action</th>
                                         </tr>
