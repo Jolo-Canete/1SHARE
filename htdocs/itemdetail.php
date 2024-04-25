@@ -175,15 +175,16 @@ if (isset($_GET['itemID'])) {
                             <!-- Barter, Borrow, Buy Buttons -->
                             <hr>
                             <div class="d-flex justify-content-center d-grid gap-2 col-4 mx-auto">
-                                <button type="button" class="btn btn-outline-dark <?php echo !in_array('Barter', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>" data-bs-toggle="modal" data-bs-target="#barterModal" <?php echo !in_array('Barter', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>>Barter</button>
-                                <button type="button" class="btn btn-outline-success <?php echo !in_array('Borrow', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>" data-bs-toggle="modal" data-bs-target="#borrowModal" <?php echo !in_array('Borrow', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>>Borrow</button>
-                                <button type="button" class="btn btn-outline-danger <?php echo !in_array('Buy', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>" data-bs-toggle="modal" data-bs-target="#buyRequestModal" <?php echo !in_array('Buy', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>>Buy</button>
+                                <button type="button" class="btn btn-outline-dark <?php echo !in_array('Barter', explode(',', $item['requestType'])) ? 'd-none' : ''; ?>" data-bs-toggle="modal" data-bs-target="#barterModal">Barter</button>
+                                <button type="button" class="btn btn-outline-success <?php echo !in_array('Borrow', explode(',', $item['requestType'])) ? 'd-none' : ''; ?>" data-bs-toggle="modal" data-bs-target="#borrowModal">Borrow</button>
+                                <button type="button" class="btn btn-outline-danger <?php echo !in_array('Buy', explode(',', $item['requestType'])) ? 'd-none' : ''; ?>" data-bs-toggle="modal" data-bs-target="#buyRequestModal">Buy</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
+
+            <div class="row" style="display: none;">
                 <div class="col-12 col-md-10 offset-md-1">
                     <div class="card shadow-sm">
                         <div class="card-header">

@@ -92,31 +92,18 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
         transition: transform 0.4s;
     }
 
-    .item img {
-        border-radius: 5px;
-        margin-bottom: 10px;
-        width: 300px;
-        height: 300px;
+    #category-image {
+        max-width: 100px;
+        height: 100px;
         object-fit: cover;
-    }
-
-    .item .content {
-        text-align: center;
-    }
-
-    .item h3 {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .item p {
-        font-size: 1.2rem;
-        color: #666;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
     }
 </style>
 
 <body>
-  
+
 
     <main>
         <div class="page-content" id="content">
@@ -137,14 +124,16 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                         <p class="lead text-secondary text-center mb-5">Explore our items and add to cart now!</p>
                     </div>
                 </div>
-                <div class="row row-cols-sm-1">
+                <div class="row row-cols-2 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4">
                     <?php foreach ($carouselItems as $index => $item) { ?>
                         <div class="col-6 col-md-3 col-sm-1 item">
-                            <div class="clickable-item" data-url="itemdetail.php?itemID=<?php echo $item['itemID']; ?>">
-                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" alt="<?php echo $item['itemName']; ?>" class="img-fluid shadow-lg">
+                            <div class="card clickable-item" data-url="itemdetail.php?itemID=<?php echo $item['itemID']; ?>">
+                                <img src="pictures/<?php echo $item['itemImage_path']; ?>" alt="<?php echo $item['itemName']; ?>" class="card-img-top shadow-lg" style="border-radius: 0px;">
                                 <div class="content">
-                                    <h3 class="display-4 fw-bold text-dark text-center mb-1"><?php echo $item['itemName']; ?></h3>
-                                    <p><a class="link-offset-2 link-underline link-underline-opacity-0 text-secondary lead" href="itemdetail.php?itemID=<?php echo $item['itemID']; ?>"><small>Shop Now</small></a></p>
+                                    <h5 class="fw-bold text-dark text-center mb-1 mt-3"><?php echo $item['itemName']; ?></h5>
+                                    <div class="text-center">
+                                        <p><a class="link-offset-2 link-underline link-underline-opacity-0 text-secondary lead" href="itemdetail.php?itemID=<?php echo $item['itemID']; ?>"><small>Shop Now</small></a></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -161,14 +150,14 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                     <?php } ?>
                 </div>
                 <!--- Categories --->
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col">
                         <div class="text-dark">
                             <h1 class="display-4 fw-bold text-dark text-center">TOP CATEGORIES</h1>
                             <p class="lead text-secondary text-center mb-0">Explore our top category of items</p>
                         </div>
                     </div>
-                    <div class="row row-cols-3 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4">
+                    <div class="row row-cols-3 row-cols-sm-4 row-cols-md-5 row-cols-lg-6 g-4 mt-2">
                         <?php foreach ($topCategories as $category) { ?>
                             <div class="col">
                                 <a href="finditem.php?sort_by=item_category&category=<?php echo urlencode($category['category']); ?>" class="text-decoration-none">
@@ -177,7 +166,7 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                                             <?php
                                             $randomImage = getRandomItemImage($conn, $category['category']);
                                             ?>
-                                            <img src="pictures/<?php echo $randomImage; ?>" class="img-fluid rounded-circle mb-3" width="100" height="100" alt="<?php echo $category['category']; ?>">
+                                            <img id="category-image" src="pictures/<?php echo $randomImage; ?>" class="img-fluid rounded-circle mb-3" alt="<?php echo $category['category']; ?>">
                                             <h5 class="card-title text-dark" style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis;"><?php echo $category['category']; ?></h5>
                                         </div>
                                     </div>
@@ -249,7 +238,7 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
                     </div>
                 </div>
 
-              
+
     </main>
     </div>
 </body>

@@ -78,7 +78,7 @@ if (isset($_SESSION['user_id'])) {
                     <br>
                     <div class="modal-buttons d-flex justify-content-end">
                         <button type="button" class="btn btn-secondary ms-2" data-bs-target="#itemDetailModal" data-bs-toggle="modal">Go Back</button>
-                        <button type="button" id="requestButton" class="btn btn-primary ms-2">Request</button>
+                        <button type="button" id="barterRequestButton" class="btn btn-primary ms-2">Request</button>
                     </div>
             </form>
         </div>
@@ -99,9 +99,11 @@ if (isset($_SESSION['user_id'])) {
     }
 </script>
 <script>
+
+    
     $(document).ready(function() {
-        $('#requestButton').click(function() {
-            if (!validateDateTime()) {
+        $('#barterRequestButton').click(function() {
+            if (!validateDateTimeForBarterRequest()) {
                 alert("Please select a date and time between 7am to 5pm on weekdays.");
                 return;
             }
@@ -116,18 +118,6 @@ if (isset($_SESSION['user_id'])) {
 
         $('#barterForm').submit(function(e) {
             e.preventDefault(); // Prevent form submission
-
-            // Gather selected item IDs
-            var selectedItems = [];
-            $('input[name="selectedItems[]"]:checked').each(function() {
-                selectedItems.push($(this).val());
-            });
-
-            // Check if at least one item is selected
-            if (selectedItems.length === 0) {
-                alert("Please select at least 1 item to continue this request.");
-                return; // Exit the function
-            }
 
             // Get date and time of meet
             var dateTimeMeet = $('#date_time_meet').val();
@@ -145,8 +135,22 @@ if (isset($_SESSION['user_id'])) {
                 return; // Exit the function
             }
 
+            // Gather selected item IDs
+            var selectedItems = [];
+            $('input[name="selectedItems[]"]:checked').each(function() {
+                selectedItems.push($(this).val());
+            });
+
+            // Check if at least one item is selected
+            if (selectedItems.length === 0) {
+                alert("Please select at least 1 item to continue this request.");
+                return;
+            }
+
+            
+
             var itemId = "<?php echo $itemID; ?>"; // Assuming $itemID is defined above
-            $('#requestButton').prop('disabled', true);
+            $('#barterRequestButton').prop('disabled', true);
 
             // AJAX POST request
             $.ajax({
@@ -169,43 +173,42 @@ if (isset($_SESSION['user_id'])) {
                     // Handle errors
                     console.error(xhr.responseText);
                     alert("An error occurred while processing your request. Please try again later.");
-                    $('#requestButton').prop('disabled', false);
+                    $('#barterRequestButton').prop('disabled', false);
 
                 }
             });
         });
-
-
-        function validateDateTime() {
-            var selectedDateTime = new Date($('#date_time_meets').val());
-
-            // Check if selected day is a weekday (Monday to Friday)
-            var dayOfWeek = selectedDateTime.getDay();
-            if (dayOfWeek === 0 || dayOfWeek === 6) { // 0 is Sunday, 6 is Saturday
-                return false;
-            }
-
-            // Check if selected time is between 7am to 5pm
-            var selectedTime = selectedDateTime.getHours();
-            if (selectedTime < 7 || selectedTime >= 17) {
-                return false;
-            }
-
-            return true;
-        }
-
-        function validateQuantity() {
-            var quantity = $('#quantity').val();
-            var maxQuantity = parseInt($('#maxQuantity').text());
-
-            if (quantity <= 1 && quantity >= maxQuantity) {
-                alert("The quantity must be between 1 and " + maxQuantity + ".");
-                return false;
-            }
-
-            return true;
-        }
     });
+
+    function validateDateTimeForBarterRequest() {
+        var selectedDateTime = new Date($('#date_time_meet').val());
+
+        // Check if selected day is a weekday (Monday to Friday)
+        var dayOfWeek = selectedDateTime.getDay();
+        if (dayOfWeek === 0 || dayOfWeek === 6) { // 0 is Sunday, 6 is Saturday
+            return false;
+        }
+
+        // Check if selected time is between 7am to 5pm
+        var selectedTime = selectedDateTime.getHours();
+        if (selectedTime < 7 || selectedTime >= 17) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateQuantity() {
+        var quantity = $('#aquantity').val();
+        var maxQuantity = parseInt($('#maxQuantity').text());
+
+        if (quantity <= 1 && quantity >= maxQuantity) {
+            alert("The quantity must be between 1 and " + maxQuantity + ".");
+            return false;
+        }
+
+        return true;
+    }
 </script>
 
 

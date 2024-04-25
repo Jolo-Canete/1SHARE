@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve data from the AJAX request
     $selectedItems = $_POST['selectedItems'];
     $dateTimeMeet = $_POST['dateTimeMeet'];
-    $itemId = $_POST['itemId']; // Assuming itemId is sent via AJAX
+    $itemId = $_POST['itemID']; // Assuming itemId is sent via AJAX
 
     // Ensure $user_id is defined and contains the correct user ID
     if (isset($_SESSION['user_id'])) {

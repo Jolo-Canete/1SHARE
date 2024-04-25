@@ -28,14 +28,14 @@
 <div class="modal fade" id="editModal_email" tabindex="-1" aria-labelledby="editModalLabel_email" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel_email">Edit Email</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white" id="editModalLabel_email">Edit Email</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <form action="" method="post">
                     <div class="mb-3">
-                        <label for="editModal_email_input" class="form-label">Email to be Edited</label>
+                        <label for="editModal_email_input" class="form-label"><b>Email</b></label>
                         <input type="text" name="editEmail" id="editModal_email_input" class="form-control" placeholder="<?php echo $userData['userEmail'];?>">
                     </div>
             </div>
@@ -53,14 +53,14 @@
 <div class="modal fade" id="editModal_birthdate" tabindex="-1" aria-labelledby="editModal_Birthday" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModal_Birthday">Edit Birthday</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white" id="editModal_Birthday">Edit Date of Birth</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <form action="" method="post">
                     <div class="mb-3">
-                        <label for="editModal_Birthday_input" class="form-label">Birthday to be Edited: <br> (Cannot be changed for 40 days upon submit) </label>
+                        <label for="editModal_Birthday_input" class="form-label"><b>Date of Birth</b> <span class="text-secondary">(Cannot be changed for <b>40 days</b> upon submit) </span></label>
                         <input type="date" name="editBirthday" id="editModal_Birthday_Input" class="form-control" >
                     </div>
                 
@@ -79,16 +79,16 @@
 <div class="modal fade" id="editModal_Purok" tabindex="-1" aria-labelledby="editModal_purok" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModal_Purok">Edit Purok</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white" id="editModal_Purok">Edit Purok</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <form action="" method="post">
                     <div class="mb-3">
-                        <label for="editModal_Birthday_input" class="form-label">Purok to be edited:</label>
+                        <label for="editModal_Birthday_input" class="form-label"><b>Purok</b></label>
 
-                        <input type="text" name="editPurok" id="editModal_Purok_Input" class="form-control" placeholder="ex. Purok 21, Curvada" >
+                        <input type="text" name="editPurok" id="editModal_Purok_Input" class="form-control mb-3" placeholder="ex. Purok 21, Curvada">
 
                         <input type="number" name="editPurok" id="editModal_Purok_Input" class="form-control" placeholder="ex. 3" >
 
@@ -109,16 +109,16 @@
 <div class="modal fade" id="editModal_Zone" tabindex="-1" aria-labelledby="editModalZoneLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalTitle_Zone">Edit Zone</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white" id="editModalTitle_Zone">Edit Zone</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <form action="" method="post">
                     <div class="mb-3">
-                        <label for="editModal_Zone_Input" class="form-label">Zone to be edited:</label>
+                        <label for="editModal_Zone_Input" class="form-label"><b>Zone</b></label>
 
-                        <input type="text" name="editZone" id="editModal_Zone_Input" class="form-control" placeholder="ex. Zone 3" >
+                        <input type="text" name="editZone" id="editModal_Zone_Input" class="form-control mb-3" placeholder="ex. Zone 3" >
 
                         <input type="number" name="editZone" id="editModal_Zone_Input" class="form-control" placeholder="ex. 3" >
 
@@ -139,14 +139,14 @@
 <div class="modal fade" id="editModal_ContactNumber" tabindex="-1" aria-labelledby="editModalContactNumber" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalTitle_ContactNumber">Edit Contact Number</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white" id="editModalTitle_ContactNumber">Edit Contact Number</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <form action="" method="post">
                     <div class="mb-3">
-                        <label for="editModal_Zone_Input" class="form-label">Contact to be edited:</label>
+                        <label for="editModal_Zone_Input" class="form-label"><b>Contact Number</b></label>
                         <input type="number" name="editContactNumber" id="editModalBody_Number" class="form-control" placeholder="<?php echo $userData['contactNumber']; ?>" >
                         <span id="message" style="color: red;"></span>
                     </div>
@@ -166,14 +166,14 @@
 <div class="modal fade" id="editModal_Username" tabindex="-1" aria-labelledby="editModalUsername" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalTitle_Username">Edit Username</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white" id="editModalTitle_Username">Edit Username</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <form action="" method="post">
                     <div class="mb-3">
-                        <label for="editModal_Username_Input" class="form-label">Username to be edited:</label>
+                        <label for="editModal_Username_Input" class="form-label"><b>Username</b></label>
                         <input type="text" name="editUsername" id="editModalBody_Username" class="form-control" placeholder="<?php echo ucfirst($userData['username']); ?>" >
                     </div>
                 
@@ -192,14 +192,14 @@
 <div class="modal fade" id="editModal_Password" tabindex="-1" aria-labelledby="editModalPPassword" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalTitle_Password">Change Password</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title text-white" id="editModalTitle_Password">Change Password</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <form action="" method="post">
                     <div class="mb-3">
-                        <label for="editModal_Password_Input" class="form-label">Password to be changed:</label>
+                        <label for="editModal_Password_Input" class="form-label"><b>Password</b></label>
                         <div class="input-group">
                             <input type="password" id="password" class="form-control" placeholder="Password" name="editPassword">
                             <div class="input-group-append">

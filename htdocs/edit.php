@@ -47,8 +47,9 @@ if (isset($_GET['itemID'])) {
     <div class="container my-5">
         <div class="page-content" id="content">
             <div class="row">
-                <div class="col-lg-8 offset-lg-2">
-                    <div class="card border-0">
+                <div class="col">
+                    <div class="card" >
+                        <div class="card-header">Edit Item</div>
                         <div class="card-body item-detail">
                             <form id="editItemForm" onsubmit="return uploadItem(event);">
                                 <input type="hidden" name="itemID" value="<?php echo $itemID; ?>">
@@ -59,7 +60,7 @@ if (isset($_GET['itemID'])) {
                                         </div>
                                         <div class="mb-3 mt-2">
                                             <div class="mb-2">
-                                                <label for="itemPicture"><b>Upload Item Image</b> <span class="text-danger">*</span></label>
+                                                <label for="itemPicture"><b>Upload Item Picture</b> <span class="text-danger">*</span></label>
                                             </div><input type="file" class="form-control" id="itemPicture" name="itemPicture">
                                         </div>
                                     </div>
@@ -100,7 +101,7 @@ if (isset($_GET['itemID'])) {
                                         <div class="invalid-feedback">⚠️ Please select a category.</div>
 
                                         <!--- Item Availability --->
-                                        <div class="mb-3">
+                                        <div class="mb-3 mt-3">
                                             <label for="itemAvailability" class="form-label"><i class="bi bi-check2-circle"></i> <b>Availability </b> <span class="text-danger">*</span></label>
                                             <select class="form-select" id="itemAvailability" name="itemAvailability">
                                                 <option value="Available" <?php if ($item['itemAvailability'] == 'Available') echo 'selected'; ?>>Available</option>
@@ -193,7 +194,7 @@ if (isset($_GET['itemID'])) {
                 success: function(response) {
                     // Check if the response contains 'success'
                     if (response.indexOf('success') !== -1) {
-                        alert('Successfully edited an item');
+                        alert('You have successfully edited an item');
                         // Redirect to the additem.php page
                         window.location.href = 'additem.php';
                     } else {

@@ -1,5 +1,3 @@
-
-
 <div class="modal fade item-detail" id="itemDetailModal" tabindex="-1" aria-labelledby="itemDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -73,18 +71,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer fixed">
-                <div class="d-flex justify-content-center mt-4">
-
+                <div class="mb-4"></div>
+                <div class="modal-footer">
                     <button id="editButton" type="button" class="btn btn-primary" onclick="editItem()" style="display: none;">
                         <i class="bi bi-pencil-fill"></i> Edit
                     </button>
-                    &nbsp;
-
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        <i class="bi bi-x"></i> Close
-                    </button>
-                </div>
                 </div>
             </div>
         </div>

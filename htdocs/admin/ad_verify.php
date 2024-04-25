@@ -29,23 +29,23 @@
         }
 
         .table th:nth-child(5),
-.table td:nth-child(5),
-.table th:nth-child(6),
-.table td:nth-child(6) {
-    width: 1%;
-}
+        .table td:nth-child(5),
+        .table th:nth-child(6),
+        .table td:nth-child(6) {
+            width: 1%;
+        }
 
-.table th,
-.table td {
-    width: calc((100% - 16%) / 29);
-}
+        .table th,
+        .table td {
+            width: calc((100% - 16%) / 29);
+        }
     </style>
 
 </head>
 
 <body>
     <main>
-    <?php include "admin/adminnav.php" ?>
+        <?php include "admin/adminnav.php" ?>
         <div class="page-content" id="content">
             <div class="container">
                 <div class="row">

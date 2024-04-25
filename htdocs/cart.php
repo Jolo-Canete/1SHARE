@@ -8,7 +8,7 @@ if (isset($_SESSION['user_id'])) {
     $user_id = $_SESSION['user_id'];
 
     // Prepare the SQL statement to fetch cart items for the logged-in user
-    $sql = "SELECT item.itemID, item.itemName, item.itemImage_path, item.itemDescription, item.requestType, item.category, item.itemCondition, item.itemAvailability, item.buyPrice, cart.quantity
+    $sql = "SELECT item.itemID, item.itemName, item.itemImage_path, item.itemDescription, item.requestType, item.category, item.itemAvailability, item.buyPrice, cart.quantity
             FROM cart
             INNER JOIN item ON cart.itemID = item.itemID
             WHERE cart.userID = ?";

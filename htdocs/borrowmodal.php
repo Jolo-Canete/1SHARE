@@ -24,15 +24,15 @@
                             <input type="number" id="quantity" name="quantity" class="form-control" min="1" max="0" required>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary ms-2" data-bs-target="#itemDetailModal" data-bs-toggle="modal">Go Back</button>
-                    <button type="button" id="requestedButton" class="btn btn-primary">Request</button>
-                </div>
-                </form>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary ms-2" data-bs-target="#itemDetailModal" data-bs-toggle="modal">Go Back</button>
+                <button type="button" id="requestedButton" class="btn btn-primary">Request</button>
+            </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <script>
     $(document).ready(function() {
@@ -128,11 +128,11 @@
     }
 
     function validateQuantity() {
-        var quantity = $('#quantity').val();
-        var maxQuantity = parseInt($('#maxQuantity').text());
+        var quantity = parseInt($('#quantity').val());
+        var maxQuantity = parseInt('<?php echo $item['itemQuantity']; ?>');
 
-        if (quantity <= 1 && quantity >= maxQuantity) {
-            alert("The quantity must be between 1 and " + maxQuantity + ".");
+        if (isNaN(quantity) || quantity < 1 || quantity > maxQuantity) {
+            alert("The quantity must be 1 or between 1 and " + maxQuantity + ".");
             return false;
         }
 

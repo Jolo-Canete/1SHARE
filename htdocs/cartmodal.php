@@ -48,9 +48,6 @@
                  <div class="d-flex justify-content-start align-items-center flex-grow-1">
                      <p class="mb-0"><b><i class="bi bi-box"></i> <b>Quantity:</b> </b><span id="modalItemQuantity"></span> Item/s Left!</p>
                  </div>
-                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                     <i class="bi bi-x"></i> Close
-                 </button>
                  <button style="display: none;" type="button" class="btn btn-primary" onclick="removeCart()">
                      <i class="bi bi-cart-plus"></i> Redirect
                  </button>
