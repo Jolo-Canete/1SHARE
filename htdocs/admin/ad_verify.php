@@ -1,29 +1,30 @@
 <?php 
-include "./1db.php"; include "./adminnav.php";
+include "./1db.php"; 
+include "./adminnav.php";
 
 // Check errors
 ini_set('display_errors', 1);
 
-// Get the current page number from the URL, or use 1 if not set
+// Get the total number of rows from the user table
+$sql = "SELECT COUNT(*) AS total_rows FROM user"; 
+$result = $conn->query($sql);
+$userRow = $result->fetch_assoc();
+$totalRows = $userRow['total_rows'];
+
+// Get the rows per page you want
+$rows_per_page = 5;
+
+// Get the current page number from the URL
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
-// Set the number of records to display per page
-$recordsPerPage = 5;
+// Calculate where to start in the row pages
+$offset = ($currentPage > 1) ? ($currentPage - 1) * $rows_per_page : 0;
 
-// Calculate the offset for the SQL query based on the current page
-$offset = ($currentPage - 1) * $recordsPerPage;
+
 
 // Fetch the unverified users from the database, limiting the results based on the current page
-$sqlUnverified = "SELECT * FROM user WHERE COALESCE(status, 'UnVerified') = 'UnVerified' LIMIT $offset, $recordsPerPage";
+$sqlUnverified = "SELECT * FROM user WHERE COALESCE(status, 'UnVerified') = 'UnVerified' ORDER BY dateJoined DESC LIMIT $offset, $rows_per_page;";
 $resultVerified = $conn->query($sqlUnverified);
-
-// Get the total number of unverified users
-$totalRecords = $conn->query("SELECT COUNT(*) FROM user WHERE COALESCE(status, 'UnVerified') = 'UnVerified'")->fetch_row()[0];
-
-// Calculate the total number of pages
-$totalPages = ceil($totalRecords / $recordsPerPage);
-
-
 
 ?>
 <!DOCTYPE html>
@@ -70,7 +71,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
 </head>
 <body>
     <main>
-        <?php include "admin/adminnav.php" ?>
         <div class="page-content" id="content">
             <div class="container">
                 <div class="row">
@@ -101,14 +101,6 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                                 <b>List of  Unverified Residents</b>
                             </div>
                             <div class="card-body">
-                                <div class="row justify-content-between">
-                                    <div class="col-auto">
-                                        <form class="d-flex">
-                                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                        </form>
-                                    </div>
-                                </div>
-                                <div class="mb-3"> <!--Just a necessity blank space --> </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered table-fixed w-100">
                                     <thead>
@@ -118,14 +110,28 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                                         <th class="text-center">Purok</th>
                                         <th class="text-center">Zone</th>
                                         <th>Proof of Residency</th>
+                                        <th class="text-center">Date Joined</th>
                                         <th class="text-center" colspan="2">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php
-            // Loop through the fetched unverified users and display them in the table
-            if ($resultVerified->num_rows > 0) {
+            <?php
+
+                // Get the row count for the loop process
+                $rowCount = 0;
                 while ($rowVerified = $resultVerified->fetch_assoc()) {
+
+                    // Check if we need to start a new page
+                    if($rowCount % 5 == 0 && $rowCount !=0) {
+                        echo '</tr>';
+                    }
+                    // Start a new row if new data is catched
+                    if($rowCount % 5 == 0){
+                        '<tr>';
+                    }
+
+                    // Start the table 
+                    // Print the Resident name and their username   
                     echo '<tr>';
                     echo '<td>' . ucfirst($rowVerified['firstName']) . ' ' . ucfirst($rowVerified['lastName']) . '</td>';
                     echo '<td>' . $rowVerified['username'] . '</td>';
@@ -134,8 +140,19 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
 
                     // Display the verification image
                     echo '<td align="center">';
-                    echo '<img src="../verify/' . $rowVerified['verifyImage_path'] . '" alt="Verification Image" width="100" height="100">';
+                    echo '<img src="../verify/' . $rowVerified['verifyImage_path'] . '" alt="Verification Image" width="110" height="110">';
                     echo '</td>';
+
+                    // Display the date joined
+                    $dateTimeJoined = explode(" ", $rowVerified['dateJoined']);
+                    $dateJoined = $dateTimeJoined[0];
+
+                    $dateJoinedTimeStamp = strtotime($dateJoined);
+                    $dateJoinedYear = date('Y', $dateJoinedTimeStamp);
+                    $dateJoinedMonth = date('F', $dateJoinedTimeStamp);
+                    $dateJoinedDay = date('j', $dateJoinedTimeStamp);
+
+                    echo '<td>' . $dateJoinedMonth . ' ' . $dateJoinedDay . ', ' . $dateJoinedYear .  '</td>';
 
                     // Display the verify and delete buttons
                     echo '<form action="" method="post">';
@@ -150,54 +167,93 @@ $totalPages = ceil($totalRecords / $recordsPerPage);
                         '</td>';
                     echo '</form>';
                     echo '</tr>';
+
+                    // Loop the table rows
+                    $rowCount++;
                 }
-            }
-            ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                                <div class="row align-items-center">
-                                    <div class="col-3">
-                                    </div>
-<!-- Pagination -->
-<div class="col">
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-end mb-0">
-            <!-- Previous page link -->
-            <li class="page-item <?php echo ($currentPage == 1) ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?page=<?php echo $currentPage - 1; ?>" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
+                echo'</tbody>';
+                echo '</table>';
+             ?>
+                                <!-- Get the navigation Links -->
+                                <?php
 
-            <!-- Page number links -->
-            <?php
-            for ($i = 1; $i <= $totalPages; $i++) {
-                echo '<li class="page-item ' . ($currentPage == $i ? 'active' : '') . '">
-                        <a class="page-link" href="?page=' . $i . '">' . $i . '</a>
-                      </li>';
-            }
-            ?>
+if ($resultVerified->num_rows == 0) {
+    echo "<div class='alert alert-warning'>No unverified Residents found, Please go back.</div>";
+}
 
-            <!-- Next page link -->
-            <li class="page-item <?php echo ($currentPage == $totalPages) ? 'disabled' : ''; ?>">
-                <a class="page-link" href="?page=<?php echo $currentPage + 1; ?>" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
-</div>
-                                </div>
+// Display the pagination links
+$total_pages = ceil($totalRows / $rows_per_page);
+echo "<div class='row align-items-center'>";
+echo "<div class='col'>";
+echo "<nav aria-label='Page navigation'>";
+echo "<ul class='pagination justify-content-end mb-0'>";
 
+
+// Add the "Previous" button
+if ($currentPage > 1) {
+    echo "<li class='page-item'>";
+    echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
+    echo "<span aria-hidden='true'>&laquo;</span>";
+    echo "</a>";
+    echo "</li>";
+} else {
+    echo "<li class='page-item disabled'>";
+    echo "<a class='page-link' href='#' aria-label='Previous'>";
+    echo "<span aria-hidden='true'>&laquo;</span>";
+    echo "</a>";
+    echo "</li>";
+}
+
+// Display the page numbers
+for ($i = 1; $i <= $total_pages; $i++) {
+    $active = ($i == $currentPage) ? 'active' : '';
+    $disabled = '';
+
+    // Check if the current page is empty
+    $sqlCount = "SELECT COUNT(*) AS count FROM user WHERE COALESCE(status, 'Unverified') = 'Unverified' LIMIT " . ($i - 1) * $rows_per_page . ", $rows_per_page";
+    $resultCount = $conn->query($sqlCount);
+    if ($resultCount->num_rows > 0) {
+        $rowCount = $resultCount->fetch_assoc();
+        if ($rowCount['count'] == 0) {
+            $disabled = 'disabled';
+        }
+    }
+    echo "<li class='page-item $active $disabled' aria-current='page'>";
+    echo "<a class='page-link' href='?page=$i'>$i</a>";
+    echo "</li>";
+}
+
+// Add the "Next" button
+if ($currentPage < $total_pages) {
+    echo "<li class='page-item'>";
+    echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "' aria-label='Next'>";
+    echo "<span aria-hidden='true'>&raquo;</span>";
+    echo "</a>";
+    echo "</li>";
+} else {
+    echo "<li class='page-item disabled'>";
+    echo "<a class='page-link' href='#' aria-label='Next'>";
+    echo "<span aria-hidden='true'>&raquo;</span>";
+    echo "</a>";
+    echo "</li>";
+}
+
+echo "</ul>";
+echo "</nav>";
+
+// Display an error message if the current page is empty
+
+echo "</div>";
+echo "</div>";
+?>                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>
-    </main>
+    </div>
+</main>
 
     <footer>
         <!-- place footer here -->
@@ -258,110 +314,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } 
 ?>
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  // Get the necessary elements
-  
-  var tableRows = document.querySelectorAll("tbody tr");
-  var pageLinks = document.querySelectorAll(".page-link");
-  var prevLink = document.querySelector(".page-item.disabled .page-link");
-  var nextLink = document.querySelector(".page-item:not(.disabled) .page-link[aria-label='Next']");
-  var defaultRowsToShow = <?php echo $recordsPerPage; ?>; // Set the default number of rows to show
-  var currentPage = <?php echo $currentPage; ?>; // Initialize the current page to the current page number
-  var totalPages = <?php echo $totalPages; ?>; // Set the total number of pages
 
-  function updatePagination() {
-    // Calculate the current page based on the visible rows
-    currentPage = Math.ceil((tableRows.length - document.querySelectorAll("tbody tr:not(.d-none)").length) / defaultRowsToShow) + 1;
-
-    // Update the pagination links
-    for (var i = 0; i < pageLinks.length; i++) {
-      pageLinks[i].classList.remove("active");
-      if (i === currentPage - 1) {
-        pageLinks[i].classList.add("active");
-      }
-    }
-
-    // Update the "Previous" and "Next" links
-    if (currentPage === 1) {
-      prevLink.parentElement.classList.add("disabled");
-    } else {
-      prevLink.parentElement.classList.remove("disabled");
-    }
-
-    if (currentPage === totalPages) {
-      nextLink.parentElement.classList.add("disabled");
-    } else {
-      nextLink.parentElement.classList.remove("disabled");
-    }
-
-    // Update the page number links
-    var startPage = Math.max(currentPage - 2, 1);
-    var endPage = Math.min(startPage + 4, totalPages);
-
-    for (var i = 0; i < pageLinks.length; i++) {
-      if (i < endPage - startPage + 1) {
-        pageLinks[i].textContent = startPage + i;
-        pageLinks[i].href = "?page=" + (startPage + i);
-        pageLinks[i].style.display = "";
-        if (startPage + i === 1) {
-          pageLinks[i].parentElement.classList.remove("disabled");
-        }
-      } else {
-        pageLinks[i].style.display = "none";
-      }
-    }
-  }
-
-  // Add click event listeners to the pagination links
-  for (var i = 0; i < pageLinks.length; i++) {
-    pageLinks[i].addEventListener("click", function(event) {
-      event.preventDefault();
-      if (!this.parentElement.classList.contains("disabled")) {
-        var pageNumber = parseInt(this.textContent);
-        showPage(pageNumber);
-      }
-    });
-  }
-
-  // Add click event listeners to the "Previous" and "Next" links
-  prevLink.addEventListener("click", function(event) {
-    event.preventDefault();
-    if (!prevLink.parentElement.classList.contains("disabled")) {
-      showPage(currentPage - 1);
-    }
-  });
-
-  nextLink.addEventListener("click", function(event) {
-    event.preventDefault();
-    if (!nextLink.parentElement.classList.contains("disabled")) {
-      showPage(currentPage + 1);
-    }
-  });
-
-  function showPage(pageNumber) {
-    // Calculate the start and end index of the rows to show
-    var startIndex = (pageNumber - 1) * defaultRowsToShow;
-    var endIndex = startIndex + defaultRowsToShow;
-
-    // Show the rows for the selected page
-    for (var i = 0; i < tableRows.length; i++) {
-      if (i >= startIndex && i < endIndex) {
-        tableRows[i].style.display = ""; // Show the rows
-      } else {
-        tableRows[i].style.display = "none"; // Hide the rows
-      }
-    }
-
-    // Update the pagination links
-    updatePagination();
-  }
-
-  // Show the first page initially
-  showPage(1);
-});
-
-</script>
 </body>
 
 </html>

@@ -10,12 +10,42 @@
     <style>
         #dropdownMenuButton.dropdown-toggle::after {
             display: none;
-            
+        }
+
+        .card-header {
+            background-color: #899499;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        .badge {
+            font-size: 0.8rem;
         }
 
         .expandable-row .collapse {
             border-top: 1px solid #dee2e6;
             padding-top: 1rem;
+        }
+
+        .collapse.show {
+            display: table-row;
+        }
+
+        .btn-outline-secondary {
+            border-radius: 0px;
+        }
+
+        .form-control {
+            border-radius: 0px;
         }
     </style>
 
@@ -27,7 +57,14 @@
         <div class="page-content" id="content">
             <div class="container">
             <div class="row">
+<<<<<<< HEAD
+            <div class="col-3">
+                        <!-- Necessary blank space -->
+                    </div>
+                    <div class="col-9 d-flex justify-content-end">
+=======
                     <div class="col-12 d-flex justify-content-end">
+>>>>>>> a720deeffbbf99fb534acdc034cb004eed8724f9
                         <div class="dropdown">
                             <button class="btn border-0 text-dark p-0 mb-3 dropdown-toggle" type="button" style="font-size: 1.3rem;" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-gear"></i>
@@ -42,7 +79,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <div class="card" style="width: 78.5rem;">
+                        <div class="card" style="width: 62.5rem;">
                             <div class="card-header">
                                 <b>List of Item Reported</b>
                             </div>
@@ -67,8 +104,11 @@
                                     </div>
                                 </div>
                                 <div class="mb-3"></div>
-                                <table class="table table-bordered">
+                                <div class="card mt-3">
+                                <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
                                     <thead>
+                                        
                                         <tr>
                                             <th>Reported By</th>
                                             <th>Item Reported</th>
@@ -82,11 +122,13 @@
                                             <td class="fw-bold text-danger">Magnitude 1.2</td>
                                             <td>April 17, 2024 at 6:56:00 P.M.</td>
                                             <td class="text-center">
-                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-1" aria-expanded="false" aria-controls="itemReportDetails-1">
+                                                <a href="./action/itemReport.php" class="btn btn-sm border-0">
                                                     <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
                                                 </a>
                                             </td>
                                         </tr>
+<<<<<<< HEAD
+=======
                                         <tr class="collapse" id="itemReportDetails-1">
                                             <td colspan="4">
                                                 <div class="row">
@@ -125,19 +167,12 @@
                                                 </div>
                                             </td>
                                         </tr>
+>>>>>>> a720deeffbbf99fb534acdc034cb004eed8724f9
                                     </tbody>
                                 </table>
-                                <div class="row align-items-center">
-                                <div class="col-3">
-                                <div class="row g-2">
-                                    <div class="col">
-                                        <input type="number" id="numRowsInput" class="form-control form-control-sm me-2" placeholder="Number of Rows">
-                                    </div>
-                                    <div class="col">
-                                        <button id="toggleRowsButton" class="btn btn-primary btn-sm">Show Rows</button>
-                                    </div>
                                 </div>
-                            </div>
+                                </div>
+                                <div class="row align-items-center">
                                     <div class="col">
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination justify-content-end mb-0">

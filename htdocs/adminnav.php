@@ -26,7 +26,7 @@
 <div class="vertical-nav bg-dark" id="sidebar">
     <div class="py-4 px-3">
         <div class="media d-flex align-items-center">
-            <img src="https://res.cloudinary.com/mhmd/image/upload/v1556074849/avatar-1_tcnd60.png" alt="..." style="width: 60px; height: 60px;" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+        <img src="../picture/default_admin.png" alt="..." style="width: 65px; height: 65px;" class="mr-3 rounded-circle img-thumbnail shadow-sm">
             <div class="media-body">
                 <h4 class="m-0 text-light ms-3">Admin</h4>
             </div>
@@ -67,6 +67,14 @@
                 <span class="badge rounded-pill bg-danger" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">2</span>
                 <span class="visually-hidden">unread notifications</span>
             </a>
+        </li>
+        <li class="nav-item">
+            <a href="ad_transaction.php" class="nav-link text-light font-italic d-flex align-items-center justify-content-between">
+                <span><i class="bi bi-archive-fill text-light fa-fw"></i>Residents Transaction</span>
+                <span class="badge rounded-pill bg-danger" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">4</span>
+                <span class="visually-hidden">unread notifications</span>
+            </a>
+            
         </li>
         <li class="nav-item nav-item-request">
             <a class="nav-link text-light font-italic d-flex align-items-center justify-content-between collapsed" data-bs-toggle="collapse" href="#report-collapse" aria-expanded="true">

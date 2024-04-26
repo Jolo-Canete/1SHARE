@@ -139,6 +139,7 @@
                         $("#buyField").hide();
                     }
 
+                    
                     if (requestType.includes('Borrow')) {
                         $("#borrowFields").show();
                         $("#modalBorrowPrice").text(parseFloat(response.borrowPrice).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ","));

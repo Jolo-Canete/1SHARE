@@ -1,4 +1,52 @@
-<?php include "./1db.php" ?>
+<?php include "./1db.php"; 
+
+// Check errors
+ini_set('display_errors', 1);
+
+// Get the selected user from the dropdown
+if (isset($_POST['user'])) {
+    $selectedUser = $_POST['user'];
+    $name = $_POST['name_' . $selectedUser];
+} else {
+    $selectedUser = '';
+    $name = 'All Residents';
+}
+
+// Create a custom rows per page
+$rows_per_page = 5;
+
+// Get the current Page from the URL
+$currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// Formulate the Offset Value
+$offset = ($currentPage > 1) ? ($currentPage - 1) * $rows_per_page : 0;
+
+
+
+// get the total number of rows in items
+$sql = "SELECT COUNT(*) AS total_rows FROM item ";
+if (!empty($selectedUser)) {
+    // IF the drop down required a user
+        $sql .= "WHERE userID = $selectedUser";
+}
+// Get the sql results
+$result = $conn->query($sql);
+$itemRow = $result->fetch_assoc();
+// Get the total rows of the items
+$totalRows = $itemRow['total_rows'];
+
+// Prepare the sql statement to get all items or specified items of a user
+$sql = "SELECT i.*, u.username, u.firstName, u.lastName, i.DateTimePosted
+        FROM item i
+        JOIN user u ON i.userID = u.userID";
+if (!empty($selectedUser)) {
+    $sql .= " WHERE i.userID = $selectedUser";
+}
+$sql .= " ORDER BY i.DateTimePosted LIMIT $offset, $rows_per_page";
+// Run the sql
+$result = $conn->query($sql);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,13 +56,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <style>
-        #dropdownMenuButton.dropdown-toggle::after {
+    #dropdownMenuButton.dropdown-toggle::after {
             display: none;
+        }
+
+        .card-header {
+            background-color: #899499;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        .table th,
+        .table td {
+            vertical-align: middle;
+        }
+
+        .badge {
+            font-size: 0.8rem;
         }
 
         .expandable-row .collapse {
             border-top: 1px solid #dee2e6;
             padding-top: 1rem;
+        }
+
+        .collapse.show {
+            display: table-row;
+        }
+
+        .btn-outline-secondary {
+            border-radius: 0px;
+        }
+
+        .form-control {
+            border-radius: 0px;
+        }
+
+        .all-user {
+            color:cornflowerblue;
         }
     </style>
 
@@ -22,17 +105,11 @@
 
 <body>
     <main>
-    <?php include "./adminnav.php" ?>
+    <!-- <?php include "./adminnav.php" ?> -->
         <div class="page-content" id="content">
             <div class="container">
             <div class="row">
                     <div class="col-3">
-                        <form class="input-group mb-3">
-                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="bi bi-search"></i>
-                            </button>
-                        </form>
                     </div>
                     <div class="col-9 d-flex justify-content-end">
                         <div class="dropdown">
@@ -47,125 +124,170 @@
                         </div>
                     </div>
                 </div>
+                
                 <div class="row">
                     <div class="col">
-                        <div class="card" style="width: 78.5rem;">
+                        <div class="card" style="width: 60.5rem;">
                             <div class="card-header">
                                 <b>List of Items</b>
                             </div>
-                            
+                            <!-- Table Order -->
                             <div class="card-body">
+                            <form action="" method="post">
                                 <div class="row justify-content-between">
                                     <div class="col-auto">
                                         <div class="dropdown">
                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
-                                                Date
+                                                <?php echo $name ?>
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                            <li><button type="submit" name="user" value=""  class="dropdown-item"><span class="all-user">All Residents</span></button></li>
+                                                <?php 
+                                                // Get all the user
+                                                $userQuery = "SELECT * FROM user";
+                                                $userResult = $conn->query($userQuery);
+
+                                                // Loop the users
+                                                while($userRow = $userResult->fetch_assoc()){
+                                                    echo '<li>';
+                                                    echo '<input type="hidden" name="name_' . $userRow['userID'] . '" value="' . ucfirst($userRow['firstName']) . ' ' . ucfirst($userRow['lastName']) . '">';
+                                                    echo '<button type="submit" name="user" value="' . $userRow['userID'] . '" class="dropdown-item">' . ucfirst($userRow['firstName']) . ' ' . ucfirst($userRow['lastName']) . '</button>';
+                                                    echo '</li>';
+                                                }   
+                                        ?>
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
-                                        <form class="d-flex">
-                                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                        </form>
-                                    </div>
                                 </div>
-                                <div class="mb-3"></div>
+                            </form>
+                                <div class="card mt-3">
+                                <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>Item Name</th>
                                             <th>Posted By</th>
-                                            <th>Date Item Posted</th>
-                                            <th>Action</th>
+                                            <th>Item Posted</th>
+                                            <th>Full Details</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Laptop</td>
-                                            <td>@lionking</td>
-                                            <td>Febraury 15, 2060</td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-1" aria-expanded="false" aria-controls="itemReportDetails-1">
-                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr class="collapse" id="itemReportDetails-1">
-                                            <td colspan="4">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kettle Korn</td>
-                                            <td>@lionking</td>
-                                            <td>January 21, 2023</td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-2" aria-expanded="false" aria-controls="itemReportDetails-2">
-                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr class="collapse" id="itemReportDetails-2">
-                                            <td colspan="4">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="user-table-body">
+                                        <?php 
+                                        
+                                        
+                                            // Get the array
+                                            if($result->num_rows > 0 ){
+                                                
+                                            // Get the row Count of the table
+                                                $rowCount = 0;
+                                                // Loop the values
+                                                while($row = $result->fetch_assoc()){
+
+                                                // Check if we need to start a new page
+                                                if($rowCount % 5 == 0 && $rowCount !=0) {
+                                                    echo '</tr>';
+                                                }
+                                                // Start a new row if new data is catched
+                                                if($rowCount % 5 == 0){
+                                                    echo '<tr>';
+                                                }  
+                                                    // Get the date Time posted and store it
+                                                    $date_TimePosted = $row['DateTimePosted'];
+                                                    echo '<tr>';
+                                                    echo '<td>' .$row['itemName'] . '</td>';
+                                                    echo '<td>' . $row['firstName'] . ' ' . $row['lastName'] . '</td>';
+
+                                                    // Split the Item DateTimePosted
+                                                    $dateTimePosted = explode(" ", $date_TimePosted );
+                                                    $datePosted = $dateTimePosted[0];
+                                                    $timePosted = $dateTimePosted[1];
+
+                                                    // Convert the datePosted into a timestamp
+                                                    $datePostedTimestamp = strtotime($datePosted);
+
+                                                    // Extract the year, month name and day for the Date
+                                                    $dateYear = date('Y', $datePostedTimestamp);
+                                                    $dateMonth = date('F', $datePostedTimestamp);
+                                                    $dateDay = date('j', $datePostedTimestamp);
+                                                    
+                                                    // Split the TIme from dateTimePosted
+                                                    $timeJoinedParts = explode(":", $timePosted);
+                                                    $timeHour = $timeJoinedParts[0];
+                                                    $timeMinute = $timeJoinedParts[1];
+                                                    $timeSecond = $timeJoinedParts[2];
+
+                                                    // Convert the time to an AM PM format
+                                                    $timeAmPm = date('h:i A', strtotime($timeHour . ':' . $timeMinute));
+
+                                                    echo "<td>$dateMonth $dateDay, $dateYear : <i class='bi bi-clock'></i> $timeAmPm</td>";
+                                                    echo '<td class="text-center">';
+                                                    echo '<a href="./action/item_details.php" class="btn btn-sm border-0">';
+                                                    echo '<i class="bi bi-plus-circle" style="font-size: 1.25rem; color: #0D6EFD"></i>';
+                                                    echo '</a>';
+                                                    echo '</td>';
+
+                                                // Loop the table pages
+                                                $rowCount++;
+                                                }
+                                            } else{
+                                                // Write an empty item message if there are no item that belonged to the user
+                                                echo '<td colspan="4"><div class="alert alert-warning text-center">This Resident doesn\'t have any item.</div></td>';
+                                            }
+                                        
+                                        ?>
                                     </tbody>
                                 </table>
+                                </div>
+                                </div>
                                 <div class="row align-items-center">
                                 <div class="col-3">
-                                <div class="row g-2">
-                                    <div class="col">
-                                        <input type="number" id="numRowsInput" class="form-control form-control-sm me-2" placeholder="Number of Rows">
-                                    </div>
-                                    <div class="col">
-                                        <button id="toggleRowsButton" class="btn btn-primary btn-sm">Show Rows</button>
-                                    </div>
-                                </div>
                             </div>
                                     <div class="col">
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination justify-content-end mb-0">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" aria-label="Previous">
-                                                        <span aria-hidden="true">&laquo;</span>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item active" aria-current="page">
-                                                    <a class="page-link" href="#">1</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">3</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Next">
-                                                        <span aria-hidden="true">&raquo;</span>
-                                                    </a>
-                                                </li>
+                                                <!-- Make the Page number dynamic -->
+                                                <?php 
+                                                // Round the total pages to the nearest integer
+                                                    $total_pages = ceil($totalRows / $rows_per_page);
+
+                                                // Add the "Previous" button
+                                                if ($currentPage > 1) {
+                                                    echo "<li class='page-item'>";
+                                                    echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
+                                                    echo "<span aria-hidden='true'>&laquo;</span>";
+                                                    echo "</a>";
+                                                    echo "</li>";
+                                                } else {
+                                                    echo "<li class='page-item disabled'>";
+                                                    echo "<a class='page-link' href='#' aria-label='Previous'>";
+                                                    echo "<span aria-hidden='true'>&laquo;</span>";
+                                                    echo "</a>";
+                                                    echo "</li>";
+                                                }
+
+                                                // Display the page numbers
+                                                for ($i = 1; $i <= $total_pages; $i++) {
+                                                    $active = ($i == $currentPage) ? 'active' : '';
+                                                    echo "<li class='page-item $active' aria-current='page'>";
+                                                    echo "<a class='page-link' href='?page=$i'>$i</a>";
+                                                    echo "</li>";
+                                                }
+
+                                                // Add the "Next" button
+                                                if ($currentPage < $total_pages) {
+                                                    echo "<li class='page-item'>";
+                                                    echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "&user=$selectedUser' aria-label='Next'>";
+                                                    echo "<span aria-hidden='true'>&raquo;</span>";
+                                                    echo "</a>";
+                                                    echo "</li>";
+                                                } else {
+                                                    echo "<li class='page-item disabled'>";
+                                                    echo "<a class='page-link' href='#' aria-label='Next'>";
+                                                    echo "<span aria-hidden='true'>&raquo;</span>";
+                                                    echo "</a>";
+                                                    echo "</li>";
+                                                }                                                
+                                                ?>
                                             </ul>
                                         </nav>
                                     </div>
@@ -184,35 +306,6 @@
         <!-- place footer here -->
     </footer>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var numRowsInput = document.getElementById("numRowsInput");
-            var button = document.getElementById("toggleRowsButton");
-            var tableRows = document.querySelectorAll("tbody tr");
-            var showLimited = true;
-
-            function toggleRows() {
-                var numRowsToShow = parseInt(numRowsInput.value);
-                if (isNaN(numRowsToShow) || numRowsToShow <= 0) {
-                    alert("Please enter a valid number of rows.");
-                    return;
-                }
-
-                for (var i = 0; i < tableRows.length; i++) {
-                    if (i >= numRowsToShow) {
-                        tableRows[i].classList.add("d-none");
-                    } else {
-                        tableRows[i].classList.remove("d-none");
-                    }
-                }
-
-                button.textContent = showLimited ? "Show All Rows" : "Show Limited Rows";
-                showLimited = !showLimited;
-            }
-
-            button.addEventListener("click", toggleRows);
-        });
-    </script>
 </body>
 
 </html>
