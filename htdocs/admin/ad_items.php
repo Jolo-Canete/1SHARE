@@ -12,6 +12,40 @@ if (isset($_POST['user'])) {
     $name = 'All Residents';
 }
 
+// Create a custom rows per page
+$rows_per_page = 5;
+
+// Get the current Page from the URL
+$currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// Formulate the Offset Value
+$offset = ($currentPage > 1) ? ($currentPage - 1) * $rows_per_page : 0;
+
+
+
+// get the total number of rows in items
+$sql = "SELECT COUNT(*) AS total_rows FROM item ";
+if (!empty($selectedUser)) {
+    // IF the drop down required a user
+        $sql .= "WHERE userID = $selectedUser";
+}
+// Get the sql results
+$result = $conn->query($sql);
+$itemRow = $result->fetch_assoc();
+// Get the total rows of the items
+$totalRows = $itemRow['total_rows'];
+
+// Prepare the sql statement to get all items or specified items of a user
+$sql = "SELECT i.*, u.username, u.firstName, u.lastName, i.DateTimePosted
+        FROM item i
+        JOIN user u ON i.userID = u.userID";
+if (!empty($selectedUser)) {
+    $sql .= " WHERE i.userID = $selectedUser";
+}
+$sql .= " ORDER BY i.DateTimePosted LIMIT $offset, $rows_per_page";
+// Run the sql
+$result = $conn->query($sql);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,7 +105,7 @@ if (isset($_POST['user'])) {
 
 <body>
     <main>
-    <?php include "./adminnav.php" ?>
+    <!-- <?php include "./adminnav.php" ?> -->
         <div class="page-content" id="content">
             <div class="container">
             <div class="row">
@@ -107,7 +141,6 @@ if (isset($_POST['user'])) {
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                             <li><button type="submit" name="user" value=""  class="dropdown-item"><span class="all-user">All Residents</span></button></li>
-                                            
                                                 <?php 
                                                 // Get all the user
                                                 $userQuery = "SELECT * FROM user";
@@ -117,8 +150,8 @@ if (isset($_POST['user'])) {
                                                 while($userRow = $userResult->fetch_assoc()){
                                                     echo '<li>';
                                                     echo '<input type="hidden" name="name_' . $userRow['userID'] . '" value="' . ucfirst($userRow['firstName']) . ' ' . ucfirst($userRow['lastName']) . '">';
-                                                    echo '<button type="submit" name="user" value="' . $userRow['userID'] . '" class="dropdown-item">' . ucfirst($userRow['firstName']) . ' ' . ucfirst($userRow['lastName']) . '</button>';                                                    echo '</li>';
-
+                                                    echo '<button type="submit" name="user" value="' . $userRow['userID'] . '" class="dropdown-item">' . ucfirst($userRow['firstName']) . ' ' . ucfirst($userRow['lastName']) . '</button>';
+                                                    echo '</li>';
                                                 }   
                                         ?>
                                             </ul>
@@ -139,25 +172,24 @@ if (isset($_POST['user'])) {
                                     </thead>
                                     <tbody id="user-table-body">
                                         <?php 
-                                            // Prepare the sql statement that finds all items or specific items owned by a user
-                                            $sql = "SELECT i.*, u.username, u.firstName, u.lastName, i.DateTimePosted
-                                            FROM item i
-                                            JOIN user u ON i.userID = u.userID";
-                                            if (!empty($selectedUser)) {
-                                                // IF the drop down required a user
-                                                $sql .= " WHERE i.userID = $selectedUser";
-                                                $sql .= " ORDER BY i.DateTimePosted";
-                                            } else {
-                                                // Get the order by
-                                                $sql .= " ORDER BY i.DateTimePosted";
-                                            }
-                                            // Run the sql
-                                            $result = $conn->query($sql);
-
+                                        
+                                        
                                             // Get the array
                                             if($result->num_rows > 0 ){
+                                                
+                                            // Get the row Count of the table
+                                                $rowCount = 0;
                                                 // Loop the values
                                                 while($row = $result->fetch_assoc()){
+
+                                                // Check if we need to start a new page
+                                                if($rowCount % 5 == 0 && $rowCount !=0) {
+                                                    echo '</tr>';
+                                                }
+                                                // Start a new row if new data is catched
+                                                if($rowCount % 5 == 0){
+                                                    echo '<tr>';
+                                                }  
                                                     // Get the date Time posted and store it
                                                     $date_TimePosted = $row['DateTimePosted'];
                                                     echo '<tr>';
@@ -187,16 +219,14 @@ if (isset($_POST['user'])) {
                                                     $timeAmPm = date('h:i A', strtotime($timeHour . ':' . $timeMinute));
 
                                                     echo "<td>$dateMonth $dateDay, $dateYear : <i class='bi bi-clock'></i> $timeAmPm</td>";
-                                                    // <a href= "./action/item_details.php" class="btn btn-sm border-0">
-                                                    // <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                    // </a></td>
                                                     echo '<td class="text-center">';
                                                     echo '<a href="./action/item_details.php" class="btn btn-sm border-0">';
                                                     echo '<i class="bi bi-plus-circle" style="font-size: 1.25rem; color: #0D6EFD"></i>';
                                                     echo '</a>';
                                                     echo '</td>';
-        
-      
+
+                                                // Loop the table pages
+                                                $rowCount++;
                                                 }
                                             } else{
                                                 // Write an empty item message if there are no item that belonged to the user
@@ -214,23 +244,49 @@ if (isset($_POST['user'])) {
                                     <div class="col">
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination justify-content-end mb-0">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" aria-label="Previous">
-                                                        <span aria-hidden="true">&laquo;</span>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item active" aria-current="page">
-                                                    <a class="page-link" href="#">1</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">3</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Next">
-                                                        <span aria-hidden="true">&raquo;</span>
-                                                    </a>
-                                                </li>
+                                                <!-- Make the Page number dynamic -->
+                                                <?php 
+                                                // Round the total pages to the nearest integer
+                                                    $total_pages = ceil($totalRows / $rows_per_page);
+
+                                                    // Add the Previous button
+                                                    if($currentPage > 1) {
+                                                        echo "<li class='page-item'";
+                                                        echo "<a class='page-link' href='?page=". ($currentPage - 1) . "&user=$selectedUser'aria-label='Previous'";
+                                                        echo "<span aria-hidden='true'> &laquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    } else {
+                                                        echo "<li class='page-item disabled'>";
+                                                        echo "<a class='page-link' href='#' aria-label='Previous'>";
+                                                        echo "<span aria-hidden='true'>&laquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    }
+
+                                                    // Display the dynamic page numbers
+                                                    for ($i = 1; $i <= $total_pages; $i++){
+                                                        $active = ($i == $currentPage) ? 'active' : '';
+                                                        echo "<li class='page-item $active' aria-current='page'>";
+                                                        echo "<a class='page-link' href='?page=$i&user=$selectedUser'>$i</a>";
+                                                        echo "</li>";
+                                                    }
+
+                                                    // For the next button
+                                                    if ($currentPage < $total_pages) {
+                                                        echo "<li class='page-item'>";
+                                                        echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "&user=$selectedUser' aria-label='Next'>";
+                                                        echo "<span aria-hidden='true'>&raquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    } else {
+                                                        echo "<li class='page-item disabled'>";
+                                                        echo "<a class='page-link' href='#' aria-label='Next'>";
+                                                        echo "<span aria-hidden='true'>&raquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    }
+                                                ?>
                                             </ul>
                                         </nav>
                                     </div>

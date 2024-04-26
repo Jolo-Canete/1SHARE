@@ -1,7 +1,23 @@
 <?php include "./1db.php";
 
+// Retrieve the status from the form submission
+$status = isset($_POST['status']) ? $_POST['status'] : '';
+
  // Get all users
  $sqlUser = "SELECT * from user";
+
+// Check the status
+if($status === 'Verified'){
+    $sqlUser .= " WHERE status = '$status' ORDER BY dateJoined" ;
+    
+}elseif($status === 'Unverified') {
+    $sqlUser .= " WHERE status = '$status' ORDER BY dateJoined";
+
+    // If the status is empty
+}else {
+    $sqlUser .= " ORDER BY dateJoined";
+}
+// Run the sql
  $resultUser = $conn->query($sqlUser);
 
 
@@ -53,6 +69,10 @@
         .form-control {
             border-radius: 0px;
         }
+
+        .all-color {
+            color:cornflowerblue
+        }
     </style>
 </head>
 
@@ -82,20 +102,30 @@
                         <b>List of Residents</b>
                     </div>
                     <div class="card-body">
-                        <div class="row justify-content-between">
-                            <div class="col-auto">
-                                <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Status
+                        <form action="" method="post">
+                            <div class="row justify-content-between">
+                                <div class="col-auto">
+                                    <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <?php echo $status ? $status : 'All Status'; ?>
                                     </button>
-                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                        <li><a class="dropdown-item" href="#" data-status="all">All</a></li>
-                                        <li><a class="dropdown-item" href="#" data-status="verified">Verified</a></li>
-                                        <li><a class="dropdown-item" href="#" data-status="not-verified">Not Verified</a></li>
-                                    </ul>
+
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li>
+                                                <button type="submit" class="dropdown-item" data-status="All status" name="status"value=""><span class="all-color">All status</span></button>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <button type="submit"class="dropdown-item" data-status="Verified" name="status" value="Verified">Verified</button>
+                                            </li>
+                                            <li>
+                                                <button type="submit"class="dropdown-item" data-status="Unverified" name="status"value="Unverified">Unverified</button>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </form> 
                         <div class="card mt-3">
                         <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover">
@@ -121,7 +151,7 @@
                                     while ($rowUser = $resultUser->fetch_assoc()) {
                                         // Check if the user is verified or not
                                             $statusBadgeClass = ($rowUser['status'] == "Verified") ? "bg-success" : "bg-danger";
-                                            $statusText = ($rowUser['status'] == "Verified") ? "Verified" : "Not Verified";
+                                            $statusText = ($rowUser['status'] == "Verified") ? "Verified" : "Unverified";
                                 
                                         // Split the dateJoined DATETIME
                                             $dateTimeJoined = explode(" ", $rowUser['dateJoined']);
@@ -164,7 +194,7 @@
                                                 $dateVerifiedHour = $timeVerifiedParts[0];
                                                 $dateVerifiedMinute = $timeVerifiedParts[1];
                                                 $dateVerifiedSecond = $timeVerifiedParts[2];
-                                                $dateVerifiedDisplay = $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . ' ' . $dateVerifiedHour . ':' . $dateVerifiedMinute;
+                                                $dateVerifiedDisplay = $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . '<br><i class="bi bi-clock"></i>' . $dateVerifiedHour . ':' . $dateVerifiedMinute;
                                             }
                                 
                                         echo '<tr>';
@@ -173,8 +203,7 @@
                                         echo '<td>' . ucfirst($rowUser['lastName']) . '</td>';
                                         echo '<td>' . ucfirst($rowUser['username']) . '</td>';
                                         echo '<td><span class="badge ' .$statusBadgeClass .' text-white rounded-pill">' .$statusText . '</span></td>';
-                                        // echo '<td>' . $dateJoinedMonth . ' ' . $dateJoinedDay . ', ' . $dateJoinedYear . ' ' . $dateJoinedHour . ':' . $dateJoinedMinute .'</td>';
-                                        echo '<td>' . $dateVerifiedMonth . ' ' . $dateVerifiedDay . ', ' . $dateVerifiedYear . ' ' . $dateVerifiedHour . ':' . $dateVerifiedMinute . '</td>';
+                                        echo '<td>' . $dateJoinedMonth . ' ' . $dateJoinedDay . ', ' . $dateJoinedYear . ' <br><i class="bi bi-clock"></i> ' . $dateJoinedHour . ':' . $dateJoinedMinute .'</td>';
                                         echo '<td>' . $dateVerifiedDisplay . '</td>';
                                         echo '<td class="text-center">';
                                         echo '<a href="./action/user_details.php?userID='. $rowUser['userID']. '" class="btn btn-sm border-0">';
