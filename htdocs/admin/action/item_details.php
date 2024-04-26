@@ -1,3 +1,51 @@
+<?php  include '../1db.php';
+// Get the userID from the link
+$itemID = $_GET['user_id'];
+
+// Run the mysql paramaters
+$sql = "SELECT * FROM item WHERE itemID = $itemID";
+$query = mysqli_query($conn, $sql);
+
+// If the query returned false
+if (!$query) {
+    echo "<script>alert('Error updating Action, please try again')</script>";
+    echo "<script>window.location.href='../ad_residents.php'</script>";
+    exit;
+// If the query returned empty
+} elseif(mysqli_num_rows($query) == 0) {
+        echo "<script>alert('User not found')</script>";
+        echo "<script>window.location.href='../ad_residents.php'</script>";
+        exit;
+// array the user if true
+    } else {
+// Get the user Data
+$item = array();
+
+
+while ($itemRow = mysqli_fetch_assoc($query)) {
+    $itemData = array(
+        'itemName' => $itemRow['itemName'],
+        'itemDescription' => $itemRow['itemDescription'],
+        'itemName' => $itemRow['itemName'],
+        'itemName' => $itemRow['itemName'],
+        
+    );
+
+    array_push($item, $itemData);
+}
+    }
+
+
+
+
+
+
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,119 +215,6 @@
     </div>
     </div>
 </div>
-    <script>
-        function uploadItem(event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Disable the submit button to prevent multiple submissions
-            $('#submitButton').prop('disabled', true);
-
-            // Get the form data
-            var formData = new FormData(document.getElementById('editItemForm'));
-
-            if (document.getElementById('itemPicture').files.length > 0) {
-                // Append the file to the formData
-                formData.append('itemPicture', document.getElementById('itemPicture').files[0]);
-            }
-
-            // Send the form data to the server using AJAX
-            $.ajax({
-                type: 'POST',
-                url: 'editfunction.php',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(response) {
-                    // Check if the response contains 'success'
-                    if (response.indexOf('success') !== -1) {
-                        alert('Successfully edited an item');
-                        // Redirect to the additem.php page
-                        window.location.href = 'additem.php';
-                    } else {
-                        // Display the error message
-                        alert('Error editing item: ' + response);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    // Handle the edit error
-                    alert('Error editing item: ' + error);
-                },
-                complete: function() {
-                    // Re-enable the submit button after form submission is complete
-                    $('#submitButton').prop('disabled', false);
-                }
-            });
-        }
-    </script>
-
-
-    <script>
-        document.getElementById('itemPicture').addEventListener('change', function() {
-            var file = this.files[0];
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                document.getElementById('previewImage').src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        });
-
-        $(document).ready(function() {
-            // Function to handle category selection
-            function handleCategorySelection() {
-                var selectedCategory = $('#category').val();
-                console.log('Selected category:', selectedCategory);
-
-                // Show/hide the specify category input field
-                if (selectedCategory === 'Others') {
-                    $('#specifyCategoryInput').show();
-                } else {
-                    $('#specifyCategoryInput').hide();
-                    $('#otherCategory').val('');
-                }
-            }
-
-            // Attach the event listener to the category select
-            $('#category').on('change', handleCategorySelection);
-
-            // Call the function initially to set the initial state
-            handleCategorySelection();
-        });
-    </script>
-
-    <script>
-        // Add event listeners to the request type checkboxes
-        document.querySelectorAll('[name="requestType[]"]').forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-                toggleFields();
-            });
-        });
-
-        function toggleFields() {
-            var buyPriceField = document.getElementById('buyPriceField');
-            var borrowPriceField = document.getElementById('borrowPriceField');
-            var borrowDurationField = document.getElementById('borrowDurationField');
-
-            var buyCheckbox = document.getElementById('requestTypeBuy');
-            var borrowCheckbox = document.getElementById('requestTypeBorrow');
-
-            if (buyCheckbox.checked) {
-                buyPriceField.style.display = 'block';
-            } else {
-                buyPriceField.style.display = 'none';
-            }
-
-            if (borrowCheckbox.checked) {
-                borrowPriceField.style.display = 'block';
-                borrowDurationField.style.display = 'block';
-            } else {
-                borrowPriceField.style.display = 'none';
-                borrowDurationField.style.display = 'none';
-            }
-        }
-
-        // Call the toggleFields function to initialize the field visibility
-        toggleFields();
-    </script>
     <br>
     <br>
 

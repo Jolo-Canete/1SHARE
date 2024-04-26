@@ -221,7 +221,7 @@ $result = $conn->query($sql);
 
                                                     echo "<td>$dateMonth $dateDay, $dateYear : <i class='bi bi-clock'></i> $timeAmPm</td>";
                                                     echo '<td class="text-center">';
-                                                    echo '<a href="./action/item_details.php" class="btn btn-sm border-0">';
+                                                    echo '<a href="./action/item_details.php?item_id='.$row['itemID']. '" class="btn btn-sm border-0">';
                                                     echo '<i class="bi bi-plus-circle" style="font-size: 1.25rem; color: #0D6EFD"></i>';
                                                     echo '</a>';
                                                     echo '</td>';
