@@ -75,12 +75,22 @@ include "nav.php";
             <?php
             // Query to fetch the closed requests for the logged-in user
             $query = "SELECT r.requestID, r.requestType, i.itemName, u.username AS itemOwner,
-            (CASE
-                WHEN r.requestType = 'Barter' THEN b.DateTimeCompleted
-                WHEN r.requestType = 'Borrow' THEN bo.DateTimeCompleted 
-                WHEN r.requestType = 'Buy' THEN bu.DateTimeCompleted
-                ELSE NULL
-            END) AS DateTimeCompleted
+             (CASE
+              WHEN r.requestType = 'Barter' THEN b.DateTimeCompleted
+              WHEN r.requestType = 'Borrow' THEN bo.DateTimeCompleted 
+              WHEN r.requestType = 'Buy' THEN bu.DateTimeCompleted
+              ELSE NULL
+          END) AS DateTimeCompleted,
+          (CASE
+              WHEN r.requesterSuccess IS NOT NULL THEN r.requesterSuccess
+              WHEN r.ownerSuccess IS NOT NULL THEN r.ownerSuccess
+              ELSE 'N/A'
+          END) AS Proof,
+          (CASE
+              WHEN bo.RequesterProof IS NOT NULL THEN bo.RequesterProof
+              WHEN bo.OwnerProof IS NOT NULL THEN bo.OwnerProof
+              ELSE 'N/A'
+          END) AS ReturnProof
             FROM Request r
             JOIN item i ON r.itemID = i.itemID
             JOIN user u ON i.userID = u.userID

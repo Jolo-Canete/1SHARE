@@ -77,9 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Update the appropriate column based on the logged-in user and the received value
             if ($userId == $requestUserId) {
-                $sql = "UPDATE Request SET requesterSuccess = '$uniqueFileName', complete = 'Yes', failed = '' WHERE requestID = '$requestId'";
+                $sql = "UPDATE Request SET requesterSuccess = '$uniqueFileName', complete = 'Yes', failed = Null WHERE requestID = '$requestId'";
             } else {
-                $sql = "UPDATE Request SET ownerSuccess = '$uniqueFileName', complete = 'Yes', failed = '' WHERE requestID = '$requestId'";
+                $sql = "UPDATE Request SET ownerSuccess = '$uniqueFileName', complete = 'Yes', failed = Null WHERE requestID = '$requestId'";
             }
 
             if (mysqli_query($conn, $sql)) {
