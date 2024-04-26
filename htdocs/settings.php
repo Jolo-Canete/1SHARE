@@ -170,7 +170,7 @@ $time = $dateTime[1];
                                                 <div class="d-flex align-items-center">
                                                     <div class="fw-bold text-secondary me-2">Date Joined:</div>
                                                     <span class="text-dark"><? echo $dateJoinedMonth .'&nbsp;'. $dateJoinedDay.',&nbsp;'. $dateJoinedYear; ?></small></span>
-                                                <div class="fw-bold text-secondary me-2 ms-2">Time:</div>
+                                                <div class="fw-bold text-secondary me-2 ms-5">Time:</div>
                                                 <span class="text-dark"> <? echo $dateJoinedHour.':'.$dateJoinedMinute;?></span>
                                                 </div>
                                             </div>

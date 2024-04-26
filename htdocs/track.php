@@ -208,7 +208,7 @@ if (isset($_GET['requestId'])) {
             }
             ?>
 
-            <button type="button" class="btn btn-primary me-2 <?php echo $isButtonEnabled ? '' : 'disabled'; ?>" id="openButton" onclick="redirectToTransaction('<?php echo $requestType; ?>', '<?php echo $requestID; ?>')">Complete</button>
+            <button type="button" class="btn btn-primary me-2 <?php echo $isButtonEnabled ? '' : 'disabled'; ?>" id="openButton" onclick="redirectToTransaction('<?php echo $requestType; ?>', '<?php echo $requestID; ?>')">Confirmation</button>
 
             <script>
                 function redirectToTransaction(requestType, requestID) {

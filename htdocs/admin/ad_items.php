@@ -167,6 +167,7 @@ $result = $conn->query($sql);
                                         <tr>
                                             <th>Item Name</th>
                                             <th>Posted By</th>
+<<<<<<< HEAD
                                             <th>Item Posted</th>
                                             <th>Full Details</th>
                                         </tr>
@@ -235,6 +236,61 @@ $result = $conn->query($sql);
                                             }
                                         
                                         ?>
+=======
+                                            <th>Date Item Posted</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Laptop</td>
+                                            <td>@lionking</td>
+                                            <td>Febraury 15, 2060</td>
+                                            <td class="text-center">
+                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-1" aria-expanded="false" aria-controls="itemReportDetails-1">
+                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr class="collapse" id="itemReportDetails-1">
+                                            <td colspan="4">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
+                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
+                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kettle Korn</td>
+                                            <td>@lionking</td>
+                                            <td>January 21, 2023</td>
+                                            <td class="text-center">
+                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-2" aria-expanded="false" aria-controls="itemReportDetails-2">
+                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr class="collapse" id="itemReportDetails-2">
+                                            <td colspan="4">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
+                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
+                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+>>>>>>> a720deeffbbf99fb534acdc034cb004eed8724f9
                                     </tbody>
                                 </table>
                                 </div>

@@ -57,4 +57,11 @@
     font-size: 80%; /* Smaller font size */
 }
 
+.card-header {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 

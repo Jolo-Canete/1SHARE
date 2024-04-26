@@ -17,6 +17,8 @@ if (isset($_SESSION['user_id'])) {
             <form id="barterForm">
                 <div class="modal-header bg-dark">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Barter</h1>
+                    <h1 style="display: none;" class="modal-title fs-5" id="barterItemID"></h1> 
+
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -99,6 +101,26 @@ if (isset($_SESSION['user_id'])) {
     }
 </script>
 <script>
+    function openBarterModal(itemDetails, itemID) {
+        // Populate the barter modal with the item details
+        document.getElementById('barterItemID').textContent = itemDetails.itemID;
+        document.getElementById('barterItemName').textContent = itemDetails.itemName;
+        document.getElementById('barterItemQuantity').textContent = itemDetails.itemQuantity;
+        document.getElementById('barterItemCategory').textContent = itemDetails.category;
+        document.getElementById('barterItemDescription').textContent = itemDetails.ItemDescription;
+
+        // Clear the previously selected items
+        $('input[name="selectedItems[]"]').prop('checked', false);
+
+        // Set the itemID in the modal
+        document.getElementById('try').textContent = itemID;
+
+
+        // Show the barter modal
+        $('#barterModal').modal('show');
+    }
+</script>
+<script>
     $(document).ready(function() {
         $('#requestButton').click(function() {
             if (!validateDateTime()) {
@@ -145,7 +167,9 @@ if (isset($_SESSION['user_id'])) {
                 return; // Exit the function
             }
 
-            var itemId = "<?php echo $itemID; ?>"; // Assuming $itemID is defined above
+            var itemId = document.getElementById('barterItemID').textContent;
+            console.log('itemId:', itemId);
+
             $('#requestButton').prop('disabled', true);
 
             // AJAX POST request
@@ -163,6 +187,7 @@ if (isset($_SESSION['user_id'])) {
                     if (response === "Success") {
                         alert("Successful");
                         window.location.href = "pending.php";
+
                     }
                 },
                 error: function(xhr, status, error) {

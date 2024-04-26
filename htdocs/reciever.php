@@ -1,65 +1,103 @@
 <?php
-include "nav.php";
+include "1db.php";
+include "upper.php";
 
-// Check if the user is logged in
-if (!isset($_SESSION['user_id'])) {
-    // If the user is not logged in, redirect them to the login page
-    header("Location: login.php");
-    exit;
-}
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve the values from the POST request
+    $received = mysqli_real_escape_string($conn, $_POST['received']);
+    $proof = !empty($_FILES['proof']['name']) ? mysqli_real_escape_string($conn, $_FILES['proof']['name']) : null;
+    $requestId = mysqli_real_escape_string($conn, $_POST['requestId']);
 
-// If the user is logged in, retrieve their information from the session
-$user_id = $_SESSION['user_id'];
+    // Get the logged-in user ID
+    $userId = $_SESSION['user_id'];
 
-// Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Check if requestId is set and valid
-    if (isset($_POST['requestId']) && is_numeric($_POST['requestId'])) {
-        $requestId = $_POST['requestId'];
+    $dateTimeComplete = date("Y-m-d H:i:s");
 
-        // Check the value of the received checkbox
-        if (isset($_POST['received'])) {
-            $receivedValue = $_POST['received'];
-
-            // Update the Request table based on user_id and requestId and received value
-            $query = "UPDATE Request SET ";
-            if ($receivedValue === "Yes") {
-                $query .= ($user_id == $row['userID']) ? "requesterSuccess = 'Yes' " : "ownerSuccess = 'Yes' ";
-            } elseif ($receivedValue === "No") {
-                $query .= ($user_id == $row['userID']) ? "requesterSuccess = 'No' " : "ownerSuccess = 'No' ";
-
-                // Check if both requesterSuccess and ownerSuccess are 'No', then update fail to 'Yes' if no proof is provided
-                $checkFailQuery = "SELECT requesterProof, ownerProof FROM buy WHERE requestID = $requestId";
-                $result = $conn->query($checkFailQuery);
-                if ($result->num_rows > 0) {
-                    $row = $result->fetch_assoc();
-                    if (empty($row['requesterProof']) && empty($row['ownerProof'])) {
-                        $query .= "; UPDATE Request SET fail = 'Yes' WHERE requestID = $requestId AND requesterSuccess = 'No' AND ownerSuccess = 'No'";
-                    }
-                }
-            }
-
-            // Update the Request table
-            $query .= " WHERE requestID = $requestId";
-
-            // Execute the query
-            if ($conn->query($query) === TRUE) {
-                // Redirect back to the page
-                header("Location: receive_buy_item.php");
-                exit;
+    // Handle the "No" case
+    if ($received === 'No') {
+        // Update the Request table with failed = 'Yes' and no proof file
+        $sql = "UPDATE Request SET complete = NULL, failed = 'Yes', requesterSuccess = NULL, ownerSuccess = NULL WHERE requestID = '$requestId'";
+        if (mysqli_query($conn, $sql)) {
+            // Update the DateTimeCompleted in the buy table
+            $sqlBuy = "UPDATE buy SET DateTimeCompleted = '$dateTimeComplete' WHERE requestID = '$requestId'";
+            if (mysqli_query($conn, $sqlBuy)) {
+                echo "success";
             } else {
-                echo "Failed to update request. Error: " . $conn->error;
-                exit;
+                echo "Error updating DateTimeCompleted: " . mysqli_error($conn);
             }
         } else {
-            echo "Received value not set.";
-            exit;
+            echo "Error: " . mysqli_error($conn);
+        }
+        exit; // Exit the script to prevent further file upload processing
+    }
+
+    // Generate a unique file name
+    $fileExtension = pathinfo($proof, PATHINFO_EXTENSION);
+    $uniqueFileName = uniqid() . "." . $fileExtension;
+
+    // Handle the proof file upload
+    $targetDir = "proof/";
+    $targetFile = $targetDir . $uniqueFileName;
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+    // Check if the file is an actual image or a fake image
+    if (isset($_POST["submit"])) {
+        $check = getimagesize($_FILES["proof"]["tmp_name"]);
+        if ($check !== false) {
+            $uploadOk = 1;
+        } else {
+            $uploadOk = 0;
+        }
+    }
+
+    // Check if the file already exists
+    if (file_exists($targetFile)) {
+        $uploadOk = 0;
+    }
+
+    // Check the file size
+    if ($_FILES["proof"]["size"] > 5000000) {
+        $uploadOk = 0;
+    }
+
+    // Allow certain file formats
+    if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
+        $uploadOk = 0;
+    }
+
+    // If everything is OK, upload the file
+    if ($uploadOk == 1) {
+        if (move_uploaded_file($_FILES["proof"]["tmp_name"], $targetFile)) {
+            // Retrieve the userId from the Request table
+            $sql = "SELECT userID FROM Request WHERE requestID = '$requestId'";
+            $result = mysqli_query($conn, $sql);
+            $row = mysqli_fetch_assoc($result);
+            $requestUserId = $row['userID'];
+
+            // Update the appropriate column based on the logged-in user and the received value
+            if ($userId == $requestUserId) {
+                $sql = "UPDATE Request SET requesterSuccess = '$uniqueFileName', complete = 'Yes', failed = '' WHERE requestID = '$requestId'";
+            } else {
+                $sql = "UPDATE Request SET ownerSuccess = '$uniqueFileName', complete = 'Yes', failed = '' WHERE requestID = '$requestId'";
+            }
+
+            if (mysqli_query($conn, $sql)) {
+                // Update the DateTimeCompleted in the buy table
+                $sqlBuy = "UPDATE buy SET DateTimeCompleted = '$dateTimeComplete' WHERE requestID = '$requestId'";
+                if (mysqli_query($conn, $sqlBuy)) {
+                    echo "success";
+                } else {
+                    echo "Error updating DateTimeCompleted: " . mysqli_error($conn);
+                }
+            } else {
+                echo "Error: " . mysqli_error($conn);
+            }
+        } else {
+            echo "Error uploading the proof file.";
         }
     } else {
-        echo "Invalid request ID.";
-        exit;
+        echo "Error: The proof file is not a valid image.";
     }
 }
-
-// If the form is not submitted, do nothing
 ?>

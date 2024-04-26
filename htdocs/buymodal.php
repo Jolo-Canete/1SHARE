@@ -3,6 +3,8 @@
         <div class="modal-content">
             <div class="modal-header bg-dark">
                 <h1 class="modal-title fs-5" id="buyRequestModalLabel">Buy Request</h1>
+                <h1 style="display: none;" class="modal-title fs-5" id="buyItemID"></h1>
+
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -20,19 +22,32 @@
                     </div>
                     <div class="row">
                         <div class="col-6 mb-3">
-                            <label for="quantity" class="form-label"><b>Quantity(<?php echo $item['itemQuantity'] ?> Max)</b> <span class="text-danger">*</span></label>
-                            <input type="number" id="aquantity" name="quantity" class="form-control" min="1" max="0" required>
+                        <label for="quantity" class="form-label">
+                                <b>Quantity (<span id="buyItemQuantity"></span> Max)</b> <span class="text-danger">*</span>
+                            </label>
+                            <input type="number" id="aquantity" name="quantity" class="form-control" min="1" max="<?php echo $item['itemQuantity']; ?>" required>
                         </div>
                     </div>
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary ms-2" data-bs-target="#itemDetailModal" data-bs-toggle="modal">Go Back</button>
+                <button type="button" class="btn btn-secondary ms-2" data-bs-target="#itemDetailModal" data-bs-toggle="modal">Go Back</button>
                 <button type="button" id="buyRequestButton" class="btn btn-primary">Request</button>
             </div>
             </form>
         </div>
     </div>
 </div>
+<script>
+    function openBuyModal(itemDetails, itemID) {
+        // Populate the borrow modal with the item details
+        document.getElementById('buyItemID').textContent = itemDetails.itemID;
+        document.getElementById('buyItemQuantity').textContent = itemDetails.itemQuantity;
+
+
+        // Show the borrow modal
+        $('#buyRequestModal').modal('show');
+    }
+</script>
 <script>
     $(document).ready(function() {
         $('#buyRequestButton').click(function() {
@@ -41,7 +56,7 @@
                 return;
             }
 
-            if (!validateQuantity()) {
+            if (!validateQuantitybuy()) {
                 return;
             }
 
@@ -68,7 +83,10 @@
                 return; // Exit the function
             }
 
-            var itemId = "<?php echo isset($itemID) ? $itemID : ''; ?>";
+
+
+            var itemId = document.getElementById('buyItemID').textContent;
+            console.log('itemId:', itemId);
 
             $('#buyRequestButton').prop('disabled', true);
 
@@ -119,12 +137,12 @@
         return true;
     }
 
-    function validateQuantity() {
+    function validateQuantitybuy() {
         var quantity = $('#aquantity').val();
-        var maxQuantity = parseInt($('#maxQuantity').text());
+        var maxQuantity = parseInt($('#buyItemQuantity').text());
 
-        if (quantity <= 1 && quantity >= maxQuantity) {
-            alert("The quantity must be between 1 and " + maxQuantity + ".");
+        if (quantity <= 0 || quantity > maxQuantity) {
+            alert("The quantity must be 1 or between 1 and " + maxQuantity + ".");
             return false;
         }
 

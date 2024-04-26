@@ -22,12 +22,12 @@ include "upper.php";
 <style>
     <?php
     include "nav.css";
-    ?>
-   @media (max-width: 768px) {
-    #offcanvasRight {
-        width: 70% !important; /* Adjust this value to your preference */
+    ?>@media (max-width: 768px) {
+        #offcanvasRight {
+            width: 70% !important;
+            /* Adjust this value to your preference */
+        }
     }
-}
 </style>
 
 <body>
@@ -107,6 +107,9 @@ include "upper.php";
 
         <ul class="nav flex-column bg-dark">
             <li class="nav-item">
+                <a href="dashboard.php" class="nav-link text-light font-italic"> <i class="bi bi-speedometer2 text-light fa-fw"></i>Dashboard</a>
+            </li>
+            <li class="nav-item">
                 <a href="home.php" class="nav-link text-light font-italic"> <i class="bi bi-house-door text-light fa-fw"></i>Home</a>
             </li>
             <li class="nav-item">
@@ -178,9 +181,6 @@ include "upper.php";
                 <a href="cart.php" class="nav-link text-light font-italic"> <i class="bi-cart text-light fa-fw"></i>Cart</a>
             </li>
             <li class="nav-item">
-                <a href="dashboard.php" class="nav-link text-light font-italic"> <i class="bi bi-speedometer2 text-light fa-fw"></i>Dashboard</a>
-            </li>
-            <li class="nav-item">
                 <a href="settings.php" class="nav-link text-light font-italic"> <i class="bi bi-gear text-light fa-fw"></i>Settings</a>
             </li>
         </ul>
@@ -232,10 +232,10 @@ include "upper.php";
                                     });
                                 });
                             </script>
-                            
 
 
-                         
+
+
 
                             <div class="d-md-none">
 
@@ -309,9 +309,9 @@ include "upper.php";
                                 <div class="input-group w-100">
                                     <input class="form-control rounded-0" type="search" placeholder="Search" aria-label="Search" id="searchInput" name="search_term">
                                     <div class="input-group-append">
-                                    <a href="#" onclick="performSearchs()" class="btn rounded-0 d-inline-block d-md-none" style="background-color: #212529; border-color: white;">
-    <i class="bi bi-search text-white"></i>
-</a>
+                                        <a href="#" onclick="performSearchs()" class="btn rounded-0 d-inline-block d-md-none" style="background-color: #212529; border-color: white;">
+                                            <i class="bi bi-search text-white"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </form>
@@ -329,7 +329,7 @@ include "upper.php";
                         }
                     }
                 </script>
-                 <script>
+                <script>
                     function performSearchs() {
                         var searchInput = document.getElementById('searchInput');
                         var searchTerm = searchInput.value.trim();
@@ -350,4 +350,4 @@ include "upper.php";
 <br><br>
 <div class="d-md-none">
     <br><br>
-    </div>
+</div>

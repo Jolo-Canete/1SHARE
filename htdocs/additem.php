@@ -35,7 +35,7 @@ include "nav.php";
         <div class="row">
             <div class="col">
                 <div class="text-dark">
-                    <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-3"><i class="bi bi-box" style="font-size: 2.8rem;"></i> MY ITEMS</h1>
+                    <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-3"><i class="bi bi-box" style="font-size: 2.5rem;"></i> MY ITEMS</h1>
                 </div>
             </div>
         </div>
@@ -51,8 +51,8 @@ include "nav.php";
                 <div class="col-md-8 col-12 mb-3 mb-3">
                     <!-- Sort Dropdowns -->
                     <div class="d-flex justify-content-end">
-                        <div class="btn-group me-2">
-                            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <div class="btn-group me-1">
+                            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
                                 Sort by Availability
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
@@ -62,7 +62,7 @@ include "nav.php";
                             </ul>
                         </div>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
                                 Sort by Upload Date
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
@@ -115,7 +115,7 @@ include "nav.php";
                     <?php } ?>
                     </div>
             </div>
-           
+
 
             <!-- Item Detail Modal -->
             <div> <?php
@@ -127,13 +127,13 @@ include "nav.php";
                 include "uploadmodal.php";
                 ?>
             </div>
-        
-                
-     
+
+
+
 
             <script>
                 function sortByAvailability(filter) {
-                    var container = document.querySelector(".row-cols-1");
+                    var container = document.querySelector(".row.row-cols-2.row-cols-md-4.row-cols-lg-6.g-4");
                     var items = container.querySelectorAll(".col");
 
                     // Loop through all items
@@ -149,9 +149,8 @@ include "nav.php";
                     });
                 }
 
-
                 function sortByUploadDate(order) {
-                    var container = document.querySelector(".row-cols-1");
+                    var container = document.querySelector(".row.row-cols-2.row-cols-md-4.row-cols-lg-6.g-4");
                     var items = Array.from(container.querySelectorAll(".col"));
 
                     items.sort(function(a, b) {

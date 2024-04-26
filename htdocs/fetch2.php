@@ -134,7 +134,6 @@ if (isset($_GET['requestId'])) {
         <div class="d-flex justify-content-center mt-4">
             <button type="button" class="btn btn-success me-2" id="acceptButton">Accept</button>
             <button type="button" class="btn btn-danger me-2" id="declineButton">Decline</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
 
         <input type="hidden" id="requestID" value="<?php echo $requestID; ?>">

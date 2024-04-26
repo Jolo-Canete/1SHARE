@@ -66,304 +66,8 @@ if (isset($_GET['search_term'])) {
     <title>Find Item</title>
 
     <style>
-        .rating>input {
-            display: none;
-        }
-
-        .rating>label {
-            font-size: 15px;
-            color: #FFD700;
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .rating>input:checked~label {
-            color: #f8de7e;
-        }
-
-        <?php include "additem.css"; ?>.card {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            border-radius: 0px;
-        }
-
-        .card-body {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .card-title {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .dropdown-menu a.dropdown-item:hover {
-            background-color: #e9ecef;
-            padding-left: 1rem;
-            transition: background-color 0.3s, color 0.3s, font-weight 0.3s, padding-left 0.3s;
-        }
-
-
-        .btn-close-red {
-            filter: invert(1) grayscale(100%) brightness(200%) sepia(100%) hue-rotate(-50deg) saturate(600%) contrast(0.8);
-        }
-
-        .sell-price-banner {
-            background-color: #f8f8f8;
-            /* light gray */
-            border-radius: 6px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            max-width: 280px;
-            width: 100%;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            animation: pulse 2s infinite;
-        }
-
-        .banner-content {
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-
-        .banner-border {
-            border: 2px solid #ff0000;
-            /* red */
-            border-radius: 4px;
-            padding: 4px 8px;
-            margin-right: 12px;
-            font-size: 14px;
-            font-weight: 700;
-            color: #ff0000;
-            display: flex;
-            align-items: center;
-        }
-
-        .bi-tag-fill {
-            margin-left: 6px;
-            font-size: 16px;
-            color: #ff0000;
-        }
-
-        .price-container {
-            display: flex;
-            align-items: center;
-            font-size: 16px;
-            font-weight: 700;
-            color: #333;
-            flex-grow: 1;
-            justify-content: flex-end;
-        }
-
-        .bi-cash-coin {
-            margin-right: 4px;
-            font-size: 16px;
-            color: #ff0000;
-        }
-
-        .price-value {
-            color: #ff0000;
-        }
-
-        @keyframes pulse {
-            0% {
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            }
-
-            50% {
-                box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
-            }
-
-            100% {
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            }
-        }
-
-        .price-banner {
-            background-color: #fffaf0;
-            /* light green */
-            border: 3px solid #34c759;
-            /* green */
-            border-radius: 8px;
-            padding: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 350px;
-            width: 100%;
-            box-shadow: 0 2px 8px rgba(52, 199, 89, 0.3);
-            animation: pulse 2s infinite;
-        }
-
-        .price-border {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            font-weight: 700;
-            color: #34c759;
-            margin-right: 12px;
-        }
-
-        .price-label {
-            text-transform: uppercase;
-        }
-
-        .price-value {
-            font-size: 16px;
-            font-weight: 700;
-            color: #333;
-            flex-grow: 1;
-            text-align: right;
-        }
-
-        #buyField {
-            border: 3px solid #ff0000;
-            /* red */
-        }
-
-        #buyField.price-border {
-            color: #ff0000;
-        }
-
-        #buyField.price-label {
-            color: #ff0000;
-
-        }
-
-        /* Default styles */
-        .price-banner {
-            font-size: 16px;
-        }
-
-        /* Media query for smaller screens */
-        @media (max-width: 768px) {
-            .price-banner {
-                font-size: 14px;
-            }
-
-            .price-label {
-                font-size: 13px;
-            }
-
-            .price-value {
-                font-size: 13px;
-            }
-        }
-
-
-        @media (max-width: 768px) {
-            .image-container {
-                width: 100% !important;
-                height: 200px !important;
-            }
-
-            #modalItemImage {
-                width: 100% !important;
-                height: 200px !important;
-            }
-        }
-
-
-        @media (max-width: 768px) {
-            .d-flex {
-                flex-wrap: wrap;
-            }
-
-            button {
-                font-size: 12px;
-                padding: 4px 8px;
-            }
-
-            #cart-popup {
-                font-size: 12px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .modal-body {
-                overflow-y: auto;
-                max-height: 100%;
-                /* adjust the height to your liking */
-            }
-        }
-
-        @media (max-width: 768px) {
-            #specifications-table {
-                font-size: 12px;
-            }
-
-            #specifications-icon {
-                font-size: 12px;
-            }
-        }
-
-        @media only screen and (max-width: 600px) {
-            .specs-header {
-                font-size: 14px;
-                padding: 5px;
-                white-space: nowrap;
-            }
-        }
-
-        #button-container .btn {
-            box-sizing: border-box;
-            width: 100%;
-            padding: 10px;
-            /* adjust the padding to fit the container */
-            /* or */
-            width: calc(100% - 20px);
-            /* adjust the width to fit the container */
-        }
-
-        .owned-by-container {
-            background-color: #f8f9fa;
-            padding: 24px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-
-        .owned-by-link {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            color: #495057;
-            transition: color 0.3s ease;
-        }
-
-        .owned-by-link:hover {
-            color: #343a40;
-        }
-
-        .image-container {
-            margin-right: 16px;
-        }
-
-        .owned-by-info {
-            display: fixed;
-            flex-direction: column;
-        }
-
-        .owned-by-info p {
-            margin-bottom: 0;
-        }
-
-        .owned-by-badge {
-            background-color: #e7f5ff;
-            color: #0b5ed7;
-            font-size: 16px;
-            font-weight: 500;
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-
-   
+        <?php include "additem.css"; ?>
+        <?php include "find.css"; ?>
     </style>
 
 </head>
@@ -478,7 +182,7 @@ if (isset($_GET['search_term'])) {
 
             <!--- Item Display --->
             <div class="container">
-                <div class="row row-cols-2 row-cols-md-6 g-4">
+                <div class="row row-cols-2 row-cols-md-6 g-1">
                     <?php if (empty($items)) { ?>
                         <div class="col">
                             <div class="card">
@@ -492,7 +196,7 @@ if (isset($_GET['search_term'])) {
 
                             <!-- Item Card -->
                             <div class="col">
-                                <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemAvailability']; ?>', '<?php echo $item['requestType']; ?>', '<?php echo $item['itemID']; ?>')">
+                                <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemQuantity']; ?>', '<?php echo $item['requestType']; ?>', '<?php echo $item['itemID']; ?>')">
                                     <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>" style="border-radius: 0px;">
                                     <div class="card-body">
                                         <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
@@ -506,12 +210,31 @@ if (isset($_GET['search_term'])) {
                                             <label for="star2"><i class="fas fa-star"></i></label>
                                             <input type="radio" name="rating" id="star2" value="2">
                                             <label for="star1"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star1" value="1">
+                                            <input type="radio" name="rating" id="star1" value="1">5/5
                                         </div>
                                         <div class="mb-2"></div>
                                         <div>
-                                            <p class="text-secondary mb-0"><i class="bi bi-tags-fill"></i> <small><b></b> <?php echo $item['category']; ?></small></p>
-                                            <p class="text-secondary mb-0"><i class="bi bi-arrow-repeat"></i> <small><b></b> <?php echo $item['requestType']; ?></small></p>
+                                            <p class="text-secondary mb-1"><i class="bi bi-tags-fill"></i> <small><b></b> <?php echo $item['category']; ?></small></p>
+                                            <div class="text-secondary mb-0">
+                                                <small><b></b></small>
+                                                <?php foreach (explode(',', $item['requestType']) as $t) {
+                                                    switch (trim($t)) {
+                                                        case 'Barter':
+                                                            $c = 'bg-dark';
+                                                            break;
+                                                        case 'Borrow':
+                                                            $c = 'bg-success';
+                                                            break;
+                                                        case 'Buy':
+                                                            $c = 'bg-danger';
+                                                            break;
+                                                        default:
+                                                            $c = 'bg-secondary';
+                                                    }
+                                                    echo '<span class="ms-1 badge ' . $c . '">' . trim($t) . '</span>';
+                                                } ?>
+                                            </div>
+
                                         </div>
                                         <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
                                         <p class="text-start text-secondary mb-0">
@@ -527,7 +250,7 @@ if (isset($_GET['search_term'])) {
                         <?php } ?>
                     <?php } ?>
                 </div>
-                <?php include "test2.php"; ?>
+                <?php include "finddetailmodal.php"; ?>
             </div>
             <!--- End of Item Display --->
 
