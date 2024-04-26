@@ -1,8 +1,16 @@
 <?php include "./1db.php"; 
 
-// Get the selected user from the dropdown
-$selectedUser = isset($_POST['selectedUser']) ? $_POST['selectedUser'] : '';
+// Check errors
+ini_set('display_errors', 1);
 
+// Get the selected user from the dropdown
+if (isset($_POST['user'])) {
+    $selectedUser = $_POST['user'];
+    $name = $_POST['name_' . $selectedUser];
+} else {
+    $selectedUser = '';
+    $name = 'All Residents';
+}
 
 ?>
 <!DOCTYPE html>
@@ -53,6 +61,10 @@ $selectedUser = isset($_POST['selectedUser']) ? $_POST['selectedUser'] : '';
         .form-control {
             border-radius: 0px;
         }
+
+        .all-user {
+            color:cornflowerblue;
+        }
     </style>
 
 </head>
@@ -84,23 +96,36 @@ $selectedUser = isset($_POST['selectedUser']) ? $_POST['selectedUser'] : '';
                             <div class="card-header">
                                 <b>List of Items</b>
                             </div>
-                            
+                            <!-- Table Order -->
                             <div class="card-body">
-                            <!-- In php If the user want to get the owned item that is loooped  by specific user everytime he click the href links it will show it on the same page but if the $_GET is empty it will show all the items owned by every users -->
+                            <form action="" method="post">
                                 <div class="row justify-content-between">
                                     <div class="col-auto">
                                         <div class="dropdown">
                                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
-                                                Owned By
+                                                <?php echo $name ?>
                                             </button>
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><button type="submit" name="selectedUser" value="" class="dropdown-item"></button></li>
-                                                <li><a class="dropdown-item" href="#">user 2</a></li>
-                                                <li><a class="dropdown-item" href="#">user 3</a></li>
+                                            <li><button type="submit" name="user" value=""  class="dropdown-item"><span class="all-user">All Residents</span></button></li>
+                                            
+                                                <?php 
+                                                // Get all the user
+                                                $userQuery = "SELECT * FROM user";
+                                                $userResult = $conn->query($userQuery);
+
+                                                // Loop the users
+                                                while($userRow = $userResult->fetch_assoc()){
+                                                    echo '<li>';
+                                                    echo '<input type="hidden" name="name_' . $userRow['userID'] . '" value="' . ucfirst($userRow['firstName']) . ' ' . ucfirst($userRow['lastName']) . '">';
+                                                    echo '<button type="submit" name="user" value="' . $userRow['userID'] . '" class="dropdown-item">' . ucfirst($userRow['firstName']) . ' ' . ucfirst($userRow['lastName']) . '</button>';                                                    echo '</li>';
+
+                                                }   
+                                        ?>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
+                            </form>
                                 <div class="card mt-3">
                                 <div class="table-responsive">
                                 <table class="table table-bordered">
@@ -113,22 +138,70 @@ $selectedUser = isset($_POST['selectedUser']) ? $_POST['selectedUser'] : '';
                                         </tr>
                                     </thead>
                                     <tbody id="user-table-body">
-                                        <tr>
-                                            <td>Sa Pula sa Puti</td>
-                                            <td>Johnny Sins</td>
-                                            <td>January 20, 2024</td>
-                                            <td class="text-center">
-                                            <a href= "./action/item_details.php" class="btn btn-sm border-0">
-                                            <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                            </a></td>
-                                        </tr>
                                         <?php 
-                                            // Get all items
-                                            $sql = "SELECT * FROM item ORDER BY DateTimePosted DESC";
+                                            // Prepare the sql statement that finds all items or specific items owned by a user
+                                            $sql = "SELECT i.*, u.username, u.firstName, u.lastName, i.DateTimePosted
+                                            FROM item i
+                                            JOIN user u ON i.userID = u.userID";
+                                            if (!empty($selectedUser)) {
+                                                // IF the drop down required a user
+                                                $sql .= " WHERE i.userID = $selectedUser";
+                                                $sql .= " ORDER BY i.DateTimePosted";
+                                            } else {
+                                                // Get the order by
+                                                $sql .= " ORDER BY i.DateTimePosted";
+                                            }
+                                            // Run the sql
                                             $result = $conn->query($sql);
 
+                                            // Get the array
+                                            if($result->num_rows > 0 ){
+                                                // Loop the values
+                                                while($row = $result->fetch_assoc()){
+                                                    // Get the date Time posted and store it
+                                                    $date_TimePosted = $row['DateTimePosted'];
+                                                    echo '<tr>';
+                                                    echo '<td>' .$row['itemName'] . '</td>';
+                                                    echo '<td>' . $row['firstName'] . ' ' . $row['lastName'] . '</td>';
 
-                                        
+                                                    // Split the Item DateTimePosted
+                                                    $dateTimePosted = explode(" ", $date_TimePosted );
+                                                    $datePosted = $dateTimePosted[0];
+                                                    $timePosted = $dateTimePosted[1];
+
+                                                    // Convert the datePosted into a timestamp
+                                                    $datePostedTimestamp = strtotime($datePosted);
+
+                                                    // Extract the year, month name and day for the Date
+                                                    $dateYear = date('Y', $datePostedTimestamp);
+                                                    $dateMonth = date('F', $datePostedTimestamp);
+                                                    $dateDay = date('j', $datePostedTimestamp);
+                                                    
+                                                    // Split the TIme from dateTimePosted
+                                                    $timeJoinedParts = explode(":", $timePosted);
+                                                    $timeHour = $timeJoinedParts[0];
+                                                    $timeMinute = $timeJoinedParts[1];
+                                                    $timeSecond = $timeJoinedParts[2];
+
+                                                    // Convert the time to an AM PM format
+                                                    $timeAmPm = date('h:i A', strtotime($timeHour . ':' . $timeMinute));
+
+                                                    echo "<td>$dateMonth $dateDay, $dateYear : <i class='bi bi-clock'></i> $timeAmPm</td>";
+                                                    // <a href= "./action/item_details.php" class="btn btn-sm border-0">
+                                                    // <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
+                                                    // </a></td>
+                                                    echo '<td class="text-center">';
+                                                    echo '<a href="./action/item_details.php" class="btn btn-sm border-0">';
+                                                    echo '<i class="bi bi-plus-circle" style="font-size: 1.25rem; color: #0D6EFD"></i>';
+                                                    echo '</a>';
+                                                    echo '</td>';
+        
+      
+                                                }
+                                            } else{
+                                                // Write an empty item message if there are no item that belonged to the user
+                                                echo '<td colspan="4"><div class="alert alert-warning text-center">This Resident doesn\'t have any item.</div></td>';
+                                            }
                                         
                                         ?>
                                     </tbody>
