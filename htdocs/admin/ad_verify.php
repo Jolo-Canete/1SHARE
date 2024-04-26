@@ -71,7 +71,6 @@ $resultVerified = $conn->query($sqlUnverified);
 </head>
 <body>
     <main>
-        <?php include "admin/adminnav.php" ?>
         <div class="page-content" id="content">
             <div class="container">
                 <div class="row">
