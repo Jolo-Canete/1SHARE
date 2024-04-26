@@ -124,7 +124,7 @@ $result = $conn->query($sql);
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col">
                         <div class="card" style="width: 60.5rem;">
@@ -165,6 +165,7 @@ $result = $conn->query($sql);
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
+                                            
                                             <th>Item Name</th>
                                             <th>Posted By</th>
 <<<<<<< HEAD
