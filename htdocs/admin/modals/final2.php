@@ -82,7 +82,7 @@ if (isset($_GET['requestId'])) {
                 <!-- Item picture -->
                 <h4 class="fw-bold text-dark text-center mb-2">Requested Item</h4>
                 <div class="text-center mb-3">
-                    <img src="pictures/<?php echo $itemImage; ?>" class="img-fluid shadow-sm" alt="Item Image" style="max-width: 300px;">
+                    <img src="../pictures/<?php echo $itemImage; ?>" class="img-fluid shadow-sm" alt="Item Image" style="max-width: 300px;">
                 </div>
 
                 <!-- Request detail -->
