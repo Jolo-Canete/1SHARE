@@ -60,7 +60,13 @@
                 <span class="badge rounded-pill bg-danger" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">99+</span>
                 <span class="visually-hidden">unread notifications</span>
             </a>
-            
+        </li>
+        <li class="nav-item">
+            <a href="ad_dashboard.php" class="nav-link text-light font-italic d-flex align-items-center justify-content-between">
+                <span><i class="bi bi-arrow-repeat text-light fa-fw"></i>Transactions</span>
+                <span class="badge rounded-pill bg-danger" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;">2</span>
+                <span class="visually-hidden">unread notifications</span>
+            </a>
         </li>
         <li class="nav-item">
             <a href="ad_transaction.php" class="nav-link text-light font-italic d-flex align-items-center justify-content-between">

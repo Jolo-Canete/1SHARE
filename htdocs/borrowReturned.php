@@ -71,13 +71,13 @@ if (isset($_GET['requestId'])) {
                     <div class="col-12 col-md-12 col-lg-12">
                         <div class="card shadow-sm">
                             <div class="card-header bg-success text-white">
-                                <h1 class="display-4 fw-bold text-center"><i class="bi bi-check-circle"></i> RECEIVED</h1>
+                                <h1 class="display-4 fw-bold text-center"><i class="bi bi-check-circle"></i>RETURNED</h1>
                             </div>
                             <div class="card-body">
                                 <p class="text-secondary mb-4">Please answer the following questions</p>
                                 <form action="" method="post">
                                     <div class="mb-3">
-                                        <label class="form-label"><b>Transaction Successful?</b> <span class="text-danger">*</span></label>
+                                        <label class="form-label"><b>Returned Successful?</b> <span class="text-danger">*</span></label>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="Yes" name="received" id="recYes">
                                             <label class="form-check-label" for="recYes">
@@ -93,7 +93,7 @@ if (isset($_GET['requestId'])) {
                                     </div>
                                     <input type="hidden" id="requestId" value="<?php echo isset($_GET['requestId']) ? htmlspecialchars($_GET['requestId']) : ''; ?> " Required>
                                     <div class="mb-3" id="proofSection" style="display:none;">
-                                        <label for="proof" class="form-label"><b>Please provide a proof that you have received or handed the item (Required)</b></label>
+                                        <label for="proof" class="form-label"><b>Please provide a proof that you have received or returned the item (Required)</b></label>
                                         <input class="form-control" type="file" id="proof">
                                         <img src="#" alt="Preview" id="proofPreview" style="display: none;">
                                     </div>

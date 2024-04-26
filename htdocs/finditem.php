@@ -68,6 +68,8 @@ if (isset($_GET['search_term'])) {
     <style>
         <?php include "additem.css"; ?>
         <?php include "find.css"; ?>
+        
+        
     </style>
 
 </head>
@@ -210,7 +212,7 @@ if (isset($_GET['search_term'])) {
                                             <label for="star2"><i class="fas fa-star"></i></label>
                                             <input type="radio" name="rating" id="star2" value="2">
                                             <label for="star1"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star1" value="1">5/5
+                                            <input type="radio" name="rating" id="star1" value="1"><span class="text-warning"><small>5/5</small></span>
                                         </div>
                                         <div class="mb-2"></div>
                                         <div>
