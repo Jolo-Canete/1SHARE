@@ -1,8 +1,7 @@
-<?php 
-include "./1db.php"; 
-include "./adminnav.php";
+<?php
+include "./1db.php";
+include "./adminnav.php"; ?>
 
-?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,28 +47,20 @@ include "./adminnav.php";
 </head>
 
 <body>
-
     <div class="page-content" id="content">
         <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="d-none d-md-block text-dark">
-                        <h1 class="display-4 fw-bold text-dark text-center mt-3 mb-0"><i class="bi bi-check-circle"
-                                style="font-size: 2.8rem;"></i>TRANSACTIONS</h1>
-                        <br>
-                    </div>
-                    <div class="d-md-none text-dark">
-                        <h6 class="display-7 fw-bold text-dark text-center mt-4 mb-0"><i class="bi bi-check-circle"
-                                style="font-size: 1rem;"></i>TRANSACTIONS</h6>
-                    </div>
-                </div>
-            </div>
             <br>
             <div class="row mb-3">
-                <div class="col-auto">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                <div class="col-3">
+                    <form class="input-group mb-3">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="col-9 d-flex justify-content-end">
+                        <button type="button" class="btn btn-dark border-0 p-2 mb-3 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                             Sort by Request Type
                         </button>
                         <ul class="dropdown-menu">
@@ -78,12 +69,11 @@ include "./adminnav.php";
                             <li><a class="dropdown-item" href="#" data-sort-type="barter">Barter</a></li>
                             <li><a class="dropdown-item" href="#" data-sort-type="buy">Buy</a></li>
                         </ul>
-                    </div>
                 </div>
                 <?php
 
-// Query to fetch all closed requests
-$query = "SELECT r.requestID, r.requestType, i.itemName, r.complete AS complete, u.username AS itemOwner,
+                // Query to fetch all closed requests
+                $query = "SELECT r.requestID, r.requestType, i.itemName, r.complete AS complete, u.username AS itemOwner,
           (CASE
               WHEN r.requestType = 'Barter' THEN b.DateTimeCompleted
               WHEN r.requestType = 'Borrow' THEN bo.DateTimeCompleted 
@@ -108,91 +98,87 @@ $query = "SELECT r.requestID, r.requestType, i.itemName, r.complete AS complete,
           LEFT JOIN user u ON i.userID = u.userID
           WHERE (r.complete IS NOT NULL OR r.failed IS NOT NULL)";
 
-$result = $conn->query($query);
+                $result = $conn->query($query);
 
-if ($result->num_rows > 0) {
-    echo '<div class="table-wrapper">';
-    echo '<table class="table table-bordered table-border-2 table-hover mb-3 mt-3">';
-    echo '<thead>';
-    echo '<tr class="table-dark">';
-    echo '<th>Status</th>';
-    echo '<th>Request Type</th>';
-    echo '<th>Item Name</th>';
-    echo '<th>Item Owner</th>';
-    echo '<th>Date Time Completed</th>';
-    echo '<th>Proof</th>';
-    echo '<th>Return Proof (BORROW)</th>';
-    echo '</tr>';
-    echo '</thead>';
-    echo '<tbody>';
+                if ($result->num_rows > 0) {
+                    echo '<div class="table-wrapper">';
+                    echo '<table class="table table-bordered table-border-2 table-hover mb-3 mt-3">';
+                    echo '<thead>';
+                    echo '<tr class="table-dark">';
+                    echo '<th>Status</th>';
+                    echo '<th>Request Type</th>';
+                    echo '<th>Item Name</th>';
+                    echo '<th>Item Owner</th>';
+                    echo '<th>Date Time Completed</th>';
+                    echo '<th>Proof</th>';
+                    echo '<th>Return Proof (BORROW)</th>';
+                    echo '</tr>';
+                    echo '</thead>';
+                    echo '<tbody>';
 
-    // Assuming $result contains the query result
-    $rowCount = 0;
-    while ($row = $result->fetch_assoc()) {
-        $requestDateTimeClosed = $row['DateTimeCompleted'] ? date('l, F j, Y g:i A', strtotime($row['DateTimeCompleted'])) : '';
-        $rowCount++;
-        echo '<tr class="table-row table-light ';
-        if ($rowCount > 3) echo 'more-details';
-        echo '">';
-        echo '<td>';
-        if ($row['complete'] == 'Yes') {
-            echo '<span style="background-color: green; color: white; padding: 5px; border-radius: 5px;">Success</span>';
-        } else {
-            echo '<span style="background-color: red; color: white; padding: 5px; border-radius: 5px;">Failed</span>';
-        }
-        echo '</td>';
-        echo '<td>' . $row['requestType'] . '</td>';
-        echo '<td>' . $row['itemName'] . '</td>';
-        echo '<td>' . $row['itemOwner'] . '</td>';
-        echo '<td>' . $requestDateTimeClosed . '</td>';
-        echo '<td>';
-        if ($row['Proof'] != 'N/A') {
-            echo '<img src="proof/' . $row['Proof'] . '" alt="Proof" width="100">';
-        } else {
-            echo 'N/A';
-        }
-        echo '</td>';
-        echo '<td>';
-        if ($row['ReturnProof'] != 'N/A') {
-            echo '<img src="proof/' . $row['ReturnProof'] . '" alt="Proof" width="100">';
-        } else {
-            echo 'N/A';
-        }
-        echo '</td>';
-        echo '</tr>';
-    }
+                    // Assuming $result contains the query result
+                    while ($row = $result->fetch_assoc()) {
+                        $requestDateTimeClosed = $row['DateTimeCompleted'] ? date('l, F j, Y g:i A', strtotime($row['DateTimeCompleted'])) : '';
+                        echo '<tr class="table-row table-light">';
+                        echo '<td>';
+                        if ($row['complete'] == 'Yes') {
+                            echo '<span style="background-color: green; color: white; padding: 5px; border-radius: 5px;">Success</span>';
+                        } else {
+                            echo '<span style="background-color: red; color: white; padding: 5px; border-radius: 5px;">Failed</span>';
+                        }
+                        echo '</td>';
+                        echo '<td class="table-bordered" data-bs-toggle="modal" data-bs-target="#' . (($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal')) . '" data-request-id="' . $row['requestID'] . '">' . $row['requestType'] . '</td>';
+                        echo '<td class="table-bordered" data-bs-toggle="modal" data-bs-target="#' . (($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal')) . '" data-request-id="' . $row['requestID'] . '">'  . $row['itemName'] . '</td>';
+                        echo '<td class="table-bordered" data-bs-toggle="modal" data-bs-target="#' . (($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal')) . '" data-request-id="' . $row['requestID'] . '">'  . $row['itemOwner'] . '</td>';
+                        echo '<td class="table-bordered" data-bs-toggle="modal" data-bs-target="#' . (($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal')) . '" data-request-id="' . $row['requestID'] . '">'  . $requestDateTimeClosed . '</td>';
+                        echo '<td class="table-bordered" data-bs-toggle="modal" data-bs-target="#' . (($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal')) . '" data-request-id="' . $row['requestID'] . '">';
 
-    echo '</tbody>';
-    echo '</table>';
-    if ($rowCount > 3) {
-        echo '<button type="button" class="btn btn-primary" id="showMoreBtn">More Details</button>';
-    }
-    echo '</div>';
-} else {
-    echo "<div class='jumbotron jumbotron-fluid bg-light text-center'>
-                <div class='container'>
-                    <h1 class='display-4 mt-5'>No Successful Requests</h1>
-                    <p class='lead text-secondary'>Looks like there are no successful requests at the moment.</p>
-                </div>
-            </div>";
-}
-?>
+
+                        if ($row['Proof'] != 'N/A') {
+                            echo '<img src="proof/' . $row['Proof'] . '" alt="Proof" width="100">';
+                        } else {
+                            echo 'N/A';
+                        }
+                        echo '</td>';
+                        echo '<td class="table-bordered" data-bs-toggle="modal" data-bs-target="#' . (($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal')) . '" data-request-id="' . $row['requestID'] . '">';
+                        if ($row['ReturnProof'] != 'N/A') {
+                            echo '<img src="proof/' . $row['ReturnProof'] . '" alt="Proof" width="100">';
+                        } else {
+                            echo 'N/A';
+                        }
+                        echo '</td>';
+                        echo '</tr>';
+                    }
+
+                    echo '</tbody>';
+                    echo '</table>';
+                    echo '</div>';
+                } else {
+                    echo "<div class='jumbotron jumbotron-fluid bg-light text-center'>
+                        <div class='container'>
+                            <h1 class='display-4 mt-5'>No Successful Requests</h1>
+                            <p class='lead text-secondary'>Looks like there are no successful requests at the moment.</p>
+                        </div>
+                    </div>";
+                };
+
+                ?>
 
 
             </div>
             <div>
                 <?php
-                include "./htdocs/reqbuymodal.php";
+                include "reqsbuymodal.php";
                 ?>
             </div>
             <div>
                 <?php
-                include "./htdocs/reqsbartermodal.php";
+                include "reqsbartermodal.php";
                 ?>
             </div>
             <div>
                 <?php
-                include "./htdocs/reqsborrowmodal.php";
+                include "reqsborrowmodal.php";
                 ?>
             </div>
 
@@ -219,11 +205,11 @@ if ($result->num_rows > 0) {
                         // Use the requestId to fetch the request details based on the modal ID
                         var fetchUrl = '';
                         if (modal.attr('id') === 'reqbartermodal') {
-                            fetchUrl = 'patchs.php';
+                            fetchUrl = './modals/final.php';
                         } else if (modal.attr('id') === 'reqBuyModal') {
-                            fetchUrl = 'patchs2.php';
+                            fetchUrl = './modals/final2.php';
                         } else if (modal.attr('id') === 'reqBorrowModal') {
-                            fetchUrl = 'patchs1.php';
+                            fetchUrl = './modals/final1.php';
                         }
 
                         $.ajax({
