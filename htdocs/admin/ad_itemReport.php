@@ -104,6 +104,7 @@
                                 <div class="table-responsive">
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
+                                        
                                         <tr>
                                             <th>Reported By</th>
                                             <th>Item Reported</th>

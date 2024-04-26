@@ -145,10 +145,11 @@ if($status === 'Verified'){
                                 
                                 <? 
                                 // Run the Sql
-                                
                                 if ($resultUser->num_rows > 0) {
+
                                     // Loop the results
                                     while ($rowUser = $resultUser->fetch_assoc()) {
+                                        
                                         // Check if the user is verified or not
                                             $statusBadgeClass = ($rowUser['status'] == "Verified") ? "bg-success" : "bg-danger";
                                             $statusText = ($rowUser['status'] == "Verified") ? "Verified" : "Unverified";
