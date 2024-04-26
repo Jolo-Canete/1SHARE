@@ -229,6 +229,7 @@ include "./adminnav.php"; ?>
                     });
                 });
             </script>
+            
             <script>
                 $(document).ready(function() {
                     // Add event listeners to the sorter buttons
