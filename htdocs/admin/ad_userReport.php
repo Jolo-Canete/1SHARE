@@ -57,14 +57,10 @@
         <div class="page-content" id="content">
             <div class="container">
             <div class="row">
-<<<<<<< HEAD
             <div class="col-3">
                         <!-- Necessary blank space -->
                     </div>
                     <div class="col-9 d-flex justify-content-end">
-=======
-                    <div class="col-12 d-flex justify-content-end">
->>>>>>> a720deeffbbf99fb534acdc034cb004eed8724f9
                         <div class="dropdown">
                             <button class="btn border-0 text-dark p-0 mb-3 dropdown-toggle" type="button" style="font-size: 1.3rem;" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-gear"></i>

@@ -22,6 +22,7 @@
 </style>
 
 <body>
+    
 <!-- Vertical Navbar -->
 <div class="vertical-nav bg-dark" id="sidebar">
     <div class="py-4 px-3">
