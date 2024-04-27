@@ -1,6 +1,6 @@
 <?php
 include "./1db.php";
-include "./adminnav.php"; ?>
+include "./adminnav.php";?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -135,14 +135,14 @@ include "./adminnav.php"; ?>
 
 
                         if ($row['Proof'] != 'N/A') {
-                            echo '<img src="proof/' . $row['Proof'] . '" alt="Proof" width="100">';
+                            echo '<img src="../proof/' . $row['Proof'] . '" alt="Proof" width="145" height="140">';
                         } else {
                             echo 'N/A';
                         }
                         echo '</td>';
                         echo '<td class="table-bordered" data-bs-toggle="modal" data-bs-target="#' . (($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal')) . '" data-request-id="' . $row['requestID'] . '">';
                         if ($row['ReturnProof'] != 'N/A') {
-                            echo '<img src="proof/' . $row['ReturnProof'] . '" alt="Proof" width="100">';
+                            echo '<img src="./proof/' . $row['ReturnProof'] . '" alt="Proof" width="100">';
                         } else {
                             echo 'N/A';
                         }
@@ -229,7 +229,7 @@ include "./adminnav.php"; ?>
                     });
                 });
             </script>
-            
+
             <script>
                 $(document).ready(function() {
                     // Add event listeners to the sorter buttons
