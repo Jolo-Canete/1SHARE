@@ -116,7 +116,7 @@ if($status === 'Verified'){
                                             </li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li>
-                                                <button type="submit"class="dropdown-item" data-status="Verified" name="status" value="Verified">Verified</button>
+                                                <button type="submit" class="dropdown-item" data-status="Verified" name="status" value="Verified">Verified</button>
                                             </li>
                                             <li>
                                                 <button type="submit"class="dropdown-item" data-status="Unverified" name="status"value="Unverified">Unverified</button>

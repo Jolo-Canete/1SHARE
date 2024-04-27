@@ -1,4 +1,343 @@
-<?php include "./1db.php" ?>
+<?php include "./1db.php";
+
+// check all errors
+ini_set('display_errors', 1);
+
+// Get the button form
+$dateOrder = isset($_POST['dateOrder']) ? $_POST['dateOrder'] : '';
+
+
+
+if($dateOrder == 'order by dateTime DESC'){
+    $order = " ORDER BY dateTime DESC";
+
+} else if($dateOrder == 'order by dateTime'){
+    $order = " ORDER BY dateTime";
+
+} else {
+    $order = " ORDER BY userID";
+    }   
+// Get the rows per page
+    $rows_per_page = 5;
+
+// get the current number page from the URL
+    $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+
+// Formulate the offset value
+    $offset = ($currentPage > 1) ? ($currentPage - 1) * $rows_per_page : 0; 
+
+// Get the total rows of the reporrteditem
+$sql = "SELECT COUNT(*) AS total_rows FROM reporteditem";
+
+
+// Get the sql results
+$result = $conn->query($sql);
+$itemRow = $result->fetch_assoc();
+
+// Get the total rows of the item
+
+$totalRows = $itemRow['total_rows'];
+
+// Prepare the sql statement to get all the data from user,item and reporteditem
+$sql = "SELECT re.*, u.firstName, u.lastName,  i.itemName
+FROM reporteditem re
+JOIN user u ON re.userID = u.userID
+JOIN item i ON re.itemID = i.itemID";
+
+// Check if the $dateOrder is empty
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if (!empty($dateOrder)) {
+    $sql .= ' ' . $order;
+}
+
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -57,14 +396,10 @@
         <div class="page-content" id="content">
             <div class="container">
             <div class="row">
-<<<<<<< HEAD
             <div class="col-3">
                         <!-- Necessary blank space -->
                     </div>
                     <div class="col-9 d-flex justify-content-end">
-=======
-                    <div class="col-12 d-flex justify-content-end">
->>>>>>> a720deeffbbf99fb534acdc034cb004eed8724f9
                         <div class="dropdown">
                             <button class="btn border-0 text-dark p-0 mb-3 dropdown-toggle" type="button" style="font-size: 1.3rem;" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-gear"></i>
@@ -84,25 +419,31 @@
                                 <b>List of Item Reported</b>
                             </div>
                             <div class="card-body">
-                                <div class="row justify-content-between">
-                                    <div class="col-auto">
-                                        <div class="dropdown">
-                                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
-                                                Date
-                                            </button>
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                            </ul>
+                                <form action="" method="post">
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto">
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
+                                                    Date
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <li>
+                                                        <button type="submit" class="dropdown-item" value="order by dateTime DESC" name="dateOrder">Latest</button>
+                                                    </li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li>
+                                                        <button type="submit"  class="dropdown-item" value="order by dateTime">Oldest</button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <form class="d-flex">
+                                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                            </form>
                                         </div>
                                     </div>
-                                    <div class="col-auto">
-                                        <form class="d-flex">
-                                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                        </form>
-                                    </div>
-                                </div>
+                                </form>
                                 <div class="mb-3"></div>
                                 <div class="card mt-3">
                                 <div class="table-responsive">
@@ -127,47 +468,6 @@
                                                 </a>
                                             </td>
                                         </tr>
-<<<<<<< HEAD
-=======
-                                        <tr class="collapse" id="itemReportDetails-1">
-                                            <td colspan="4">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>Too small</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Detective Pepay</td>
-                                            <td class="fw-bold text-danger">Nigger Horsey</td>
-                                            <td>April 16, 2024 at 6:56:00 P.M.</td>
-                                            <td class="text-center">
-                                                <a href="#" class="btn btn-sm border-0" data-bs-toggle="collapse" data-bs-target="#itemReportDetails-2" aria-expanded="false" aria-controls="itemReportDetails-2">
-                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        <tr class="collapse" id="itemReportDetails-2">
-                                            <td colspan="4">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label for="reasonForReport" class="form-label"><b>Reason of Report</b></label>
-                                                        <textarea class="form-control" id="reasonForReport" rows="3" readonly>qwerty</textarea>
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="proof/evidence" class="form-label"><b>Proof/Evidence</b></label>
-                                                        <textarea class="form-control" id="proof/evidence" rows="3" readonly></textarea>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
->>>>>>> a720deeffbbf99fb534acdc034cb004eed8724f9
                                     </tbody>
                                 </table>
                                 </div>
