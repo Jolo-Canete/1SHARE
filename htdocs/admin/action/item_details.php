@@ -51,8 +51,8 @@ if (!$result) {
          array_push($item, $itemData);
         }
 
-
-
+        $date = date('Y-m-d', strtotime($itemData['DateTimePosted']));
+        echo $date;
     
     } 
 ?>
@@ -163,7 +163,7 @@ input[type="number"]::-webkit-inner-spin-button {
                                         <!--- Item Date --->
                                         <div class="mb-3">
                                             <label for="itemQuantity" class="form-label"><i class="bi bi-calendar2-range"></i> <b>Date Posted</b> <span class="text-danger">*</span></label>
-                                            <input type="text" class="form-control" id="itemQuantity" name="itemDate" value="January 20, 2024">
+                                            <input type="date" class="form-control" id="itemQuantity" name="itemDate" value="<?php echo $date?>">
                                         </div>
 
                                         <!--- Radio Button Open --->
@@ -206,7 +206,7 @@ input[type="number"]::-webkit-inner-spin-button {
                                                 <!-- Selling Price Label -->
                                                 <label for="buyPrice" class="form-label"><i class="bi bi-cash"></i> <b>Selling Price (₱)</b></label>
                                                 <!-- Selling Price Input -->
-                                                <input type="text" class="form-control" id="buyPrice" name="buyPrice" value="<?php if (!empty($itemData['buyPrice'])) { echo number_format($itemData['buyPrice'], 2); } ?>">
+                                                <input type="number" step="0.01" class="form-control" id="buyPrice" name="buyPrice" value="<?php if (!empty($itemData['buyPrice'])) { echo number_format($itemData['buyPrice'], 2); } ?>">
                                             </div>
 
                                             <!-- If borrow, input borrowing price and duration -->
@@ -214,13 +214,13 @@ input[type="number"]::-webkit-inner-spin-button {
                                                 <!-- Borrowing Price Label -->
                                                 <label for="borrowPrice" class="form-label"><i class="bi bi-cash"></i> <b>Borrow Price (₱)</b></label>
                                                 <!-- Borrowing Price Input -->
-                                                <input type="number" class="form-control" id="borrowPrice" name="borrowPrice" value="<?php if (!empty($itemData['borrowPrice'])) { echo number_format($itemData['borrowPrice'], 2); } ?>">
+                                                <input type="number" step="0.01" class="form-control" id="borrowPrice" name="borrowPrice" value="<?php if (!empty($itemData['borrowPrice'])) { echo number_format($itemData['borrowPrice'], 2); } ?>">
                                             </div>
                                             <div class="mb-3" id="borrowDurationField">
                                                 <!-- Borrowing Duration Label -->
                                                 <label for="borrowDuration" class="form-label"><i class="bi bi-clock"></i> <b>Borrow Duration (Days)</b></label>
                                                 <!-- Borrowing Duration Input -->
-                                                <input type="number" class="form-control" id="borrowDuration" name="borrowDuration" value="<?php if (!empty($itemData['borrowDuration'])) { echo $itemData['borrowDuration']; } ?>">
+                                                <input type="number"  class="form-control" id="borrowDuration" name="borrowDuration" value="<?php if (!empty($itemData['borrowDuration'])) { echo $itemData['borrowDuration']; } ?>">
                                             </div>
 
                                     <!--- Button to save changes --->
@@ -248,69 +248,12 @@ input[type="number"]::-webkit-inner-spin-button {
 
 <!-- Bootstrap JavaScript Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Get the buy radio button element
-    const buyRadioButton = document.getElementById('requestTypeBuy');
-    // Get the borrow radio button element
-    const borrowRadioButton = document.getElementById('requestTypeBorrow');
-    // Get the buyPriceField element
-    const buyPriceField = document.getElementById('buyPriceField');
-    // Get the borrowPriceField element
-    const borrowPriceField = document.getElementById('borrowPriceField');
-    // Get the borrowDurationField element
-    const borrowDurationField = document.getElementById('borrowDurationField');
 
-    // Function to show the buy price field and hide the borrow price and duration fields
-    function showBuyPriceField() {
-        buyPriceField.style.display = 'block';
-        borrowPriceField.style.display = 'none';
-        borrowDurationField.style.display = 'none';
-    }
-
-    // Function to show the borrow price and duration fields and hide the buy price field
-    function showBorrowFields() {
-        buyPriceField.style.display = 'none';
-        borrowPriceField.style.display = 'block';
-        borrowDurationField.style.display = 'block';
-    }
-
-    // Add event listener to the buy radio button
-    buyRadioButton.addEventListener('change', function() {
-        // If buy radio button is checked, show the buy price field
-        if (this.checked) {
-            showBuyPriceField();
-        } else {
-            // If buy radio button is unchecked, hide the buy price field
-            buyPriceField.style.display = 'none';
-        }
-    });
-
-    // Add event listener to the borrow radio button
-    borrowRadioButton.addEventListener('change', function() {
-        // If borrow radio button is checked, show the borrow fields
-        if (this.checked) {
-            showBorrowFields();
-        } else {
-            // If borrow radio button is unchecked, hide the borrow fields
-            borrowPriceField.style.display = 'none';
-            borrowDurationField.style.display = 'none';
-        }
-    });
-
-    // Initial check to see which radio button is checked by default
-    if (buyRadioButton.checked) {
-        showBuyPriceField();
-    } else if (borrowRadioButton.checked) {
-        showBorrowFields();
-    }
-</script>
 <?php 
 // Check if the form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['exitSave'])) {
     // Retrieve form data
-    $itemID = $_POST["itemID"];
-    $ownerName = $_POST["ownerName"];
     $itemName = $_POST["itemName"];
     $itemDescription = $_POST["itemDescription"];
     $itemCategory = $_POST["itemCategory"];
@@ -318,36 +261,164 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $itemQuantity = $_POST["itemQuantity"];
     $itemDate = $_POST["itemDate"];
     $requestType = isset($_POST['requestType']) ? implode(',', $_POST['requestType']) : '';
-    $buyPrice = isset($_POST['buyPrice']) && !empty($_POST['buyPrice']) ? $_POST['buyPrice'] : 'NULL';
-    $borrowPrice = isset($_POST['borrowPrice']) && !empty($_POST['borrowPrice']) ? $_POST['borrowPrice'] : 'NULL';
+
+    // Check if the buy price is set and not empty then turn it into a FLOAT as the database intended
+    $buyPrice = isset($_POST['buyPrice']) && !empty($_POST['buyPrice']) ? number_format($_POST['buyPrice'], 2, '.', '') : 'NULL';
+    
+    // Check if the borrow price is set and not empty then turn it into a FLOAT as the database intended
+    $borrowPrice = isset($_POST['borrowPrice']) && !empty($_POST['borrowPrice']) ? number_format($_POST['borrowPrice'], 2, '.', '') : 'NULL';
+    
+    // Check if the borrow duration is set and not empty 
     $borrowDuration = isset($_POST['borrowDuration']) && !empty($_POST['borrowDuration']) ? $_POST['borrowDuration'] : 'NULL';
 
     // Prepare the SQL query to update the item table
     $sql = "UPDATE item SET
-    ownerName = '$ownerName',
-    itemName = '$itemName',
-    itemDescription = '$itemDescription',
-    category = '$itemCategory',
-    itemAvailability = '$itemAvailability',
-    itemQuantity = $itemQuantity,
-    itemDate = '$itemDate',
-    requestType = '$requestType',
-    buyPrice = $buyPrice,
-    borrowPrice = $borrowPrice,
-    borrowDuration = $borrowDuration
-    WHERE id = $itemID";
+            itemName = '$itemName',
+            itemDescription = '$itemDescription',
+            category = '$itemCategory',
+            itemAvailability = '$itemAvailability',
+            itemQuantity = $itemQuantity,
+            DateTimePosted = '$itemDate',
+            requestType = '$requestType',
+            buyPrice = $buyPrice,
+            borrowPrice = $borrowPrice,
+            borrowDuration = $borrowDuration
+            WHERE itemID = $itemID";
 
     if ($conn->query($sql) === TRUE) {
-        echo "Form data updated successfully.";
+        echo "<script>alert('Item updated successfully')</script>";
+        echo "<script>window.location.href='../ad_items.php'</script>";
+        exit;
     } else {
         echo "Error updating form data: " . $conn->error;
+        exit;
     }
 
     $conn->close();
+
+    // Redirect to the ad_items.php page
+    // Use script succes message
+
     }
 }
 ?>
-?>
+<script>
+// Get the buy checkbox element
+const buyCheckbox = document.getElementById('requestTypeBuy');
+// Get the borrow checkbox element
+const borrowCheckbox = document.getElementById('requestTypeBorrow');
+// Get the buyPriceField element
+const buyPriceField = document.getElementById('buyPriceField');
+// Get the borrowPriceField element
+const borrowPriceField = document.getElementById('borrowPriceField');
+// Get the borrowDurationField element
+const borrowDurationField = document.getElementById('borrowDurationField');
+// Get the buyPrice input element
+const buyPriceInput = document.getElementById('buyPrice');
+// Get the borrowPrice input element
+const borrowPriceInput = document.getElementById('borrowPrice');
+// Get the borrowDuration input element
+const borrowDurationInput = document.getElementById('borrowDuration');
 
+// Function to show the buy price field
+function showBuyPriceField() {
+    buyPriceField.style.display = 'block';
+}
+
+// Function to show the borrow price and duration fields
+function showBorrowFields() {
+    borrowPriceField.style.display = 'block';
+    borrowDurationField.style.display = 'block';
+}
+
+// Function to hide the buy price field
+function hideBuyPriceField() {
+    buyPriceField.style.display = 'none';
+}
+
+// Function to hide the borrow price and duration fields
+function hideBorrowFields() {
+    borrowPriceField.style.display = 'none';
+    borrowDurationField.style.display = 'none';
+}
+
+// Add event listener to the buy checkbox
+buyCheckbox.addEventListener('change', function() {
+    // If buy checkbox is checked, show the buy price field
+    if (this.checked) {
+        showBuyPriceField();
+    } else {
+        // If buy checkbox is unchecked, hide the buy price field
+        hideBuyPriceField();
+    }
+
+    // If borrow checkbox is checked, show the borrow fields
+    if (borrowCheckbox.checked) {
+        showBorrowFields();
+    } else {
+        // If borrow checkbox is unchecked, hide the borrow fields
+        hideBorrowFields();
+    }
+
+    // Set the values of the input fields
+    const buyPrice = <?php echo !empty($itemData['buyPrice']) ? number_format($itemData['buyPrice'], 2, '.', '') : 0; ?>;
+    const borrowPrice = <?php echo !empty($itemData['borrowPrice']) ? number_format($itemData['borrowPrice'], 2, '.', '') : 0; ?>;
+    const borrowDuration = <?php echo !empty($itemData['borrowDuration']) ? $itemData['borrowDuration'] : 0; ?>;
+
+    buyPriceInput.value = buyPrice;
+    borrowPriceInput.value = borrowPrice;
+    borrowDurationInput.value = borrowDuration;
+});
+
+// Add event listener to the borrow checkbox
+borrowCheckbox.addEventListener('change', function() {
+    // If borrow checkbox is checked, show the borrow fields
+    if (this.checked) {
+        showBorrowFields();
+    } else {
+        // If borrow checkbox is unchecked, hide the borrow fields
+        hideBorrowFields();
+    }
+
+    // If buy checkbox is checked, show the buy price field
+    if (buyCheckbox.checked) {
+        showBuyPriceField();
+    } else {
+        // If buy checkbox is unchecked, hide the buy price field
+        hideBuyPriceField();
+    }
+
+    // Set the values of the input fields
+    const buyPrice = <?php echo !empty($itemData['buyPrice']) ? number_format($itemData['buyPrice'], 2, '.', '') : 0; ?>;
+    const borrowPrice = <?php echo !empty($itemData['borrowPrice']) ? number_format($itemData['borrowPrice'], 2, '.', '') : 0; ?>;
+    const borrowDuration = <?php echo !empty($itemData['borrowDuration']) ? $itemData['borrowDuration'] : 0; ?>;
+
+    buyPriceInput.value = buyPrice;
+    borrowPriceInput.value = borrowPrice;
+    borrowDurationInput.value = borrowDuration;
+});
+
+// Initial check to see which checkboxes are checked by default
+if (buyCheckbox.checked) {
+    showBuyPriceField();
+} else {
+    hideBuyPriceField();
+}
+
+if (borrowCheckbox.checked) {
+    showBorrowFields();
+} else {
+    hideBorrowFields();
+}
+
+// Set the initial values of the input fields
+const initialBuyPrice = <?php echo !empty($itemData['buyPrice']) ? number_format($itemData['buyPrice'], 2, '.', '') : 0; ?>;
+const initialBorrowPrice = <?php echo !empty($itemData['borrowPrice']) ? number_format($itemData['borrowPrice'], 2, '.', '') : 0; ?>;
+const initialBorrowDuration = <?php echo !empty($itemData['borrowDuration']) ? $itemData['borrowDuration'] : 0; ?>;
+
+buyPriceInput.value = initialBuyPrice;
+borrowPriceInput.value = initialBorrowPrice;
+borrowDurationInput.value = initialBorrowDuration;
+</script>
 </body>
 </html>
