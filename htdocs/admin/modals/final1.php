@@ -7,7 +7,7 @@ if (isset($_GET['requestId'])) {
 
     // Query to fetch request details, item information, and borrow details from the database
     $query = "SELECT r.*, b.*, i.*, u.username, i.itemID AS item_id, i.itemName AS item_name, i.itemImage_path AS item_image
-              FROM Request r
+              FROM request r
               JOIN borrow b ON r.requestID = b.requestID
               JOIN item i ON r.itemID = i.itemID
               JOIN user u ON r.userID = u.userID
