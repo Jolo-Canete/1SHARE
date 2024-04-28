@@ -31,7 +31,7 @@ if (isset($_GET['requestId'])) {
         $dateMeet = $row['DateTimeMeet'];
         $buyPrice = number_format($row['buyPrice'], 2);
         $quantity = $row['quantity'];
-        $totals = $row['buyPrice'] * $row['quantity']; 
+        $totals = $row['buyPrice'] * $row['quantity'];
         $total =      number_format($totals, 2);
 
         // Output the modal content
@@ -73,6 +73,12 @@ if (isset($_GET['requestId'])) {
             .modal .table .badge {
                 font-size: 0.9rem;
                 padding: 4px 8px;
+            }
+
+            .modal-footer {
+                position: sticky;
+                bottom: 0;
+                background-color: #fff;
             }
         </style>
 
@@ -130,11 +136,12 @@ if (isset($_GET['requestId'])) {
             </div>
         </div>
 
-        <div class="d-flex justify-content-center mt-4">
-            <button type="button" class="btn btn-danger me-2" id="cancelButton">Cancel</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <div class="modal-footer">
+            <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-danger me-2" id="cancelButton">Cancel</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
-
 
         <input type="hidden" id="requestID" value="<?php echo $requestID; ?>">
 <?php

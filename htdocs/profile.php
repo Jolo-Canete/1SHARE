@@ -372,13 +372,17 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                   <div class="card-header"><b>Personal Information</b></div>
                   <div class="card-body">
                     <div class="row mb-3">
-                      <div class="col-sm-6">
+                      <div class="col-sm-4">
                         <label for="firstName" class="form-label text-secondary"><b>First Name</b></label>
                         <div class="form-box" readonly><b><? echo ucfirst($userData['firstName']) ?></b></div>
                       </div>
-                      <div class="col-sm-6">
-                        <label for="lastName" class="form-label text-secondary"><b>Middle Name</b></label>
+                      <div class="col-sm-4">
+                        <label for="middleName" class="form-label text-secondary"><b>Middle Name</b></label>
                         <div class="form-box" readonly><b><? echo ucfirst($userData['middleName']) ?></b></div>
+                      </div>
+                      <div class="col-sm-4">
+                        <label for="lastName" class="form-label text-secondary"><b>Last Name</b></label>
+                        <div class="form-box" readonly><b><? echo ucfirst($userData['lastName']) ?></b></div>
                       </div>
                     </div>
                     <div class="row mb-3">

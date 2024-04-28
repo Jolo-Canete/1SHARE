@@ -81,6 +81,12 @@ if (isset($_GET['requestId'])) {
                 font-size: 0.9rem;
                 padding: 4px 8px;
             }
+
+            .modal-footer {
+                position: sticky;
+                bottom: 0;
+                background-color: #fff;
+            }
         </style>
         <div class="row">
             <!-- Right side: Item picture and request detail -->
@@ -125,7 +131,7 @@ if (isset($_GET['requestId'])) {
 
             <!-- Left side: Requester's items from the barter table -->
             <div class="col-md-6">
-            <h4 class="fw-bold text-dark text-center mb-2">Requester's Item</h4>
+                <h4 class="fw-bold text-dark text-center mb-2">Requester's Item</h4>
                 <div class="row gy-4">
                     <?php
                     // Output item details
@@ -178,14 +184,17 @@ if (isset($_GET['requestId'])) {
                 <span class="bi bi-arrow-right ms-2" style="font-size: 1.5rem;"></span>
             </div>
         </div>
-        <div class="d-flex justify-content-center mt-4">
-            <button type="button" class="btn btn-danger me-2" id="openButton" onclick="redirectToTransaction()">Go To Transaction</button>
 
-            <script>
-                function redirectToTransaction() {
-                    window.location.href = 'tranOngoing.php';
-                }
-            </script> <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <div class="modal-footer">
+            <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-danger me-2" id="openButton" onclick="redirectToTransaction()">Go To Transaction</button>
+
+                <script>
+                    function redirectToTransaction() {
+                        window.location.href = 'tranOngoing.php';
+                    }
+                </script> <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
         </div>
 
 

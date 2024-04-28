@@ -20,8 +20,8 @@ if (isset($_GET['requestId'])) {
     // Your SQL query to fetch data based on requestID and join with buy and item1 tables
     $sql = "SELECT Request.*, item.userID AS ownerID
             FROM Request
-            JOIN buy ON Request.requestID = buy.requestID
-            JOIN item ON buy.item1 = item.itemID
+            JOIN borrow ON Request.requestID = borrow.requestID
+            JOIN item ON borrow.item1 = item.itemID
             WHERE Request.requestID = '$requestID'";
 
     $result = mysqli_query($conn, $sql);
@@ -175,7 +175,7 @@ if (isset($_GET['requestId'])) {
                 formData.append('requestId', requestId);
 
                 $.ajax({
-                    url: 'reciever.php?requestId=' + encodeURIComponent(requestId),
+                    url: 'handed.php?requestId=' + encodeURIComponent(requestId),
                     type: 'POST',
                     data: formData,
                     processData: false,

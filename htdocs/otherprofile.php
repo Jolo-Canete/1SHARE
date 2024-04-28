@@ -42,12 +42,12 @@ if($result ->num_rows>0){
           'dateJoined' => $userRow['dateJoined'],
           'userEmail' => $userRow['userEmail'],
           'status' => $userRow['status'],
+          'userID' => $userRow['userID'],
           'userRating' => $userRow['userRating'],
           'userImage_path' => $userRow['userEmail'],
           'username' => $userRow['username'],
           'password' => $userRow['password'],
           'birthDay' => $userRow['birthDay'],
-          'position' => $userRow['position']
           
       );
   
@@ -208,11 +208,11 @@ $time = $dateTime[1];
       margin-right: 10px;
     }
 
-    .nav-underline {
+    #myTab {
       border-bottom: 2px solid #dee2e6;
     }
 
-    .nav-link {
+    #myTab .nav-link {
       color: #495057;
       font-weight: 600;
       padding: 0.5rem 1rem;
@@ -220,14 +220,14 @@ $time = $dateTime[1];
       transition: color 0.3s ease, border-color 0.3s ease;
     }
 
-    .nav-link.active,
-    .nav-link:hover {
+    #myTab .nav-link.active,
+    #myTab .nav-link:hover {
       color: #212529;
       border-bottom-color: #212529;
     }
 
-    .nav-link.active {
-      color: #fff;
+    #myTab .nav-link.active {
+      color: #212529;
     }
 
     .table-hover tbody tr.table-row:hover {
@@ -242,6 +242,7 @@ $time = $dateTime[1];
     .table-wrapper {
       width: 103%;
       margin: 0 auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .table thead th,
@@ -318,43 +319,20 @@ $time = $dateTime[1];
           </div>
         </div>
 
-        <!--- Report User Modal --->
-        <div class="modal fade" id="reportUserModal" tabindex="-1" aria-labelledby="reportUserModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="reportUserModalLabel">Report User</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <label class="form-label"><b>Please specify your reason for reporting this account</b></label>
-                <textarea class="form-control" aria-label="Report reason"></textarea>
-                <label class="form-label mt-3"><b>Upload a screenshot for evidence/proof</b></label>
-                <div class="input-group">
-                  <input type="file" class="form-control" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Report</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--- End of Report User Modal --->
 
-        <!--- Tab --->
-        <ul class="nav nav-underline mt-4 ms-4 justify-content-between" id="myTab" role="tablist">
-          <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="details" aria-selected="true">Details</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="transaction-tab" data-bs-toggle="tab" data-bs-target="#transaction" type="button" role="tab" aria-controls="transaction" aria-selected="false">Transaction</button>
-          </li>
-          <li class="nav-item" role="presentation">
-            <button class="nav-link" id="itemowned-tab" data-bs-toggle="tab" data-bs-target="#itemowned" type="button" role="tab" aria-controls="itemowned" aria-selected="false">Item Owned</button>
-          </li>
-        </ul>
+       <!--- Tab --->
+       <ul class="nav nav-underline mt-4 ms-4 justify-content-between flex-wrap" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab" aria-controls="details" aria-selected="true">Details</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="transaction-tab" data-bs-toggle="tab" data-bs-target="#transaction" type="button" role="tab" aria-controls="transaction" aria-selected="false">Transaction</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="itemowned-tab" data-bs-toggle="tab" data-bs-target="#itemowned" type="button" role="tab" aria-controls="itemowned" aria-selected="false">Item Owned</button>
+            </li>
+          </ul>
+          <!--- Tab Content --->
 
         <!--- Tab Content --->
 
@@ -368,11 +346,15 @@ $time = $dateTime[1];
                   <div class="card-header"><b>Personal Information</b></div>
                   <div class="card-body">
                     <div class="row mb-3">
-                      <div class="col-sm-6">
+                      <div class="col-sm-4">
                         <label for="firstName" class="form-label text-secondary"><b>First Name</b></label>
                         <div class="form-box" readonly><b><? echo ucfirst($userData['firstName']) ?></b></div>
                       </div>
-                      <div class="col-sm-6">
+                      <div class="col-sm-4">
+                        <label for="middleName" class="form-label text-secondary"><b>Middle Name</b></label>
+                        <div class="form-box" readonly><b><? echo ucfirst($userData['middleName']) ?></b></div>
+                      </div>
+                      <div class="col-sm-4">
                         <label for="lastName" class="form-label text-secondary"><b>Last Name</b></label>
                         <div class="form-box" readonly><b><? echo ucfirst($userData['lastName']) ?></b></div>
                       </div>
@@ -428,7 +410,7 @@ $time = $dateTime[1];
             </div>
           </div>
           <!--- End of Details --->
-
+          <?php include 'reportUser.php';?>
           <!--- Transaction History --->
           <div class="tab-pane fade" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
             <div class="mt-3">
