@@ -113,7 +113,7 @@ include "./adminnav.php";?>
               WHEN bo.OwnerProof IS NOT NULL THEN bo.OwnerProof
               ELSE 'N/A'
           END) AS ReturnProof
-          FROM request r
+          FROM Request r
           JOIN item i ON r.itemID = i.itemID
           LEFT JOIN barter b ON r.requestID = b.requestID
           LEFT JOIN borrow bo ON r.requestID = bo.requestID
