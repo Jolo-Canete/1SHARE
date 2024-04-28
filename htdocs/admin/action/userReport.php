@@ -1,4 +1,4 @@
-<?php 
+<?php  include '../1db.php';
 $userID = $_GET['userReportID'];
 
 // Prepare the SQL query to fetch the userreport details and its foreign keys
@@ -33,8 +33,32 @@ if (!$result) {
     // Fetch the result as an associative array
     $userData = $result->fetch_assoc();
 
+    // explodet the datetime of userReportDate
+    $date = explode(' ', $userData['userReportDate']);
+    $date = $date[0];
+    $time = $date[1];
+
+
+
     // Properly format the birth date
-    $Birthday = date('Y-m-d', strtotime($userData['birthDay']));
+    $ReportDate = date('Y-m-d', strtotime($date));
+
+    // Explode the date and sort it to year, month and day
+    $date = explode('-', $ReportDate);
+    $year = $date[0];
+    $month = $date[1];
+    $day = $date[2];
+
+    // explode the time and sort it to hour, minute and second and make it into an AM/PM format
+    $time = explode(':', $time);
+    $hour = $time[0];
+    $minute = $time[1];
+    $second = $time[2];
+
+    // Format the date to a more readable format
+    $ReportDate = "$month $day, $year";
+
+
 }
 
 
@@ -77,17 +101,17 @@ if (!$result) {
       <div class="card-body">
         <div class="row">
           <div class="col-md-6">
-            <p>Reported By: <span class="report-owner"><?php echo $userData['ReporterfirstName'] . ''. $userData['ReporterlastName'] ?></span></p>
-            <h5>Reported Resident:  <span class="reported-name">John Doe</span></h5>
+            <p>Reported By: <span class="report-owner"><?php echo $userData['reporterFirstName'] . ' '. $userData['reporterLastName'] ?></span></p>
+            <h5>Reported Resident:  <span class="reported-name"> <?php echo $userData['reportedFirstName'] . ' '. $userData['reportedLastName'] ?></span></h5>
             <div class="mb-3">
               <label for="reason" class="form-label">Reason for Report:</label>
-              <textarea class="form-control" id="reason" rows="8" cols="50">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</textarea>
+              <textarea class="form-control" id="reason" rows="8" cols="50"><?php echo $userData['userReportReason'] ?></textarea>
             </div>
           </div>
           <div class="col-md-6">
             <h5>Proof of Violation</h5>
             <img src="https://via.placeholder.com/400x300" alt="Proof Image" class="img-fluid mb-3">
-            <p>Additional details about the proof image.</p>
+            <p>Time of Report </p>
           </div>
         </div>
         <div class="d-flex justify-content-end">
