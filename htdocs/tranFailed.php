@@ -94,7 +94,6 @@ include "nav.php";
             if ($result->num_rows > 0) {
             ?>
 
-                <div class="table-wrapper">
                     <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
                         <thead>
                             <tr class="table-dark">
@@ -122,7 +121,6 @@ include "nav.php";
                             ?>
                         </tbody>
                     </table>
-                </div>
 
             <?php
             } else {

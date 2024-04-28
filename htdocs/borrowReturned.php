@@ -20,8 +20,8 @@ if (isset($_GET['requestId'])) {
     // Your SQL query to fetch data based on requestID and join with buy and item1 tables
     $sql = "SELECT Request.*, item.userID AS ownerID
             FROM Request
-            JOIN buy ON Request.requestID = buy.requestID
-            JOIN item ON buy.item1 = item.itemID
+            JOIN borrow ON Request.requestID = borrow.requestID
+            JOIN item ON borrow.item1 = item.itemID
             WHERE Request.requestID = '$requestID'";
 
     $result = mysqli_query($conn, $sql);
@@ -34,13 +34,13 @@ if (isset($_GET['requestId'])) {
         $row = mysqli_fetch_assoc($result);
         $request_user_id = $row['userID']; // Use 'userID' from the Request table
         $owner_id = $row['ownerID']; // Use 'ownerID' from the item table
-        
+
         if ($user_id != $request_user_id && $user_id != $owner_id) {
             // Perform some action, such as displaying an error message or redirecting to an error page
             echo "Access denied <br>";
             echo "<script>window.location.href = 'tranOngoing.php';</script>";
 
-            exit; 
+            exit;
         }
     }
 }
@@ -93,9 +93,13 @@ if (isset($_GET['requestId'])) {
                                     </div>
                                     <input type="hidden" id="requestId" value="<?php echo isset($_GET['requestId']) ? htmlspecialchars($_GET['requestId']) : ''; ?> " Required>
                                     <div class="mb-3" id="proofSection" style="display:none;">
-                                        <label for="proof" class="form-label"><b>Please provide a proof that you have received or returned the item (Required)</b></label>
+                                        <label for="proof" class="form-label"><b>Please provide a proof that you have received or handed the item (Required)</b></label>
                                         <input class="form-control" type="file" id="proof">
                                         <img src="#" alt="Preview" id="proofPreview" style="display: none;">
+                                    </div>
+                                    
+                                    <div id="no" style="display: none;" >
+                                    <label  for="proof" class="form-label"><b>Please report the user to the barangay.</b></label>
                                     </div>
                                 </form>
                             </div>
@@ -118,6 +122,7 @@ if (isset($_GET['requestId'])) {
             var recYesCheckbox = document.getElementById('recYes');
             var recNoCheckbox = document.getElementById('recNo');
             var proofSection = document.getElementById('proofSection');
+            var noSection = document.getElementById('no');
             var proofInput = document.getElementById('proof');
             var proofPreview = document.getElementById('proofPreview');
 
@@ -125,16 +130,42 @@ if (isset($_GET['requestId'])) {
                 if (this.checked) {
                     recNoCheckbox.checked = false;
                     proofSection.style.display = 'block';
+                    noSection.style.display = 'none';
+
                 } else {
                     proofSection.style.display = 'none';
+                    noSection.style.display = 'block';
+
                 }
             });
 
             recNoCheckbox.addEventListener('change', function() {
                 if (this.checked) {
                     recYesCheckbox.checked = false;
+                    noSection.style.display = 'block';
                     proofSection.style.display = 'none';
                 }
+            });
+
+            function handleReceivedChange() {
+                var receivedValue = $('input[name="received"]:checked').val();
+
+                if (receivedValue === 'No') {
+                    $('#completeBtn').prop('disabled', true);
+                    $('#message').text('To report the user or report to the barangay');
+                    $('#message').show();
+                } else {
+                    $('#completeBtn').prop('disabled', false);
+                    $('#message').hide();
+                }
+            }
+
+            // Initial check on page load
+            handleReceivedChange();
+
+            // Listen for change in the received checkboxes
+            $('input[name="received"]').change(function() {
+                handleReceivedChange();
             });
 
             // Image preview
@@ -175,7 +206,7 @@ if (isset($_GET['requestId'])) {
                 formData.append('requestId', requestId);
 
                 $.ajax({
-                    url: 'reciever.php?requestId=' + encodeURIComponent(requestId),
+                    url: 'returned.php?requestId=' + encodeURIComponent(requestId),
                     type: 'POST',
                     data: formData,
                     processData: false,

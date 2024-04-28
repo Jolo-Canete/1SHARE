@@ -81,6 +81,12 @@ if (isset($_GET['requestId'])) {
                 font-size: 0.9rem;
                 padding: 4px 8px;
             }
+
+            .modal-footer {
+        position: sticky;
+        bottom: 0;
+        background-color: #fff;
+    }
         </style>
         <div class="row">
             <!-- Right side: Item picture and request detail -->
@@ -178,7 +184,8 @@ if (isset($_GET['requestId'])) {
                 <span class="bi bi-arrow-right ms-2" style="font-size: 1.5rem;"></span>
             </div>
         </div>
-        <div class="d-flex justify-content-center mt-4">
+        <div class="modal-footer">
+        <div class="d-flex justify-content-center mt-2">
             <?php
 
             if (isset($_GET['requestId'])) {
@@ -214,13 +221,13 @@ if (isset($_GET['requestId'])) {
                 function redirectToTransaction(requestType, requestID) {
                     switch (requestType) {
                         case 'Barter':
-                            window.open('receivebarter.php?requestId=' + requestID, '_blank');
+                            window.open('receivebarter.php?requestId=' + requestID, );
                             break;
                         case 'Borrow':
-                            window.open('receiveborrow.php?requestId=' + requestID, '_blank');
+                            window.open('receiveborrow.php?requestId=' + requestID, );
                             break;
                         case 'Buy':
-                            window.open('receivebuy.php?requestId=' + requestID, '_blank');
+                            window.open('receivebuy.php?requestId=' + requestID, );
                             break;
                         default:
                             alert('Invalid request type.');
@@ -250,6 +257,7 @@ if (isset($_GET['requestId'])) {
 
 
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
         </div>
 
 

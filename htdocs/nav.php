@@ -280,20 +280,25 @@ include "upper.php";
                                 <button type="button" class="btn text-white position-relative d-flex align-items-center">
                                     <i class="bi bi-bell-fill fs-6"></i>
                                     <?php
+                                     include "notifcount.php";
                                     ?>
+                                     <!-- Display the unread messages count -->
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="<?php echo $total_unread_count == 0 ? 'display: none;' : ''; ?>">
+                                        <?php echo ($total_unread_count > 0) ? $total_unread_count : ''; ?>
+                                        <span class="visually-hidden">unread messages</span>
+                                    </span>
                                 </button>
                             </a>
+                            
                             <div class="dropdown">
                                 <a class="nav-link" data-bs-toggle="dropdown">
                                     <button type="button" class="btn text-white position-relative d-flex align-items-center">
                                         <i class="bi bi-gear-fill fs-6"></i>
-                                        <?php
-                                        include "notifcount.php";
-                                        ?>
+                                       
                                     </button>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark rounded-3 p-2 shadow w-220px">
-                                    <li><a class="dropdown-item rounded-2" href="#">Help</a></li>
+                                    <li><a class="dropdown-item rounded-2" href="help.php">Help</a></li>
                                     <li><a class="dropdown-item rounded-2" href="settings.php">Settings</a></li>
                                     <li>
                                         <hr class="dropdown-divider">

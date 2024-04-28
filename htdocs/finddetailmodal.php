@@ -24,8 +24,13 @@
     width: 350px;
     height: 100px;
     overflow: auto;
-    border: 1px solid #ccc;
+    border: 0px;
+    background-color: #f8f9fa;
+    padding: 10px 12px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
+  
 </style>
 
 <!-- Item Detail Modal -->
@@ -62,9 +67,9 @@
               <img id="modalItemImage" src="your_image_url.jpg" alt="" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%; border-radius: 0px;">
             </div>
 
-              <div id="mobile" class="d-md-none image-container mb-3" style="max-width: 100%; width: 339px; height: 100%; overflow: hidden;">
-                <img id="modalItemImages" src="your_image_url.jpg" alt="" class="img-fluid" style="width: 100%; height: 100%; border-radius: 0px;">
-              </div>
+            <div id="mobile" class="d-md-none image-container mb-3" style="max-width: 100%; width: 339px; height: 100%; overflow: hidden;">
+              <img id="modalItemImages" src="your_image_url.jpg" alt="" class="img-fluid" style="width: 100%; height: 100%; border-radius: 0px;">
+            </div>
 
 
             <div class="col-md-6 ">
@@ -92,8 +97,7 @@
               </div>
 
               <!-- Item Name -->
-              <h5 class="h5" id="modalItemName"></h5>
-
+              <h6 class="display-6 fw-bold" id="modalItemName"></h6>
               <textarea class="scrollable-textarea" id="modalItemDescription" readonly></textarea>
 
               <!-- Other Item Details -->
@@ -172,22 +176,26 @@
               <div class="table-responsive">
                 <table class="table table-borderless table-bg-transparent">
                   <thead>
-                  <tr>
-                      <th class="specs-header" id="specs-header"><b>OVERALL RATING</b><div class="rating">
-                                            <label for="star5"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star5" value="5">
-                                            <label for="star4"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star4" value="4">
-                                            <label for="star3"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star3" value="3">
-                                            <label for="star2"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star2" value="2">
-                                            <label for="star1"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star1" value="1">5/5
-                                        </div> </th>
+                    <tr>
+                      <th class="specs-header" id="specs-header"><b>OVERALL RATING</b>
+                        <div class="rating">
+                          <label for="star5"><i class="fas fa-star"></i></label>
+                          <input type="radio" name="rating" id="star5" value="5">
+                          <label for="star4"><i class="fas fa-star"></i></label>
+                          <input type="radio" name="rating" id="star4" value="4">
+                          <label for="star3"><i class="fas fa-star"></i></label>
+                          <input type="radio" name="rating" id="star3" value="3">
+                          <label for="star2"><i class="fas fa-star"></i></label>
+                          <input type="radio" name="rating" id="star2" value="2">
+                          <label for="star1"><i class="fas fa-star"></i></label>
+                          <input type="radio" name="rating" id="star1" value="1">5/5
+                        </div>
+                      </th>
                     </tr>
                     <tr>
-                      <th class="specs-header" id="specs-header"><b>REVIEW</b> <i class="bi bi-chevron-down" id="review-icon"> </i><th></th> </th>
+                      <th class="specs-header" id="specs-header"><b>REVIEW</b> <i class="bi bi-chevron-down" id="review-icon"> </i>
+                      <th></th>
+                      </th>
                     </tr>
                   </thead>
                   <tbody id="review-table" style="display: none;">
@@ -256,8 +264,7 @@
       </div>
       <!--- End of Modal Footer --->
 
-      <!-- JavaScript to show/hide the fixed button bar -->
-      <!-- JavaScript to show/hide the fixed button bar -->
+
       <script>
         $(document).ready(function() {
           $('.fixed-button-bar').fadeIn();
@@ -477,7 +484,7 @@
         document.getElementById('modalUserID').textContent = response.userID;
         document.getElementById('modalContactNumber').textContent = response.contactNumber;
         const modalOwnerLink = document.getElementById('modalOwnerLink');
-        modalOwnerLink.href = `otherprofile.php?owner=${response.userID}`;
+        modalOwnerLink.href = `otherprofile.php?userID=${response.userID}`;
         document.getElementById('modalOwnerName').textContent = response.username;
         document.getElementById('modalUserImages').textContent = response.userImage_path;;
         modalUserImages.src = `picture/${response.userImage_path}`;
