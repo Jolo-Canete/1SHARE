@@ -1,4 +1,5 @@
 <?php session_start();
+include "./adminnav.php";
 include "./1db.php"; 
 
 // check all errors
@@ -93,7 +94,7 @@ if($status === 'Verified'){
 
 <body>
     <main>
-    <?php include "./adminnav.php";?>
+
         <div class="page-content" id="content">
             <div class="container">
                 <div class="row">
@@ -101,11 +102,11 @@ if($status === 'Verified'){
                     </div>
                     <div class="col-9 d-flex justify-content-end">
                         <div class="dropdown">
-                            <button class="btn border-0 text-dark p-0 mb-3 dropdown-toggle" type="button" style="font-size: 1.3rem;" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <button class="btn border-0 text-dark p-0 mb-3 dropdown-toggle-split" type="button" style="font-size: 1.3rem;" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-gear"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">Help</a></li>
+                                <li><a class="dropdown-item" href="/htdocs/admin/ad_help.php">Help</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="#">Log Out</a></li>
                             </ul>

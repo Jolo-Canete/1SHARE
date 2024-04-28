@@ -1,4 +1,5 @@
 <?php session_start();
+include "./adminnav.php";
 include "./1db.php"; 
 
 // check all errors
@@ -30,6 +31,9 @@ $rows_per_page = 5;
 // Get the current Page from the URL
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
+// Calculate the starting number for this page
+$idCounter = (($currentPage - 1) * $rows_per_page) + 1;
+
 // Formulate the Offset Value
 $offset = ($currentPage > 1) ? ($currentPage - 1) * $rows_per_page : 0;
 
@@ -48,7 +52,7 @@ $itemRow = $result->fetch_assoc();
 $totalRows = $itemRow['total_rows'];
 
 // Prepare the sql statement to get all items or specified items of a user
-$sql = "SELECT i.*, u.username, u.firstName, u.lastName, i.DateTimePosted
+$sql = "SELECT i.itemName, i.itemID, i.DateTimePosted, u.username, u.firstName, u.lastName, i.DateTimePosted, u.userID
         FROM item i
         JOIN user u ON i.userID = u.userID";
 if (!empty($selectedUser)) {
@@ -117,7 +121,7 @@ $result = $conn->query($sql);
 
 <body>
     <main>
-    <!-- <?php include "./adminnav.php" ?> -->
+     <?php ?>
         <div class="page-content" id="content">
             <div class="container">
             <div class="row">
@@ -129,7 +133,7 @@ $result = $conn->query($sql);
                                 <i class="bi bi-gear"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">Help</a></li>
+                                <li><a class="dropdown-item" href="/htdocs/admin/ad_help.php">Help</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="#">Log Out</a></li>
                             </ul>
@@ -177,6 +181,7 @@ $result = $conn->query($sql);
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
+                                            <th> ID</th>
                                             <th>Item Name</th>
                                             <th>Posted By</th>
                                             <th>Item Posted</th>
@@ -192,6 +197,7 @@ $result = $conn->query($sql);
                                                 
                                             // Get the row Count of the table
                                                 $rowCount = 0;
+                                            // Get the 
                                                 // Loop the values
                                                 while($row = $result->fetch_assoc()){
 
@@ -215,6 +221,7 @@ $result = $conn->query($sql);
                                                     // Get the date Time posted and store it
                                                     $date_TimePosted = $row['DateTimePosted'];
                                                     echo '<tr>';
+                                                    echo '<td>'. $idCounter . '</td>';
                                                     echo '<td>'. $new_label . ' ' .$row['itemName'] . '</td>';
                                                     echo '<td>' . $row['firstName'] . ' ' . $row['lastName'] . '</td>';
 
@@ -249,6 +256,7 @@ $result = $conn->query($sql);
 
                                                 // Loop the table pages
                                                 $rowCount++;
+                                                $idCounter++;
                                                 }
                                             } else{
                                                 // Write an empty item message if there are no item that belonged to the user
