@@ -46,295 +46,15 @@ JOIN item i ON re.itemID = i.itemID";
 
 // Check if the $dateOrder is empty
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 if (!empty($dateOrder)) {
     $sql .= ' ' . $order;
 }
 
+// LIMIT the rows
+$sql .= " LIMIT $offset, $rows_per_page";
 
+// RUn the sql
+$result = $conn->query($sql);
 
 
 ?>
@@ -424,7 +144,20 @@ if (!empty($dateOrder)) {
                                         <div class="col-auto">
                                             <div class="dropdown">
                                                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0px;">
-                                                    Date
+                                                <!-- Dynamic naming -->
+                                                <?php
+                                                    if (isset($_POST['dateOrder'])) {
+                                                        if ($_POST['dateOrder'] == ' order by dateTime DESC') {
+                                                            echo 'Latest';
+                                                        } elseif ($_POST['dateOrder'] == 'order by dateTime') {
+                                                            echo 'Oldest';
+                                                        } else {
+                                                            echo 'Date';
+                                                        }
+                                                    } else {
+                                                        echo 'Date';
+                                                    }
+                                                ?>
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                     <li>
@@ -432,15 +165,10 @@ if (!empty($dateOrder)) {
                                                     </li>
                                                     <li><hr class="dropdown-divider"></li>
                                                     <li>
-                                                        <button type="submit"  class="dropdown-item" value="order by dateTime">Oldest</button>
+                                                        <button type="submit"  class="dropdown-item" value="order by dateTime" name="dateOrder">Oldest</button>
                                                     </li>
                                                 </ul>
                                             </div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <form class="d-flex">
-                                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                            </form>
                                         </div>
                                     </div>
                                 </form>
@@ -458,43 +186,127 @@ if (!empty($dateOrder)) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><span class="badge text-bg-success rounded-pill">New</span> Detective Conan</td>
-                                            <td class="fw-bold text-danger">Magnitude 1.2</td>
-                                            <td>April 17, 2024 at 6:56:00 P.M.</td>
-                                            <td class="text-center">
-                                                <a href="./action/itemReport.php" class="btn btn-sm border-0">
-                                                    <i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
+                                        <!-- Run the paged php -->
+                                        <?php 
+                                            // Get the array
+                                            if($result -> num_rows > 0){
+                                                //  Set an empty row count
+                                                $rowCount = 0;
+                                                // Loop through the array
+                                                while($row = $result -> fetch_assoc()){
+                                                // Check if we need to start a new page
+                                                if($rowCount % 5 == 0 && $rowCount !=0) {
+                                                    echo '</tr>';
+                                                }
+                                                // Start a new row if new data is catched
+                                                if($rowCount % 5 == 0){
+                                                    echo '<tr>';
+                                                }  
+                                                    // Get the date Time posted and store it
+                                                    $date_TimePosted = $row['dateTime'];
+                                                    echo '<tr>';
+                                                    echo '<td>' . $row['firstName'] . ' ' . $row['lastName'] . '</td>';
+                                                    echo '<td class="fw-bold text-danger">' . $row['itemName'] . '</td>';
+
+                                                    // Split the Item DateTimePosted
+                                                    $dateTimePosted = explode(" ", $date_TimePosted );
+                                                    $datePosted = $dateTimePosted[0];
+                                                    $timePosted = $dateTimePosted[1];
+
+                                                    // Convert the datePosted into a timestamp
+                                                    $datePostedTimestamp = strtotime($datePosted);
+
+                                                    // Extract the year, month name and day for the Date
+                                                    $dateYear = date('Y', $datePostedTimestamp);
+                                                    $dateMonth = date('F', $datePostedTimestamp);
+                                                    $dateDay = date('j', $datePostedTimestamp);
+                                                    
+                                                    // Split the TIme from dateTimePosted
+                                                    $timeJoinedParts = explode(":", $timePosted);
+                                                    $timeHour = $timeJoinedParts[0];
+                                                    $timeMinute = $timeJoinedParts[1];
+                                                    $timeSecond = $timeJoinedParts[2];
+
+                                                    // Convert the time to an AM PM format
+                                                    $timeAmPm = date('h:i A', strtotime($timeHour . ':' . $timeMinute));
+
+                                                    echo "<td>$dateMonth $dateDay, $dateYear : <i class='bi bi-clock'></i> $timeAmPm</td>";
+                                                    echo '<td class="text-center">';
+                                                    echo '<a href="./action/item_details.php?item_id='.$row['itemID']. '" class="btn btn-sm border-0">';
+                                                    echo '<i class="bi bi-plus-circle" style="font-size: 1.25rem; color: #0D6EFD"></i>';
+                                                    echo '</a>';
+                                                    echo '</td>';
+
+                                                // Loop the table pages
+                                                $rowCount++;
+                                                }
+                                            } else{
+                                                // Write an empty item message if there are no reported items
+                                                echo '<td colspan="4"><div class="alert alert-warning text-center">There are currently no Reported Items, Have a great day.</div></td>';
+                                            }           
+                                        
+                                        ?>
+
                                     </tbody>
                                 </table>
                                 </div>
                                 </div>
                                 <div class="row align-items-center">
-                                    <div class="col">
+                                <div class="col">
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination justify-content-end mb-0">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" aria-label="Previous">
-                                                        <span aria-hidden="true">&laquo;</span>
-                                                    </a>
-                                                </li>
-                                                <li class="page-item active" aria-current="page">
-                                                    <a class="page-link" href="#">1</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">3</a>
-                                                </li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#" aria-label="Next">
-                                                        <span aria-hidden="true">&raquo;</span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </nav>
+                                <!-- Make the Page number dynamic -->
+                                <?php 
+                                    // Round the total pages to the nearest integer
+                                    $total_pages = ceil($totalRows / $rows_per_page);
+
+                                    // Define the number of visible pages
+                                    $visible_pages = 5;
+
+                                    // Determine the start and end page
+                                    $start_page = max(1, min($currentPage - floor($visible_pages / 2), $total_pages - $visible_pages + 1));
+                                    $end_page = min($total_pages, max($currentPage + ceil($visible_pages / 2) - 1, $visible_pages));
+
+                                    // Add the "Previous" button
+                                    if ($currentPage > 1) {
+                                        echo "<li class='page-item'>";
+                                        echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
+                                        echo "<span aria-hidden='true'>&laquo;</span>";
+                                        echo "</a>";
+                                        echo "</li>";
+                                    } else {
+                                        echo "<li class='page-item disabled'>";
+                                        echo "<a class='page-link' href='#' aria-label='Previous'>";
+                                        echo "<span aria-hidden='true'>&laquo;</span>";
+                                        echo "</a>";
+                                        echo "</li>";
+                                    }
+
+                                    // Display the page numbers
+                                    for ($i = $start_page; $i <= $end_page; $i++) {
+                                        $active = ($i == $currentPage) ? 'active' : '';
+                                        echo "<li class='page-item $active' aria-current='page'>";
+                                        echo "<a class='page-link' href='?page=$i'>$i</a>";
+                                        echo "</li>";
+                                    }
+
+                                    // Add the "Next" button
+                                    if ($currentPage < $total_pages) {
+                                        echo "<li class='page-item'>";
+                                        echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "' aria-label='Next'>";
+                                        echo "<span aria-hidden='true'>&raquo;</span>";
+                                        echo "</a>";
+                                        echo "</li>";
+                                    } else {
+                                        echo "<li class='page-item disabled'>";
+                                        echo "<a class='page-link' href='#' aria-label='Next'>";
+                                        echo "<span aria-hidden='true'>&raquo;</span>";
+                                        echo "</a>";
+                                        echo "</li>";
+                                    }                                                
+                                ?>              
+                                        </ul>
+                                    </nav>
                                     </div>
                                 </div>
 
