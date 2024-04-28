@@ -1,7 +1,19 @@
-<?php include "./1db.php"; 
+<?php session_start();
+include "./1db.php"; 
 
-// Check errors
+// check all errors
 ini_set('display_errors', 1);
+
+// Check if the last visit time is set in the session
+if (isset($_SESSION['last_visit_time'])) {
+    $last_visit_time = $_SESSION['last_visit_time'];
+} else {
+    $last_visit_time = 0; // Set a default value for the first visit
+}
+
+// Update the last visit time in the session
+$_SESSION['last_visit_time'] = time();
+
 
 // Get the selected user from the dropdown
 if (isset($_POST['user'])) {
@@ -191,10 +203,19 @@ $result = $conn->query($sql);
                                                 if($rowCount % 5 == 0){
                                                     echo '<tr>';
                                                 }  
+                                                // Get the date Time posted and store it
+                                                $date_TimePosted = strtotime($row['DateTimePosted']);
+                                                
+                                                // Check if the row was created/updated after the last visit time
+                                                if ($date_TimePosted > $last_visit_time) {
+                                                    $new_label = '<span class="badge text-bg-success rounded-pill">New</span>';
+                                                } else {
+                                                    $new_label = '';
+                                                }
                                                     // Get the date Time posted and store it
                                                     $date_TimePosted = $row['DateTimePosted'];
                                                     echo '<tr>';
-                                                    echo '<td>' .$row['itemName'] . '</td>';
+                                                    echo '<td>'. $new_label . ' ' .$row['itemName'] . '</td>';
                                                     echo '<td>' . $row['firstName'] . ' ' . $row['lastName'] . '</td>';
 
                                                     // Split the Item DateTimePosted
@@ -240,53 +261,58 @@ $result = $conn->query($sql);
                                 </div>
                                 </div>
                                 <div class="row align-items-center">
-                                <div class="col-3">
-                            </div>
                                     <div class="col">
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination justify-content-end mb-0">
                                                 <!-- Make the Page number dynamic -->
                                                 <?php 
-                                                // Round the total pages to the nearest integer
+                                                    // Round the total pages to the nearest integer
                                                     $total_pages = ceil($totalRows / $rows_per_page);
 
-                                                // Add the "Previous" button
-                                                if ($currentPage > 1) {
-                                                    echo "<li class='page-item'>";
-                                                    echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
-                                                    echo "<span aria-hidden='true'>&laquo;</span>";
-                                                    echo "</a>";
-                                                    echo "</li>";
-                                                } else {
-                                                    echo "<li class='page-item disabled'>";
-                                                    echo "<a class='page-link' href='#' aria-label='Previous'>";
-                                                    echo "<span aria-hidden='true'>&laquo;</span>";
-                                                    echo "</a>";
-                                                    echo "</li>";
-                                                }
+                                                    // Define the number of visible pages
+                                                    $visible_pages = 5;
 
-                                                // Display the page numbers
-                                                for ($i = 1; $i <= $total_pages; $i++) {
-                                                    $active = ($i == $currentPage) ? 'active' : '';
-                                                    echo "<li class='page-item $active' aria-current='page'>";
-                                                    echo "<a class='page-link' href='?page=$i'>$i</a>";
-                                                    echo "</li>";
-                                                }
+                                                    // Determine the start and end page
+                                                    $start_page = max(1, min($currentPage - floor($visible_pages / 2), $total_pages - $visible_pages + 1));
+                                                    $end_page = min($total_pages, max($currentPage + ceil($visible_pages / 2) - 1, $visible_pages));
 
-                                                // Add the "Next" button
-                                                if ($currentPage < $total_pages) {
-                                                    echo "<li class='page-item'>";
-                                                    echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "&user=$selectedUser' aria-label='Next'>";
-                                                    echo "<span aria-hidden='true'>&raquo;</span>";
-                                                    echo "</a>";
-                                                    echo "</li>";
-                                                } else {
-                                                    echo "<li class='page-item disabled'>";
-                                                    echo "<a class='page-link' href='#' aria-label='Next'>";
-                                                    echo "<span aria-hidden='true'>&raquo;</span>";
-                                                    echo "</a>";
-                                                    echo "</li>";
-                                                }                                                
+                                                    // Add the "Previous" button
+                                                    if ($currentPage > 1) {
+                                                        echo "<li class='page-item'>";
+                                                        echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
+                                                        echo "<span aria-hidden='true'>&laquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    } else {
+                                                        echo "<li class='page-item disabled'>";
+                                                        echo "<a class='page-link' href='#' aria-label='Previous'>";
+                                                        echo "<span aria-hidden='true'>&laquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    }
+
+                                                    // Display the page numbers
+                                                    for ($i = $start_page; $i <= $end_page; $i++) {
+                                                        $active = ($i == $currentPage) ? 'active' : '';
+                                                        echo "<li class='page-item $active' aria-current='page'>";
+                                                        echo "<a class='page-link' href='?page=$i'>$i</a>";
+                                                        echo "</li>";
+                                                    }
+
+                                                    // Add the "Next" button
+                                                    if ($currentPage < $total_pages) {
+                                                        echo "<li class='page-item'>";
+                                                        echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "' aria-label='Next'>";
+                                                        echo "<span aria-hidden='true'>&raquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    } else {
+                                                        echo "<li class='page-item disabled'>";
+                                                        echo "<a class='page-link' href='#' aria-label='Next'>";
+                                                        echo "<span aria-hidden='true'>&raquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    }                                                
                                                 ?>
                                             </ul>
                                         </nav>

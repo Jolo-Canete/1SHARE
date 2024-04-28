@@ -9,7 +9,7 @@ if (isset($_GET['requestId'])) {
     $query = "SELECT r.*, b.*, i.*, u.username, i1.itemID AS item1_id, i1.itemName AS item1_name, i1.itemImage_path AS item1_image, 
                      i2.itemID AS item2_id, i2.itemName AS item2_name, i2.itemImage_path AS item2_image, 
                      i3.itemID AS item3_id, i3.itemName AS item3_name, i3.itemImage_path AS item3_image
-              FROM Request r
+              FROM request r
               JOIN barter b ON r.requestID = b.requestID
               JOIN item i ON r.itemID = i.itemID
               JOIN user u ON r.userID = u.userID

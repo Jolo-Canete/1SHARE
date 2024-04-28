@@ -8,7 +8,10 @@
         "notif",
         "notifcount",
         "purok",
+        "reporrteditem",
+        "reporteditem",
         "servername",
-        "userlogin"
+        "userlogin",
+        "userreport"
     ]
 }
