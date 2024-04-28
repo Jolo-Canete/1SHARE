@@ -4,7 +4,8 @@ $userID = $_GET['userReportID'];
 // Prepare the SQL query to fetch the userreport details and its foreign keys
 $sql = "SELECT ur.*, 
         u1.firstName as reporterFirstName, u1.lastName as reporterLastName, 
-        u2.firstName as reportedFirstName, u2.lastName as reportedLastName
+        u2.firstName as reportedFirstName, u2.lastName as reportedLastName,
+        u2.userReports as userReports, u2.userID as u2userID
         FROM userreport ur
         JOIN user u1 ON ur.userReporter = u1.userID
         JOIN user u2 ON ur.userReported = u2.userID
@@ -33,35 +34,42 @@ if (!$result) {
     // Fetch the result as an associative array
     $userData = $result->fetch_assoc();
 
-    // explodet the datetime of userReportDate
-    $date = explode(' ', $userData['userReportDate']);
-    $date = $date[0];
-    $time = $date[1];
+    $userReportDate = $userData['userReportDate'];
 
+    // seperate the date and time
+    $ReportDate = date('Y-m-d', strtotime($userReportDate));
+    $time = date('H:i:s', strtotime($userReportDate));
 
-
-    // Properly format the birth date
-    $ReportDate = date('Y-m-d', strtotime($date));
-
-    // Explode the date and sort it to year, month and day
+    // Sort the date to month, day and year
     $date = explode('-', $ReportDate);
     $year = $date[0];
     $month = $date[1];
     $day = $date[2];
 
-    // explode the time and sort it to hour, minute and second and make it into an AM/PM format
+    // I want the month and day to readable
+    $monthName = date('F', mktime(0, 0, 0, $month, 10));
+    $dayName = date('l', mktime(0, 0, 0, $month, $day, $year));
+
+    $ReportDate = "$monthName $day, $year";
+
+    // Sort the time to hour, minute and second and use AM/PM
     $time = explode(':', $time);
     $hour = $time[0];
     $minute = $time[1];
     $second = $time[2];
 
-    // Format the date to a more readable format
-    $ReportDate = "$month $day, $year";
-
+    if ($hour > 12) {
+        $hour = $hour - 12;
+        $time = "$hour:$minute PM";
+    } else {
+        $time = "$hour:$minute AM";
+    }
 
 }
 
-
+  // Make the image src dynamic
+  $base_dir = '/htdocs/';
+  $imagePath = $base_dir . 'reporteduser/' . $userData['userReportImage_path'];
 
 ?>
 
@@ -72,6 +80,7 @@ if (!$result) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>User Report</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
   <style>
     .reported-name {
       color: red;
@@ -109,22 +118,107 @@ if (!$result) {
             </div>
           </div>
           <div class="col-md-6">
-            <h5>Proof of Violation</h5>
-            <img src="https://via.placeholder.com/400x300" alt="Proof Image" class="img-fluid mb-3">
-            <p>Time of Report </p>
+          <h5>Proof of Violation</h5>
+          <img src="<?php echo $imagePath ?>" height="400px" width="400px" alt="Proof Image" class="img-fluid mb-3">
+          <div class="d-flex align-items-center">
+            <i class="bi bi-calendar3 me-2"></i>
+            <span>
+              <?php echo $ReportDate; ?>
+            </span>
+          </div>
+          <div class="d-flex align-items-center">
+            <i class="bi bi-clock me-2"></i>
+            <span>
+              <?php echo $time; ?>
+            </span>
           </div>
         </div>
+        </div>
         <div class="d-flex justify-content-end">
-        <button type="button" class="btn btn-warning me-2">Warn User</button>
-        <a class="btn btn-secondary me-4" href="#">Deny Request</a>
-        <a class="btn btn-primary me-1" href="../ad_userReport.php">Return</a>
-
-
+        <form action="" method="post">
+        <button type="submit" name="flagUser" class="btn btn-warning me-2">Flag User</button>
+        <button type="submit" class="btn btn-secondary me-4" name="denyFlag">Deny Request</button>
+          <a class="btn btn-primary me-1" href="../ad_userReport.php">Return</a>
+        </form>
 
         </div>
       </div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<?php 
+// SERVER REQUEST METHOD
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Check if the user clicked the flag user button
+    if (isset($_POST['flagUser'])) {
+      
+      // Get the userID of the reported user
+      $u2userID = $userData['u2userID'];
+
+      $addUserReport = $userData['userReports'] + 1;
+
+      // Prepare the SQL query to update the user report and to delete the user report and add foreign key checks before deleting
+      $sql = "SET FOREIGN_KEY_CHECKS=0;
+              UPDATE user SET userReports = $addUserReport WHERE userID = $u2userID;
+              DELETE FROM userreport WHERE userReportID = $userID;
+              SET FOREIGN_KEY_CHECKS=1;";
+            
+      // Execute the SQL query
+      $result = $conn->multi_query($sql);
+
+
+
+      // Check if the query was successful
+      if (!$result) {
+
+          // Display an error message and redirect the user
+          echo "<script>alert('Error updating Action, please try again')</script>";
+          echo "<script>window.location.href='../ad_userReport.php'</script>";
+          exit;
+
+      } else {
+
+          // Display a success message and redirect the user
+          echo "<script>alert('User has been successfully flagged')</script>";
+          echo "<script>window.location.href='../ad_userReport.php'</script>";
+      }   
+    }
+
+
+    // Check if the user clicked the deny request button
+    if (isset($_POST['denyFlag'])) {
+
+          
+      // Prepare the SQL query to delete the user report and add foreign key checks before deleting
+      $sql = "SET FOREIGN_KEY_CHECKS=0;
+              DELETE FROM userreport WHERE userReportID = $userID;
+              SET FOREIGN_KEY_CHECKS=1;";
+
+      // Execute the SQL query
+      $result = $conn->multi_query($sql);
+
+            // Check if the query was successful
+            if (!$result) {
+
+              // Display an error message and redirect the user
+              echo "<script>alert('Error updating Action, please try again')</script>";
+              echo "<script>window.location.href='../ad_userReport.php'</script>";
+              exit;
+    
+          } else {
+              // Display a success message and redirect the user
+              echo "<script>alert('Successfully Denied Residents Report ')</script>";
+              echo "<script>window.location.href='../ad_userReport.php'</script>";
+              exit;
+          }  
+        }
+      }
+
+?>
+
+
+
+
 </body>
 </html>

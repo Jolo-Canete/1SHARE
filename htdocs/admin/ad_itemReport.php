@@ -39,7 +39,7 @@ if($dateOrder == 'order by dateTime DESC'){
     $offset = ($currentPage > 1) ? ($currentPage - 1) * $rows_per_page : 0; 
 
 // Get the total rows of the reporrteditem
-$sql = "SELECT COUNT(*) AS total_rows FROM reporteditem";
+$sql = "SELECT COUNT(*) AS total_rows FROM reportedItem";
 
 
 // Get the sql results
@@ -52,7 +52,7 @@ $totalRows = $itemRow['total_rows'];
 
 // Prepare the sql statement to get all the data from user,item and reporteditem
 $sql = "SELECT re.*, u.firstName, u.lastName,  i.itemName
-FROM reporteditem re
+FROM reportedItem re
 JOIN user u ON re.userID = u.userID
 JOIN item i ON re.itemID = i.itemID";
 
@@ -159,7 +159,7 @@ $result = $conn->query($sql);
                                                 <!-- Dynamic naming -->
                                                 <?php
                                                     if (isset($_POST['dateOrder'])) {
-                                                        if ($_POST['dateOrder'] == ' order by dateTime DESC') {
+                                                        if ($_POST['dateOrder'] == 'order by dateTime DESC') {
                                                             echo 'Latest';
                                                         } elseif ($_POST['dateOrder'] == 'order by dateTime') {
                                                             echo 'Oldest';
