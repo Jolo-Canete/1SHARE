@@ -158,45 +158,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       $addUserReport = $userData['userReports'] + 1;
 
-      // Prepare the SQL query to update the user report and to delete the user report and add foreign key checks before deleting
-      $sql = "SET FOREIGN_KEY_CHECKS=0;
-              UPDATE user SET userReports = $addUserReport WHERE userID = $u2userID;
-              DELETE FROM userreport WHERE userReportID = $userID;
-              SET FOREIGN_KEY_CHECKS=1;";
-            
-      // Execute the SQL query
-      $result = $conn->multi_query($sql);
+      try {
 
+          // Delete the image file
+          $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/htdocs/reporteduser/' . $itemData['userReportImage_path'];
+          if (file_exists($imagePath)) {
+              unlink($imagePath);
+          } else{
+            echo "<script>alert('The Image Cannot be deleted de to uncertain problems')</script>";
+          }
 
+          // Update the user reports
+          $conn->query("UPDATE user SET userReports = $addUserReport WHERE userID = $u2userID");
 
-      // Check if the query was successful
-      if (!$result) {
+          // Delete the user report
+          $conn->query("DELETE FROM userreport WHERE userReportID = $userID");
+
+          // Commit the transaction
+          $conn->commit();
+
+          // Display a success message and redirect the user
+          echo "<script>alert('User has been successfully flagged')</script>";
+          echo "<script>window.location.href='../ad_userReport.php'</script>";
+      } catch (Exception $e) {
+          // Rollback the transaction on failure
+          $conn->rollback();
 
           // Display an error message and redirect the user
           echo "<script>alert('Error updating Action, please try again')</script>";
           echo "<script>window.location.href='../ad_userReport.php'</script>";
           exit;
-
-      } else {
-
-          // Display a success message and redirect the user
-          echo "<script>alert('User has been successfully flagged')</script>";
-          echo "<script>window.location.href='../ad_userReport.php'</script>";
-      }   
+      }
     }
 
 
     // Check if the user clicked the deny request button
     if (isset($_POST['denyFlag'])) {
 
-          
+      // Delete the image file
+        $imagePath = $_SERVER['DOCUMENT_ROOT'] . '/htdocs/reporteduser/' . $itemData['userReportImage_path'];
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
+        } else{
+          echo "<script>alert('The Image Cannot be deleted de to uncertain problems')</script>";
+          return;
+        }
+
+
       // Prepare the SQL query to delete the user report and add foreign key checks before deleting
-      $sql = "SET FOREIGN_KEY_CHECKS=0;
-              DELETE FROM userreport WHERE userReportID = $userID;
-              SET FOREIGN_KEY_CHECKS=1;";
+      $sql = "DELETE FROM userreport WHERE userReportID = $userID";
 
       // Execute the SQL query
-      $result = $conn->multi_query($sql);
+      $result = $conn->query($sql);
 
             // Check if the query was successful
             if (!$result) {
