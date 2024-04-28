@@ -1,3 +1,46 @@
+<?php 
+$userID = $_GET['userReportID'];
+
+// Prepare the SQL query to fetch the userreport details and its foreign keys
+$sql = "SELECT ur.*, 
+        u1.firstName as reporterFirstName, u1.lastName as reporterLastName, 
+        u2.firstName as reportedFirstName, u2.lastName as reportedLastName
+        FROM userreport ur
+        JOIN user u1 ON ur.userReporter = u1.userID
+        JOIN user u2 ON ur.userReported = u2.userID
+        WHERE ur.userReportID = $userID";
+
+// Execute the SQL query
+$result = $conn->query($sql);
+
+// Check if the query was successful
+if (!$result) {
+
+    // Display an error message and redirect the user
+    echo "<script>alert('Error updating Action, please try again')</script>";
+    echo "<script>window.location.href='../ad_userReport.php'</script>";
+    exit;
+
+// Check if the query returned any rows
+} elseif($result->num_rows == 0) {
+
+    // Display a message indicating that the user was not found and redirect the user
+    echo "<script>alert('User not found')</script>";
+    echo "<script>window.location.href='../ad_userReport.php'</script>";
+    exit;
+    
+} else {
+    // Fetch the result as an associative array
+    $userData = $result->fetch_assoc();
+
+    // Properly format the birth date
+    $Birthday = date('Y-m-d', strtotime($userData['birthDay']));
+}
+
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +77,7 @@
       <div class="card-body">
         <div class="row">
           <div class="col-md-6">
-            <p>Reported By: <span class="report-owner">Nikola Jokić</span></p>
+            <p>Reported By: <span class="report-owner"><?php echo $userData['ReporterfirstName'] . ''. $userData['ReporterlastName'] ?></span></p>
             <h5>Reported Resident:  <span class="reported-name">John Doe</span></h5>
             <div class="mb-3">
               <label for="reason" class="form-label">Reason for Report:</label>
