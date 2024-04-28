@@ -437,7 +437,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     exit;
 }
 
-    // If the user is deleted
+    // If the admin wants to delete the INverified user
     if(isset($_POST['deleteUser'])) {
         $sqlDelete = "DELETE FROM user WHERE userID = $userID";
 
