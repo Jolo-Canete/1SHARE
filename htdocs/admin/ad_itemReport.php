@@ -74,9 +74,11 @@ $result = $conn->query($sql);
 <html lang="en">
 
 <head>
-    <title>Admin Item Report</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Report</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
     <style>
         #dropdownMenuButton.dropdown-toggle::after {
@@ -253,7 +255,7 @@ $result = $conn->query($sql);
 
                                                     echo "<td>$dateMonth $dateDay, $dateYear : <i class='bi bi-clock'></i> $timeAmPm</td>";
                                                     echo '<td class="text-center">';
-                                                    echo '<a href="./action/itemReport.php?item_id='.$row['itemID']. '" class="btn btn-sm border-0">';
+                                                    echo '<a href="./action/itemReport.php?item_id='.$row['reportedItemID']. '" class="btn btn-sm border-0">';
                                                     echo '<i class="bi bi-plus-circle" style="font-size: 1.25rem; color: #0D6EFD"></i>';
                                                     echo '</a>';
                                                     echo '</td>';
