@@ -75,14 +75,6 @@ include "./adminnav.php";?>
             <br>
             <div class="row mb-3">
                 <div class="col-md-3">
-                    <form class="input-group mb-3">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-secondary" type="button">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
-                </div>
-                <div class="col-md-9 d-flex justify-content-end">
                     <button type="button" class="btn btn-outline-secondary p-2 mb-3 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Sort by Request Type
                     </button>
@@ -92,6 +84,18 @@ include "./adminnav.php";?>
                         <li><a class="dropdown-item" href="#" data-sort-type="barter">Barter</a></li>
                         <li><a class="dropdown-item" href="#" data-sort-type="buy">Buy</a></li>
                     </ul>
+                </div>
+                <div class="col-md-9 d-flex justify-content-end">
+                <div class="dropdown">
+                            <button class="btn border-0 text-dark p-0 mb-3 dropdown-toggle" type="button" style="font-size: 1.3rem;" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
+                                <li><a class="dropdown-item" href="/htdocs/admin/ad_help.php">Help</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#">Log Out</a></li>
+                            </ul>
+                        </div>
                 </div>
                 <?php
 

@@ -35,6 +35,10 @@ if($dateOrder == 'order by dateTime DESC'){
 // get the current number page from the URL
     $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
+// Calculate the starting number for this page
+$idCounter = (($currentPage - 1) * $rows_per_page) + 1;
+
+
 // Formulate the offset value
     $offset = ($currentPage > 1) ? ($currentPage - 1) * $rows_per_page : 0; 
 
@@ -139,7 +143,7 @@ $result = $conn->query($sql);
                                 <i class="bi bi-gear"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">Help</a></li>
+                                <li><a class="dropdown-item" href="/htdocs/admin/ad_help.php">Help</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="#">Log Out</a></li>
                             </ul>
@@ -193,6 +197,7 @@ $result = $conn->query($sql);
                                     <thead>
                                         
                                         <tr>
+                                            <th> </th>
                                             <th>Reported By</th>
                                             <th>Item Reported</th>
                                             <th>Date Reported</th>
@@ -228,6 +233,7 @@ $result = $conn->query($sql);
                                                     // Get the date Time posted and store it
                                                     $date_TimePosted = $row['dateTime'];
                                                     echo '<tr>';
+                                                    echo '<td>' . $idCounter++ . '</td>';
                                                     echo '<td>' . $new_label . ' ' . $row['firstName'] . ' ' . $row['lastName'] . '</td>';
                                                     echo '<td class="fw-bold text-danger">' . $row['itemName'] . '</td>';
 

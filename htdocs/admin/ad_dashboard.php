@@ -1,4 +1,6 @@
-<?php include "./1db.php" ?>
+<?php 
+include "./adminnav.php";
+include "./1db.php"; ?>
 
 <!-- Php  Function Scripts -->
 <? 
@@ -83,7 +85,6 @@ if($resultItems ->num_rows > 0) {
 
 <body>
     <main>
-    <?php include "./adminnav.php" ?>
         <div class="page-content" id="content">
             <div class="container">
                 <div class="row">
@@ -96,7 +97,7 @@ if($resultItems ->num_rows > 0) {
                                 <i class="bi bi-gear"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">Help</a></li>
+                                <li><a class="dropdown-item" href="/htdocs/admin/ad_help.php">Help</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
