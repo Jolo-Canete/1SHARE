@@ -341,6 +341,7 @@ include('1db.php');
 
                 $conn->commit();
                 echo ' <div class="alert alert-success mt-">User has been recorded successfully you can now Log in.</div>,';
+                return;
             } else {
                 // Rollback the transaction if there is an error in the first query
                 $conn->rollback();
