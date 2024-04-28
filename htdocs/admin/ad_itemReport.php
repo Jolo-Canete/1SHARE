@@ -1,7 +1,19 @@
-<?php include "./1db.php";
+<?php session_start();
+include "./1db.php"; 
 
 // check all errors
 ini_set('display_errors', 1);
+
+// Check if the last visit time is set in the session
+if (isset($_SESSION['last_visit_time'])) {
+    $last_visit_time = $_SESSION['last_visit_time'];
+} else {
+    $last_visit_time = 0; // Set a default value for the first visit
+}
+
+// Update the last visit time in the session
+$_SESSION['last_visit_time'] = time();
+
 
 // Get the button form
 $dateOrder = isset($_POST['dateOrder']) ? $_POST['dateOrder'] : '';
@@ -198,14 +210,23 @@ $result = $conn->query($sql);
                                                 if($rowCount % 5 == 0 && $rowCount !=0) {
                                                     echo '</tr>';
                                                 }
-                                                // Start a new row if new data is catched
+                                                // Start a new row if new data is caught
                                                 if($rowCount % 5 == 0){
                                                     echo '<tr>';
                                                 }  
+                                                // Get the date Time posted and store it
+                                                $date_TimePosted = strtotime($row['dateTime']);
+                                                
+                                                // Check if the row was created/updated after the last visit time
+                                                if ($date_TimePosted > $last_visit_time) {
+                                                    $new_label = '<span class="badge text-bg-success rounded-pill">New</span>';
+                                                } else {
+                                                    $new_label = '';
+                                                }
                                                     // Get the date Time posted and store it
                                                     $date_TimePosted = $row['dateTime'];
                                                     echo '<tr>';
-                                                    echo '<td>' . $row['firstName'] . ' ' . $row['lastName'] . '</td>';
+                                                    echo '<td>' . $new_label . ' ' . $row['firstName'] . ' ' . $row['lastName'] . '</td>';
                                                     echo '<td class="fw-bold text-danger">' . $row['itemName'] . '</td>';
 
                                                     // Split the Item DateTimePosted
@@ -232,7 +253,7 @@ $result = $conn->query($sql);
 
                                                     echo "<td>$dateMonth $dateDay, $dateYear : <i class='bi bi-clock'></i> $timeAmPm</td>";
                                                     echo '<td class="text-center">';
-                                                    echo '<a href="./action/item_details.php?item_id='.$row['itemID']. '" class="btn btn-sm border-0">';
+                                                    echo '<a href="./action/itemReport.php?item_id='.$row['itemID']. '" class="btn btn-sm border-0">';
                                                     echo '<i class="bi bi-plus-circle" style="font-size: 1.25rem; color: #0D6EFD"></i>';
                                                     echo '</a>';
                                                     echo '</td>';
@@ -243,70 +264,68 @@ $result = $conn->query($sql);
                                             } else{
                                                 // Write an empty item message if there are no reported items
                                                 echo '<td colspan="4"><div class="alert alert-warning text-center">There are currently no Reported Items, Have a great day.</div></td>';
-                                            }           
-                                        
+                                            }            
                                         ?>
-
                                     </tbody>
                                 </table>
                                 </div>
                                 </div>
                                 <div class="row align-items-center">
-                                <div class="col">
+                                    <div class="col">
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination justify-content-end mb-0">
-                                <!-- Make the Page number dynamic -->
-                                <?php 
-                                    // Round the total pages to the nearest integer
-                                    $total_pages = ceil($totalRows / $rows_per_page);
+                                                <!-- Make the Page number dynamic -->
+                                                <?php 
+                                                    // Round the total pages to the nearest integer
+                                                    $total_pages = ceil($totalRows / $rows_per_page);
 
-                                    // Define the number of visible pages
-                                    $visible_pages = 5;
+                                                    // Define the number of visible pages
+                                                    $visible_pages = 5;
 
-                                    // Determine the start and end page
-                                    $start_page = max(1, min($currentPage - floor($visible_pages / 2), $total_pages - $visible_pages + 1));
-                                    $end_page = min($total_pages, max($currentPage + ceil($visible_pages / 2) - 1, $visible_pages));
+                                                    // Determine the start and end page
+                                                    $start_page = max(1, min($currentPage - floor($visible_pages / 2), $total_pages - $visible_pages + 1));
+                                                    $end_page = min($total_pages, max($currentPage + ceil($visible_pages / 2) - 1, $visible_pages));
 
-                                    // Add the "Previous" button
-                                    if ($currentPage > 1) {
-                                        echo "<li class='page-item'>";
-                                        echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
-                                        echo "<span aria-hidden='true'>&laquo;</span>";
-                                        echo "</a>";
-                                        echo "</li>";
-                                    } else {
-                                        echo "<li class='page-item disabled'>";
-                                        echo "<a class='page-link' href='#' aria-label='Previous'>";
-                                        echo "<span aria-hidden='true'>&laquo;</span>";
-                                        echo "</a>";
-                                        echo "</li>";
-                                    }
+                                                    // Add the "Previous" button
+                                                    if ($currentPage > 1) {
+                                                        echo "<li class='page-item'>";
+                                                        echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
+                                                        echo "<span aria-hidden='true'>&laquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    } else {
+                                                        echo "<li class='page-item disabled'>";
+                                                        echo "<a class='page-link' href='#' aria-label='Previous'>";
+                                                        echo "<span aria-hidden='true'>&laquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    }
 
-                                    // Display the page numbers
-                                    for ($i = $start_page; $i <= $end_page; $i++) {
-                                        $active = ($i == $currentPage) ? 'active' : '';
-                                        echo "<li class='page-item $active' aria-current='page'>";
-                                        echo "<a class='page-link' href='?page=$i'>$i</a>";
-                                        echo "</li>";
-                                    }
+                                                    // Display the page numbers
+                                                    for ($i = $start_page; $i <= $end_page; $i++) {
+                                                        $active = ($i == $currentPage) ? 'active' : '';
+                                                        echo "<li class='page-item $active' aria-current='page'>";
+                                                        echo "<a class='page-link' href='?page=$i'>$i</a>";
+                                                        echo "</li>";
+                                                    }
 
-                                    // Add the "Next" button
-                                    if ($currentPage < $total_pages) {
-                                        echo "<li class='page-item'>";
-                                        echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "' aria-label='Next'>";
-                                        echo "<span aria-hidden='true'>&raquo;</span>";
-                                        echo "</a>";
-                                        echo "</li>";
-                                    } else {
-                                        echo "<li class='page-item disabled'>";
-                                        echo "<a class='page-link' href='#' aria-label='Next'>";
-                                        echo "<span aria-hidden='true'>&raquo;</span>";
-                                        echo "</a>";
-                                        echo "</li>";
-                                    }                                                
-                                ?>              
-                                        </ul>
-                                    </nav>
+                                                    // Add the "Next" button
+                                                    if ($currentPage < $total_pages) {
+                                                        echo "<li class='page-item'>";
+                                                        echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "' aria-label='Next'>";
+                                                        echo "<span aria-hidden='true'>&raquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    } else {
+                                                        echo "<li class='page-item disabled'>";
+                                                        echo "<a class='page-link' href='#' aria-label='Next'>";
+                                                        echo "<span aria-hidden='true'>&raquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    }                                                
+                                                ?>              
+                                            </ul>
+                                        </nav>
                                     </div>
                                 </div>
 

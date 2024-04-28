@@ -1,6 +1,19 @@
+<?php session_start(); ?>
+
 <?php 
 include "./1db.php"; 
 include "./adminnav.php";
+
+// Check if the last visit time is set in the session
+if (isset($_SESSION['last_visit_time'])) {
+    $last_visit_time = $_SESSION['last_visit_time'];
+} else {
+    $last_visit_time = 0; // Set a default value for the first visit
+}
+
+// Update the last visit time in the session
+$_SESSION['last_visit_time'] = time();
+
 
 // Check errors
 ini_set('display_errors', 1);
@@ -124,15 +137,25 @@ $resultVerified = $conn->query($sqlUnverified);
                                             if($rowCount % 5 == 0 && $rowCount !=0) {
                                                 echo '</tr>';
                                             }
-                                            // Start a new row if new data is catched
+                                            // Start a new row if new data is caught
                                             if($rowCount % 5 == 0){
                                                 '<tr>';
+                                            }
+
+                                            // Get the last visit time
+                                            $date_TimePosted = strtotime($rowVerified['dateJoined']);
+                                                    
+                                            // Check if the row was created/updated after the last visit time
+                                            if ($date_TimePosted > $last_visit_time) {
+                                                $new_label = '<span class="badge text-bg-success rounded-pill">New</span>';
+                                            } else {
+                                                $new_label = '';
                                             }
 
                                             // Start the table 
                                             // Print the Resident name and their username   
                                             echo '<tr>';
-                                            echo '<td>' . ucfirst($rowVerified['firstName']) . ' ' . ucfirst($rowVerified['lastName']) . '</td>';
+                                            echo '<td>' . $new_label . ' ' . ucfirst($rowVerified['firstName']) . ' ' . ucfirst($rowVerified['lastName']) . '</td>';
                                             echo '<td>' . $rowVerified['username'] . '</td>';
                                             echo '<td class="text-center">' . ucfirst($rowVerified['purok']) . '</td>';
                                             echo '<td class="text-center">' . ucfirst($rowVerified['zone']) . '</td>';

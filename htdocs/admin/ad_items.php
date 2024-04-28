@@ -1,7 +1,19 @@
-<?php include "./1db.php"; 
+<?php session_start();
+include "./1db.php"; 
 
-// Check errors
+// check all errors
 ini_set('display_errors', 1);
+
+// Check if the last visit time is set in the session
+if (isset($_SESSION['last_visit_time'])) {
+    $last_visit_time = $_SESSION['last_visit_time'];
+} else {
+    $last_visit_time = 0; // Set a default value for the first visit
+}
+
+// Update the last visit time in the session
+$_SESSION['last_visit_time'] = time();
+
 
 // Get the selected user from the dropdown
 if (isset($_POST['user'])) {
@@ -191,10 +203,19 @@ $result = $conn->query($sql);
                                                 if($rowCount % 5 == 0){
                                                     echo '<tr>';
                                                 }  
+                                                // Get the date Time posted and store it
+                                                $date_TimePosted = strtotime($row['DateTimePosted']);
+                                                
+                                                // Check if the row was created/updated after the last visit time
+                                                if ($date_TimePosted > $last_visit_time) {
+                                                    $new_label = '<span class="badge text-bg-success rounded-pill">New</span>';
+                                                } else {
+                                                    $new_label = '';
+                                                }
                                                     // Get the date Time posted and store it
                                                     $date_TimePosted = $row['DateTimePosted'];
                                                     echo '<tr>';
-                                                    echo '<td>' .$row['itemName'] . '</td>';
+                                                    echo '<td>'. $new_label . ' ' .$row['itemName'] . '</td>';
                                                     echo '<td>' . $row['firstName'] . ' ' . $row['lastName'] . '</td>';
 
                                                     // Split the Item DateTimePosted
