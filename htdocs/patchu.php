@@ -81,6 +81,12 @@ if (isset($_GET['requestId'])) {
                 font-size: 0.9rem;
                 padding: 4px 8px;
             }
+
+            .modal-footer {
+        position: sticky;
+        bottom: 0;
+        background-color: #fff;
+    }
         </style>
         <div class="row">
             <!-- Right side: Item picture and request detail -->
@@ -169,7 +175,7 @@ if (isset($_GET['requestId'])) {
                 </div>
             </div>
         </div>
-
+                    <div class="modal-footer">
         <div class="d-flex justify-content-center">
             <div class="d-flex align-items-center">
                 <span class="bi bi-arrow-left me-2" style="font-size: 1.5rem;"></span>
@@ -182,7 +188,7 @@ if (isset($_GET['requestId'])) {
         <div class="d-flex justify-content-center mt-4">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
-
+</div>
 
 
 

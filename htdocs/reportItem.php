@@ -5,7 +5,7 @@
             <!-- Modal Header -->
             <div class="modal-header bg-dark">
                 <h5 class="modal-title" id="reportItemModalLabel">Report Item</h5>
-                <h5 class="modal-title" id="reportItemID"></h5>
+                <h5 style="display: none;" class="modal-title" id="reportItemID"></h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- End of Modal Header -->

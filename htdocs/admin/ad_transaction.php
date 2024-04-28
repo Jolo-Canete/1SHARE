@@ -43,15 +43,38 @@ include "./adminnav.php";?>
         .more-details {
             display: none;
         }
+
+        @media (max-width: 767px) {
+            .table-responsive {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table-responsive>.table {
+                margin-bottom: 0;
+            }
+
+            .table-responsive>.table>thead>tr>th,
+            .table-responsive>.table>tbody>tr>th,
+            .table-responsive>.table>tfoot>tr>th,
+            .table-responsive>.table>thead>tr>td,
+            .table-responsive>.table>tbody>tr>td,
+            .table-responsive>.table>tfoot>tr>td {
+                white-space: nowrap;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <main>
     <div class="page-content" id="content">
         <div class="container">
             <br>
             <div class="row mb-3">
-                <div class="col-3">
+                <div class="col-md-3">
                     <form class="input-group mb-3">
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-secondary" type="button">
@@ -59,16 +82,16 @@ include "./adminnav.php";?>
                         </button>
                     </form>
                 </div>
-                <div class="col-9 d-flex justify-content-end">
-                        <button type="button" class="btn btn-dark border-0 p-2 mb-3 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                            Sort by Request Type
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" data-sort-type="all">All</a></li>
-                            <li><a class="dropdown-item" href="#" data-sort-type="borrow">Borrow</a></li>
-                            <li><a class="dropdown-item" href="#" data-sort-type="barter">Barter</a></li>
-                            <li><a class="dropdown-item" href="#" data-sort-type="buy">Buy</a></li>
-                        </ul>
+                <div class="col-md-9 d-flex justify-content-end">
+                    <button type="button" class="btn btn-outline-secondary p-2 mb-3 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Sort by Request Type
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" data-sort-type="all">All</a></li>
+                        <li><a class="dropdown-item" href="#" data-sort-type="borrow">Borrow</a></li>
+                        <li><a class="dropdown-item" href="#" data-sort-type="barter">Barter</a></li>
+                        <li><a class="dropdown-item" href="#" data-sort-type="buy">Buy</a></li>
+                    </ul>
                 </div>
                 <?php
 
@@ -101,8 +124,7 @@ include "./adminnav.php";?>
                 $result = $conn->query($query);
 
                 if ($result->num_rows > 0) {
-                    echo '<div class="table-wrapper">';
-                    echo '<table class="table table-bordered table-border-2 table-hover mb-3 mt-3">';
+                    echo '<table class="table table-bordered table-border-2 table-hover mb-3 mt-3 ms-2">';
                     echo '<thead>';
                     echo '<tr class="table-dark">';
                     echo '<th>Status</th>';
@@ -122,9 +144,9 @@ include "./adminnav.php";?>
                         echo '<tr class="table-row table-light">';
                         echo '<td>';
                         if ($row['complete'] == 'Yes') {
-                            echo '<span style="background-color: green; color: white; padding: 5px; border-radius: 5px;">Success</span>';
+                            echo '<span class="badge text-bg-success rounded-pill">Success</span>';
                         } else {
-                            echo '<span style="background-color: red; color: white; padding: 5px; border-radius: 5px;">Failed</span>';
+                            echo '<span class="badge text-bg-danger rounded-pill">Failed</span>';
                         }
                         echo '</td>';
                         echo '<td class="table-bordered" data-bs-toggle="modal" data-bs-target="#' . (($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal')) . '" data-request-id="' . $row['requestID'] . '">' . $row['requestType'] . '</td>';
@@ -152,7 +174,6 @@ include "./adminnav.php";?>
 
                     echo '</tbody>';
                     echo '</table>';
-                    echo '</div>';
                 } else {
                     echo "<div class='jumbotron jumbotron-fluid bg-light text-center'>
                         <div class='container'>
@@ -163,8 +184,6 @@ include "./adminnav.php";?>
                 };
 
                 ?>
-
-
             </div>
             <div>
                 <?php
@@ -267,6 +286,7 @@ include "./adminnav.php";?>
             </script>
         </div>
     </div>
+    </main>
 </body>
 
 </html>

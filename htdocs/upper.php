@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 include "1db.php";
 // Check if the user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -46,6 +47,9 @@ if (mysqli_num_rows($result) > 0) {
         }
     }
 }
+
+date_default_timezone_set('Asia/Manila');
+
 
 
 ?>

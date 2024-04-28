@@ -1,7 +1,41 @@
+<style>
+    .modal-footer {
+        position: sticky;
+        bottom: 0;
+        background-color: #fff;
+    }
+
+    .modal-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: #fff;
+    }
+
+    .modal-body .img-fluid {
+        max-width: 100%;
+        height: 600px;
+    }
+
+    .modal-body .img-container {
+        max-width: 100%;
+        height: 400px;
+        /* Set the desired height for the image container */
+        overflow: hidden;
+    }
+
+    .modal-body .img-container img {
+        width: 100%;
+        height: 400%;
+        object-fit: cover;
+        object-position: center;
+    }
+</style>
+
 <div class="modal fade item-detail" id="itemDetailModal" tabindex="-1" aria-labelledby="itemDetailModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header bg-dark text-light">
+        <div class="modal-content" style="border-radius: 0;">
+            <div class="modal-header bg-dark text-light" style="border-radius: 0;">
                 <h5 class="modal-title" id="itemDetailModalLabel">
                     <i class="bi bi-info-circle-fill"></i> Item Details
                 </h5>
@@ -15,7 +49,7 @@
                 </div>
                 <div id="modalContent" style="display: none;">
                     <div class="row">
-                        <div class="col-md-6" style="width: 339px; height: 339px; overflow: hidden;">
+                        <div class="col-md-6 img-container" >
                             <img id="modalItemImage" src="your_image_url.jpg" alt="" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%; border-radius: 0px;">
                         </div>
                         <div class="col-md-6">
@@ -71,15 +105,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-4"></div>
-                <div class="modal-footer">
-                <button id="cartButton" type="button" class="btn btn-primary ms-2 mb-2" onclick="openItem()">
-              More Details
-              </button>
-                    <button id="editButton" type="button" class="btn btn-primary ms-2 mb-2" onclick="editItem()" style="display: none;">
-                        <i class="bi bi-pencil-fill"></i> Edit
-                    </button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="cartButton" type="button" class="btn btn-primary ms-2" onclick="openItem()">
+                    More Details
+                </button>
+                <button id="editButton" type="button" class="btn btn-primary ms-2" onclick="editItem()" style="display: none;">
+                    <i class="bi bi-pencil-fill"></i> Edit
+                </button>
             </div>
         </div>
     </div>
@@ -88,7 +121,7 @@
         function openItem() {
             // Get the item ID from the modal
             var itemID = document.getElementById('modalItemID').textContent;
-            
+
             window.location.href = 'itemdetail.php?itemID=' + encodeURIComponent(itemID);
         }
 

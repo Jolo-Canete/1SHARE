@@ -5,7 +5,7 @@ if (isset($_GET['requestId'])) {
     $requestID = $_GET['requestId'];
 
     // Query to fetch request details, item information, and borrow details from the database
-    $query = "SELECT r.*, b.*, i.*, u.username, i.itemID AS item_id, i.itemName AS item_name, i.itemImage_path AS item_image
+    $query = "SELECT r.*, b.*, i.*, u.username, i.itemID AS item_id, i.itemName AS item_name, i.itemImage_path AS item_image, b.handed AS handed
               FROM Request r
               JOIN borrow b ON r.requestID = b.requestID
               JOIN item i ON r.itemID = i.itemID
@@ -26,6 +26,7 @@ if (isset($_GET['requestId'])) {
         $itemImage = $row['item_image'];
         $requestDateTime = $row['request_DateTime'];
         $dateMeet = $row['DateTimeMeet'];
+        $handed = $row['handed'];
         $borrowDuration = $row['borrowDuration'];
         $quantity = $row['quantity'];
         $borrowPrice = number_format($row['borrowPrice'], 2);
@@ -71,6 +72,12 @@ if (isset($_GET['requestId'])) {
             .modal .table .badge {
                 font-size: 0.9rem;
                 padding: 4px 8px;
+            }
+
+            .modal-footer {
+                position: sticky;
+                bottom: 0;
+                background-color: #fff;
             }
         </style>
         <div class="row">
@@ -130,8 +137,8 @@ if (isset($_GET['requestId'])) {
                 </div>
             </div>
         </div>
-        <div class="d-flex justify-content-center mt-4">
-            <div class="d-flex justify-content-center mt-4">
+        <div class="modal-footer">
+            <div class="d-flex justify-content-center mt-2">
                 <?php
 
                 if (isset($_GET['requestId'])) {
@@ -151,12 +158,17 @@ if (isset($_GET['requestId'])) {
 
                 ?>
                 <?php
+              
+
                 $currentDate = new DateTime();
                 $meetingDate = new DateTime($dateMeet);
                 $returnDate = date('Y-m-d H:i:s', strtotime($dateMeet . "+" . $borrowDuration . " days"));
                 $returnDateTime = new DateTime($returnDate);
 
-                if ($meetingDate <= $currentDate) {
+                $currentDate = new DateTime();
+                $meetingDate = new DateTime($dateMeet);
+
+                if ($meetingDate <= $currentDate && $handed =  NULL) {
                     $isItemHandedButtonEnabled = true;
                 } else {
                     $isItemHandedButtonEnabled = false;
@@ -167,6 +179,15 @@ if (isset($_GET['requestId'])) {
                 } else {
                     $isItemReturnedButtonEnabled = true;
                 }
+
+
+
+                
+                ?>
+                <?php
+
+
+
                 ?>
 
                 <?php if ($requestType == 'Borrow') { ?>
@@ -192,27 +213,29 @@ if (isset($_GET['requestId'])) {
                 ?>
 
                 <button type="button" class="btn btn-danger me-2 <?php echo $isCancelButtonEnabled ? '' : 'disabled'; ?>" id="cancelButton">Cancel</button>
-
                 <script>
                     function redirect() {
-                        window.open('borrowReturned.php', '_blank');
+                        const requestID = document.getElementById('requestID').value;
+                        window.open('borrowReturned.php?requestId=' + requestID);
                     }
 
                     function redirect1() {
-                        window.open('borrowHanded.php', '_blank');
+                        const requestID = document.getElementById('requestID').value;
+                        window.open('borrowHanded.php?requestId=' + requestID);
                     }
                 </script>
 
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
+        </div>
 
 
 
 
 
 
-            <input type="hidden" id="requestID" value="<?php echo $requestID; ?>">
-    <?php
+        <input type="hidden" id="requestID" value="<?php echo $requestID; ?>">
+<?php
     } else {
         // No results found
         echo "No data found for this request.";
@@ -221,66 +244,66 @@ if (isset($_GET['requestId'])) {
     // Request ID is not set or empty
     echo "Invalid request ID.";
 }
-    ?>
+?>
 
-    <style>
-        .card-link {
-            text-decoration: none;
-            color: inherit;
-        }
+<style>
+    .card-link {
+        text-decoration: none;
+        color: inherit;
+    }
 
-        .card-link:hover .card {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
-        }
+    .card-link:hover .card {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.2);
+    }
 
-        .bi-arrow-left-right {
-            font-size: 1.2rem;
-            margin-right: 5px;
-        }
+    .bi-arrow-left-right {
+        font-size: 1.2rem;
+        margin-right: 5px;
+    }
 
-        .bi-arrows-exchange {
-            font-size: 1.5rem;
-            margin-left: 5px;
-        }
+    .bi-arrows-exchange {
+        font-size: 1.5rem;
+        margin-left: 5px;
+    }
 
-        .bi-person-circle {
-            font-size: 1.2rem;
-            margin-right: 5px;
-        }
-    </style>
-    <script>
-        function cancelRequest() {
-            const requestID = document.getElementById('requestID').value;
+    .bi-person-circle {
+        font-size: 1.2rem;
+        margin-right: 5px;
+    }
+</style>
+<script>
+    function cancelRequest() {
+        const requestID = document.getElementById('requestID').value;
 
-            // Ask the user for confirmation before deleting the request
-            if (confirm("Are you sure you want to cancel this transaction?")) {
-                // Send an AJAX request to the server to delete the request
-                $.ajax({
-                    url: 'canceltran.php',
-                    type: 'GET',
-                    data: {
-                        requestId: requestID
-                    },
-                    success: function(data) {
-                        if (data === 'success') {
-                            // Request deletion was successful, you can display a success message or update the UI
-                            alert('Transaction has been canceled successfully.');
-                            // Reload the page
-                            location.reload();
-                        } else {
-                            // There was an error deleting the request, display an error message
-                            alert('Error canceling the request: ' + data);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        alert('An error occurred while canceling the request.');
+        // Ask the user for confirmation before deleting the request
+        if (confirm("Are you sure you want to cancel this transaction?")) {
+            // Send an AJAX request to the server to delete the request
+            $.ajax({
+                url: 'canceltran.php',
+                type: 'GET',
+                data: {
+                    requestId: requestID
+                },
+                success: function(data) {
+                    if (data === 'success') {
+                        // Request deletion was successful, you can display a success message or update the UI
+                        alert('Transaction has been canceled successfully.');
+                        // Reload the page
+                        location.reload();
+                    } else {
+                        // There was an error deleting the request, display an error message
+                        alert('Error canceling the request: ' + data);
                     }
-                });
-            }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                    alert('An error occurred while canceling the request.');
+                }
+            });
         }
+    }
 
-        // Attach the cancelRequest function to the cancel button
-        document.getElementById('cancelButton').addEventListener('click', cancelRequest);
-    </script>
+    // Attach the cancelRequest function to the cancel button
+    document.getElementById('cancelButton').addEventListener('click', cancelRequest);
+</script>

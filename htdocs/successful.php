@@ -85,8 +85,7 @@ include "nav.php";
                         </div>
                     </div>
 
-                    <div class="table-wrapper">
-                        <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
+                        <table class="table table-bordered table-border-2 table-hover mb-3 mt-3 ms-2">
                             <thead>
                                 <tr class="table-dark">
                                     <th>Request Type</th>
@@ -113,7 +112,6 @@ include "nav.php";
                                 ?>
                             </tbody>
                         </table>
-                    </div>
 
                 <?php
             } else {

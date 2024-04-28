@@ -81,6 +81,12 @@ if (isset($_GET['requestId'])) {
                 font-size: 0.9rem;
                 padding: 4px 8px;
             }
+
+            .modal-footer {
+        position: sticky;
+        bottom: 0;
+        background-color: #fff;
+    }
         </style>
         <div class="row">
             <!-- Right side: Item picture and request detail -->
@@ -180,11 +186,12 @@ if (isset($_GET['requestId'])) {
         </div>
 
         <!-- Accept and Decline Buttons -->
+        <div class="modal-footer">
         <div class="d-flex justify-content-center mt-4">
             <button type="button" class="btn btn-success me-2" id="acceptButton">Accept</button>
             <button type="button" class="btn btn-danger me-2" id="declineButton">Decline</button>
         </div>
-
+</div>
 
         <input type="hidden" id="requestID" value="<?php echo $requestID; ?>">
 <?php
