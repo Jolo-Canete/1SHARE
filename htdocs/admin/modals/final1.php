@@ -7,7 +7,7 @@ if (isset($_GET['requestId'])) {
 
     // Query to fetch request details, item information, and borrow details from the database
     $query = "SELECT r.*, b.*, i.*, u.username, i.itemID AS item_id, i.itemName AS item_name, i.itemImage_path AS item_image
-              FROM Request r
+              FROM request r
               JOIN borrow b ON r.requestID = b.requestID
               JOIN item i ON r.itemID = i.itemID
               JOIN user u ON r.userID = u.userID
@@ -80,7 +80,7 @@ if (isset($_GET['requestId'])) {
                 <!-- Item picture -->
                 <h4 class="fw-bold text-dark text-center mb-2">Requested Item</h4>
                 <div class="text-center mb-3">
-                    <img src="pictures/<?php echo $itemImage; ?>" class="img-fluid shadow-sm" alt="Item Image" style="max-width: 300px;">
+                    <img src="../pictures/<?php echo $itemImage; ?>" class="img-fluid shadow-sm" alt="Item Image" style="max-width: 300px;">
                 </div>
 
                 <!-- Request detail -->

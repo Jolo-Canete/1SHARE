@@ -43,6 +43,12 @@ while ($userRow = mysqli_fetch_assoc($query)) {
     array_push($user, $userData);
 }
     }
+
+
+    // Properly place the Birth
+    $Birthday = date('Y-m-d', strtotime($userData ['birthDay']));
+
+
 ?>
 
 <!DOCTYPE html>
@@ -80,7 +86,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
     width: 250px;
     }
 
-    input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
@@ -167,7 +173,7 @@ input[type="number"]::-webkit-inner-spin-button {
                     </tr>
                     <tr>
                         <th>Birthday:</th>
-                            <td><input type="date" name="Birthday" class="form-control" value="<?php echo $userData['birthDay'] ?>"></td>
+                            <td><input type="date" name="Birthday" class="form-control" value="<?php echo $Birthday ?>"></td>
                     </tr>
                     <tr>
                         <th>Contact Number:</th>
@@ -301,9 +307,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 return;
             }
         }
-
-    // If password is true
-    if($password)
+ 
+        
 
     // Ready the sql
     $sqlUpdate = "UPDATE user SET
@@ -341,6 +346,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = trim($_POST['username']);
         $zone = trim($_POST['zone']);
         $purok = trim($_POST['purok']);
+
 
 
     // Check if empty
@@ -400,7 +406,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 return;
             }
         }
-
 
     // Ready the sql
     $sqlUpdate = "UPDATE user SET

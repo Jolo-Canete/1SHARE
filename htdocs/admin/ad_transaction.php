@@ -1,6 +1,6 @@
 <?php
 include "./1db.php";
-include "./adminnav.php"; ?>
+include "./adminnav.php";?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -113,7 +113,7 @@ include "./adminnav.php"; ?>
               WHEN bo.OwnerProof IS NOT NULL THEN bo.OwnerProof
               ELSE 'N/A'
           END) AS ReturnProof
-          FROM Request r
+          FROM request r
           JOIN item i ON r.itemID = i.itemID
           LEFT JOIN barter b ON r.requestID = b.requestID
           LEFT JOIN borrow bo ON r.requestID = bo.requestID
@@ -157,14 +157,14 @@ include "./adminnav.php"; ?>
 
 
                         if ($row['Proof'] != 'N/A') {
-                            echo '<img src="proof/' . $row['Proof'] . '" alt="Proof" width="100">';
+                            echo '<img src="../proof/' . $row['Proof'] . '" alt="Proof" width="145" height="140">';
                         } else {
                             echo 'N/A';
                         }
                         echo '</td>';
                         echo '<td class="table-bordered" data-bs-toggle="modal" data-bs-target="#' . (($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal')) . '" data-request-id="' . $row['requestID'] . '">';
                         if ($row['ReturnProof'] != 'N/A') {
-                            echo '<img src="proof/' . $row['ReturnProof'] . '" alt="Proof" width="100">';
+                            echo '<img src="./proof/' . $row['ReturnProof'] . '" alt="Proof" width="100">';
                         } else {
                             echo 'N/A';
                         }
