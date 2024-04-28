@@ -224,7 +224,7 @@ if($resultItems ->num_rows > 0) {
                     <div class="col-6">
                         <div class="card">
                             <div class="card-header">
-                                <h2 class="card-title mb-0">Active Residents</h2>
+                                <h2 class="card-title mb-0">Most Contributes</h2>
                             </div>
                             <div class="card-body">
                             <div class="table-container">
@@ -372,52 +372,16 @@ if($resultItems ->num_rows > 0) {
                                     ?>
                                     </tbody>
                                 </table>
-                            </div> 
+                                </div> 
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="card">
-                            <div class="card-header">
-                                <h2 class="card-title mb-0">Highest rating items</h2>
-                            </div>
-                            <div class="card-body">
-                            <div class="table-container">
-                                <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Metric</th>
-                                            <th>Value</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Order</td>
-                                            <td>576</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sales</td>
-                                            <td>$ 1,345</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Subscribers</td>
-                                            <td>1,303</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Visitors</td>
-                                            <td>1,294</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>  
-                            </div>
-                        </div>
-                    </div>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
     <footer>
         <!-- place footer here -->
