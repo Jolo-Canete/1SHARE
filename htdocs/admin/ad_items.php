@@ -240,53 +240,58 @@ $result = $conn->query($sql);
                                 </div>
                                 </div>
                                 <div class="row align-items-center">
-                                <div class="col-3">
-                            </div>
                                     <div class="col">
                                         <nav aria-label="Page navigation">
                                             <ul class="pagination justify-content-end mb-0">
                                                 <!-- Make the Page number dynamic -->
                                                 <?php 
-                                                // Round the total pages to the nearest integer
+                                                    // Round the total pages to the nearest integer
                                                     $total_pages = ceil($totalRows / $rows_per_page);
 
-                                                // Add the "Previous" button
-                                                if ($currentPage > 1) {
-                                                    echo "<li class='page-item'>";
-                                                    echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
-                                                    echo "<span aria-hidden='true'>&laquo;</span>";
-                                                    echo "</a>";
-                                                    echo "</li>";
-                                                } else {
-                                                    echo "<li class='page-item disabled'>";
-                                                    echo "<a class='page-link' href='#' aria-label='Previous'>";
-                                                    echo "<span aria-hidden='true'>&laquo;</span>";
-                                                    echo "</a>";
-                                                    echo "</li>";
-                                                }
+                                                    // Define the number of visible pages
+                                                    $visible_pages = 5;
 
-                                                // Display the page numbers
-                                                for ($i = 1; $i <= $total_pages; $i++) {
-                                                    $active = ($i == $currentPage) ? 'active' : '';
-                                                    echo "<li class='page-item $active' aria-current='page'>";
-                                                    echo "<a class='page-link' href='?page=$i'>$i</a>";
-                                                    echo "</li>";
-                                                }
+                                                    // Determine the start and end page
+                                                    $start_page = max(1, min($currentPage - floor($visible_pages / 2), $total_pages - $visible_pages + 1));
+                                                    $end_page = min($total_pages, max($currentPage + ceil($visible_pages / 2) - 1, $visible_pages));
 
-                                                // Add the "Next" button
-                                                if ($currentPage < $total_pages) {
-                                                    echo "<li class='page-item'>";
-                                                    echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "&user=$selectedUser' aria-label='Next'>";
-                                                    echo "<span aria-hidden='true'>&raquo;</span>";
-                                                    echo "</a>";
-                                                    echo "</li>";
-                                                } else {
-                                                    echo "<li class='page-item disabled'>";
-                                                    echo "<a class='page-link' href='#' aria-label='Next'>";
-                                                    echo "<span aria-hidden='true'>&raquo;</span>";
-                                                    echo "</a>";
-                                                    echo "</li>";
-                                                }                                                
+                                                    // Add the "Previous" button
+                                                    if ($currentPage > 1) {
+                                                        echo "<li class='page-item'>";
+                                                        echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
+                                                        echo "<span aria-hidden='true'>&laquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    } else {
+                                                        echo "<li class='page-item disabled'>";
+                                                        echo "<a class='page-link' href='#' aria-label='Previous'>";
+                                                        echo "<span aria-hidden='true'>&laquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    }
+
+                                                    // Display the page numbers
+                                                    for ($i = $start_page; $i <= $end_page; $i++) {
+                                                        $active = ($i == $currentPage) ? 'active' : '';
+                                                        echo "<li class='page-item $active' aria-current='page'>";
+                                                        echo "<a class='page-link' href='?page=$i'>$i</a>";
+                                                        echo "</li>";
+                                                    }
+
+                                                    // Add the "Next" button
+                                                    if ($currentPage < $total_pages) {
+                                                        echo "<li class='page-item'>";
+                                                        echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "' aria-label='Next'>";
+                                                        echo "<span aria-hidden='true'>&raquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    } else {
+                                                        echo "<li class='page-item disabled'>";
+                                                        echo "<a class='page-link' href='#' aria-label='Next'>";
+                                                        echo "<span aria-hidden='true'>&raquo;</span>";
+                                                        echo "</a>";
+                                                        echo "</li>";
+                                                    }                                                
                                                 ?>
                                             </ul>
                                         </nav>

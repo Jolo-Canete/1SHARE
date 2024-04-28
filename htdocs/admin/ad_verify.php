@@ -12,7 +12,7 @@ $userRow = $result->fetch_assoc();
 $totalRows = $userRow['total_rows'];
 
 // Get the rows per page you want
-$rows_per_page = 5;
+$rows_per_page = 2;
 
 // Get the current page number from the URL
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
@@ -115,137 +115,137 @@ $resultVerified = $conn->query($sqlUnverified);
                                         </tr>
                                     </thead>
                                     <tbody>
-            <?php
+                                    <?php
+                                        // Get the row count for the loop process
+                                        $rowCount = 0;
+                                        while ($rowVerified = $resultVerified->fetch_assoc()) {
 
-                // Get the row count for the loop process
-                $rowCount = 0;
-                while ($rowVerified = $resultVerified->fetch_assoc()) {
+                                            // Check if we need to start a new page
+                                            if($rowCount % 5 == 0 && $rowCount !=0) {
+                                                echo '</tr>';
+                                            }
+                                            // Start a new row if new data is catched
+                                            if($rowCount % 5 == 0){
+                                                '<tr>';
+                                            }
 
-                    // Check if we need to start a new page
-                    if($rowCount % 5 == 0 && $rowCount !=0) {
-                        echo '</tr>';
-                    }
-                    // Start a new row if new data is catched
-                    if($rowCount % 5 == 0){
-                        '<tr>';
-                    }
+                                            // Start the table 
+                                            // Print the Resident name and their username   
+                                            echo '<tr>';
+                                            echo '<td>' . ucfirst($rowVerified['firstName']) . ' ' . ucfirst($rowVerified['lastName']) . '</td>';
+                                            echo '<td>' . $rowVerified['username'] . '</td>';
+                                            echo '<td class="text-center">' . ucfirst($rowVerified['purok']) . '</td>';
+                                            echo '<td class="text-center">' . ucfirst($rowVerified['zone']) . '</td>';
 
-                    // Start the table 
-                    // Print the Resident name and their username   
-                    echo '<tr>';
-                    echo '<td>' . ucfirst($rowVerified['firstName']) . ' ' . ucfirst($rowVerified['lastName']) . '</td>';
-                    echo '<td>' . $rowVerified['username'] . '</td>';
-                    echo '<td class="text-center">' . ucfirst($rowVerified['purok']) . '</td>';
-                    echo '<td class="text-center">' . ucfirst($rowVerified['zone']) . '</td>';
+                                            // Display the verification image
+                                            echo '<td align="center">';
+                                            echo '<img src="../verify/' . $rowVerified['verifyImage_path'] . '" alt="Verification Image" width="110" height="110">';
+                                            echo '</td>';
 
-                    // Display the verification image
-                    echo '<td align="center">';
-                    echo '<img src="../verify/' . $rowVerified['verifyImage_path'] . '" alt="Verification Image" width="110" height="110">';
-                    echo '</td>';
+                                            // Display the date joined
+                                            $dateTimeJoined = explode(" ", $rowVerified['dateJoined']);
+                                            $dateJoined = $dateTimeJoined[0];
 
-                    // Display the date joined
-                    $dateTimeJoined = explode(" ", $rowVerified['dateJoined']);
-                    $dateJoined = $dateTimeJoined[0];
+                                            $dateJoinedTimeStamp = strtotime($dateJoined);
+                                            $dateJoinedYear = date('Y', $dateJoinedTimeStamp);
+                                            $dateJoinedMonth = date('F', $dateJoinedTimeStamp);
+                                            $dateJoinedDay = date('j', $dateJoinedTimeStamp);
 
-                    $dateJoinedTimeStamp = strtotime($dateJoined);
-                    $dateJoinedYear = date('Y', $dateJoinedTimeStamp);
-                    $dateJoinedMonth = date('F', $dateJoinedTimeStamp);
-                    $dateJoinedDay = date('j', $dateJoinedTimeStamp);
+                                            echo '<td>' . $dateJoinedMonth . ' ' . $dateJoinedDay . ', ' . $dateJoinedYear .  '</td>';
 
-                    echo '<td>' . $dateJoinedMonth . ' ' . $dateJoinedDay . ', ' . $dateJoinedYear .  '</td>';
+                                            // Display the verify and delete buttons
+                                            echo '<form action="" method="post">';
+                                            echo '<td class="text-center">' .
+                                                '<input type="hidden" id="residentID" name="userID" value="' . $rowVerified['userID'] . '">' .
+                                                '<button type="submit" class="btn btn-sm border-0 has-tooltip" title="Verify Resident" name="verifyResident">
+                                                <i class="bi bi-person-check" style="font-size: 1.5rem; color: #0D6EFD;"></i>
+                                                </button>' .
+                                                '</td>';
+                                            echo '<td class="text-center">' .
+                                                '<button type="submit" class="btn btn -sm border-0 has-tooltip" title="Reject Resident" name="deleteResident"><i class="bi bi-x-circle" style="font-size: 1.5rem; color: #dc3545;"></i></button>' .
+                                                '</td>';
+                                            echo '</form>';
+                                            echo '</tr>';
 
-                    // Display the verify and delete buttons
-                    echo '<form action="" method="post">';
-                    echo '<td class="text-center">' .
-                        '<input type="hidden" id="residentID" name="userID" value="' . $rowVerified['userID'] . '">' .
-                        '<button type="submit" class="btn btn-sm border-0 has-tooltip" title="Verify Resident" name="verifyResident">
-                        <i class="bi bi-person-check" style="font-size: 1.5rem; color: #0D6EFD;"></i>
-                        </button>' .
-                        '</td>';
-                    echo '<td class="text-center">' .
-                        '<button type="submit" class="btn btn -sm border-0 has-tooltip" title="Reject Resident" name="deleteResident"><i class="bi bi-x-circle" style="font-size: 1.5rem; color: #dc3545;"></i></button>' .
-                        '</td>';
-                    echo '</form>';
-                    echo '</tr>';
+                                            // Loop the table rows
+                                            $rowCount++;
+                                        }
+                                        echo'</tbody>';
+                                        echo '</table>';
+                                    ?>
+                                    <!-- Get the navigation Links -->
+                                    <?php
 
-                    // Loop the table rows
-                    $rowCount++;
-                }
-                echo'</tbody>';
-                echo '</table>';
-             ?>
-                                <!-- Get the navigation Links -->
-                                <?php
+                                        if ($resultVerified->num_rows == 0) {
+                                            echo "<div class='alert alert-warning'>No unverified Residents found, Please go back.</div>";
+                                        }
 
-if ($resultVerified->num_rows == 0) {
-    echo "<div class='alert alert-warning'>No unverified Residents found, Please go back.</div>";
-}
-
-// Display the pagination links
-$total_pages = ceil($totalRows / $rows_per_page);
-echo "<div class='row align-items-center'>";
-echo "<div class='col'>";
-echo "<nav aria-label='Page navigation'>";
-echo "<ul class='pagination justify-content-end mb-0'>";
+                                        // Display the pagination links
+                                        $total_pages = ceil($totalRows / $rows_per_page);
+                                        echo "<div class='row align-items-center'>";
+                                        echo "<div class='col'>";
+                                        echo "<nav aria-label='Page navigation'>";
+                                        echo "<ul class='pagination justify-content-end mb-0'>";
 
 
-// Add the "Previous" button
-if ($currentPage > 1) {
-    echo "<li class='page-item'>";
-    echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
-    echo "<span aria-hidden='true'>&laquo;</span>";
-    echo "</a>";
-    echo "</li>";
-} else {
-    echo "<li class='page-item disabled'>";
-    echo "<a class='page-link' href='#' aria-label='Previous'>";
-    echo "<span aria-hidden='true'>&laquo;</span>";
-    echo "</a>";
-    echo "</li>";
-}
+                                        // Add the "Previous" button
+                                        if ($currentPage > 1) {
+                                            echo "<li class='page-item'>";
+                                            echo "<a class='page-link' href='?page=" . ($currentPage - 1) . "' aria-label='Previous'>";
+                                            echo "<span aria-hidden='true'>&laquo;</span>";
+                                            echo "</a>";
+                                            echo "</li>";
+                                        } else {
+                                            echo "<li class='page-item disabled'>";
+                                            echo "<a class='page-link' href='#' aria-label='Previous'>";
+                                            echo "<span aria-hidden='true'>&laquo;</span>";
+                                            echo "</a>";
+                                            echo "</li>";
+                                        }
 
-// Display the page numbers
-for ($i = 1; $i <= $total_pages; $i++) {
-    $active = ($i == $currentPage) ? 'active' : '';
-    $disabled = '';
+                                        // Display the page numbers
+                                        for ($i = 1; $i <= $total_pages; $i++) {
+                                            $active = ($i == $currentPage) ? 'active' : '';
+                                            $disabled = '';
 
-    // Check if the current page is empty
-    $sqlCount = "SELECT COUNT(*) AS count FROM user WHERE COALESCE(status, 'Unverified') = 'Unverified' LIMIT " . ($i - 1) * $rows_per_page . ", $rows_per_page";
-    $resultCount = $conn->query($sqlCount);
-    if ($resultCount->num_rows > 0) {
-        $rowCount = $resultCount->fetch_assoc();
-        if ($rowCount['count'] == 0) {
-            $disabled = 'disabled';
-        }
-    }
-    echo "<li class='page-item $active $disabled' aria-current='page'>";
-    echo "<a class='page-link' href='?page=$i'>$i</a>";
-    echo "</li>";
-}
+                                            // Check if the current page is empty
+                                            $sqlCount = "SELECT COUNT(*) AS count FROM user WHERE COALESCE(status, 'Unverified') = 'Unverified' LIMIT " . ($i - 1) * $rows_per_page . ", $rows_per_page";
+                                            $resultCount = $conn->query($sqlCount);
+                                            if ($resultCount->num_rows > 0) {
+                                                $rowCount = $resultCount->fetch_assoc();
+                                                if ($rowCount['count'] == 0) {
+                                                    $disabled = 'disabled';
+                                                }
+                                            }
+                                            echo "<li class='page-item $active $disabled' aria-current='page'>";
+                                            echo "<a class='page-link' href='?page=$i'>$i</a>";
+                                            echo "</li>";
+                                        }
 
-// Add the "Next" button
-if ($currentPage < $total_pages) {
-    echo "<li class='page-item'>";
-    echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "' aria-label='Next'>";
-    echo "<span aria-hidden='true'>&raquo;</span>";
-    echo "</a>";
-    echo "</li>";
-} else {
-    echo "<li class='page-item disabled'>";
-    echo "<a class='page-link' href='#' aria-label='Next'>";
-    echo "<span aria-hidden='true'>&raquo;</span>";
-    echo "</a>";
-    echo "</li>";
-}
+                                        // Add the "Next" button
+                                        if ($currentPage < $total_pages) {
+                                            echo "<li class='page-item'>";
+                                            echo "<a class='page-link' href='?page=" . ($currentPage + 1) . "' aria-label='Next'>";
+                                            echo "<span aria-hidden='true'>&raquo;</span>";
+                                            echo "</a>";
+                                            echo "</li>";
+                                        } else {
+                                            echo "<li class='page-item disabled'>";
+                                            echo "<a class='page-link' href='#' aria-label='Next'>";
+                                            echo "<span aria-hidden='true'>&raquo;</span>";
+                                            echo "</a>";
+                                            echo "</li>";
+                                        }
 
-echo "</ul>";
-echo "</nav>";
+                                        echo "</ul>";
+                                        echo "</nav>";
 
-// Display an error message if the current page is empty
+                                        // Display an error message if the current page is empty
 
-echo "</div>";
-echo "</div>";
-?>                                </div>
+                                        echo "</div>";
+                                        echo "</div>";
+                                    ?>                                
+                                </div>
                             </div>
                         </div>
                     </div>
