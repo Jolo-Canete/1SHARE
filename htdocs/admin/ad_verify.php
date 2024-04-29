@@ -1,7 +1,6 @@
-<?php session_start(); ?>
+<?php include "./1db.php"; ?>
 
 <?php 
-include "./1db.php"; 
 include "./adminnav.php";
 
 // Check if the last visit time is set in the session

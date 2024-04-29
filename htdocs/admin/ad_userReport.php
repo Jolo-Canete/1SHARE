@@ -1,6 +1,6 @@
-<?php session_start();
-include "./1db.php"; 
+<?php include "./1db.php"; ?>
 
+<?
 // check all errors
 ini_set('display_errors', 1);
 
@@ -216,18 +216,22 @@ $result = $conn->query($sql);
                                                     echo '<tr>';
                                                 }  
                                                 // Get the date Time posted and store it
-                                                $date_TimePosted = strtotime($row['userReportDate']);
+                                                $dateTimePosted = strtotime($row['userReportDate']);
+
                                                 
                                                 // Check if the row was created/updated after the last visit time
-                                                if ($date_TimePosted > $last_visit_time) {
-                                                    $new_label = '<span class="badge text-bg-success rounded-pill">New</span>';
+                                                if ( $dateTimePosted > $last_visit_time) {
+                                                    $new_label = '<span class="badge text-bg-success rounded-pill">New </span>';
                                                 } else {
                                                     $new_label = '';
                                                 }
+
+                                                $new = $dateTimePosted - $last_visit_time;
+                                                
                                                     // Get the date Time posted and store it
                                                     $date_TimePosted = $row['userReportDate'];
                                                     echo '<tr>';
-                                                    echo '<td>' . $new_label . ' ' . $row['reporterFirstName'] . ' ' . $row['reporterLastName'] . '</td>';
+                                                    echo '<td>' . $new_label .  ' ' . $new . ' what' . $row['reporterFirstName'] . ' ' . $row['reporterLastName'] . '</td>';
                                                     echo '<td class="fw-bold text-danger">' . $row['reportedFirstName'] . ' ' . $row['reportedLastName'] . '</td>';  
                                                     // Split the Item DateTimePosted
                                                     $dateTimePosted = explode(" ", $date_TimePosted );

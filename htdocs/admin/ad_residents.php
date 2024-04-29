@@ -1,6 +1,5 @@
-<?php session_start();
+<?php include "./1db.php"; 
 include "./adminnav.php";
-include "./1db.php"; 
 
 // check all errors
 ini_set('display_errors', 1);
