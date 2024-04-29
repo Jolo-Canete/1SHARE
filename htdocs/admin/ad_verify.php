@@ -296,7 +296,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $dateVerified = date('Y-m-d H:i:s');
 
     // Prepare the sql statement
-    $sqlUpdateStatus = "UPDATE user SET status = '$updateStatus', dateVerified = '$dateVerified' WHERE userID = '$userID'";
+    $sqlUpdateStatus = "UPDATE user SET status = '$updateStatus' WHERE userID = '$userID'";
         
     // Run the sql statement
     $query = $conn->query($sqlUpdateStatus);
