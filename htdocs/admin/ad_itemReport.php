@@ -137,7 +137,7 @@ $result = $conn->query($sql);
                                 <i class="bi bi-gear"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="#">Help</a></li>
+                                <li><a class="dropdown-item" href="ad_help.php">Help</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="#">Log Out</a></li>
                             </ul>

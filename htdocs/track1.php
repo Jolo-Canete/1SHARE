@@ -168,12 +168,12 @@ if (isset($_GET['requestId'])) {
                 $currentDate = new DateTime();
                 $meetingDate = new DateTime($dateMeet);
 
-                if ($meetingDate <= $currentDate && $handed =  NULL) {
+                if ($meetingDate <= $currentDate && $handed === NULL) {
                     $isItemHandedButtonEnabled = true;
                 } else {
                     $isItemHandedButtonEnabled = false;
                 }
-
+                
                 if ($currentDate <= $returnDateTime) {
                     $isItemReturnedButtonEnabled = false;
                 } else {

@@ -1,18 +1,18 @@
-<!-- Report Item Modal -->
-<div class="modal fade" id="reportUserModal" tabindex="-1" aria-labelledby="reportItemModalLabel" aria-hidden="true">
+<!-- Report User Modal -->
+<div class="modal fade" id="reportUserModal" tabindex="-1" aria-labelledby="reportUserModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header bg-dark">
-                <h5 class="modal-title" id="reportItemModalLabel">Report User</h5>
-                <h5 class="modal-title" id="reportItemID"><?php  echo $userID ?> </h5>
+                <h5 class="modal-title" id="reportUserModalLabel">Report User</h5>
+                <h5 style="display: none;" class="modal-title" id="reportUserID"><?php echo $userID; ?></h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- End of Modal Header -->
 
             <!-- Modal Body -->
             <div class="modal-body">
-                <label class="form-label"><b>Please specify your reason for reporting this item</b> <span class="text-danger">*</span></label>
+                <label class="form-label"><b>Please specify your reason for reporting this user</b> <span class="text-danger">*</span></label>
                 <textarea class="form-control" aria-label="Report reason" id="reportReason" required></textarea>
                 <label class="form-label mt-3"><b>Upload a screenshot for evidence/proof</b> <span class="text-danger">*</span></label>
                 <div class="input-group">
@@ -35,27 +35,27 @@
 </div>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Function to handle file input change and show image preview
-        $('#inputGroupFile01').change(function() {
+        $('#inputGroupFile01').change(function () {
             var input = this;
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     $('#screenshotPreview').attr('src', e.target.result).show();
                 }
                 reader.readAsDataURL(input.files[0]);
             }
         });
 
-    
+
         // Add event listener to the "Report" button
-        $('#reportItemModal .report-btn').click(function() {
+        $('#reportUserModal .report-btn').click(function () {
             // Get the form data
-            var reportReason = $('#reportItemModal #reportReason').val();
-            var screenshot = $('#reportItemModal #inputGroupFile01')[0].files[0];
-            var itemId = document.getElementById('reportItemID').textContent;
-            console.log('itemId:', itemId);
+            var reportReason = $('#reportUserModal #reportReason').val();
+            var screenshot = $('#reportUserModal #inputGroupFile01')[0].files[0];
+            var userID = document.getElementById('reportUserID').textContent;
+            console.log('userID:', userID);
 
             // Check if reportReason and screenshot are not null
             if (reportReason !== "" && screenshot !== undefined) {
@@ -63,33 +63,33 @@
                 var formData = new FormData();
                 formData.append('reportReason', reportReason);
                 formData.append('screenshot', screenshot);
-                formData.append('itemId', itemId);
+                formData.append('userID', userID);
 
                 $('#reportbutton').prop('disabled', true);
 
                 // Send the AJAX request
                 $.ajax({
-                    url: 'reportUser.php',
+                    url: 'report_user.php',
                     type: 'POST',
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function(response) {
+                    success: function (response) {
                         // Handle the successful response
-                        console.log('Item reported:', response);
-                        if (response.trim() === "Item reported successfully.") {
-                            alert("Item reported successfully.");
-                            $('#reportItemModal').modal('hide'); // Close the modal
+                        console.log('User reported:', response);
+                        if (response.trim() === "User reported successfully.") {
+                            alert("User reported successfully.");
+                            $('#reportUserModal').modal('hide'); // Close the modal
                             location.reload();
                         } else {
                             alert(response);
                         }
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         // Handle the error response
-                        console.error('Error reporting item:', error);
-                        alert("An error occurred while reporting the item.");
-                        $('#reportItemModal').modal('hide'); // Close the modal
+                        console.error('Error reporting user:', error);
+                        alert("An error occurred while reporting the user.");
+                        $('#reportUserModal').modal('hide'); // Close the modal
                         $('#reportbutton').prop('disabled', false);
 
                     }

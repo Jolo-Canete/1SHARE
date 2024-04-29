@@ -30,7 +30,6 @@
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
 </style>
 
 <!-- Item Detail Modal -->
@@ -115,7 +114,7 @@
                       </div>
                     </td>
                     <td class="text-end">
-                      <a href="#" class="link-offset-2 link-underline link-underline-opacity-0">View Profile</a>
+                      <a href="#" id="modalOwnerLinks" class="link-offset-2 link-underline link-underline-opacity-0">View Profile</a>
                     </td>
                   </tr>
                 </table>
@@ -173,60 +172,6 @@
                 });
               </script>
 
-              <div class="table-responsive">
-                <table class="table table-borderless table-bg-transparent">
-                  <thead>
-                    <tr>
-                      <th class="specs-header" id="specs-header"><b>OVERALL RATING</b>
-                        <div class="rating">
-                          <label for="star5"><i class="fas fa-star"></i></label>
-                          <input type="radio" name="rating" id="star5" value="5">
-                          <label for="star4"><i class="fas fa-star"></i></label>
-                          <input type="radio" name="rating" id="star4" value="4">
-                          <label for="star3"><i class="fas fa-star"></i></label>
-                          <input type="radio" name="rating" id="star3" value="3">
-                          <label for="star2"><i class="fas fa-star"></i></label>
-                          <input type="radio" name="rating" id="star2" value="2">
-                          <label for="star1"><i class="fas fa-star"></i></label>
-                          <input type="radio" name="rating" id="star1" value="1">5/5
-                        </div>
-                      </th>
-                    </tr>
-                    <tr>
-                      <th class="specs-header" id="specs-header"><b>REVIEW</b> <i class="bi bi-chevron-down" id="review-icon"> </i>
-                      <th></th>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="review-table" style="display: none;">
-                    <tr>
-                      <td>
-                        <div class="card shadow-sm">
-                          <div class="card-body">
-                            <div class="d-flex align-items-center">
-                              <div class="row">
-                                <div class="col-12">
-                                  <a href="profile.php" class="h5 fw-bold link-offset-2 link-underline link-underline-opacity-0">Detective Jolo</a>
-                                  <div class="d-flex align-items-center">
-                                    <i class="bi bi-star-fill text-warning"></i>
-                                    <i class="bi bi-star-fill text-warning ms-1"></i>
-                                    <i class="bi bi-star-fill text-warning ms-1"></i>
-                                    <i class="bi bi-star-fill text-warning ms-1"></i>
-                                    <i class="bi bi-star-fill text-warning ms-1"></i>
-                                    <small class="ms-2 text-warning">5.0</small>
-                                  </div>
-                                  <p class="mt-2">This chair is a great addition for any room in your home, not only just the living room. Featuring a mid-century design with modern available on the market. And with that said, if you are like most people in the...</p>
-                                  <small class="text-muted">April 16, 2024 at 6:50:00 A.M.</small>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
               <script>
                 $(document).ready(function() {
                   $('#review-icon').click(function() {
@@ -251,8 +196,10 @@
               <button id="barter" type="button" class="btn btn-outline-dark ms-2 mb-2" data-bs-target="#barterModal" data-bs-toggle="modal">Barter</button>
               <button id="borrow" type="button" class="btn btn-outline-success ms-2 mb-2" data-bs-target="#borrowModal" data-bs-toggle="modal">Borrow</button>
               <button id="buy" type="button" class="btn btn-outline-danger ms-2 mb-2" data-bs-target="#buyRequestModal" data-bs-toggle="modal">Buy</button>
-
-              <button id="cartButton" type="button" class="btn btn-primary ms-2 mb-2" onclick="openCart()">
+              <button id="cartButton" type="button" class="btn btn-primary ms-2 mb-2" onclick="openItem()">
+                More Details
+              </button>
+              <button id="porp" type="button" class="btn btn-primary ms-2 mb-2" onclick="openCart()">
                 <i class="bi bi-cart-plus"></i> Add To Cart
               </button>
               <div id="cart-popup" class="cart-popup hidden">
@@ -305,6 +252,13 @@
     }, 2000); // Show for 2 seconds
   }
 
+  function openItem() {
+    // Get the item ID from the modal
+    var itemID = document.getElementById('modalItemID').textContent;
+
+    window.open('itemdetail.php?itemID=' + encodeURIComponent(itemID), '_blank');
+  }
+
   function openCart() {
     var itemID = document.getElementById('modalItemID').textContent;
 
@@ -337,6 +291,8 @@
     const barterButtonEl = document.getElementById('barter');
     const borrowButtonEl = document.getElementById('borrow');
     const buyButtonEl = document.getElementById('buy');
+    const porp1 = document.getElementById('porp');
+
 
 
 
@@ -347,6 +303,8 @@
     barterButtonEl.style.display = 'none';
     borrowButtonEl.style.display = 'none';
     buyButtonEl.style.display = 'none';
+    porp1.style.display = 'none';
+
 
 
 
@@ -452,6 +410,8 @@
 
         // Show edit and cart buttons
         cartButtonEl.style.display = 'block';
+        porp1.style.display = 'block';
+
 
         // Get the button elements
         const barterButton = document.getElementById('barter');
@@ -483,8 +443,13 @@
         // Populate user details
         document.getElementById('modalUserID').textContent = response.userID;
         document.getElementById('modalContactNumber').textContent = response.contactNumber;
+
         const modalOwnerLink = document.getElementById('modalOwnerLink');
         modalOwnerLink.href = `otherprofile.php?userID=${response.userID}`;
+
+        const modalOwnerLinks = document.getElementById('modalOwnerLinks');
+        modalOwnerLinks.href = `otherprofile.php?userID=${response.userID}`;
+
         document.getElementById('modalOwnerName').textContent = response.username;
         document.getElementById('modalUserImages').textContent = response.userImage_path;;
         modalUserImages.src = `picture/${response.userImage_path}`;

@@ -66,10 +66,7 @@ if (isset($_GET['search_term'])) {
     <title>Find Item</title>
 
     <style>
-        <?php include "additem.css"; ?>
-        <?php include "find.css"; ?>
-        
-        
+        <?php include "additem.css"; ?><?php include "find.css"; ?>
     </style>
 
 </head>
@@ -182,7 +179,7 @@ if (isset($_GET['search_term'])) {
             <br>
             <!--- End of Dropdown --->
 
-            <!--- Item Display --->
+            <!-- Item Display -->
             <div class="container">
                 <div class="row row-cols-2 row-cols-md-6 g-1">
                     <?php if (empty($items)) { ?>
@@ -195,26 +192,53 @@ if (isset($_GET['search_term'])) {
                         </div>
                     <?php } else { ?>
                         <?php foreach ($items as $item) { ?>
-
                             <!-- Item Card -->
                             <div class="col">
                                 <div class="card" data-bs-toggle="modal" data-bs-target="#itemDetailModal" onclick="populateModal('<?php echo $item['itemName']; ?>', '<?php echo $item['itemImage_path']; ?>', '<?php echo $item['itemQuantity']; ?>', '<?php echo $item['requestType']; ?>', '<?php echo $item['itemID']; ?>')">
                                     <img src="pictures/<?php echo $item['itemImage_path']; ?>" class="card-img-top" alt="<?php echo $item['itemName']; ?>" style="border-radius: 0px;">
                                     <div class="card-body">
                                         <h5 class="card-title"><?php echo $item['itemName']; ?></h5>
+                                        <!-- PHP code to display average rating -->
+                                        <?php
+                                        $itemID = $item['itemID'];
+                                        $averageQuery = "SELECT AVG(rate) AS averageRating FROM itemRating WHERE itemID = ?";
+                                        $averageStmt = $conn->prepare($averageQuery);
+                                        $averageStmt->bind_param("i", $itemID);
+                                        $averageStmt->execute();
+                                        $averageResult = $averageStmt->get_result();
+                                        $row = $averageResult->fetch_assoc();
+                                        $averageRating = $row["averageRating"];
+                                        $averageStmt->close();
+                                        ?>
                                         <div class="rating">
-                                            <label for="star5"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star5" value="5">
-                                            <label for="star4"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star4" value="4">
-                                            <label for="star3"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star3" value="3">
-                                            <label for="star2"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star2" value="2">
-                                            <label for="star1"><i class="fas fa-star"></i></label>
-                                            <input type="radio" name="rating" id="star1" value="1"><span class="text-warning"><small>5/5</small></span>
+                                            <?php
+                                            // Loop to display stars based on average rating
+                                            for ($i = 1; $i <= 5; $i++) {
+                                                echo "<label for='star{$i}'><i class='fas fa-star";
+                                                // Add 'text-warning' class if average rating is not null and greater than or equal to current star value
+                                                if ($averageRating !== null && $averageRating >= $i) {
+                                                    echo " text-warning"; // Add 'text-warning' class to color the star yellow
+                                                }
+                                                echo "'></i></label>";
+                                                echo "<input type='radio' name='rating' id='star{$i}' value='{$i}'";
+                                                // Mark the radio button as checked if average rating is not null and greater than or equal to current star value
+                                                if ($averageRating !== null && $averageRating >= $i) {
+                                                    echo " checked";
+                                                }
+                                                echo ">";
+                                            }
+                                            // Display the average rating with one decimal place, if not null
+                                            if ($averageRating !== null) {
+                                                $averageRatingFormatted = number_format($averageRating, 1);
+                                                echo "<span class='text-warning ms-1'><small>{$averageRatingFormatted}/5.0</small></span>";
+                                            }
+                                            ?>
                                         </div>
+
+
+
                                         <div class="mb-2"></div>
+                                        <!-- Other item details -->
                                         <div>
                                             <p class="text-secondary mb-1"><i class="bi bi-tags-fill"></i> <small><b></b> <?php echo $item['category']; ?></small></p>
                                             <div class="text-secondary mb-0">
@@ -236,7 +260,6 @@ if (isset($_GET['search_term'])) {
                                                     echo '<span class="ms-1 badge ' . $c . '">' . trim($t) . '</span>';
                                                 } ?>
                                             </div>
-
                                         </div>
                                         <p style="display: none;"><i class="bi bi-calendar"></i> Date Time Posted: <span style="display: none;" class="upload-date"><?php echo date("F j, Y, g:i a", strtotime($item['DateTimePosted'])); ?></span></p>
                                         <p class="text-start text-secondary mb-0">

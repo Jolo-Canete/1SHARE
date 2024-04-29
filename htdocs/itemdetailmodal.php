@@ -122,7 +122,7 @@
             // Get the item ID from the modal
             var itemID = document.getElementById('modalItemID').textContent;
 
-            window.location.href = 'itemdetail.php?itemID=' + encodeURIComponent(itemID);
+            window.location.href = 'itemdetails.php?itemID=' + encodeURIComponent(itemID);
         }
 
         function editItem() {

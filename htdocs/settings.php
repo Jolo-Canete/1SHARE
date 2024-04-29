@@ -22,7 +22,6 @@ while ($userRow = mysqli_fetch_assoc($query)) {
         'dateJoined' => $userRow['dateJoined'],
         'userEmail' => $userRow['userEmail'],
         'status' => $userRow['status'],
-        'userRating' => $userRow['userRating'],
         'userImage_path' => $userRow['userEmail'],
         'username' => $userRow['username'],
         'password' => $userRow['password'],
@@ -235,9 +234,7 @@ $time = $dateTime[1];
                                                 echo '<span class="text-primary"><b>Verified</b></span>';
                                             }
                                             ?>
-                                            <span class="text-dark me-2 ms-2"><?php echo $dateJoinedMonth .'&nbsp;'. $dateJoinedDay.',&nbsp;'. $dateJoinedYear; ?></span>
-                                            <div class="fw-bold text-secondary me-2 ms-2">Time:</div>
-                                            <span class="text-dark"><?php echo $dateJoinedHour.':'.$dateJoinedMinute;?></span>
+                                            
                                         </div>
                                             </div>
                                         </div>

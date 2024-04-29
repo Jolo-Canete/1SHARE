@@ -127,7 +127,7 @@
 
                         <input type="number" name="editZone" id="editModal_Zone_Input" class="form-control" placeholder="ex. 3" >
 
->>>>>>> 6c75927fbb2d69c3b7bd97856513a947261a4836
+
                     </div>
                 
             </div>
@@ -224,12 +224,12 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> 6c75927fbb2d69c3b7bd97856513a947261a4836
+
+
+
 
 
 <!-- Php form to submit the edited data -->

@@ -68,7 +68,7 @@ include "nav.php";
                 </div>
                 <?php
                 // Query to fetch the closed requests for the logged-in user
-                $query = "SELECT r.requestID, r.requestType, i.itemName, u.username AS itemOwner,
+                $query = "SELECT r.requestID, r.requestType, i.itemName, u.username AS itemOwner, r.rated AS rated,
              (CASE
               WHEN r.requestType = 'Barter' THEN b.DateTimeCompleted
               WHEN r.requestType = 'Borrow' THEN bo.DateTimeCompleted 
@@ -101,6 +101,7 @@ include "nav.php";
                     <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
                         <thead>
                             <tr class="table-dark">
+                                <th>Rated</th>
                                 <th>Request Type</th>
                                 <th>Item Name</th>
                                 <th class="d-md-table-cell d-none">Item Owner</th>
@@ -116,64 +117,75 @@ include "nav.php";
                             while ($row = $result->fetch_assoc()) {
                                 $requestDateTimeClosed = $row['DateTimeCompleted'] ? date('l, F j, Y g:i A', strtotime($row['DateTimeCompleted'])) : '';
                             ?>
-                                <tr class="table-row table-light">
-                                    <td data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $row['requestType']; ?></td>
-                                    <td data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $row['itemName']; ?></td>
-                                    <td class="d-md-table-cell d-none" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $row['itemOwner']; ?></td>
-                                    <td class="d-md-table-cell d-none" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $requestDateTimeClosed; ?></td>
-                                    <td class="d-none d-md-table-cell" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>">
-                                        <?php if ($row['Proof'] != 'N/A') {
-                                            echo '<img src="proof/' . $row['Proof'] . '" alt="Proof" width="100">';
-                                        } else {
-                                            echo 'N/A';
-                                        } ?>
-                                    </td>
-                                    <td class="d-none d-md-table-cell" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>">
-                                        <?php if ($row['ReturnProof'] != 'N/A') {
-                                            echo '<img src="proof/' . $row['ReturnProof'] . '" alt="Proof" width="100">';
-                                        } else {
-                                            echo 'N/A';
-                                        } ?>
-                                    </td>
-                                    <td class="d-table-cell d-md-none">
-                                        <a class="btn btn-primary btn-sm mb-1 collapsed" data-bs-toggle="collapse" href="#collapsible-<?php echo $row['requestID']; ?>" role="button" aria-expanded="false" aria-controls="collapsible-<?php echo $row['requestID']; ?>">
-                                            More
-                                        </a>
-                                        <div class="collapse" id="collapsible-<?php echo $row['requestID']; ?>">
-                                            <div class="card card-body">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <p><strong>Request Type:</strong> <?php echo $row['requestType']; ?></p>
-                                                        <p><strong>Item Name:</strong> <?php echo $row['itemName']; ?></p>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <p><strong>Item Owner:</strong> <?php echo $row['itemOwner']; ?></p>
-                                                        <p><strong>Date Time Completed:</strong> <?php echo $requestDateTimeClosed; ?></p>
-                                                    </div>
+                                <td>
+                                    <?php
+                                    // Check if rated is 'yes' or 'no' and set appropriate text
+                                    $ratingText = $row['rated'] === 'yes' ? 'Rated' : 'Unrated';
+                                    // Set appropriate class for styling based on the value of $row['rated']
+                                    $ratingClass = $row['rated'] === 'yes' ? 'text-bg-success' : 'text-bg-danger';
+                                    ?>
+                                    <span class="badge <?php echo $ratingClass; ?>">
+                                        <?php echo $ratingText; ?>
+                                    </span>
+                                </td>
+
+                                <td data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $row['requestType']; ?></td>
+                                <td data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $row['itemName']; ?></td>
+                                <td class="d-md-table-cell d-none" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $row['itemOwner']; ?></td>
+                                <td class="d-md-table-cell d-none" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $requestDateTimeClosed; ?></td>
+                                <td class="d-none d-md-table-cell" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>">
+                                    <?php if ($row['Proof'] != 'N/A') {
+                                        echo '<img src="proof/' . $row['Proof'] . '" alt="Proof" width="100">';
+                                    } else {
+                                        echo 'N/A';
+                                    } ?>
+                                </td>
+                                <td class="d-none d-md-table-cell" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>">
+                                    <?php if ($row['ReturnProof'] != 'N/A') {
+                                        echo '<img src="proof/' . $row['ReturnProof'] . '" alt="Proof" width="100">';
+                                    } else {
+                                        echo 'N/A';
+                                    } ?>
+                                </td>
+                                <td class="d-table-cell d-md-none">
+                                    <a class="btn btn-primary btn-sm mb-1 collapsed" data-bs-toggle="collapse" href="#collapsible-<?php echo $row['requestID']; ?>" role="button" aria-expanded="false" aria-controls="collapsible-<?php echo $row['requestID']; ?>">
+                                        More
+                                    </a>
+                                    <div class="collapse" id="collapsible-<?php echo $row['requestID']; ?>">
+                                        <div class="card card-body">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p><strong>Request Type:</strong> <?php echo $row['requestType']; ?></p>
+                                                    <p><strong>Item Name:</strong> <?php echo $row['itemName']; ?></p>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <p><strong>Proof:</strong>
-                                                            <?php if ($row['Proof'] != 'N/A') {
-                                                                echo '<img src="proof/' . $row['Proof'] . '" alt="Proof" class="img-fluid">';
-                                                            } else {
-                                                                echo 'N/A';
-                                                            } ?>
-                                                        </p>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <p><strong>Return Proof (BORROW):</strong>
-                                                            <?php if ($row['ReturnProof'] != 'N/A') {
-                                                                echo '<img src="proof/' . $row['ReturnProof'] . '" alt="Proof" class="img-fluid">';
-                                                            } else {
-                                                                echo 'N/A';
-                                                            } ?>
-                                                        </p>
-                                                    </div>
+                                                <div class="col-6">
+                                                    <p><strong>Item Owner:</strong> <?php echo $row['itemOwner']; ?></p>
+                                                    <p><strong>Date Time Completed:</strong> <?php echo $requestDateTimeClosed; ?></p>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p><strong>Proof:</strong>
+                                                        <?php if ($row['Proof'] != 'N/A') {
+                                                            echo '<img src="proof/' . $row['Proof'] . '" alt="Proof" class="img-fluid">';
+                                                        } else {
+                                                            echo 'N/A';
+                                                        } ?>
+                                                    </p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p><strong>Return Proof (BORROW):</strong>
+                                                        <?php if ($row['ReturnProof'] != 'N/A') {
+                                                            echo '<img src="proof/' . $row['ReturnProof'] . '" alt="Proof" class="img-fluid">';
+                                                        } else {
+                                                            echo 'N/A';
+                                                        } ?>
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
-                                    </td>
+                                    </div>
+                                </td>
                                 </tr>
                             <?php
                             }
@@ -222,11 +234,11 @@ include "nav.php";
                         // Use the requestId to fetch the request details based on the modal ID
                         var fetchUrl = '';
                         if (modal.attr('id') === 'reqbartermodal') {
-                            fetchUrl = 'patchs.php';
+                            fetchUrl = 'core.php';
                         } else if (modal.attr('id') === 'reqBuyModal') {
-                            fetchUrl = 'patchs2.php';
+                            fetchUrl = 'core2.php';
                         } else if (modal.attr('id') === 'reqBorrowModal') {
-                            fetchUrl = 'patchs1.php';
+                            fetchUrl = 'core1.php';
                         }
 
                         $.ajax({
@@ -244,17 +256,38 @@ include "nav.php";
                             }
                         });
                     });
-                });
-            </script>
-            <script>
-                $(document).ready(function() {
+
                     // Add event listeners to the sorter buttons
                     $('[data-sort-type]').click(function() {
                         var sortType = $(this).data('sort-type');
-                        sortTable(sortType, 'all');
+                        sortTable(sortType);
                     });
+
+                    function sortTable(sortType) {
+                        // Get all rows in the table body
+                        var $tbody = $('table tbody');
+                        var $rows = $tbody.find('tr');
+
+                        // Hide all rows
+                        $rows.hide();
+
+                        // Filter rows based on sortType
+                        if (sortType === 'all') {
+                            $rows.show();
+                        } else {
+                            $rows.each(function() {
+                                var $row = $(this);
+                                var type = $row.find('td:eq(1)').text().trim(); // Adjusted index to match requestType column
+                                if (type.toLowerCase() === sortType.toLowerCase()) {
+                                    $row.show();
+                                }
+                            });
+                        }
+                    }
                 });
             </script>
+
+
         </div>
 
 </body>

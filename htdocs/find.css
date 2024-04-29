@@ -1,16 +1,41 @@
-.rating>input {
-    display: none;
-}
-
-.rating>label {
+/* CSS for rating stars */
+.rating {
+    display: inline-block;
     font-size: 15px;
     color: #FFD700;
-    display: inline-block;
-    cursor: pointer;
+    /* Default color for stars */
 }
 
-.rating>input:checked~label {
-    color: #f8de7e;
+.rating>input {
+    display: none;
+    cursor: not-allowed; /* Change cursor to not-allowed */
+    pointer-events: none; /* Disable pointer events */
+}
+
+
+
+
+/* CSS for rating stars */
+.rating {
+    display: inline-block;
+}
+
+.rating label {
+    font-size: 15px;
+    /* Adjust the font size as needed */
+    color: #ddd;
+    /* Default color for empty stars */
+    cursor: not-allowed; /* Change cursor to not-allowed */
+    pointer-events: none; /* Disable pointer events */}
+
+.rating>input:checked~label {}
+
+.rating label.text-warning {
+    color: #f8ce0b;
+}
+
+.rating label i {
+    transition: color 0.3s;
 }
 
 .card {

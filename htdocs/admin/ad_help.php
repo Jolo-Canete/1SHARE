@@ -540,98 +540,67 @@
                                         </div>
                                     </div>
 
-                                    <!--- Transactions: Barter --->
+                                    <!--- Transactions --->
                                     <div class="accordion-item">
-                                        <h2 class="accordion-header" id="tranBarterHeader">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tranBarterCollapse" aria-expanded="false" aria-controls="tranBarterCollapse">
-                                                <h5 class="fw-bold"> Transactions for Barter</h5>
+                                        <h2 class="accordion-header" id="transactionHeader">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#transactionCollapse" aria-expanded="false" aria-controls="transactionCollapse">
+                                                <h5 class="fw-bold"> Transactions</h5>
                                             </button>
                                         </h2>
-                                        <div id="tranBarterCollapse" class="accordion-collapse collapse" aria-labelledby="tranBarterHeader" data-bs-parent="#tranBarter">
+                                        <div id="transactionCollapse" class="accordion-collapse collapse" aria-labelledby="transactionHeader" data-bs-parent="#transaction">
                                             <div class="accordion-body">
                                                 <div class="row mt-2">
                                                     <div class="col">
-                                                        <h6 class="fw-bold">1. Barter Transaction:</h6>
+                                                        <h6 class="fw-bold">1. Accessing the "Transactions" Function:</h6>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>The system allows users to barter items from one another, in addition to borrowing and buying.</li>
-                                                                <li>Barter transactions are listed in the "Ongoing Transactions" table, identifiable by the "Borrow" request type.</li>
+                                                                <li>Navigate to the "Transactions" page within the system admin’s sidebar.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <h6 class="fw-bold">2. Barter Item Details:</h6>
+                                                            <h6 class="fw-bold">2. Searching from Transactions:</h6>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>When a barter transaction row is clicked, a modal window will appear displaying the details of the requested item.</li>
-                                                                <li>The modal shows information such as:</li>
-                                                                <li class="ms-3"><b>Requested Item: </b> Displays the item that has been requested.</li>
-                                                                <li class="ms-3"><b>Requester’s Item:</b> Displays the item the requester wants to barter.</li>
-                                                                <li class="ms-3"><b>Item Name:</b> Shows the name of the requested item.</li>
-                                                                <li class="ms-3"><b>Requested by:</b> Identifies the user who submitted the request.</li>
-                                                                <li class="ms-3"><b>Requested on:</b> Shows the date and time the request was submitted.</li>
-                                                                <li class="ms-3"><b>Meet at:</b> Indicates the location where the requested item will be picked up.</li>
-                                                                <li class="ms-3"><b>Meet on:</b> Specifies the date and time for the pickup meeting.</li>
+                                                                <li>You can search for transactions using the search form at the top of the table.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <h6 class="fw-bold">3. Barter Process:</h6>
+                                                            <h6 class="fw-bold">3. Sorting Transactions:</h6>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>If the items have been exchanged, one of the owner and the requester must confirm it by clicking the "Confirmation" button.</li>
+                                                                <li>You can sort the transaction by request type using the dropdown menu at the top of the table.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <h6 class="fw-bold">4. Barter Successful Transaction:</h6>
+                                                            <h6 class="fw-bold">4. Viewing Transaction Details:</h6>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>The page will redirect to the “RECEIVED” form.</li>
-                                                                <li>Answer the following questions:</li>
-                                                                <li class="ms-3"><b>Transaction Successful:</b> Check the “Yes” checkbox if the transaction was successful. Check the “No” checkbox if the transaction was unsuccessful.</li>
-                                                                <li class="ms-3"><b>Please provide a proof that you have received or handed the item:</b> Upload a proof that you have successfully received the item.</li>
-                                                                <li>Click the “Submit” button once you have answered the following questions.</li>
-                                                                <li>If the transaction is successful, the updated transaction details will be reflected in the "Successful" under the “Transactions” within the system’s sidebar.</li>
-                                                                <li>If the transaction is unsuccessful, the updated transaction details will be reflected in the "Unsuccessful" under the “Transactions” within the system’s sidebar.</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <h6 class="fw-bold">5. Cancel Transactions:</h6>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <ul>
-                                                                <li>When one of the owner or the requester cancels the transaction, it will be reflected in the "Canceled" under the “Transactions” within the system’s sidebar</li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <h6 class="fw-bold">5. Failed Transactions:</h6>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <ul>
-                                                                <li>When the date and time of the transaction are not fulfilled, it will be reflected in the "Failed" under the “Transactions” within the system’s sidebar</li>
+                                                                <li>Upon accessing the transaction, you will typically see a list of all the transactions.</li>
+                                                                <li>The list may include details such as:</li>
+                                                                <li class="ms-3"><b>Status:</b> Status of the transaction.</li>
+                                                                <li class="ms-3"><b>Request Type:</b> Type of request was made.</li>
+                                                                <li class="ms-3"><b>Item Name:</b> Name of the item.</li>
+                                                                <li class="ms-3"><b>Item Owner:</b> Name of the item owner.</li>
+                                                                <li class="ms-3"><b>Date Time Completed:</b> When the transaction was completed.</li>
+                                                                <li class="ms-3"><b>Proof:</b> Proof of transaction.</li>
+                                                                <li class="ms-3"><b>Proof of Return (BORROW):</b> Proof the item borrowed was returned.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -642,76 +611,120 @@
 
                                     <!--- Admin Report: Item --->
                                     <div class="accordion-item">
-                                        <h2 class="accordion-header" id="iHeader">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#iCollapse" aria-expanded="false" aria-controls="iCollapse">
+                                        <h2 class="accordion-header" id="itemReportedHeader">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#itemReportedCollapse" aria-expanded="false" aria-controls="itemReportedCollapse">
                                                 <h5 class="fw-bold"> Report Item</h5>
                                             </button>
                                         </h2>
-                                        <div id="iCollapse" class="accordion-collapse collapse" aria-labelledby="iHeader" data-bs-parent="#i">
+                                        <div id="itemReportedCollapse" class="accordion-collapse collapse" aria-labelledby="itemReportedHeader" data-bs-parent="#itemReported">
                                             <div class="accordion-body">
                                                 <div class="row mt-2">
                                                     <div class="col">
-                                                        <h6 class="fw-bold">1. Access the "Circulation" Function:</h6>
+                                                        <h6 class="fw-bold">1. Accessing the “Item Report” function:</h6>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>Locate the “Circulation” function within the system’s navigation bar. This might be under a section labeled “Find Items”.</li>
-                                                                <li>Click on the “Find Items” button.</li>
+                                                                <li>To manage the item reported inside the Item Sharing System, locate the “Report” function within the system admin’s sidebar. This might be under a section labeled “Item Report”.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <h6 class="fw-bold">2. Select Item:</h6>
+                                                            <h6 class="fw-bold">2. Viewing the List of Items Reported:</h6>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>A list of available items will appear.</li>
-                                                                <li>Select the item you want to report.</li>
-                                                                <li>Click the red flag icon beside the item details.</li>
+                                                                <li>Upon accessing the list, you will typically see a list of all items reported.</li>
+                                                                <li>The list may include details such as:</li>
+                                                                <li class="ms-3"><b>Reported By:</b> Indicates who reported the item</li>
+                                                                <li class="ms-3"><b>Item Reported:</b> Shows what item was reported.</li>
+                                                                <li class="ms-3"><b>Date Reported:</b> Indicates when the item was reported.</li>
+                                                                <li class="ms-3"><b>Action:</b> Perform various actions such as warning residents, denying requests, and deleting items.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <h6 class="fw-bold">3. Reason and Proof of Report:</h6>
+                                                            <h6 class="fw-bold">3. Searching from the List of Items Reported:</h6>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>A form will appear, containing two fields such as:</li>
-                                                                <li class="ms-3"><b>Please specify your reason for reporting this item: </b> Specify the reason why you reported this item.</li>
-                                                                <li class="ms-3"><b>Upload a screenshot for evidence/proof:</b> Upload a screenshot for evidence/proof, solidifying your reason.</li>
+                                                                <li>You can search for items reported using the search form at the top of the table.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <h6 class="fw-bold">4. Review and Report:</h6>
+                                                            <h6 class="fw-bold">4. Sorting Item Reported List:</h6>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>Carefully review the entered information.</li>
-                                                                <li>Once reviewed, click the “Report” button.</li>
+                                                                <li>You can sort the list of items reported by date using the dropdown menu at the top of the table.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <h6 class="fw-bold">5. Successful Report:</h6>
+                                                            <h6 class="fw-bold">5. Review Item Report:</h6>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>A message will display, indicating that you have successfully reported the item.</li>
-                                                                <li>Your report will automatically notify the admin and will be reviewed.</li>
+                                                                <li>Select an item from the list of items reported you wish to manage.</li>
+                                                                <li>Click the plus icon under the “Action”</li>
+                                                                <li>Carefully review the following:</li>
+                                                                <li class="ms-3"><b>Reason of Report:</b> This shows why the item was reported.</li>
+                                                                <li class="ms-3"><b>Proof of Violation:</b> Displays the proof.</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h6 class="fw-bold">6. Warn Resident:</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <ul>
+                                                                <li>After carefully reviewing the reason of report and proof of violation, you may choose to warn the item owner by clicking the “Warn” button.</li>
+                                                                <li>This will automatically notify the resident warned.</li>
+                                                                <li>They will be provided with a message as to why they were warned.</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h6 class="fw-bold">7. Deny Request:</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <ul>
+                                                                <li>If you choose to deny the request, you may click the “Deny Request”.</li>
+                                                                <li>This will automatically notify the resident who reported the item.</li>
+                                                                <li>They will be provided with a message as to why their request was denied.</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h6 class="fw-bold">8. Delete Item:</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <ul>
+                                                                <li>If you choose to delete the item, you may click the “Delete” button.</li>
+                                                                <li>This will automatically notify the owner of the item.</li>
+                                                                <li>They will be provided with a message as to why their item was deleted.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -720,65 +733,108 @@
                                         </div>
                                     </div>
 
-                                    <!--- Report: Resident --->
+                                    <!--- Admin Report: Residents --->
                                     <div class="accordion-item">
-                                        <h2 class="accordion-header" id="reportResidentHeader">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#reportResidentCollapse" aria-expanded="false" aria-controls="reportResidentCollapse">
+                                        <h2 class="accordion-header" id="residentReportedHeader">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#residentReportedCollapse" aria-expanded="false" aria-controls="residentReportedCollapse">
                                                 <h5 class="fw-bold"> Report Resident</h5>
                                             </button>
                                         </h2>
-                                        <div id="reportResidentCollapse" class="accordion-collapse collapse" aria-labelledby="reportResidentHeader" data-bs-parent="#reportResident">
+                                        <div id="residentReportedCollapse" class="accordion-collapse collapse" aria-labelledby="residentReportedHeader" data-bs-parent="#residentReported">
                                             <div class="accordion-body">
                                                 <div class="row mt-2">
                                                     <div class="col">
-                                                        <h6 class="fw-bold">1. Search Resident to Report:</h6>
+                                                        <h6 class="fw-bold">1. Accessing the “Resident Report” function:</h6>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>Search the resident you want to report by using the search form within the system’s navigation bar.</li>
-                                                                <li>After searching, the page will redirect you to the resident’s profile.</li>
-                                                                <li>Click the red flag icon beside the resident's name.</li>
+                                                                <li>To manage the item reported inside the Item Sharing System, locate the “Report” function within the system admin’s sidebar. This might be under a section labeled “Resident Report”.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <h6 class="fw-bold">3. Reason and Proof of Report:</h6>
+                                                            <h6 class="fw-bold">2. Viewing the List of Items Reported:</h6>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>A form will appear, containing two fields such as:</li>
-                                                                <li class="ms-3"><b>Please specify your reason for reporting this resident:</b> Specify the reason why you reported this resident.</li>
-                                                                <li class="ms-3"><b>Upload a screenshot for evidence/proof:</b> Upload a screenshot for evidence/proof, solidifying your reason.</li>
+                                                                <li>Upon accessing the list, you will typically see a list of all residents reported.</li>
+                                                                <li>The list may include details such as:</li>
+                                                                <li class="ms-3"><b>Reported By:</b> Indicates who reported the resident.</li>
+                                                                <li class="ms-3"><b>Resident Reported:</b> Shows who was reported.</li>
+                                                                <li class="ms-3"><b>Date Reported:</b> Indicates when the resident was reported.</li>
+                                                                <li class="ms-3"><b>Action:</b> Perform various actions such as warning user and denying request.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <h6 class="fw-bold">4. Review and Report:</h6>
+                                                            <h6 class="fw-bold">3. Searching from the List of Residents Reported:</h6>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>Carefully review the entered information.</li>
-                                                                <li>Once reviewed, click the “Report” button.</li>
+                                                                <li>You can search for residents reported using the search form at the top of the table.</li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
-                                                            <h6 class="fw-bold">5. Successful Report:</h6>
+                                                            <h6 class="fw-bold">4. Sorting the List of Residents Reported:</h6>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col">
                                                             <ul>
-                                                                <li>A message will display, indicating that you have successfully reported the item.</li>
-                                                                <li>Your report will automatically notify the admin and will be reviewed.</li>
+                                                                <li>You can sort the list of residents reported by date using the dropdown menu at the top of the table.</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h6 class="fw-bold">5. Review Resident Report:</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <ul>
+                                                                <li>Select a resident from the list of items reported you wish to manage.</li>
+                                                                <li>Click the plus icon under the “Action”</li>
+                                                                <li>Carefully review the following:</li>
+                                                                <li class="ms-3"><b>Reason of Report:</b> This shows why the resident was reported.</li>
+                                                                <li class="ms-3"><b>Proof of Violation:</b> Displays the proof.</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h6 class="fw-bold">6. Warn Resident:</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <ul>
+                                                                <li>After carefully reviewing the reason of report and proof of violation, you may choose to warn the resident reported by clicking the “Warn” button. </li>
+                                                                <li>This will automatically notify the resident warned.</li>
+                                                                <li>They will be provided with a message as to why they were warned.</li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h6 class="fw-bold">7. Deny Request:</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <ul>
+                                                                <li>If you choose to deny the request, you may click the “Deny Request”.</li>
+                                                                <li>This will automatically notify the resident who reported.</li>
+                                                                <li>They will be provided with a message as to why their request was denied.</li>
                                                             </ul>
                                                         </div>
                                                     </div>

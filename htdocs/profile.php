@@ -18,7 +18,6 @@ while ($userRow = mysqli_fetch_assoc($query)) {
     'dateJoined' => $userRow['dateJoined'],
     'userEmail' => $userRow['userEmail'],
     'status' => $userRow['status'],
-    'userRating' => $userRow['userRating'],
     'userImage_path' => $userRow['userEmail'],
     'username' => $userRow['username'],
     'password' => $userRow['password'],
@@ -130,6 +129,52 @@ while ($userRow = mysqli_fetch_assoc($query)) {
     .rating>input:checked~label {
       color: #f8de7e;
     }
+
+    /* CSS for rating stars */
+    .rating {
+      display: inline-block;
+      font-size: 15px;
+      color: #FFD700;
+      /* Default color for stars */
+    }
+
+    .rating>input {
+      display: none;
+      cursor: not-allowed;
+      /* Change cursor to not-allowed */
+      pointer-events: none;
+      /* Disable pointer events */
+    }
+
+
+
+
+    /* CSS for rating stars */
+    .rating {
+      display: inline-block;
+    }
+
+    .rating label {
+      font-size: 15px;
+      /* Adjust the font size as needed */
+      color: #ddd;
+      /* Default color for empty stars */
+      cursor: not-allowed;
+      /* Change cursor to not-allowed */
+      pointer-events: none;
+      /* Disable pointer events */
+    }
+
+    .rating>input:checked~label {}
+
+    .rating label.text-warning {
+      color: #f8ce0b;
+    }
+
+    .rating label i {
+      transition: color 0.3s;
+    }
+
 
     .data {
       background-color: yellow;
@@ -318,8 +363,8 @@ while ($userRow = mysqli_fetch_assoc($query)) {
 
               <div>
                 <div class="flex-grow-1 d-flex justify-content-between align-items-center">
-                <h2 class="mb-0 fw-bold"><? echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName'][0]) . '.&nbsp;' . ucfirst($userData['lastName']) ?></h2>
-                  
+                  <h2 class="mb-0 fw-bold"><? echo ucfirst($userData['firstName']) . '&nbsp;' . ucfirst($userData['middleName'][0]) . '.&nbsp;' . ucfirst($userData['lastName']) ?></h2>
+
                 </div>
                 <div class="text-secondary">Resident</div>
                 <div>
@@ -335,18 +380,57 @@ while ($userRow = mysqli_fetch_assoc($query)) {
               </div>
             </div>
           </div>
-          <div class="rating ms-3">
-            <label for="star5"><i class="fas fa-star "></i></label>
-            <input type="radio" name="rating" id="star5" value="5">
-            <label for="star4"><i class="fas fa-star"></i></label>
-            <input type="radio" name="rating" id="star4" value="4">
-            <label for="star3"><i class="fas fa-star"></i></label>
-            <input type="radio" name="rating" id="star3" value="3">
-            <label for="star2"><i class="fas fa-star"></i></label>
-            <input type="radio" name="rating" id="star2" value="2">
-            <label for="star1"><i class="fas fa-star"></i></label>
-            <input type="radio" name="rating" id="star1" value="1">
-            <span class="text-warning ms-2">5/5</span>
+          <div class="rating">
+            <?php
+            // Open the database connection
+            include "1db.php";
+
+            // Check if the connection was successful
+            if (!$conn) {
+              // Handle connection error
+              echo 'Database connection error: ' . mysqli_connect_error();
+              exit;
+            }
+
+            // Prepare and execute the query to fetch the average rating
+            $averageQuery = "SELECT COALESCE(AVG(userRate), 0) AS averageRating FROM userRating WHERE userID = ?";
+            $averageStmt = $conn->prepare($averageQuery);
+            $averageStmt->bind_param("i", $user_id);
+            $averageStmt->execute();
+            $averageResult = $averageStmt->get_result();
+            $row = $averageResult->fetch_assoc();
+            $averageRating = $row["averageRating"];
+
+            // Close the prepared statement
+            $averageStmt->close();
+
+            // Close the database connection
+            mysqli_close($conn);
+
+            // Display the stars based on the average rating
+            ?>
+            <?php
+            // Loop to display stars based on average rating
+            for ($i = 1; $i <= 5; $i++) {
+              echo "<label for='star{$i}'><i class='fas fa-star";
+              // Add 'text-warning' class if average rating is not null and greater than or equal to current star value
+              if ($averageRating !== null && $averageRating >= $i) {
+                echo " text-warning"; // Add 'text-warning' class to color the star yellow
+              }
+              echo "'></i></label>";
+              echo "<input type='radio' name='rating' id='star{$i}' value='{$i}'";
+              // Mark the radio button as checked if average rating is not null and greater than or equal to current star value
+              if ($averageRating !== null && $averageRating >= $i) {
+                echo " checked";
+              }
+              echo ">";
+            }
+            // Display the average rating with one decimal place, if not null
+            if ($averageRating !== null) {
+              $averageRatingFormatted = number_format($averageRating, 1);
+              echo "<span class='text-warning ms-1'><small>{$averageRatingFormatted}/5.0</small></span>";
+            }
+            ?>
           </div>
           <!--- Tab --->
           <ul class="nav nav-underline mt-4 ms-4 justify-content-between flex-wrap" id="myTab" role="tablist">
@@ -362,32 +446,32 @@ while ($userRow = mysqli_fetch_assoc($query)) {
           </ul>
           <!--- Tab Content --->
 
-        <!--- Details --->
-        <div class="tab-content" id="myTabContent">
-          <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
-            <div class="h2 d-flex align-items-center mt-3"><i class="bi bi-person me-2"></i> Details</div>
-            <div class="row">
-              <div class="col-md-6 mt-3">
-                <div class="card mb-4 shadow">
-                  <div class="card-header"><b>Personal Information</b></div>
-                  <div class="card-body">
-                    <div class="row mb-3">
-                      <div class="col-sm-4">
-                        <label for="firstName" class="form-label text-secondary"><b>First Name</b></label>
-                        <div class="form-box" readonly><b><? echo ucfirst($userData['firstName']) ?></b></div>
+          <!--- Details --->
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
+              <div class="h2 d-flex align-items-center mt-3"><i class="bi bi-person me-2"></i> Details</div>
+              <div class="row">
+                <div class="col-md-6 mt-3">
+                  <div class="card mb-4 shadow">
+                    <div class="card-header"><b>Personal Information</b></div>
+                    <div class="card-body">
+                      <div class="row mb-3">
+                        <div class="col-sm-4">
+                          <label for="firstName" class="form-label text-secondary"><b>First Name</b></label>
+                          <div class="form-box" readonly><b><? echo ucfirst($userData['firstName']) ?></b></div>
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="middleName" class="form-label text-secondary"><b>Middle Name</b></label>
+                          <div class="form-box" readonly><b><? echo ucfirst($userData['middleName']) ?></b></div>
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="lastName" class="form-label text-secondary"><b>Last Name</b></label>
+                          <div class="form-box" readonly><b><? echo ucfirst($userData['lastName']) ?></b></div>
+                        </div>
                       </div>
-                      <div class="col-sm-4">
-                        <label for="middleName" class="form-label text-secondary"><b>Middle Name</b></label>
-                        <div class="form-box" readonly><b><? echo ucfirst($userData['middleName']) ?></b></div>
-                      </div>
-                      <div class="col-sm-4">
-                        <label for="lastName" class="form-label text-secondary"><b>Last Name</b></label>
-                        <div class="form-box" readonly><b><? echo ucfirst($userData['lastName']) ?></b></div>
-                      </div>
-                    </div>
-                    <div class="row mb-3">
-                      <div class="col-sm-6">
-                        <label for="status" class="form-label text-secondary"><b>Status</b></label>
+                      <div class="row mb-3">
+                        <div class="col-sm-6">
+                          <label for="status" class="form-label text-secondary"><b>Status</b></label>
                           <!-- Create a statement if status is verified or not -->
                           <?
                           if ($userData['status'] === 'Unverified' || $userData['status'] === null) {
@@ -396,7 +480,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                             echo ' <div class="form-box text-primary" readonly><b>Verified';
                           }
                           ?>
-                          </b><span class="text-secondary mx-2"><small>last January 1, 2024</small></span>
+                          </b>
                         </div>
                       </div>
                       <div class="col-sm-6">
@@ -439,187 +523,201 @@ while ($userRow = mysqli_fetch_assoc($query)) {
           <!--- End of Details --->
 
           <!--- Transaction History --->
+
           <div class="tab-pane fade" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
             <div class="mt-3">
               <div class="h2"><i class="bi bi-arrow-repeat me-2"></i> Transaction History
               </div>
             </div>
-            <div class="table-wrapper">
+
+            <?php
+
+
+            // Open the database connection
+            include "1db.php";
+
+            // Check if the connection was successful
+            if (!$conn) {
+              // Handle connection error
+              echo 'Database connection error: ' . mysqli_connect_error();
+              exit;
+            }
+            // Query to fetch the closed requests for the logged-in user
+            $query = "SELECT r.requestID, r.requestType, i.itemName, u.username AS itemOwner, r.rated AS rated,
+             (CASE
+              WHEN r.requestType = 'Barter' THEN b.DateTimeCompleted
+              WHEN r.requestType = 'Borrow' THEN bo.DateTimeCompleted 
+              WHEN r.requestType = 'Buy' THEN bu.DateTimeCompleted
+              ELSE NULL
+          END) AS DateTimeCompleted,
+          (CASE
+              WHEN r.requesterSuccess IS NOT NULL THEN r.requesterSuccess
+              WHEN r.ownerSuccess IS NOT NULL THEN r.ownerSuccess
+              ELSE 'N/A'
+          END) AS Proof,
+          (CASE
+              WHEN bo.RequesterProof IS NOT NULL THEN bo.RequesterProof
+              WHEN bo.OwnerProof IS NOT NULL THEN bo.OwnerProof
+              ELSE 'N/A'
+          END) AS ReturnProof
+            FROM Request r
+            JOIN item i ON r.itemID = i.itemID
+            JOIN user u ON i.userID = u.userID
+            LEFT JOIN barter b ON r.requestID = b.requestID
+            LEFT JOIN borrow bo ON r.requestID = bo.requestID
+            LEFT JOIN buy bu ON r.requestID = bu.requestID
+            WHERE (r.userID = $user_id OR i.userID = $user_id)
+            AND r.complete IS NOT NULL ";
+            $result = $conn->query($query);
+
+            if ($result->num_rows > 0) {
+            ?>
+
               <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
                 <thead>
                   <tr class="table-dark">
-                    <th>Transaction Type</th>
+                    <th>Request Type</th>
                     <th>Item Name</th>
+                    <th class="d-md-table-cell d-none">Item Owner</th>
+                    <th class="d-md-table-cell d-none">Date Time Completed</th>
+                    <th class="d-table-cell d-md-none">Details</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="table-row table-light" data-bs-toggle="modal" data-bs-target="#transactionModal1">
-                    <td>Borrow</span></td>
-                    <td>Book</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                  <?php
+                  // Assuming $result contains the query result
+                  while ($row = $result->fetch_assoc()) {
+                    $requestDateTimeClosed = $row['DateTimeCompleted'] ? date('l, F j, Y g:i A', strtotime($row['DateTimeCompleted'])) : '';
+                  ?>
 
-            <!-- Transaction History Modal -->
-            <div class="modal fade" id="transactionModal1" tabindex="-1" aria-labelledby="transactionModalLabel1" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="transactionModalLabel1">Transaction Details</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row g-4">
-                      <div class="col-md-5">
-                        <img src="htdocs/picture/elmo.jpg" class="img-fluid rounded">
+
+                    <td data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $row['requestType']; ?></td>
+                    <td data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $row['itemName']; ?></td>
+                    <td class="d-md-table-cell d-none" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $row['itemOwner']; ?></td>
+                    <td class="d-md-table-cell d-none" data-bs-toggle="modal" data-bs-target="#<?php echo ($row['requestType'] == 'Barter') ? 'reqbartermodal' : (($row['requestType'] == 'Buy') ? 'reqBuyModal' : 'reqBorrowModal'); ?>" data-request-id="<?php echo $row['requestID']; ?>"><?php echo $requestDateTimeClosed; ?></td>
+
+                    <td class="d-table-cell d-md-none">
+                      <a class="btn btn-primary btn-sm mb-1 collapsed" data-bs-toggle="collapse" href="#collapsible-<?php echo $row['requestID']; ?>" role="button" aria-expanded="false" aria-controls="collapsible-<?php echo $row['requestID']; ?>">
+                        More
+                      </a>
+                      <div class="collapse" id="collapsible-<?php echo $row['requestID']; ?>">
+                        <div class="card card-body">
+                          <div class="row">
+                            <div class="col-6">
+                              <p><strong>Request Type:</strong> <?php echo $row['requestType']; ?></p>
+                              <p><strong>Item Name:</strong> <?php echo $row['itemName']; ?></p>
+                            </div>
+                            <div class="col-6">
+                              <p><strong>Item Owner:</strong> <?php echo $row['itemOwner']; ?></p>
+                              <p><strong>Date Time Completed:</strong> <?php echo $requestDateTimeClosed; ?></p>
+                            </div>
+                          </div>
+
+
+                        </div>
                       </div>
-                      <div class="col-md-7">
-                        <dl class="row g-0">
-                          <dt class="col-sm-5 text-secondary"><i class="bi bi-card-heading"></i>&nbsp; Item Name</dt>
-                          <dd class="col-sm-7">Book</dd>
-
-                          <dt class="col-sm-5 text-secondary"><i class="bi bi-card-text"></i>&nbsp; Description</dt>
-                          <dd class="col-sm-7">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                          <dt class="col-sm-5 text-secondary"><i class="bi bi-star-fill"></i>&nbsp; Transaction Type</dt>
-                          <dd class="col-sm-7"><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Borrow</span></dd>
-
-                          <dt class="col-sm-5 text-secondary"><i class="bi bi-calendar"></i>&nbsp; Started</dt>
-                          <dd class="col-sm-7">01/01/24 at 10:16 P.M.</dd>
-
-                          <dt class="col-sm-5 text-secondary"><i class="bi bi-calendar"></i>&nbsp; Ended</dt>
-                          <dd class="col-sm-7">02/02/24 at 10:30 A.M.</dd>
-
-                          <dt class="col-sm-5 text-secondary"><i class="bi bi-calendar-check-fill"></i>&nbsp; Owned By</dt>
-                          <dd class="col-sm-7">
-                            <span class="badge bg-primary-subtle text-primary-emphasis rounded-pill align-items-center">
-                              <img class="rounded-circle me-1" width="23" height="23" src="picture/elmo.jpg">Elmo
-                            </span>
-                          </dd>
-                        </dl>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End of Transaction History Modal -->
-
           </div>
-          <!-- End of Transaction History -->
-
-          <!--- Item Owned --->
-          <div class="tab-pane fade" id="itemowned" role="tabpanel" aria-labelledby="itemowned-tab">
-            <div class="mt-3">
-              <div class="h2 d-flex align-items-center"><i class="bi bi-box me-2"></i> Item Owned
-              </div>
-            </div>
-            <div class="table-wrapper">
-              <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
-                <thead>
-                  <tr class="table-dark">
-                    <th>Item Name</th>
-                    <th>Posted</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="table-row table-light" data-bs-toggle="modal" data-bs-target="#itemOwnedModal1">
-                    <td>Halloween Costume</span></td>
-                    <td>02/03/24 11:18 P.M.</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <!-- Item Owned Modal -->
-            <div class="modal fade" id="itemOwnedModal1" tabindex="-1" aria-labelledby="itemOwnedModalLabel1" aria-hidden="true">
-              <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="itemOwnedModalLabel1">Item Owned Details</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-md-5">
-                        <img src="htdocs/picture/elmo.jpg" class="img-fluid rounded">
-                      </div>
-                      <div class="col-md-7">
-                        <dl class="row">
-                          <dt class="col-sm-5 text-secondary bi-card-heading">&nbsp; Item Name</dt>
-                          <dd class="col-sm-7">Halloween Costume</dd>
-
-                          <dt class="col-sm-5 text-secondary bi-card-text">&nbsp; Description</dt>
-                          <dd class="col-sm-7">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin euismod tristique hendrerit. Duis quis luctus nunc.</dd>
-
-                          <dt class="col-sm-5 text-secondary bi-arrow-repeat">&nbsp; Open for</dt>
-                          <dd class="col-sm-7"><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Borrow<i class=""></i>
-                            </span></span></dd>
-
-                          <dt class="col-sm-5 text-secondary bi-pin-map">&nbsp; Pick up</dt>
-                          <dd class="col-sm-7">Overton</dd>
-
-                          <dt class="col-sm-5 text-secondary bi-clock">&nbsp; Duration</dt>
-                          <dd class="col-sm-7">5 Days</dd>
-
-                          <dt class="col-sm-5 text-secondary bi-calendar-check-fill mb-0">&nbsp; Owned By</dt>
-                          <dd class="col-sm-7"><span class="badge align-items-center text-light-emphasis bg-primary-subtle border border-primary-subtle rounded-pill">
-                              <img class="rounded-circle me-1" width="23" height="23" src="picture/elmo.jpg">Elmo
-                            </span>
-                          </dd>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  </div>
-                </div>
-              </div>
-              <!--- End of Item Owned Modal --->
-
-            </div>
-            <!--- End of Item Owned --->
-
-          </div>
-          <!--- End of Tab Content --->
-
+          </td>
+          </tr>
+      <?php
+                  }
+                }
+      ?>
+      </tbody>
+      </table>
         </div>
-        <!--- End of Tab --->
+
+
+
+        <!--- Item Owned --->
+        <div class="tab-pane fade" id="itemowned" role="tabpanel" aria-labelledby="itemowned-tab">
+          <div class="mt-3">
+            <div class="h2 d-flex align-items-center"><i class="bi bi-box me-2"></i> Item Owned</div>
+          </div>
+          <div class="table-wrapper">
+            <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
+              <thead>
+                <tr class="table-dark">
+                  <th>Item Name</th>
+                  <th>Item Image</th>
+                  <th>Posted</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                // Fetch the user's owned items from the database
+                $userID = $user_id;
+                $query = "SELECT i.itemID, i.itemName, i.itemImage_path, i.DateTimePosted 
+                  FROM item i
+                  JOIN user u ON i.userID = u.userID
+                  WHERE i.userID = ?
+                  ORDER BY i.DateTimePosted DESC";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("i", $userID);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($result->num_rows > 0) {
+                  while ($row = $result->fetch_assoc()) {
+                ?>
+                    <tr class="table-row table-light">
+                      <td><?php echo $row['itemName']; ?></td>
+                      <td><img src="pictures/<?php echo $row['itemImage_path']; ?>" alt="<?php echo $row['itemName']; ?>" class="img-fluid" style="max-width: 100px;"></td>
+                      <td><?php echo date('m/d/y h:i A', strtotime($row['DateTimePosted'])); ?></td>
+                      
+                    </tr>
+                <?php
+                  }
+                } else {
+                  echo "<tr><td colspan='4'>No items owned by the user.</td></tr>";
+                }
+                $stmt->close();
+                ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--- End of Item Owned --->
 
       </div>
+      <!--- End of Item Owned --->
+
+    </div>
+    <!--- End of Tab Content --->
+
+    </div>
+    <!--- End of Tab --->
+
+    </div>
     </div>
     </div>
   </main>
 
   <footer>
   </footer>
-<!-- Modal For Report User -->
-<div class="modal fade" id="reportUserModal" tabindex="-1" aria-labelledby="reportUserModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="reportUserModalLabel">Report User</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <label class="form-label"><b>Please specify your reason for reporting this account</b></label>
-                <textarea class="form-control" aria-label="Report reason"></textarea>
-                <label class="form-label mt-3"><b>Upload a screenshot for evidence/proof</b></label>
-                <div class="input-group">
-                  <input type="file" class="form-control" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Report</button>
-              </div>
-            </div>
+  <!-- Modal For Report User -->
+  <div class="modal fade" id="reportUserModal" tabindex="-1" aria-labelledby="reportUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="reportUserModalLabel">Report User</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <label class="form-label"><b>Please specify your reason for reporting this account</b></label>
+          <textarea class="form-control" aria-label="Report reason"></textarea>
+          <label class="form-label mt-3"><b>Upload a screenshot for evidence/proof</b></label>
+          <div class="input-group">
+            <input type="file" class="form-control" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
           </div>
         </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Report</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 
