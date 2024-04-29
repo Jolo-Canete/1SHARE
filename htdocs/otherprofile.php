@@ -234,7 +234,7 @@ if ($result->num_rows > 0) {
       /* Disable pointer events */
     }
 
-    .rating>input:checked~label {}
+  
 
     .rating label.text-warning {
       color: #f8ce0b;
