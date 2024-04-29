@@ -67,7 +67,7 @@ include('1db.php');
                 <h1 class="text-center fw-bold">I S H A R E</h1>
                 <div class="card shadow p-3 mb-5 bg-body rounded-4 border-0">
                     <div class="card-body">
-                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
 
                             <!--- Login --->
                             <label for="email_address"><b>Username</b></label>
@@ -88,7 +88,7 @@ include('1db.php');
                             </div>
                             <hr>
                             <button type="button" class="btn btn-success d-grid gap-2 col-6 mx-auto mb-3" data-bs-toggle="modal" data-bs-target="#sign_up">Sign Up</button>
-                        </form>
+                        
                     </div>
                 </div>
             </div>
@@ -174,13 +174,13 @@ include('1db.php');
                     </div>
 
                 </div>
-
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success d-grid gap-2 col-6 mx-auto" name="signup" value="sign_up" id="signup">Sign Up</button>
                 </div>
             </div>
         </div>
     </div>
+</form>
 
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
