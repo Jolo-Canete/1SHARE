@@ -102,7 +102,7 @@ if($resultItems ->num_rows > 0) {
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item text-danger" href="#">Log Out</a></li>
+                                <li><a class="dropdown-item text-danger" href="logout.php">Log Out</a></li>
                             </ul>
                         </div>
                     </div>
@@ -360,7 +360,7 @@ if($resultItems ->num_rows > 0) {
 
                                         // Run the sql
                                         $resultRating = $conn->query($sql);
-                                        
+
                                         if ($resultRating->num_rows > 0) {
                                             $rowRatingNumber = 1;
                                         // do the loop

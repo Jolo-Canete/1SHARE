@@ -144,8 +144,7 @@ $result = $conn->query($sql);
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
                                 <li><a class="dropdown-item" href="/htdocs/admin/ad_help.php">Help</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="#">Log Out</a></li>
-                            </ul>
+                                <li><a class="dropdown-item text-danger" href="logout.php">Log Out</a></li>                            </ul>
                         </div>
                     </div>
                 </div>

@@ -101,8 +101,7 @@ $resultVerified = $conn->query($sqlUnverified);
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <li><a class="dropdown-item text-danger" href="#">Log Out</a></li>
-                            </ul>
+                                <li><a class="dropdown-item text-danger" href="logout.php">Log Out</a></li>                            </ul>
                         </div>
                     </div>
                 </div>
