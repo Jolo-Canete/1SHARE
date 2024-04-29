@@ -1,5 +1,4 @@
 <?php
-session_start(); // Start the session
 include "nav.php";
 
 // Check if the user is logged in
@@ -137,6 +136,49 @@ function fetchAllMonthlyData()
 
   return $data;
 }
+
+function fetchTopHighestRatedItems()
+{
+  global $conn;
+
+  $sql = "SELECT i.itemName, AVG(ir.rate) AS averageRating
+         FROM item i
+         LEFT JOIN itemRating ir ON i.itemID = ir.itemID
+         GROUP BY i.itemID
+         ORDER BY averageRating DESC
+         LIMIT 10";
+
+  $result = $conn->query($sql);
+
+  $items = [];
+  while ($row = $result->fetch_assoc()) {
+    $items[] = $row;
+  }
+
+  return $items;
+}
+
+function fetchTopMostRatedItems()
+{
+  global $conn;
+
+  $sql = "SELECT i.itemName, COUNT(ir.rate) AS totalRatings
+         FROM item i
+         JOIN itemRating ir ON i.itemID = ir.itemID
+         GROUP BY i.itemID
+         ORDER BY totalRatings DESC
+         LIMIT 10";
+
+  $result = $conn->query($sql);
+
+  $items = [];
+  while ($row = $result->fetch_assoc()) {
+    $items[] = $row;
+  }
+
+  return $items;
+}
+?>
 ?>
 
 <!DOCTYPE html>
@@ -255,7 +297,7 @@ function fetchAllMonthlyData()
         <div class="col-md-6">
           <div class="card">
             <div class="card-header">
-              <h5 class="mb-0">Top 10 Highest Rated Items</h5>
+              <h5 class="mb-0">Highest Rated Items</h5>
             </div>
             <div class="card-body" id="highest-rated-items">
               <?php
@@ -276,7 +318,7 @@ function fetchAllMonthlyData()
         <div class="col-md-6">
           <div class="card">
             <div class="card-header">
-              <h5 class="mb-0">Top 10 Most Rated Items</h5>
+              <h5 class="mb-0">Most Rated Items</h5>
             </div>
             <div class="card-body" id="most-rated-items">
               <?php
