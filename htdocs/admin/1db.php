@@ -1,4 +1,15 @@
+<?php
+session_start();
+
+// Check if the admin is logged in
+if (!isset($_SESSION['adminID'])) {
+    // If the user is not logged in, redirect them to the login page
+    header("Location: ../login.php");
+    exit;
+}
+?>
 <?php 
+
     // Prepare database connection
         $servername = "127.0.0.1";
         $username = "mariadb"; 

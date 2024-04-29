@@ -1,5 +1,4 @@
-<?php session_start();
-include "./1db.php"; 
+<?php include "./1db.php"; 
 
 // check all errors
 ini_set('display_errors', 1);
@@ -35,11 +34,15 @@ if($dateOrder == 'order by dateTime DESC'){
 // get the current number page from the URL
     $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
 
+// Calculate the starting number for this page
+$idCounter = (($currentPage - 1) * $rows_per_page) + 1;
+
+
 // Formulate the offset value
     $offset = ($currentPage > 1) ? ($currentPage - 1) * $rows_per_page : 0; 
 
 // Get the total rows of the reporrteditem
-$sql = "SELECT COUNT(*) AS total_rows FROM reporteditem";
+$sql = "SELECT COUNT(*) AS total_rows FROM reportedItem";
 
 
 // Get the sql results
@@ -52,7 +55,7 @@ $totalRows = $itemRow['total_rows'];
 
 // Prepare the sql statement to get all the data from user,item and reporteditem
 $sql = "SELECT re.*, u.firstName, u.lastName,  i.itemName
-FROM reporteditem re
+FROM reportedItem re
 JOIN user u ON re.userID = u.userID
 JOIN item i ON re.itemID = i.itemID";
 
@@ -74,9 +77,11 @@ $result = $conn->query($sql);
 <html lang="en">
 
 <head>
-    <title>Admin Item Report</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Report</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
 
     <style>
         #dropdownMenuButton.dropdown-toggle::after {
@@ -137,7 +142,7 @@ $result = $conn->query($sql);
                                 <i class="bi bi-gear"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
-                                <li><a class="dropdown-item" href="ad_help.php">Help</a></li>
+                                <li><a class="dropdown-item" href="/htdocs/admin/ad_help.php">Help</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item text-danger" href="#">Log Out</a></li>
                             </ul>
@@ -159,7 +164,7 @@ $result = $conn->query($sql);
                                                 <!-- Dynamic naming -->
                                                 <?php
                                                     if (isset($_POST['dateOrder'])) {
-                                                        if ($_POST['dateOrder'] == ' order by dateTime DESC') {
+                                                        if ($_POST['dateOrder'] == 'order by dateTime DESC') {
                                                             echo 'Latest';
                                                         } elseif ($_POST['dateOrder'] == 'order by dateTime') {
                                                             echo 'Oldest';
@@ -191,6 +196,7 @@ $result = $conn->query($sql);
                                     <thead>
                                         
                                         <tr>
+                                            <th> </th>
                                             <th>Reported By</th>
                                             <th>Item Reported</th>
                                             <th>Date Reported</th>
@@ -226,6 +232,7 @@ $result = $conn->query($sql);
                                                     // Get the date Time posted and store it
                                                     $date_TimePosted = $row['dateTime'];
                                                     echo '<tr>';
+                                                    echo '<td>' . $idCounter++ . '</td>';
                                                     echo '<td>' . $new_label . ' ' . $row['firstName'] . ' ' . $row['lastName'] . '</td>';
                                                     echo '<td class="fw-bold text-danger">' . $row['itemName'] . '</td>';
 
@@ -253,7 +260,7 @@ $result = $conn->query($sql);
 
                                                     echo "<td>$dateMonth $dateDay, $dateYear : <i class='bi bi-clock'></i> $timeAmPm</td>";
                                                     echo '<td class="text-center">';
-                                                    echo '<a href="./action/itemReport.php?item_id='.$row['itemID']. '" class="btn btn-sm border-0">';
+                                                    echo '<a href="./action/itemReport.php?item_id='.$row['reportedItemID']. '" class="btn btn-sm border-0">';
                                                     echo '<i class="bi bi-plus-circle" style="font-size: 1.25rem; color: #0D6EFD"></i>';
                                                     echo '</a>';
                                                     echo '</td>';

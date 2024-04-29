@@ -1,7 +1,6 @@
-<?php session_start(); ?>
+<?php include "./1db.php"; ?>
 
 <?php 
-include "./1db.php"; 
 include "./adminnav.php";
 
 // Check if the last visit time is set in the session
@@ -25,7 +24,7 @@ $userRow = $result->fetch_assoc();
 $totalRows = $userRow['total_rows'];
 
 // Get the rows per page you want
-$rows_per_page = 2;
+$rows_per_page = 5;
 
 // Get the current page number from the URL
 $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;

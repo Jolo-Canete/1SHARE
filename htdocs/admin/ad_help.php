@@ -1,3 +1,5 @@
+<?php include "./1db.php"; 
+include "./adminnav.php";?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,7 +12,7 @@
 
 <body>
     <main>
-    <?php include "./adminnav.php"?>
+
         <div class="page-content" id="content">
             <div class="container ">
 
