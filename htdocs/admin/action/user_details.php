@@ -32,7 +32,6 @@ while ($userRow = mysqli_fetch_assoc($query)) {
         'dateJoined' => $userRow['dateJoined'],
         'userEmail' => $userRow['userEmail'],
         'status' => $userRow['status'],
-        'userRating' => $userRow['userRating'],
         'userImage_path' => $userRow['userEmail'],
         'username' => $userRow['username'],
         'password' => $userRow['password'],

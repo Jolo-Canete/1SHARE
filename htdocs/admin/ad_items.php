@@ -19,7 +19,11 @@ $_SESSION['last_visit_time'] = time();
 // Get the selected user from the dropdown
 if (isset($_POST['user'])) {
     $selectedUser = $_POST['user'];
-    $name = $_POST['name_' . $selectedUser];
+    if (isset($_POST['name_' . $selectedUser])) {
+        $name = $_POST['name_' . $selectedUser];
+    } else {
+        $name = 'All Residents';
+    }
 } else {
     $selectedUser = '';
     $name = 'All Residents';
@@ -135,8 +139,7 @@ $result = $conn->query($sql);
                             <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="dropdownMenuButton">
                                 <li><a class="dropdown-item" href="/htdocs/admin/ad_help.php">Help</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item text-danger" href="#">Log Out</a></li>
-                            </ul>
+                                <li><a class="dropdown-item text-danger" href="logout.php">Log Out</a></li>                            </ul>
                         </div>
                     </div>
                 </div>
