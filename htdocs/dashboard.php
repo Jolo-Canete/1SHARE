@@ -1,4 +1,5 @@
 <?php
+session_start(); // Start the session
 include "nav.php";
 
 // Check if the user is logged in
@@ -48,7 +49,7 @@ function fetchWeeklyData($user_id)
 
 function fetchAllWeeklyData()
 {
-  global $conn; // Assuming you have a database connection established
+  global $conn;
 
   $sql = "SELECT i.itemName, COUNT(R.requestID) AS request_count, u.username
             FROM Request R
@@ -77,7 +78,7 @@ function fetchAllWeeklyData()
 
 function fetchMonthlyData($user_id)
 {
-  global $conn; // Assuming you have a database connection established
+  global $conn;
 
   $sql = "SELECT i.itemName, COUNT(R.requestID) AS request_count, u.username
             FROM Request R
@@ -110,7 +111,7 @@ function fetchMonthlyData($user_id)
 
 function fetchAllMonthlyData()
 {
-  global $conn; // Assuming you have a database connection established
+  global $conn;
 
   $sql = "SELECT i.itemName, COUNT(R.requestID) AS request_count, u.username
             FROM Request R
@@ -145,9 +146,36 @@ function fetchAllMonthlyData()
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Engagement Dashboard</title>
-
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.6/font/bootstrap-icons.min.css">
   <style>
-    /* ... (your existing CSS styles) ... */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .card-header {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .card-body ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .card-body ul li {
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .card-body ul li:last-child {
+      border-bottom: none;
+    }
   </style>
 </head>
 
@@ -222,105 +250,147 @@ function fetchAllMonthlyData()
           </div>
         </div>
       </div>
+
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Top 10 Highest Rated Items</h5>
+            </div>
+            <div class="card-body" id="highest-rated-items">
+              <?php
+              $highestRatedItems = fetchTopHighestRatedItems();
+              if (!empty($highestRatedItems)) {
+                echo "<ul>";
+                foreach ($highestRatedItems as $item) {
+                  echo "<li>{$item['itemName']} ({$item['averageRating']} stars)</li>";
+                }
+                echo "</ul>";
+              } else {
+                echo "<p>No data available</p>";
+              }
+              ?>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Top 10 Most Rated Items</h5>
+            </div>
+            <div class="card-body" id="most-rated-items">
+              <?php
+              $mostRatedItems = fetchTopMostRatedItems();
+              if (!empty($mostRatedItems)) {
+                echo "<ul>";
+                foreach ($mostRatedItems as $item) {
+                  echo "<li>{$item['itemName']} ({$item['totalRatings']} ratings)</li>";
+                }
+                echo "</ul>";
+              } else {
+                echo "<p>No data available</p>";
+              }
+              ?>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  </div>
 
-  <script>
-    // Weekly Top 10 Most Engaged
-    var weeklyData = {
-      your: <?php echo json_encode($your_weekly_data); ?>,
-      all: <?php echo json_encode($all_weekly_data); ?>
-    };
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Weekly Top 10 Most Engaged
+      var weeklyData = {
+        your: <?php echo json_encode($your_weekly_data); ?>,
+        all: <?php echo json_encode($all_weekly_data); ?>
+      };
 
-    // Monthly Top 10 Most Engaged
-    var monthlyData = {
-      your: <?php echo json_encode($your_monthly_data); ?>,
-      all: <?php echo json_encode($all_monthly_data); ?>
-    };
+      // Monthly Top 10 Most Engaged
+      var monthlyData = {
+        your: <?php echo json_encode($your_monthly_data); ?>,
+        all: <?php echo json_encode($all_monthly_data); ?>
+      };
 
-    function updateTables(view) {
-      updateWeeklyTable(view);
-      updateMonthlyTable(view);
-    }
-
-    function updateWeeklyTable(view) {
-      var tableBody = document.getElementById('weekly-table-body');
-      tableBody.innerHTML = '';
-
-      var data = weeklyData[view];
-
-      for (var i = 0; i < data.labels.length; i++) {
-        var row = document.createElement('tr');
-
-        var rankCell = document.createElement('td');
-        rankCell.textContent = i + 1;
-
-        var itemNameCell = document.createElement('td');
-        itemNameCell.textContent = data.labels[i];
-
-        var requestsCell = document.createElement('td');
-        requestsCell.textContent = data.data[i];
-
-        var usernameCell = document.createElement('td');
-        usernameCell.textContent = data.usernames[i];
-
-        row.appendChild(rankCell);
-        row.appendChild(itemNameCell);
-        row.appendChild(requestsCell);
-        row.appendChild(usernameCell);
-        tableBody.appendChild(row);
+      function updateTables(view) {
+        updateWeeklyTable(view);
+        updateMonthlyTable(view);
       }
-    }
 
-    function updateMonthlyTable(view) {
-      var tableBody = document.getElementById('monthly-table-body');
-      tableBody.innerHTML = '';
+      function updateWeeklyTable(view) {
+        var tableBody = document.getElementById('weekly-table-body');
+        tableBody.innerHTML = '';
 
-      var data = monthlyData[view];
+        var data = weeklyData[view];
 
-      for (var i = 0; i < data.labels.length; i++) {
-        var row = document.createElement('tr');
+        for (var i = 0; i < data.labels.length; i++) {
+          var row = document.createElement('tr');
 
-        var rankCell = document.createElement('td');
-        rankCell.textContent = i + 1;
+          var rankCell = document.createElement('td');
+          rankCell.textContent = i + 1;
 
-        var itemNameCell = document.createElement('td');
-        itemNameCell.textContent = data.labels[i];
+          var itemNameCell = document.createElement('td');
+          itemNameCell.textContent = data.labels[i];
 
-        var requestsCell = document.createElement('td');
-        requestsCell.textContent = data.data[i];
+          var requestsCell = document.createElement('td');
+          requestsCell.textContent = data.data[i];
 
-        var usernameCell = document.createElement('td');
-        usernameCell.textContent = data.usernames[i];
+          var usernameCell = document.createElement('td');
+          usernameCell.textContent = data.usernames[i];
 
-        row.appendChild(rankCell);
-        row.appendChild(itemNameCell);
-        row.appendChild(requestsCell);
-        row.appendChild(usernameCell);
-        tableBody.appendChild(row);
+          row.appendChild(rankCell);
+          row.appendChild(itemNameCell);
+          row.appendChild(requestsCell);
+          row.appendChild(usernameCell);
+          tableBody.appendChild(row);
+        }
       }
-    }
 
-    document.querySelectorAll('.btn-group button').forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var view = this.getAttribute('data-view');
+      function updateMonthlyTable(view) {
+        var tableBody = document.getElementById('monthly-table-body');
+        tableBody.innerHTML = '';
 
-        // Update both tables
-        updateTables(view);
+        var data = monthlyData[view];
 
-        // Update button styles
-        this.classList.add('btn btn-outline-dark');
-        this.classList.remove('btn btn-outline-dark');
-        this.parentNode.querySelector('.btn:not(.btn btn-outline-dark)').classList.add('btn btn-outline-dark');
-        this.parentNode.querySelector('.btn:not(.btn btn-outline-dark)').classList.remove('btn btn-outline-dark');
+        for (var i = 0; i < data.labels.length; i++) {
+          var row = document.createElement('tr');
+
+          var rankCell = document.createElement('td');
+          rankCell.textContent = i + 1;
+
+          var itemNameCell = document.createElement('td');
+          itemNameCell.textContent = data.labels[i];
+
+          var requestsCell = document.createElement('td');
+          requestsCell.textContent = data.data[i];
+
+          var usernameCell = document.createElement('td');
+          usernameCell.textContent = data.usernames[i];
+
+          row.appendChild(rankCell);
+          row.appendChild(itemNameCell);
+          row.appendChild(requestsCell);
+          row.appendChild(usernameCell);
+          tableBody.appendChild(row);
+        }
+      }
+
+      document.querySelectorAll('.btn-group button').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var view = this.getAttribute('data-view');
+
+          // Update both tables
+          updateTables(view);
+
+          // Update button styles
+          this.classList.add('btn-outline-dark');
+          this.classList.remove('btn-dark');
+          this.parentNode.querySelector('.btn:not(.btn-outline-dark)').classList.add('btn-dark');
+          this.parentNode.querySelector('.btn:not(.btn-outline-dark)').classList.remove('btn-outline-dark');
+        });
       });
-    });
 
-    // Initialize tables
-    updateTables('your');
-  </script>
-  
-</body>
-
+      // Initialize tables
+      updateTables('your');
+    </script>
+  </body>
 </html>
