@@ -277,9 +277,31 @@ $time = $dateTime[1];
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="fw-bold text-secondary me-2">Transaction History</div>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
-                                            <i class="bi bi-lock-fill"></i>
-                                        </button>
+                                        <!-- Add transaction TRUE Function -->
+                                        <? 
+                                            $sql = "SELECT hiddenTran FROM user WHERE userID = $user_id";
+                                            $result = $conn->query($sql);
+
+                                            if ($result->num_rows > 0) {
+                                            // output data of each row
+                                            while($rowTrans = $result->fetch_assoc()) {
+                                                $hiddenTran = $rowTrans["hiddenTran"];
+                                            }
+                                            } else {
+                                            echo "0 results";
+                                            }
+                                            ?>
+                                            <div class="ms-auto">
+                                                <form method="post" action="">
+                                                    <button type="submit" class="btn btn-outline-secondary btn-sm" name="transStatus">
+                                                        <?php if($hiddenTran == 'Yes'): ?>
+                                                            <i class="bi bi-lock-fill"></i>
+                                                        <?php else: ?>
+                                                            <i class="bi bi-unlock-fill"></i>
+                                                        <?php endif; ?>
+                                                    </button>
+                                                </form>
+                                            </div>
                                     </div>
                                     <p class="text-dark mb-0">By unlocking your Transaction History, your transactions can be seen by anyone.</p>
                                 </div>
@@ -288,9 +310,30 @@ $time = $dateTime[1];
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="fw-bold text-secondary me-2">Item Owned</div>
-                                        <button type="button" class="btn btn-outline-secondary btn-sm ms-auto">
-                                            <i class="bi bi-lock-fill"></i>
-                                        </button>
+                                        <? 
+                                            $sql = "SELECT hiddenItem FROM user WHERE userID = $user_id";
+                                            $result = $conn->query($sql);
+
+                                            if ($result->num_rows > 0) {
+                                            // output data of each row
+                                            while($rowItem = $result->fetch_assoc()) {
+                                                $hiddenItem = $rowItem["hiddenItem"];
+                                            }
+                                            } else {
+                                            echo "0 results";
+                                            }
+                                            ?>
+                                            <div class="ms-auto">
+                                                <form method="post" action="">
+                                                    <button type="submit" class="btn btn-outline-secondary btn-sm" name="transStatus">
+                                                        <?php if($hiddenItem == 'Yes'): ?>
+                                                            <i class="bi bi-lock-fill"></i>
+                                                        <?php else: ?>
+                                                            <i class="bi bi-unlock-fill"></i>
+                                                        <?php endif; ?>
+                                                    </button>
+                                                </form>
+                                            </div>
                                     </div>
                                     <p class="text-dark mb-0">By unlocking your Item Owned, your owned items can be seen by anyone.</p>
                                 </div>
@@ -310,6 +353,41 @@ $time = $dateTime[1];
     <footer>
         <!-- place footer here -->
     </footer>
+
+<!-- Php Function for Privacy -->
+<?php
+if (isset($_POST['transStatus'])) {
+    // Fetch the current value of $hiddenTran from the database
+    $sql = "SELECT hiddenTran FROM user WHERE userID = $user_id";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $rowTrans = $result->fetch_assoc();
+        $hiddenTran = $rowTrans["hiddenTran"];
+    } else {
+        echo "0 results";
+    }
+
+    // Toggle the value of $hiddenTran
+    if ($hiddenTran == 'Yes') {
+        $newHiddenTran = 'No';
+    } else {
+        $newHiddenTran = 'Yes';
+    }
+
+    // Update the database with the new value
+    $updateSql = "UPDATE user SET hiddenTran = '$newHiddenTran' WHERE userID = $user_id";
+    if ($conn->query($updateSql) === TRUE) {
+        echo "<script>
+            if (confirm('Transaction status updated successfully! Click OK to go to the homepage or Cancel to stay on this page.')) {
+                window.location.href = 'homepage.php';
+            }
+        </script>";
+    } else {
+        echo "Error updating record: " . $conn->error;
+    }
+}
+?>
 
 </body>
 
