@@ -19,7 +19,11 @@ $_SESSION['last_visit_time'] = time();
 // Get the selected user from the dropdown
 if (isset($_POST['user'])) {
     $selectedUser = $_POST['user'];
-    $name = $_POST['name_' . $selectedUser];
+    if (isset($_POST['name_' . $selectedUser])) {
+        $name = $_POST['name_' . $selectedUser];
+    } else {
+        $name = 'All Residents';
+    }
 } else {
     $selectedUser = '';
     $name = 'All Residents';

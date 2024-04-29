@@ -318,9 +318,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
            echo "<script>alert('Cannot be verified due to empty value on the User ID')</script>";
            return;
            } else  {
-
             // Delete the user
             $sqlUpdateStatus = "DELETE FROM user WHERE userID = $userID";
+
+            // Delete the image
+            $imagePath = '../verify/' . $rowVerified['verifyImage_path'];
+            if(file_exists($imagePath)) {
+                unlink($imagePath);
+            } else {
+                echo "Error: The image cannot be deleted.";
+                return;
+            }
+        
 
             // Execute the sql statement
             if($conn->query($sqlUpdateStatus) === TRUE) {
