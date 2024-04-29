@@ -104,7 +104,7 @@ if (isset($_SESSION['user_id'])) {
                     </div>
                 </div>
             <?php } else { ?>
-                <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+                <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-1">
                     <?php while ($item = $result->fetch_assoc()) { ?>
                         <!-- Item Card -->
                         <div class="col">

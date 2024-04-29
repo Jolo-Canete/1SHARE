@@ -134,7 +134,7 @@ if (isset($_GET['itemID'])) {
                                 <?php endif; ?>
                             </div>
                             <hr>
-                            <div class="d-flex justify-content-between d-grid gap-2 col-4 mx-auto">
+                            <div class="d-flex justify-content-center d-grid gap-1 col-7 mx-auto">
                                 <button type="button" class="btn btn-outline-dark <?php echo !in_array('Barter', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>" data-bs-toggle="modal" data-bs-target="#barterModal" <?php echo !in_array('Barter', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>>Barter</button>
                                 <button type="button" class="btn btn-outline-success <?php echo !in_array('Borrow', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>" data-bs-toggle="modal" data-bs-target="#borrowModal" <?php echo !in_array('Borrow', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>>Borrow</button>
                                 <button type="button" class="btn btn-outline-danger <?php echo !in_array('Buy', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>" data-bs-toggle="modal" data-bs-target="#buyRequestModal" <?php echo !in_array('Buy', explode(',', $item['requestType'])) ? 'disabled' : ''; ?>>Buy</button>
@@ -173,15 +173,14 @@ if (isset($_GET['itemID'])) {
                             }
 
                             // Prepare and execute the query to fetch the average rating
-                            $averageQuery = "SELECT COALESCE(AVG(rate), 0) AS averageRating FROM itemRating WHERE itemID = ?";
+                            $averageQuery = "SELECT AVG(rate) AS averageRating, COUNT(*) AS totalRatings FROM itemRating WHERE itemID = ?";
                             $averageStmt = $conn->prepare($averageQuery);
                             $averageStmt->bind_param("i", $itemID);
                             $averageStmt->execute();
                             $averageResult = $averageStmt->get_result();
                             $row = $averageResult->fetch_assoc();
                             $averageRating = $row["averageRating"];
-
-                            // Close the prepared statement
+                            $totalRatings = $row["totalRatings"];
                             $averageStmt->close();
 
                             // Close the database connection
@@ -210,6 +209,8 @@ if (isset($_GET['itemID'])) {
                                 if ($averageRating !== null) {
                                     $averageRatingFormatted = number_format($averageRating, 1);
                                     echo "<span class='text-warning ms-1'><small>{$averageRatingFormatted}/5.0</small></span>";
+                                    echo "<span class='ms-1'><small>({$totalRatings} rated)</small></span>";
+
                                 }
                                 ?>
                             </div>
@@ -279,7 +280,7 @@ if (isset($_GET['itemID'])) {
                                                                         ?>
                                                                         <span class="text-warning ms-2"><?php echo $rating; ?></span>
                                                                     </div>
-                                                                    <p ><?php echo $row['comment']; ?></p>
+                                                                    <p><?php echo $row['comment']; ?></p>
                                                                     <div class="mt-2">
                                                                         <img id="" src="rate/<?php echo $row['rate_path']; ?>" alt="rate" class="img-fluid" style="width: 100px; height: 100px;">
                                                                     </div>

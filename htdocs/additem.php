@@ -89,7 +89,7 @@ include "nav.php";
                     </div>
                 </div>
             <?php } else { ?>
-                <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+                <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-1">
                     <?php foreach ($items as $item) { ?>
                         <!-- Item Card -->
                         <div class="col">

@@ -249,7 +249,6 @@ include('1db.php');
         $password2 = trim($_POST['SgnUp_Password_2']);
         $birthDay = date('Y-m-d', strtotime($_POST['birthDay']));
         $status = "Unverified";
-        $position = "Resident";
 
 
         if (empty($first_name) || empty($middle_name) || empty($last_name) || empty($purok) || empty($zone) || empty($mobile_number) || empty($email) || empty($username) || empty($password1) || empty($password2) || empty($birthDay)) {

@@ -133,7 +133,6 @@
                 formData.append('otherCategory', otherCategory);
             }
         }
-        formData.append('itemCondition', $('#itemCondition').val());
         formData.append('itemAvailability', $('#itemAvailability').val());
         var requestTypes = $('input[name="requestType"]:checked').map(function() {
             return this.value;
@@ -159,10 +158,7 @@
             $('#category').addClass('is-invalid');
             isValid = false;
         }
-        if (!$('#itemCondition').val()) {
-            $('#itemCondition').addClass('is-invalid');
-            isValid = false;
-        }
+       
         if (!$('#itemAvailability').val()) {
             $('#itemAvailability').addClass('is-invalid');
             isValid = false;

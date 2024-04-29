@@ -234,7 +234,7 @@ if ($result->num_rows > 0) {
       /* Disable pointer events */
     }
 
-  
+
 
     .rating label.text-warning {
       color: #f8ce0b;
@@ -353,17 +353,18 @@ if ($result->num_rows > 0) {
               exit;
             }
 
-            // Prepare and execute the query to fetch the average rating
-            $averageQuery = "SELECT COALESCE(AVG(userRate), 0) AS averageRating FROM userRating WHERE userID = ?";
-            $averageStmt = $conn->prepare($averageQuery);
-            $averageStmt->bind_param("i", $user_id);
-            $averageStmt->execute();
-            $averageResult = $averageStmt->get_result();
-            $row = $averageResult->fetch_assoc();
+            // Prepare and execute the query to fetch the average rating and count of ratings
+            $query = "SELECT COALESCE(AVG(userRate), 0) AS averageRating, COUNT(userRate) AS ratingCount FROM userRating WHERE userID = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
             $averageRating = $row["averageRating"];
+            $ratingCount = $row["ratingCount"];
 
             // Close the prepared statement
-            $averageStmt->close();
+            $stmt->close();
 
             // Close the database connection
             mysqli_close($conn);
@@ -390,9 +391,12 @@ if ($result->num_rows > 0) {
             if ($averageRating !== null) {
               $averageRatingFormatted = number_format($averageRating, 1);
               echo "<span class='text-warning ms-1'><small>{$averageRatingFormatted}/5.0</small></span>";
+              // Display the number of users who rated
+              echo "<span class='ms-1'>($ratingCount rated)</span>";
             }
             ?>
           </div>
+
 
           <div class="col mt-4">
             <div class="d-flex align-items-center text-secondary">
@@ -505,13 +509,14 @@ if ($result->num_rows > 0) {
           <div class="mt-3">
             <div class="h2 d-flex align-items-center"><i class="bi bi-box me-2"></i> Item Owned</div>
           </div>
+
           <?php
           // Ensure $conn is your database connection object
           include "1db.php"; // Include database connection script
 
           // Check if the connection was successful
           if (!$conn) {
-            echo "<tr><td colspan='3'>Database connection error.</td></tr>";
+            echo "<p>Database connection error.</p>";
           } else {
             $query = "SELECT i.itemID, i.itemName, i.itemImage_path, i.DateTimePosted, u.hiddenItem
               FROM item i
@@ -525,151 +530,188 @@ if ($result->num_rows > 0) {
               $stmt->execute();
               $result = $stmt->get_result();
 
-              // Flag variable to track if any hidden items were encountered
-              $hiddenItemFound = false;
+              // Flag variable to track if any visible items were found
+              $visibleItemsFound = false;
 
               if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                  // Check if hiddenItem is equal to "Yes"
-                  if ($row['hiddenItem'] == "Yes") {
-                    // Set the flag variable to true if hidden item found
-                    $hiddenItemFound = true;
-                  } else {
           ?>
-                    <tr class="table-row table-light">
-                      <td><?php echo $row['itemName']; ?></td>
-                      <td><img src="pictures/<?php echo $row['itemImage_path']; ?>" alt="<?php echo $row['itemName']; ?>" class="img-fluid" style="max-width: 100px;"></td>
-                      <td><?php echo date('m/d/y h:i A', strtotime($row['DateTimePosted'])); ?></td>
+                <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
+                  <thead>
+                    <tr class="table-dark">
+                      <th>Item Name</th>
+                      <th>Image</th>
+                      <th>Date Posted</th>
                     </tr>
-                <?php
-                  }
-                }
+                  </thead>
+                  <tbody>
+                    <?php
+                    while ($row = $result->fetch_assoc()) {
+                      // Check if item is marked as hidden
+                      if ($row['hiddenItem'] == "Yes") {
+                        // If hidden item found, skip displaying it
+                        continue;
+                      } else {
+                        // If visible item found, set the flag to true and display it in the table
+                        $visibleItemsFound = true;
+                    ?>
+                        <tr>
+                          <td><?php echo $row['itemName']; ?></td>
+                          <td><img src="pictures/<?php echo $row['itemImage_path']; ?>" alt="<?php echo $row['itemName']; ?>" class="img-fluid" style="max-width: 100px;"></td>
+                          <td><?php echo date('m/d/y h:i A', strtotime($row['DateTimePosted'])); ?></td>
+                        </tr>
+                    <?php
+                      }
+                    }
+                    ?>
+                  </tbody>
+                </table>
+              <?php
               } else {
-                echo "<tr><td colspan='3'>No items owned by the user.</td></tr>";
+                echo "<p>No items owned by the user.</p>";
               }
 
-              // Output the "Transaction Private" message if any hidden items were found
-              if ($hiddenItemFound) {
-                ?>
-                <tr class="table-row table-light">
-                  <td colspan="3">
-                    <div class='jumbotron jumbotron-fluid bg-light text-center'>
-                      <div class='container'>
-                        <h1 class='display-4 mt-5'>Transaction Private</h1>
-                        <p class='lead text-secondary'>Looks like the transaction is private.</p>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
+              // Output the "Item Private" message if no visible items were found
+              if (!$visibleItemsFound) {
+              ?>
+                <div class='jumbotron jumbotron-fluid bg-light text-center'>
+                  <div class='container'>
+                    <h1 class='display-4 mt-5'>Item Private</h1>
+                    <p class='lead text-secondary'>Looks like all items are private.</p>
+                  </div>
+                </div>
           <?php
               }
 
               $stmt->close();
             } else {
-              echo "<tr><td colspan='3'>Error in preparing SQL statement.</td></tr>";
+              echo "<p>Error in preparing SQL statement.</p>";
             }
           }
           ?>
 
-
           <!--- End of Item Owned --->
-
         </div>
+
+
         <!--- Transaction History --->
         <div class="tab-pane fade" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
           <div class="mt-3">
-            <div class="h2"><i class="bi bi-arrow-repeat me-2"></i> Transaction History
-            </div>
+            <div class="h2"><i class="bi bi-arrow-repeat me-2"></i> Transaction History </div>
+
             <?php
-
-
-            // Open the database connection
-            include "1db.php";
+            // Ensure $conn is your database connection object
+            include "1db.php"; // Include database connection script
 
             // Check if the connection was successful
             if (!$conn) {
-              // Handle connection error
-              echo 'Database connection error: ' . mysqli_connect_error();
-              exit;
-            }
-            // Query to fetch the closed requests for the logged-in user
-            $query = "SELECT r.requestID, r.requestType, i.itemName, u.username AS itemOwner, r.rated AS rated, u.hiddenTran AS hiddenTran,
-          (CASE
-            WHEN r.requestType = 'Barter' THEN b.DateTimeCompleted
-            WHEN r.requestType = 'Borrow' THEN bo.DateTimeCompleted 
-            WHEN r.requestType = 'Buy' THEN bu.DateTimeCompleted
-            ELSE NULL
-          END) AS DateTimeCompleted,
-          (CASE
-            WHEN r.requesterSuccess IS NOT NULL THEN r.requesterSuccess
-            WHEN r.ownerSuccess IS NOT NULL THEN r.ownerSuccess
-            ELSE 'N/A'
-          END) AS Proof,
-          (CASE
-            WHEN bo.RequesterProof IS NOT NULL THEN bo.RequesterProof
-            WHEN bo.OwnerProof IS NOT NULL THEN bo.OwnerProof
-            ELSE 'N/A'
-          END) AS ReturnProof
-          FROM Request r
-          JOIN item i ON r.itemID = i.itemID
-          JOIN user u ON i.userID = u.userID
-          LEFT JOIN barter b ON r.requestID = b.requestID
-          LEFT JOIN borrow bo ON r.requestID = bo.requestID
-          LEFT JOIN buy bu ON r.requestID = bu.requestID
-          WHERE (r.userID = $userID OR i.userID = $userID)
-          AND r.complete IS NOT NULL ";
-            $result = $conn->query($query);
+              echo "<p>Database connection error.</p>";
+            } else {
+              // Query to fetch the closed requests for the logged-in user
+              $query = "SELECT r.requestID, r.requestType, i.itemName, u.username AS itemOwner, r.rated AS rated, u.hiddenTran AS hiddenTran,
+        (CASE
+          WHEN r.requestType = 'Barter' THEN b.DateTimeCompleted
+          WHEN r.requestType = 'Borrow' THEN bo.DateTimeCompleted 
+          WHEN r.requestType = 'Buy' THEN bu.DateTimeCompleted
+          ELSE NULL
+        END) AS DateTimeCompleted,
+        (CASE
+          WHEN r.requesterSuccess IS NOT NULL THEN r.requesterSuccess
+          WHEN r.ownerSuccess IS NOT NULL THEN r.ownerSuccess
+          ELSE 'N/A'
+        END) AS Proof,
+        (CASE
+          WHEN bo.RequesterProof IS NOT NULL THEN bo.RequesterProof
+          WHEN bo.OwnerProof IS NOT NULL THEN bo.OwnerProof
+          ELSE 'N/A'
+        END) AS ReturnProof
+        FROM Request r
+        JOIN item i ON r.itemID = i.itemID
+        JOIN user u ON i.userID = u.userID
+        LEFT JOIN barter b ON r.requestID = b.requestID
+        LEFT JOIN borrow bo ON r.requestID = bo.requestID
+        LEFT JOIN buy bu ON r.requestID = bu.requestID
+        WHERE r.userID = ?
+        AND r.complete IS NOT NULL ";
 
-            if ($result->num_rows > 0) {
-              $showTable = true; // Variable to track whether to show the table or not
-              while ($row = $result->fetch_assoc()) {
-                // Check if hiddenTran is equal to "Yes"
-                if ($row['hiddenTran'] === "Yes") {
-                  $hiddenTranText = "<div class='jumbotron jumbotron-fluid bg-light text-center'>
-                <div class='container'>
-                    <h1 class='display-4 mt-5'>Transaction Private</h1>
-                    <p class='lead text-secondary'>Looks like the transaction is private.</p>
-                </div>
-            </div>";
-                  $showTable = false; // Don't show the table if hiddenTran is "Yes"
-                  break; // Exit the loop since there's no need to iterate further
+              $stmt = $conn->prepare($query);
+              if ($stmt) {
+                $stmt->bind_param("i", $userID);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                // Flag variable to track if any visible transactions were found
+                $visibleTransactionsFound = false;
+
+                if ($result->num_rows > 0) {
+            ?>
+                  <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
+                    <thead>
+                      <tr class="table-dark">
+                        <th>Request Type</th>
+                        <th>Item Name</th>
+                        <th class="d-md-table-cell d-none">Item Owner</th>
+                        <th class="d-md-table-cell d-none">Date Time Completed</th>
+                        <th class="d-table-cell d-md-none">Details</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      while ($row = $result->fetch_assoc()) {
+                        // Check if transaction is marked as hidden
+                        if ($row['hiddenTran'] == "Yes") {
+                          // If hidden transaction found, skip displaying it
+                          continue;
+                        } else {
+                          // If visible transaction found, set the flag to true and display it in the table
+                          $visibleTransactionsFound = true;
+                      ?>
+                          <tr>
+                            <td><?php echo $row['requestType']; ?></td>
+                            <td><?php echo $row['itemName']; ?></td>
+                            <td class="d-md-table-cell d-none"><?php echo $row['itemOwner']; ?></td>
+                            <td class="d-md-table-cell d-none"><?php echo $row['DateTimeCompleted']; ?></td>
+                            <td class="d-table-cell d-md-none"><a href="#">Details</a></td>
+                          </tr>
+                      <?php
+                        }
+                      }
+                      ?>
+                    </tbody>
+                  </table>
+                <?php
                 } else {
-                  $hiddenTranText = "";
+                  echo "<p>No transactions</p>";
                 }
-              }
 
-              if ($showTable) { // Only display the table if $showTable is true
-            ?>
-                <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
-                  <thead>
-                    <tr class="table-dark">
-                      <th>Request Type</th>
-                      <th>Item Name</th>
-                      <th class="d-md-table-cell d-none">Item Owner</th>
-                      <th class="d-md-table-cell d-none">Date Time Completed</th>
-                      <th class="d-table-cell d-md-none">Details</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Table content goes here -->
-                  </tbody>
-                </table>
+                // Output the "Transaction Private" message if no visible transactions were found
+                if (!$visibleTransactionsFound) {
+                ?>
+                  <div class='jumbotron jumbotron-fluid bg-light text-center'>
+                    <div class='container'>
+                      <h1 class='display-4 mt-5'>Transaction Private</h1>
+                      <p class='lead text-secondary'>Looks like all transactions are private.</p>
+                    </div>
+                  </div>
             <?php
+                }
+
+                $stmt->close();
+              } else {
+                echo "<p>Error in preparing SQL statement.</p>";
               }
             }
             ?>
-            <div style="display: flex; justify-content: center; align-items: center; ">
-              <div>
-                <?php echo $hiddenTranText; ?>
-              </div>
-            </div>
-          </div>
-          <!--- End of Tab Content --->
 
+          </div>
         </div>
-        <!--- End of Tab --->
+        <!--- End of Tab Content --->
+
+
 
       </div>
+      <!--- End of Tab --->
+
+    </div>
     </div>
     </div>
   </main>

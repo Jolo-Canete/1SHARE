@@ -201,13 +201,15 @@ if (isset($_GET['search_term'])) {
                                         <!-- PHP code to display average rating -->
                                         <?php
                                         $itemID = $item['itemID'];
-                                        $averageQuery = "SELECT AVG(rate) AS averageRating FROM itemRating WHERE itemID = ?";
+                                        // Query for average rating
+                                        $averageQuery = "SELECT AVG(rate) AS averageRating, COUNT(*) AS totalRatings FROM itemRating WHERE itemID = ?";
                                         $averageStmt = $conn->prepare($averageQuery);
                                         $averageStmt->bind_param("i", $itemID);
                                         $averageStmt->execute();
                                         $averageResult = $averageStmt->get_result();
                                         $row = $averageResult->fetch_assoc();
                                         $averageRating = $row["averageRating"];
+                                        $totalRatings = $row["totalRatings"];
                                         $averageStmt->close();
                                         ?>
                                         <div class="rating">
@@ -234,6 +236,9 @@ if (isset($_GET['search_term'])) {
                                             }
                                             ?>
                                         </div>
+
+                                        <!-- Display the total number of ratings -->
+                                        <?php echo "<div> <span class='text-secondary ms-1'><small>({$totalRatings} rated)</small></span></div>"; ?>
 
 
 

@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // If "Others" is selected, set category to the value of otherCategory
         $category = $_POST['otherCategory'];
     }
-    $itemCondition = $_POST['itemCondition'];
     $itemAvailability = $_POST['itemAvailability'];
     $userID = $_SESSION['user_id']; // Use the logged-in user's ID
     $requestTypes = explode(',', $_POST['requestTypes']);
@@ -86,12 +85,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Update the database with the new item information
             if ($isValid) {
-                $sqlInsert = "INSERT INTO item (itemName, ItemDescription, category, itemCondition, itemAvailability, itemImage_path, buyPrice, borrowPrice, borrowDuration, userID, requestType, DateTimePosted, itemQuantity ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $sqlInsert = "INSERT INTO item (itemName, ItemDescription, category, itemAvailability, itemImage_path, buyPrice, borrowPrice, borrowDuration, userID, requestType, DateTimePosted, itemQuantity ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sqlInsert);
 
 
                 // Bind parameters
-                $stmt->bind_param("ssssssddisssi", $itemName, $itemDescription, $category, $itemCondition, $itemAvailability, $newFileName, $buyPrice, $borrowPrice, $borrowDuration, $userID, $requestType, $currentDateTime, $itemQuantity);
+                $stmt->bind_param("sssssddisssi", $itemName, $itemDescription, $category, $itemAvailability, $newFileName, $buyPrice, $borrowPrice, $borrowDuration, $userID, $requestType, $currentDateTime, $itemQuantity);
 
 
                 if ($stmt->execute()) {

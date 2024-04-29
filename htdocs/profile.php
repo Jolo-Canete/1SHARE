@@ -392,17 +392,18 @@ while ($userRow = mysqli_fetch_assoc($query)) {
               exit;
             }
 
-            // Prepare and execute the query to fetch the average rating
-            $averageQuery = "SELECT COALESCE(AVG(userRate), 0) AS averageRating FROM userRating WHERE userID = ?";
-            $averageStmt = $conn->prepare($averageQuery);
-            $averageStmt->bind_param("i", $user_id);
-            $averageStmt->execute();
-            $averageResult = $averageStmt->get_result();
-            $row = $averageResult->fetch_assoc();
+            // Prepare and execute the query to fetch the average rating and count of ratings
+            $query = "SELECT COALESCE(AVG(userRate), 0) AS averageRating, COUNT(userRate) AS ratingCount FROM userRating WHERE userID = ?";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
             $averageRating = $row["averageRating"];
+            $ratingCount = $row["ratingCount"];
 
             // Close the prepared statement
-            $averageStmt->close();
+            $stmt->close();
 
             // Close the database connection
             mysqli_close($conn);
@@ -429,6 +430,8 @@ while ($userRow = mysqli_fetch_assoc($query)) {
             if ($averageRating !== null) {
               $averageRatingFormatted = number_format($averageRating, 1);
               echo "<span class='text-warning ms-1'><small>{$averageRatingFormatted}/5.0</small></span>";
+              // Display the number of users who rated
+              echo "<span class='ms-1'>($ratingCount rated)</span>";
             }
             ?>
           </div>
@@ -664,7 +667,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
                       <td><?php echo $row['itemName']; ?></td>
                       <td><img src="pictures/<?php echo $row['itemImage_path']; ?>" alt="<?php echo $row['itemName']; ?>" class="img-fluid" style="max-width: 100px;"></td>
                       <td><?php echo date('m/d/y h:i A', strtotime($row['DateTimePosted'])); ?></td>
-                      
+
                     </tr>
                 <?php
                   }

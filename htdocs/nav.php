@@ -1,5 +1,51 @@
 <?php
 include "upper.php";
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    // If the user is not logged in, redirect them to the login page
+    echo "<script>window.location.href = 'login.php';</script>";
+    exit;
+}
+
+// If the user is logged in, retrieve their information from the session
+$user_id = $_SESSION['user_id'];
+$username = $_SESSION['username'];
+$email = $_SESSION['email'];
+
+// Prepare and bind the parameter
+$stmt = $conn->prepare("SELECT * FROM user WHERE userID = ?");
+$stmt->bind_param("i", $user_id);
+
+// Execute the query
+$stmt->execute();
+
+// Get the result
+$result = $stmt->get_result();
+if ($result->num_rows > 0) {
+    // Fetch the row
+    $row = $result->fetch_assoc();
+
+    // Access the columns
+    $username = $row['username'];
+    // Access other columns as needed
+
+    // Check status and redirect if necessary
+    $status = $row['status']; // Assuming status column contains the user status
+    if ($status == 'ban') {
+        // JavaScript redirection to ban.php
+        echo "<script>window.location.href = 'ban.php';</script>";
+        exit(); // Make sure to exit after redirection
+    } elseif ($status == 'Unverified') {
+        // JavaScript redirection to wait.php
+        echo "<script>window.location.href = 'wait.php';</script>";
+        exit(); // Make sure to exit after redirection
+    }
+
+    // Proceed with other code if the user status is neither 'ban' nor 'Unverified'
+} else {
+    // Handle case where no user with the given userID is found
+}
 ?>
 <!doctype html>
 <html lang="en">

@@ -1,15 +1,48 @@
 <?php
 include 'upper.php';
 
-// Query to get the username
-$query = "SELECT username FROM user WHERE userID = $user_id";
-$result = $conn->query($query);
-$row = $result->fetch_assoc();
-$username = $row['username'];
+// Prepare and bind the parameter
+$stmt = $conn->prepare("SELECT * FROM user WHERE userID = ?");
+$stmt->bind_param("i", $user_id); // Assuming $user_id is the value of the userID
+
+// Execute the query
+$stmt->execute();
+
+// Get the result
+$result = $stmt->get_result();
+if ($result->num_rows > 0) {
+    // Fetch the row
+    $row = $result->fetch_assoc();
+
+    // Access the columns
+    $username = $row['username'];
+    // Access other columns as needed
+
+    // Check status and redirect if necessary
+    $status = $row['status']; // Assuming status column contains the user status
+    if ($status == 'ban') {
+        // JavaScript redirection to ban.php
+        echo "<script>window.location.href = 'ban.php';</script>";
+        exit(); // Make sure to exit after redirection
+    } elseif ($status == 'Unverified') {
+        // JavaScript redirection to wait.php
+        echo "<script>window.location.href = 'wait.php';</script>";
+        exit(); // Make sure to exit after redirection
+    }
+
+    // Proceed with other code if the user status is neither 'ban' nor 'Unverified'
+} else {
+    // Handle case where no user with the given userID is found
+}
+
+// Close the statement and connection
+$stmt->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,18 +87,31 @@ $username = $row['username'];
     }
 
     @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
     }
 
-   
+
     @keyframes loaderGlow {
-      0% { box-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 15px #fff; }
-      50% { box-shadow: 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff; }
-      100% { box-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 10px #fff; }
+      0% {
+        box-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 15px #fff;
+      }
+
+      50% {
+        box-shadow: 0 0 10px #fff, 0 0 10px #fff, 0 0 10px #fff;
+      }
+
+      100% {
+        box-shadow: 0 0 5px #fff, 0 0 5px #fff, 0 0 10px #fff;
+      }
     }
 
-  
+
     .outro {
       position: fixed;
       top: 50%;
@@ -82,12 +128,12 @@ $username = $row['username'];
       flex-direction: column;
       align-items: center;
     }
-
   </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
   <div class="outro">
@@ -106,4 +152,5 @@ $username = $row['username'];
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

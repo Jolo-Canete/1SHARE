@@ -136,6 +136,23 @@ if (isset($_GET['requestId'])) {
         </div>
         <hr class="my-4">
 
+        <?php
+        $dateMeet = $row['DateTimeMeet'];
+
+        // Convert $dateMeet to a DateTime object for comparison
+        $dateMeetObj = new DateTime($dateMeet);
+        $currentDateTime = new DateTime();
+
+        // Compare $dateMeet with the current date and time
+        if ($dateMeetObj < $currentDateTime) {
+            // Date is in the past, disable the button
+            $disableButton = true;
+        } else {
+            // Date is in the future, enable the button
+            $disableButton = false;
+        }
+        ?>
+
         <!-- Accept and Decline Buttons -->
         <div class="modal-footer">
         <div class="d-flex justify-content-center mt-4">

@@ -2,139 +2,107 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <!--- Bootstrap Icon --->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-T0tuhcQj1SvaXrFt7Xt0Z7raamA9TDTwim3BK5hFuUMRKEiSEYjb9/2Wsgot7P2VK6AWFk7IOW6UDgDZ2KyE5g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
     <style>
-        * {
-            font-size: 20px;
+        body {
+            background-color: #f8f9fa;
         }
-        .container {
-            display: grid;
-            justify-content: center;
-            align-items: center;
-            height: 500px; /* Set a height for the container */
-        }
-        .form-group {
-            margin-bottom: 10px; /* Adjust spacing between form groups */
-        }
-        label {
-            display: inline-block;
-            width: 150px; /* Set the width of the labels */
-            text-align: right; /* Align labels to the right */
-            margin-right: 10px; /* Adjust spacing between labels and input fields */
-        }
+
         input[type="text"],
         input[type="password"] {
-            width: 200px; /* Set the width of text and password inputs */
+            width: 200px;
+            /* Set the width of text and password inputs */
         }
     </style>
 </head>
+
 <body>
     <?php include "1db.php"; ?>
-    <h1 align="center">ADMIN PAGE</h1> <hr>
-    <div class="container">
-        <form action="" method="post">
-            <div class="form-group">
-                <h3>Login</h3>
+    <header>
+        <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
+            <div class="container">
+
+                <a class="navbar-brand" href="login.php" style="margin-left: 50px;">
+                    <img src="picture/logo.png" alt="I S H A R E logo" style="height: 30px; ">
+                    I S H A R E
+                </a>
+        </nav>
+    </header>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4 col-12">
+                <h1 class="text-center fw-bold">I S H A R E</h1>
+                <div class="card shadow p-3 mb-5 bg-body rounded-4 border-0">
+                    <div class="card-body">
+                        <form method="post" action="">
+
+                            <!--- Login --->
+                            <label for="username"><b>Username</b></label>
+                            <div class="input-group flex-nowrap mb-3">
+                                <span class="input-group-text"><i class="bi bi-person-fill"></i></span>
+                                <input type="text" class="form-control" name="username" id="username" placeholder="Enter your username" aria-label="Enter your username" aria-describedby="addon-wrapping">
+                            </div>
+                            <label for="password"><b>Password</b></label>
+                            <div class="input-group flex-nowrap mb-3">
+                                <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+                                <input type="password" class="form-control" name="password" placeholder="Enter your password" aria-label="Enter your password" aria-describedby="addon-wrapping">
+                            </div>
+                            <div class="d-grid gap-2 mb-3">
+                                <button id="loginButton" class="btn btn-primary" type="submit" name="login" value="Enter">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" name="username" id="username">
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" name="password" id="password">
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Enter" name="login">
-            </div>
-            <hr>
-            <div class="form-group">
-                <h3>Signup</h3>
-            </div>
-            <div class="form-group">
-                <label for="adFirstName">First name:</label>
-                <input type="text" name="adFirstName" id="adFirstName">
-            </div>
-            <div class="form-group">
-                <label for="adMiddleName">Middle name:</label>
-                <input type="text" name="adMiddleName" id="adMiddleName">
-            </div>
-            <div class="form-group">
-                <label for="adLastName">Last name:</label>
-                <input type="text" name="adLastName" id="adLastName">
-            </div>
-            <div class="form-group">
-                <label for="barangayPosition">Barangay Position:</label>
-                <input type="text" name="barangayPosition" id="barangayPosition">
-            </div>
-            <div class="form-group">
-                <label for="adUsername">Username:</label>
-                <input type="text" name="adUsername" id="adUsername">
-            </div>
-            <div class="form-group">
-                <label for="adPassword">Password:</label>
-                <input type="password" name="adPassword" id="adPassword">
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Submit" name="signup">
-            </div>
-        </form>
+        </div>
     </div>
 
 
-<?php 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
-    $username = trim($_POST["username"]);
-    $password = trim($_POST["password"]);
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
+        $username = trim($_POST["username"]);
+        $password = trim($_POST["password"]);
 
-    $sql = "SELECT * FROM admin WHERE adUsername = '$username'";
-    $result = $conn->query($sql);
+        $sql = "SELECT * FROM admin WHERE adUsername = '$username'";
+        $result = $conn->query($sql);
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $stored_password = $row["adPassword"];
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $stored_password = $row["adPassword"];
 
-        // Compare the entered password with the stored password
-        if ($password == $stored_password) {
-            // Passwords match, login successful
-            echo '<script>alert("You have successfully logged in '. $username .'"); window.location.href = "home.php"; </script>';
-            exit();
+            // Compare the entered password with the stored password
+            if ($password == $stored_password) {
+                // Passwords match, login successful
+                echo '<script>alert("You have successfully logged in ' . $username . '"); window.location.href = "home.php"; </script>';
+                exit();
+            } else {
+                // Invalid password
+                echo "Invalid username or password.";
+            }
         } else {
-            // Invalid password
-            echo "Invalid username or password.";
+            // User not found
+            echo "User is not found.";
         }
-    } else {
-        // User not found
-        echo "User is not found.";
     }
-}
 
-// Handle sign-up form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["signup"])) {
-    $adFirstName = $_POST["adFirstName"];
-    $adMiddleName = $_POST["adMiddleName"];
-    $adLastName = $_POST["adLastName"];
-    $barangayPosition = $_POST["barangayPosition"];
-    $adUsername = $_POST["adUsername"];
-    $adPassword = $_POST["adPassword"];
+    $conn->close();
+    ob_end_flush();
+    ?>
 
-
-    $sql = "INSERT INTO admin (adFirstname, adMiddleName, adLastName, barangayPosition, adUsername, adPassword) VALUES ('$adFirstName', '$adMiddleName', '$adLastName', '$barangayPosition', '$adUsername', '$adPassword')";
-
-    if ($conn->query($sql) === TRUE) {
-        // Sign-up successful, redirect to the login page
-        echo '<script>alert("You have successfully signed in '. $adFirstName .'"); window.location.href = "home.php"; </script>';;
-        exit();
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
-}
-
-$conn->close();
-ob_end_flush();
-?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
+
 </html>

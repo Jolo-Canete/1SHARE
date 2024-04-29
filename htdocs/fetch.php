@@ -44,7 +44,7 @@ if (isset($_GET['requestId'])) {
 
         // Output the modal content
 ?>
-<style>
+        <style>
             .modal .table-responsive {
                 margin-top: 20px;
             }
@@ -83,10 +83,10 @@ if (isset($_GET['requestId'])) {
             }
 
             .modal-footer {
-        position: sticky;
-        bottom: 0;
-        background-color: #fff;
-    }
+                position: sticky;
+                bottom: 0;
+                background-color: #fff;
+            }
         </style>
         <div class="row">
             <!-- Right side: Item picture and request detail -->
@@ -184,14 +184,30 @@ if (isset($_GET['requestId'])) {
                 <span class="bi bi-arrow-right ms-2" style="font-size: 1.5rem;"></span>
             </div>
         </div>
+        <?php
+        $dateMeet = $row['DateTimeMeet'];
+
+        // Convert $dateMeet to a DateTime object for comparison
+        $dateMeetObj = new DateTime($dateMeet);
+        $currentDateTime = new DateTime();
+
+        // Compare $dateMeet with the current date and time
+        if ($dateMeetObj < $currentDateTime) {
+            // Date is in the past, disable the button
+            $disableButton = true;
+        } else {
+            // Date is in the future, enable the button
+            $disableButton = false;
+        }
+        ?>
 
         <!-- Accept and Decline Buttons -->
         <div class="modal-footer">
-        <div class="d-flex justify-content-center mt-4">
-            <button type="button" class="btn btn-success me-2" id="acceptButton">Accept</button>
-            <button type="button" class="btn btn-danger me-2" id="declineButton">Decline</button>
+            <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-success me-2" id="acceptButton" <?php if ($disableButton) echo 'disabled'; ?>>Accept</button> 
+                <button type="button" class="btn btn-danger me-2" id="declineButton">Decline</button>
+            </div>
         </div>
-</div>
 
         <input type="hidden" id="requestID" value="<?php echo $requestID; ?>">
 <?php

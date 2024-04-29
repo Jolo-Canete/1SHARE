@@ -33,9 +33,9 @@ if ($result->num_rows > 0) {
 
     // Check status and redirect if necessary
     $status = $row['status']; // Assuming status column contains the user status
-    if ($status == 'ban') {
+    if ($status == 'Unverified') {
         // JavaScript redirection to ban.php
-        echo "<script>window.location.href = 'ban.php';</script>";
+        echo "<script>window.location.href = 'wait.php';</script>";
         exit(); // Make sure to exit after redirection
     } elseif ($status == 'Verified') {
         // JavaScript redirection to wait.php
@@ -52,15 +52,13 @@ if ($result->num_rows > 0) {
 $stmt->close();
 $conn->close();
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Verification</title>
+    <title>Account Ban Notification</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -95,31 +93,6 @@ $conn->close();
             margin-bottom: 30px;
         }
 
-        .spinner {
-            display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(0, 0, 0, 0.1);
-            border-radius: 50%;
-            border-top-color: #0fc9e7;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        .availability {
-            font-size: 1rem;
-            color: red;
-        }
-
         .emoji {
             font-size: 3rem;
             margin-bottom: 20px;
@@ -129,13 +102,12 @@ $conn->close();
 
 <body>
     <div class="container">
-        <div class="emoji">🔍👀</div>
-
-        <h1>HANG TIGHT! <?php echo $username; ?></h1>
-        <p>Your account is currently under review by our super hardworking admin.</p>
-        <p>Please be patient, it'll be worth the wait!</p>
-        <div class="spinner"></div>
-        <p class="availability">Please note: Account verification may take between 30 minutes to 6 hours and is only applicable during Monday to Friday (excluding holidays).</p>
+        <div class="emoji">🚫</div>
+        <h1>ACCOUNT BANNED!</h1>
+        <p>Your account has been banned by our system due to violations of our terms and conditions.</p>
+        <p>The barangay office is open from Monday to Friday, 8:00 AM to 5:00 PM.</p>
+        <p>To appeal this decision, please contact your barangay or visit the barangay office within 7 days from the date of this notification.</p>
+        <p>Failure to appeal within the given time frame may result in permanent account suspension.</p>
     </div>
 </body>
 

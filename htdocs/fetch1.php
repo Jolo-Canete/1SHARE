@@ -27,14 +27,14 @@ if (isset($_GET['requestId'])) {
         $itemImage = $row['item_image'];
         $requestDateTime = $row['request_DateTime'];
         $dateMeet = $row['DateTimeMeet'];
-        $borrowDuration = $row['borrowDuration']; 
+        $borrowDuration = $row['borrowDuration'];
         $quantity = $row['quantity'];
         $borrowPrice = number_format($row['borrowPrice'], 2);
-        $totals = $row['borrowPrice'] * $row['quantity']; 
+        $totals = $row['borrowPrice'] * $row['quantity'];
         $total =      number_format($totals, 2);
         // Output the modal content
-        ?>
-<style>
+?>
+        <style>
             .modal .table-responsive {
                 margin-top: 20px;
             }
@@ -73,10 +73,10 @@ if (isset($_GET['requestId'])) {
             }
 
             .modal-footer {
-        position: sticky;
-        bottom: 0;
-        background-color: #fff;
-    }
+                position: sticky;
+                bottom: 0;
+                background-color: #fff;
+            }
         </style>
 
         <div class="row">
@@ -97,7 +97,7 @@ if (isset($_GET['requestId'])) {
                                 <td class="text-center"><?php echo $itemName; ?></td>
                             </tr>
                             <tr>
-                            <th><span class="bi bi-person-circle"></span>Requested by</th>
+                                <th><span class="bi bi-person-circle"></span>Requested by</th>
                                 <td class="text-center">
                                     <a href="otherprofile.php?userID=<?php echo $userID; ?>" target="_blank"><span class="badge align-items-center text-light-emphasis bg-primary-subtle border border-primary-subtle rounded-pill"><?php echo $username; ?></a>
                                     </span>
@@ -136,17 +136,33 @@ if (isset($_GET['requestId'])) {
                 </div>
             </div>
         </div>
-      
+        <?php
+        $dateMeet = $row['DateTimeMeet'];
+
+        // Convert $dateMeet to a DateTime object for comparison
+        $dateMeetObj = new DateTime($dateMeet);
+        $currentDateTime = new DateTime();
+
+        // Compare $dateMeet with the current date and time
+        if ($dateMeetObj < $currentDateTime) {
+            // Date is in the past, disable the button
+            $disableButton = true;
+        } else {
+            // Date is in the future, enable the button
+            $disableButton = false;
+        }
+        ?>
+
 
         <!-- Accept and Decline Buttons -->
         <div class="modal-footer">
-        <div class="d-flex justify-content-center mt-4">
-            <button type="button" class="btn btn-success me-2" id="acceptButton">Accept</button>
-            <button type="button" class="btn btn-danger me-2" id="declineButton">Decline</button>
+            <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-success me-2" id="acceptButton" <?php if ($disableButton) echo 'disabled'; ?>>Accept</button> 
+                <button type="button" class="btn btn-danger me-2" id="declineButton">Decline</button>
+            </div>
         </div>
-</div>
         <input type="hidden" id="requestID" value="<?php echo $requestID; ?>">
-        <?php
+<?php
     } else {
         // No results found
         echo "No data found for this request.";
@@ -192,7 +208,7 @@ if (isset($_GET['requestId'])) {
             if (confirm('Are you sure you want to accept this request?')) {
                 $.ajax({
                     type: 'POST',
-                    url: 'upBorrow.php', 
+                    url: 'upBorrow.php',
                     data: {
                         requestID: requestID,
                         status: 'Accepted'
@@ -221,7 +237,7 @@ if (isset($_GET['requestId'])) {
             if (confirm('Are you sure you want to decline this request?')) {
                 $.ajax({
                     type: 'POST',
-                    url: 'upBorrow.php', 
+                    url: 'upBorrow.php',
                     data: {
                         requestID: requestID,
                         status: 'Declined'
