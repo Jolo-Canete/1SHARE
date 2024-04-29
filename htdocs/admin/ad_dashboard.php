@@ -1,6 +1,7 @@
 <?php 
+include "./1db.php";
 include "./adminnav.php";
-include "./1db.php"; ?>
+?>
 
 <!-- Php  Function Scripts -->
 <? 

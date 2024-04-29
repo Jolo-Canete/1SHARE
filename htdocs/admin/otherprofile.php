@@ -1,4 +1,4 @@
-<?php include './adminnav.php'; include './1db.php'; ?>
+<?php include './1db.php';  include './adminnav.php'; ?>
 
 <!--- Preview the uploaded image --->
 <script>

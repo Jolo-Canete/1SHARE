@@ -1,5 +1,4 @@
-<?php session_start();
-include "./1db.php"; 
+<?php include "./1db.php"; 
 
 // check all errors
 ini_set('display_errors', 1);
