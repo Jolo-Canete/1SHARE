@@ -17,9 +17,6 @@ $_SESSION['last_visit_time'] = time();
 // Get the button form
 $dateOrder = isset($_POST['dateOrder']) ? $_POST['dateOrder'] : '';
 
-
-
-
 if($dateOrder == 'order by userReportDate DESC'){
     $order = " order by userReportDate DESC";
 
@@ -37,6 +34,9 @@ if($dateOrder == 'order by userReportDate DESC'){
 
 // Formulate the offset value
     $offset = ($currentPage > 1) ? ($currentPage - 1) * $rows_per_page : 0; 
+
+// Calculate the starting number for this page
+$idCounter = (($currentPage - 1) * $rows_per_page) + 1;
 
 // Get the total rows of the reporrteditem
 $sql = "SELECT COUNT(*) AS total_rows FROM userreport";
@@ -192,6 +192,7 @@ $result = $conn->query($sql);
                                 <table class="table table-striped table-bordered table-hover">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>Reported By</th>
                                             <th>Resident Reported</th>
                                             <th>Date Reported</th>
@@ -225,13 +226,12 @@ $result = $conn->query($sql);
                                                 } else {
                                                     $new_label = '';
                                                 }
-
-                                                $new = $dateTimePosted - $last_visit_time;
                                                 
                                                     // Get the date Time posted and store it
                                                     $date_TimePosted = $row['userReportDate'];
                                                     echo '<tr>';
-                                                    echo '<td>' . $new_label .  ' ' . $new . ' what' . $row['reporterFirstName'] . ' ' . $row['reporterLastName'] . '</td>';
+                                                    echo '<td>' . $idCounter . '</td>';
+                                                    echo '<td>' . $new_label . $row['reporterFirstName'] . ' ' . $row['reporterLastName'] . '</td>';
                                                     echo '<td class="fw-bold text-danger">' . $row['reportedFirstName'] . ' ' . $row['reportedLastName'] . '</td>';  
                                                     // Split the Item DateTimePosted
                                                     $dateTimePosted = explode(" ", $date_TimePosted );
@@ -264,6 +264,7 @@ $result = $conn->query($sql);
 
                                                 // Loop the table pages
                                                 $rowCount++;
+                                                $idCounter ++;
                                                 }
                                             } else{
                                                 // Write an empty item message if there are no reported items

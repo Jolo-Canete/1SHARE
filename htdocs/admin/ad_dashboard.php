@@ -343,35 +343,39 @@ if($resultItems ->num_rows > 0) {
                                             <th> </th>
                                             <th>Name</th>
                                             <th>Rating</th>
+                                            <th># of User Rate</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <? 
-                                    // Prepare the sql statement that post the users Ratings
-                                    $sql = "SELECT u.userID, CONCAT(u.firstName, ' ', u.lastName) AS FullName, CASE WHEN u.userRating IS NULL OR u.userRating = 0 THEN 'No Rating'
-                                    ELSE u.userRating
-                                    END AS UserRating FROM user u
-                                    ORDER BY CASE WHEN u.userRating IS NULL OR u.userRating = 0 THEN 0 ELSE u.userRating END DESC;";
-                                    
-                                    $resultRating = $conn->query($sql);
+                                    <?php
+                                    // Calculate the Values needed in the sql
+                                        $sql = "SELECT u.userID, 
+                                                CONCAT(u.firstName, ' ', u.lastName) AS FullName, 
+                                                COALESCE(AVG(ur.userRate), 'No Rating') AS AverageRating,
+                                                COUNT(ur.userRate) AS NumberOfRatings
+                                            FROM user u
+                                            LEFT JOIN userRating ur ON u.userID = ur.reportedID
+                                            GROUP BY u.userID
+                                            ORDER BY AverageRating";
 
-                                    // Loop this somewhat a thing
-
-                                    if ($resultRating->num_rows > 0) {
-                                        $rowRatingNumber = 1;
-                                        while($rowRating = $resultRating->fetch_assoc()) {
-                                            echo "<tr>";
-                                            echo "<td> $rowRatingNumber </td>";
-                                            echo "<td>" . $rowRating["FullName"] . "</td>";
-                                            echo "<td>" . $rowRating["UserRating"] . "</td>";
-                                            echo "</tr>";
-                                            $rowRatingNumber++;
+                                        // Run the sql
+                                        $resultRating = $conn->query($sql);
+                                        
+                                        if ($resultRating->num_rows > 0) {
+                                            $rowRatingNumber = 1;
+                                        // do the loop
+                                            while($rowRating = $resultRating->fetch_assoc()) {
+                                                echo "<tr>";
+                                                echo "<td> $rowRatingNumber </td>";
+                                                echo "<td>" . $rowRating["FullName"] . "</td>";
+                                                echo "<td>" . (is_numeric($rowRating["AverageRating"]) ? number_format($rowRating["AverageRating"], 2) : $rowRating["AverageRating"]) . "</td>";                                                echo "<td>" . $rowRating["NumberOfRatings"] . "</td>";
+                                                echo "</tr>";
+                                                $rowRatingNumber++;
+                                            }
+                                        } else {
+                                            echo "<tr><td colspan='4'>No data available</td></tr>";
                                         }
-                                    } else {
-                                        echo "<tr><td colspan='3'>No data available</td></tr>";
-                                    }
-                                    
-                                    ?>
+                                        ?>
                                     </tbody>
                                 </table>
                                 </div> 
