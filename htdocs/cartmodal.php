@@ -66,9 +66,9 @@
                 <div class="banner-content">
                   <div class="price-border">
 
-                    <span class="price-label">Borrow Price</span>
+                  <span class="price-label">Maintenance Fee(Borrow)</span>
                   </div>
-                  <div class="price-value">
+                  <div class="price-value" style="font-size: smaller;">
                     ₱<span id="modalBorrowPrice"></span>
                     (<span id="modalBorrowDuration"></span> Day/s)
                   </div>
@@ -105,7 +105,7 @@
                       </div>
                     </td>
                     <td class="text-end">
-                      <a href="#" class="link-offset-2 link-underline link-underline-opacity-0">View Profile</a>
+                      <a href="#"  id="modalOwnerLinks" class="link-offset-2 link-underline link-underline-opacity-0">View Profile</a>
                     </td>
                   </tr>
                 </table>
@@ -457,7 +457,11 @@
         document.getElementById('modalUserID').textContent = response.userID;
         document.getElementById('modalContactNumber').textContent = response.contactNumber;
         const modalOwnerLink = document.getElementById('modalOwnerLink');
-        modalOwnerLink.href = `otherprofile.php?owner=${response.userID}`;
+        modalOwnerLink.href = `otherprofile.php?userID=${response.userID}`;
+
+        const modalOwnerLinks = document.getElementById('modalOwnerLinks');
+        modalOwnerLinks.href = `otherprofile.php?userID=${response.userID}`;
+        
         document.getElementById('modalOwnerName').textContent = response.username;
         document.getElementById('modalUserImages').textContent = response.userImage_path;;
         modalUserImages.src = `picture/${response.userImage_path}`;

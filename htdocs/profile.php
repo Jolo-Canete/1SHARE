@@ -43,6 +43,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
   $dateJoinedMinute = $time[1];
   $dateJoinedSecond = $time[2];
 
+
   // Format the Birthdate to Date
   $Birthday = $userData['birthDay'];
   // Convert the date to a timestamp
@@ -98,82 +99,43 @@ while ($userRow = mysqli_fetch_assoc($query)) {
     }
 
     .rating {
-      text-align: left;
-      margin-top: 10px;
-    }
+    display: inline-block;
+    font-size: 15px;
+    color: #FFD700;
+    /* Default color for stars */
+}
 
-    .rating span {
-      color: #666666;
-      font-size: 14px;
-      margin-right: 5px;
-    }
-
-    .rating label {
-      color: #FFD700;
-      font-size: 20px;
-      margin: 0 2px;
-      cursor: pointer;
-    }
-
-    .rating>input {
-      display: none;
-    }
-
-    .rating>label {
-      font-size: 15px;
-      color: #ffc107;
-      display: inline-block;
-      cursor: pointer;
-    }
-
-    .rating>input:checked~label {
-      color: #f8de7e;
-    }
-
-    /* CSS for rating stars */
-    .rating {
-      display: inline-block;
-      font-size: 15px;
-      color: #FFD700;
-      /* Default color for stars */
-    }
-
-    .rating>input {
-      display: none;
-      cursor: not-allowed;
-      /* Change cursor to not-allowed */
-      pointer-events: none;
-      /* Disable pointer events */
-    }
+.rating>input {
+    display: none;
+    cursor: not-allowed; /* Change cursor to not-allowed */
+    pointer-events: none; /* Disable pointer events */
+}
 
 
 
 
-    /* CSS for rating stars */
-    .rating {
-      display: inline-block;
-    }
+/* CSS for rating stars */
+.rating {
+    display: inline-block;
+}
 
-    .rating label {
-      font-size: 15px;
-      /* Adjust the font size as needed */
-      color: #ddd;
-      /* Default color for empty stars */
-      cursor: not-allowed;
-      /* Change cursor to not-allowed */
-      pointer-events: none;
-      /* Disable pointer events */
-    }
+.rating label {
+    font-size: 15px;
+    /* Adjust the font size as needed */
+    color: #ddd;
+    /* Default color for empty stars */
+    cursor: not-allowed; /* Change cursor to not-allowed */
+    pointer-events: none; /* Disable pointer events */}
 
-    .rating>input:checked~label {}
+.rating>input:checked~label {}
 
-    .rating label.text-warning {
-      color: #f8ce0b;
-    }
+.rating label.text-warning {
+    color: #f8ce0b;
+}
 
-    .rating label i {
-      transition: color 0.3s;
-    }
+.rating label i {
+    transition: color 0.3s;
+}
 
 
     .data {
@@ -280,7 +242,7 @@ while ($userRow = mysqli_fetch_assoc($query)) {
               <div class="profile-avatar me-3">
                 <label for="profile-pic-upload">
                   <input type="file" id="profile-pic-upload" style="display: none;" onchange="previewImage(this);">
-                  <img id="profile-pic-preview" src="<?php echo !empty($itemImage_path) ? 'picture/' . $itemImage_path : 'picture/' . getUserProfilePicPath($user_id); ?>" class="rounded-circle" style="width: 150px; height: 150px; cursor: pointer;" alt="Profile Picture">
+                  <img id="profile-pic-preview" src="<?php echo !empty($Imagge) ? 'picture/' . $Imagge : 'picture/defaulst.jpg'; ?>" class="rounded-circle" style="width: 150px; height: 150px; cursor: pointer;" alt="Profile Picture">
                 </label>
                 <div id="upload-buttons" style="display: none;">
                   <br>
@@ -530,6 +492,36 @@ while ($userRow = mysqli_fetch_assoc($query)) {
           <div class="tab-pane fade" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
             <div class="mt-3">
               <div class="h2"><i class="bi bi-arrow-repeat me-2"></i> Transaction History
+              <?php
+                  // Open a new MySQLi connection
+                  $conn = new mysqli($servername, $username, $password, $dbname);
+
+                  // Check connection
+                  if ($conn->connect_error) {
+                      die("Connection failed: " . $conn->connect_error);
+                  }
+
+                  // Fetch the current value of $hiddenTran from the database
+                  $sqlTransHistory = "SELECT hiddenTran FROM user WHERE userID = $user_id";
+                  $resultTrans = $conn->query($sqlTransHistory);
+
+                  if ($resultTrans->num_rows > 0) {
+                      $rowTrans = $resultTrans->fetch_assoc();
+                      $hiddenTran = $rowTrans["hiddenTran"];
+                  } else {
+                      echo "0 results";
+                  }
+
+                  // Determine the color of the label based on the value of $hiddenTran
+                  if ($hiddenTran == 'Yes') {
+                      echo '<span class="badge text-bg-primary rounded-pill bg-success fs-6">Hidden</span>';
+                  } else {
+                      echo '<span class="badge text-bg-primary rounded-pill bg-danger fs-6">Shown</span>';
+                  }
+
+                  // Close the connection
+                  $conn->close();
+                  ?>
               </div>
             </div>
 
@@ -635,8 +627,36 @@ while ($userRow = mysqli_fetch_assoc($query)) {
         <!--- Item Owned --->
         <div class="tab-pane fade" id="itemowned" role="tabpanel" aria-labelledby="itemowned-tab">
           <div class="mt-3">
-            <div class="h2 d-flex align-items-center"><i class="bi bi-box me-2"></i> Item Owned</div>
+            <div class="h3"><i class="bi bi-box me-2"></i> Item Owned
+            <?php
+            // Open a new MySQLi connection
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            // Check connection
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            // Fetch the current value of $hiddenItem from the database
+            $sqlItem = "SELECT hiddenItem FROM user WHERE userID = $user_id";
+            $resultItem = $conn->query($sqlItem);
+
+            if ($resultItem->num_rows > 0) {
+                $rowItem = $resultItem->fetch_assoc();
+                $hiddenItem = $rowItem["hiddenItem"];
+            } else {
+                echo "0 results";
+            }
+
+            // Determine the color of the label based on the value of $hiddenItem
+            if ($hiddenItem == 'Yes') {
+                echo '<span class="badge text-bg-primary rounded-pill bg-success fs-11">Hidden</span>';
+            } else {
+                echo '<span class="badge text-bg-primary rounded-pill bg-danger fs-11">Shown</span>';
+            }
+            ?>
           </div>
+        </div>
           <div class="table-wrapper">
             <table class="table table-bordered table-border-2 table-hover mb-3 mt-3">
               <thead>

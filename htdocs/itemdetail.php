@@ -129,7 +129,7 @@ if (isset($_GET['itemID'])) {
                                 <?php endif; ?>
 
                                 <?php if (in_array('Borrow', explode(',', $item['requestType']))) : ?>
-                                    <p><i class="bi bi-cash"></i> <b>Borrow Price:</b> ₱<?php echo number_format($item['borrowPrice'], 2); ?></p>
+                                    <p><i class="bi bi-cash"></i> <b>Maintenance Fee:</b> ₱<?php echo number_format($item['borrowPrice'], 2); ?></p>
                                     <p><i class="bi-clock"></i> <b>Borrow Duration:</b> <?php echo $item['borrowDuration']; ?> Day/s</p>
                                 <?php endif; ?>
                             </div>
@@ -160,7 +160,7 @@ if (isset($_GET['itemID'])) {
             <table class="table table-borderless table-bg-transparent">
                 <thead>
                     <tr>
-                        <th class="h4 fw-bold" id="specs-header"><b>OVERALL RATING</b>
+                        <th class="h4 fw-bold text-center" id="specs-header"><b>OVERALL RATING</b>
                             <?php
                             // Open the database connection
                             include "1db.php";
@@ -210,7 +210,6 @@ if (isset($_GET['itemID'])) {
                                     $averageRatingFormatted = number_format($averageRating, 1);
                                     echo "<span class='text-warning ms-1'><small>{$averageRatingFormatted}/5.0</small></span>";
                                     echo "<span class='ms-1'><small>({$totalRatings} rated)</small></span>";
-
                                 }
                                 ?>
                             </div>
@@ -247,10 +246,9 @@ if (isset($_GET['itemID'])) {
                     ?>
                             <tr>
                                 <td>
-                                    <div class="row">
-                                        <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <div class="row justify-content-center">
+                                        <div class="col-sm-10 mb-3 mb-sm-0">
                                             <div class="card shadow-lg">
-
                                                 <div class="card-header">
                                                     <div class="d-flex align-items-center">
                                                         <img id="modalUserImages" src="picture/<?php echo $row['userImage_path']; ?>" alt="Owner's Profile Image" class="img-fluid rounded-circle me-2" style="width: 40px; height: 40px; border: 1px solid #ccc;">
@@ -298,9 +296,10 @@ if (isset($_GET['itemID'])) {
                                             </div>
                                         </div>
                                     </div>
+                                </td>
+                            </tr>
         </div>
-        </td>
-        </tr>
+
 <?php
                         }
                     } else {

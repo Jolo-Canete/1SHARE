@@ -67,7 +67,8 @@ include('1db.php');
                 <h1 class="text-center fw-bold">I S H A R E</h1>
                 <div class="card shadow p-3 mb-5 bg-body rounded-4 border-0">
                     <div class="card-body">
-<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
+                    
+                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
 
                             <!--- Login --->
                             <label for="email_address"><b>Username</b></label>

@@ -91,7 +91,7 @@
                         <input type="text" class="form-control" id="buyPrice" min="0" step=".01" placeholder="Enter selling price">
                     </div>
                     <div class="mb-3" id="borrowPriceField" style="display: none;">
-                        <label for="borrowPrice" class="form-label"><i class="bi bi-cash"></i> <b>Borrow Price (₱)</b> <span class="text-danger">*</span></label>
+                        <label for="borrowPrice" class="form-label"><i class="bi bi-cash"></i> <b>Maintenance Fee (₱)</b> <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" id="borrowPrice" min="0" step=".01" placeholder="Enter borrow price">
                     </div>
                     <div class="mb-3" id="borrowDurationField" style="display: none;">
@@ -158,7 +158,7 @@
             $('#category').addClass('is-invalid');
             isValid = false;
         }
-       
+
         if (!$('#itemAvailability').val()) {
             $('#itemAvailability').addClass('is-invalid');
             isValid = false;
@@ -191,33 +191,33 @@
         if (requestTypes.includes('Borrow')) {
             var borrowPrice = $('#borrowPrice').val();
             var borrowDuration = $('#borrowDuration').val();
+
+            // If borrowPrice is null or empty, set it to 0
             if (!borrowPrice) {
+                borrowPrice = 0;
+            }
+
+            // Parse the borrow price to float
+            borrowPrice = parseFloat(borrowPrice);
+
+            // If borrowPrice is NaN or less than 0, treat it as invalid
+            if (isNaN(borrowPrice) || borrowPrice < 0) {
                 $('#borrowPrice').addClass('is-invalid');
+                alert('Please enter a valid item price.');
                 isValid = false;
             } else {
-                // Parse the borrow price to float
-                borrowPrice = parseFloat(borrowPrice);
-                if (isNaN(borrowPrice) || borrowPrice <= 0) {
-                    $('#borrowPrice').addClass('is-invalid');
-                    alert('Please enter a valid item price.');
-                    isValid = false;
-                } else {
-                    formData.append('borrowPrice', borrowPrice);
-                }
+                formData.append('borrowPrice', borrowPrice);
             }
-            if (!borrowDuration) {
+
+            // If borrowDuration is null or empty, treat it as invalid
+            if (!borrowDuration || parseFloat(borrowDuration) <= 0) {
                 $('#borrowDuration').addClass('is-invalid');
+                alert('Please enter a valid borrow duration.');
                 isValid = false;
             } else {
                 // Parse the borrow duration to float
                 borrowDuration = parseFloat(borrowDuration);
-                if (isNaN(borrowDuration) || borrowDuration <= 0) {
-                    $('#borrowDuration').addClass('is-invalid');
-                    alert('Please enter a valid borrow duration.');
-                    isValid = false;
-                } else {
-                    formData.append('borrowDuration', borrowDuration);
-                }
+                formData.append('borrowDuration', borrowDuration);
             }
         }
 
@@ -260,9 +260,10 @@
             }
         });
     }
-    // Show/hide the price field based on the request type
+    // Show/hide the price field based on the category and request type
     $('input[name="requestType"]').on('change', function() {
         var selectedRequestTypes = getSelectedRequestTypes();
+        var selectedCategory = $('#category').val();
 
         // Show/hide the buy price field
         if (selectedRequestTypes.includes('Buy')) {
@@ -272,15 +273,18 @@
             $('#buyPrice').val('');
         }
 
-
-
-        // Show/hide the borrow price and duration fields
-        if (selectedRequestTypes.includes('Borrow')) {
+        // Show/hide the borrow price field
+        if (selectedRequestTypes.includes('Borrow') && (selectedCategory === 'Machinery' || selectedCategory === 'Tools')) {
             $('#borrowPriceField').show();
-            $('#borrowDurationField').show();
         } else {
             $('#borrowPriceField').hide();
             $('#borrowPrice').val('');
+        }
+
+        // Show/hide the borrow duration field based on the "Borrow" request type
+        if (selectedRequestTypes.includes('Borrow')) {
+            $('#borrowDurationField').show();
+        } else {
             $('#borrowDurationField').hide();
             $('#borrowDuration').val('');
         }

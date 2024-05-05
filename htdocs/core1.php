@@ -40,7 +40,11 @@ if (isset($_GET['requestId'])) {
         $dateMeet = $row['DateTimeMeet'];
         $borrowDuration = $row['borrowDuration'];
         $quantity = $row['quantity'];
-        $borrowPrice = number_format($row['borrowPrice'], 2);
+        if ($row['borrowPrice'] !== null) {
+            $borrowPrice = number_format($row['borrowPrice'], 2);
+        } else {
+            $borrowPrice = null; // or any default value you prefer
+        }
         $totals = $row['borrowPrice'] * $row['quantity'];
         $total =      number_format($totals, 2);
         // Output the modal content
@@ -131,7 +135,7 @@ if (isset($_GET['requestId'])) {
                                 <td class="text-center"><?php echo $borrowDuration; ?> days</td>
                             </tr>
                             <tr>
-                                <th><span class="bi bi-cash-coin"></span> Borrow Price</th>
+                                <th><span class="bi bi-cash-coin"></span> Maintenance Fee</th>
                                 <td class="text-center">₱<?php echo $borrowPrice; ?></td>
                             </tr>
                             <tr>

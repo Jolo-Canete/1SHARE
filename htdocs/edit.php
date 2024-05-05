@@ -48,7 +48,7 @@ if (isset($_GET['itemID'])) {
         <div class="page-content" id="content">
             <div class="row-12">
                 <div class="col-12">
-                    <div class="card" >
+                    <div class="card">
                         <div class="card-header">Edit Item</div>
                         <div class="card-body item-detail">
                             <form id="editItemForm" onsubmit="return uploadItem(event);">
@@ -150,7 +150,7 @@ if (isset($_GET['itemID'])) {
 
                                         <!--- If borrow, input borrowing price --->
                                         <div class="mb-3" id="borrowPriceField" <?php if (strpos($item['requestType'], 'Borrow') === false) echo 'style="display: none;"'; ?>>
-                                            <label for="borrowPrice" class="form-label"><i class="bi bi-cash"></i> <b>Borrow Price (₱)</b> <span class="text-danger">*</span></label>
+                                            <label for="borrowPrice" class="form-label"><i class="bi bi-cash"></i> <b>Maintenance Fee (₱)</b> <span class="text-danger">*</span></label>
                                             <input type="number" class="form-control" id="borrowPrice" name="borrowPrice" value="<?php echo $item['borrowPrice']; ?>">
                                         </div>
                                         <div class="mb-3" id="borrowDurationField" <?php if (strpos($item['requestType'], 'Borrow') === false) echo 'style="display: none;"'; ?>>
@@ -264,17 +264,26 @@ if (isset($_GET['itemID'])) {
             var buyCheckbox = document.getElementById('requestTypeBuy');
             var borrowCheckbox = document.getElementById('requestTypeBorrow');
 
+            var category = document.getElementById('category').value;
+
             if (buyCheckbox.checked) {
                 buyPriceField.style.display = 'block';
             } else {
                 buyPriceField.style.display = 'none';
             }
 
-            if (borrowCheckbox.checked) {
+            if (borrowCheckbox.checked && (category === 'Tools' || category === 'Machinery')) {
                 borrowPriceField.style.display = 'block';
                 borrowDurationField.style.display = 'block';
             } else {
                 borrowPriceField.style.display = 'none';
+                borrowDurationField.style.display = 'none';
+            }
+
+            // If "Borrow" checkbox is checked, ensure borrow duration field is visible
+            if (borrowCheckbox.checked) {
+                borrowDurationField.style.display = 'block';
+            } else {
                 borrowDurationField.style.display = 'none';
             }
         }

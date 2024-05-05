@@ -42,7 +42,9 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
 </head>
 
 <style>
-    <?php include "additem.css"; ?><?php include "find.css"; ?>body {
+    <?php include "additem.css"; ?><?php include "find.css"; ?>
+    
+    body {
         padding-bottom: 1rem;
         min-height: 100vh;
         overflow-x: hidden;

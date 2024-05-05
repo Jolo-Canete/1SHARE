@@ -76,12 +76,13 @@
                 <div class="banner-content">
                   <div class="price-border">
 
-                    <span class="price-label">Borrow Price</span>
+                    <span class="price-label">Maintenance Fee(Borrow)</span>
                   </div>
-                  <div class="price-value">
+                  <div class="price-value" style="font-size: smaller;">
                     ₱<span id="modalBorrowPrice"></span>
                     (<span id="modalBorrowDuration"></span> Day/s)
                   </div>
+
                 </div>
               </div>
               <div class="price-banner  mb-3" id="buyField">

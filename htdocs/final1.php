@@ -114,7 +114,7 @@ if (isset($_GET['requestId'])) {
                                 <td class="text-center"><?php echo $borrowDuration; ?> days</td>
                             </tr>
                             <tr>
-                                <th><span class="bi bi-cash-coin"></span> Borrow Price</th>
+                                <th><span class="bi bi-cash-coin"></span> Maintenance Fee</th>
                                 <td class="text-center">₱<?php echo $borrowPrice; ?></td>
                             </tr>
                             <tr>

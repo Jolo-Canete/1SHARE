@@ -325,7 +325,7 @@ $time = $dateTime[1];
                                             ?>
                                             <div class="ms-auto">
                                                 <form method="post" action="">
-                                                    <button type="submit" class="btn btn-outline-secondary btn-sm" name="transStatus">
+                                                    <button type="submit" class="btn btn-outline-secondary btn-sm" name="itemStatus">
                                                         <?php if($hiddenItem == 'Yes'): ?>
                                                             <i class="bi bi-lock-fill"></i>
                                                         <?php else: ?>
@@ -379,9 +379,40 @@ if (isset($_POST['transStatus'])) {
     $updateSql = "UPDATE user SET hiddenTran = '$newHiddenTran' WHERE userID = $user_id";
     if ($conn->query($updateSql) === TRUE) {
         echo "<script>
-            if (confirm('Transaction status updated successfully! Click OK to go to the homepage or Cancel to stay on this page.')) {
-                window.location.href = 'homepage.php';
-            }
+            alert('Transaction status updated successfully!');
+            window.location.href = 'settings.php';
+        </script>";
+    } else {
+        echo "Error updating record: " . $conn->error;
+    }
+}
+
+// Update the Item Owned Privacy
+if (isset($_POST['itemStatus'])) {
+    // Fetch the current value of $hiddenTran from the database
+    $sql = "SELECT hiddenItem FROM user WHERE userID = $user_id";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $rowTrans = $result->fetch_assoc();
+        $hiddenTran = $rowTrans["hiddenItem"];
+    } else {
+        echo "0 results";
+    }
+
+    // Toggle the value of $hiddenTran
+    if ($hiddenTran == 'Yes') {
+        $newHiddenTran = 'No';
+    } else {
+        $newHiddenTran = 'Yes';
+    }
+
+    // Update the database with the new value
+    $updateSql = "UPDATE user SET hiddenItem = '$newHiddenTran' WHERE userID = $user_id";
+    if ($conn->query($updateSql) === TRUE) {
+        echo "<script>
+            alert('Item status updated successfully!');
+            window.location.href = 'settings.php';
         </script>";
     } else {
         echo "Error updating record: " . $conn->error;

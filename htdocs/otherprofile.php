@@ -87,15 +87,6 @@ if ($result->num_rows > 0) {
   echo "<script>window.location.href='home.php'</script>";
 }
 
-
-
-
-
-
-
-
-
-
 ?>
 
 
@@ -136,38 +127,6 @@ if ($result->num_rows > 0) {
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
-    .rating {
-      text-align: left;
-      margin-top: 10px;
-    }
-
-    .rating span {
-      color: #666666;
-      font-size: 14px;
-      margin-right: 5px;
-    }
-
-    .rating label {
-      color: #FFD700;
-      font-size: 20px;
-      margin: 0 2px;
-      cursor: pointer;
-    }
-
-    .rating>input {
-      display: none;
-    }
-
-    .rating>label {
-      font-size: 15px;
-      color: #ffc107;
-      display: inline-block;
-      cursor: pointer;
-    }
-
-    .rating>input:checked~label {
-      color: #f8de7e;
-    }
 
     .data {
       background-color: yellow;
@@ -199,50 +158,7 @@ if ($result->num_rows > 0) {
       padding: 20px;
     }
 
-    /* CSS for rating stars */
-    .rating {
-      display: inline-block;
-      font-size: 15px;
-      color: #FFD700;
-      /* Default color for stars */
-    }
 
-    .rating>input {
-      display: none;
-      cursor: not-allowed;
-      /* Change cursor to not-allowed */
-      pointer-events: none;
-      /* Disable pointer events */
-    }
-
-
-
-
-    /* CSS for rating stars */
-    .rating {
-      display: inline-block;
-    }
-
-    .rating label {
-      font-size: 15px;
-      /* Adjust the font size as needed */
-      color: #ddd;
-      /* Default color for empty stars */
-      cursor: not-allowed;
-      /* Change cursor to not-allowed */
-      pointer-events: none;
-      /* Disable pointer events */
-    }
-
-
-
-    .rating label.text-warning {
-      color: #f8ce0b;
-    }
-
-    .rating label i {
-      transition: color 0.3s;
-    }
 
 
     .modal-body p {
@@ -301,6 +217,35 @@ if ($result->num_rows > 0) {
       border-radius: 4px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+
+
+    .rating>input {
+      display: none;
+      cursor: not-allowed;
+      /* Change cursor to not-allowed */
+      pointer-events: none;
+      /* Disable pointer events */
+    }
+
+
+
+
+    /* CSS for rating stars */
+    .rating {
+      display: inline-block;
+      padding: 10px;
+    }
+
+
+    .rating>input:checked~label {}
+
+    .rating label.text-warning {
+      color: #f8ce0b;
+    }
+
+    .rating label i {
+      transition: color 0.3s;
+    }
   </style>
 </head>
 
@@ -318,7 +263,7 @@ if ($result->num_rows > 0) {
           <div class="col-md-12">
             <div class="d-flex align-items-center">
               <div class="profile-avatar me-3">
-                <img src="picture/<?php echo $Imagge; ?>" class="rounded-circle" style="width: 150px; height: 150px;">
+                <img src="<?php echo !empty($Imagge) ? 'picture/' . $Imagge : 'picture/default.png'; ?>" class="rounded-circle" style="width: 150px; height: 150px;">
               </div>
               <div>
                 <div class="flex-grow-1 d-flex justify-content-between align-items-center">
@@ -519,10 +464,10 @@ if ($result->num_rows > 0) {
             echo "<p>Database connection error.</p>";
           } else {
             $query = "SELECT i.itemID, i.itemName, i.itemImage_path, i.DateTimePosted, u.hiddenItem
-              FROM item i
-              JOIN user u ON i.userID = u.userID 
-              WHERE i.userID = ?
-              ORDER BY i.DateTimePosted DESC";
+      FROM item i
+      JOIN user u ON i.userID = u.userID 
+      WHERE i.userID = ?
+      ORDER BY i.DateTimePosted DESC";
 
             $stmt = $conn->prepare($query);
             if ($stmt) {
@@ -567,7 +512,7 @@ if ($result->num_rows > 0) {
                 </table>
               <?php
               } else {
-                echo "<p>No items owned by the user.</p>";
+                echo "<p class='lead text-secondary'>This resident doesn't have any items yet.</p><br>";
               }
 
               // Output the "Item Private" message if no visible items were found
@@ -592,11 +537,10 @@ if ($result->num_rows > 0) {
           <!--- End of Item Owned --->
         </div>
 
-
         <!--- Transaction History --->
         <div class="tab-pane fade" id="transaction" role="tabpanel" aria-labelledby="transaction-tab">
           <div class="mt-3">
-            <div class="h2"><i class="bi bi-arrow-repeat me-2"></i> Transaction History </div>
+            <div class="h2"><i class="bi bi-arrow-repeat me-2"></i> Transaction History</div>
 
             <?php
             // Ensure $conn is your database connection object
@@ -607,7 +551,7 @@ if ($result->num_rows > 0) {
               echo "<p>Database connection error.</p>";
             } else {
               // Query to fetch the closed requests for the logged-in user
-              $query = "SELECT r.requestID, r.requestType, i.itemName, u.username AS itemOwner, r.rated AS rated, u.hiddenTran AS hiddenTran,
+              $query = "SELECT r.requestID, r.requestType, i.itemName, u.username AS itemOwner, u.userID AS userID, r.rated AS rated, u.hiddenTran AS hiddenTran,
         (CASE
           WHEN r.requestType = 'Barter' THEN b.DateTimeCompleted
           WHEN r.requestType = 'Borrow' THEN bo.DateTimeCompleted 
@@ -626,7 +570,7 @@ if ($result->num_rows > 0) {
         END) AS ReturnProof
         FROM Request r
         JOIN item i ON r.itemID = i.itemID
-        JOIN user u ON i.userID = u.userID
+        JOIN user u ON r.userID = u.userID
         LEFT JOIN barter b ON r.requestID = b.requestID
         LEFT JOIN borrow bo ON r.requestID = bo.requestID
         LEFT JOIN buy bu ON r.requestID = bu.requestID
@@ -635,7 +579,7 @@ if ($result->num_rows > 0) {
 
               $stmt = $conn->prepare($query);
               if ($stmt) {
-                $stmt->bind_param("i", $userID);
+                $stmt->bind_param("i", $userData['userID']);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
@@ -657,8 +601,8 @@ if ($result->num_rows > 0) {
                     <tbody>
                       <?php
                       while ($row = $result->fetch_assoc()) {
-                        // Check if transaction is marked as hidden
-                        if ($row['hiddenTran'] == "Yes") {
+                        // Check if transaction is marked as hidden for the logged-in user
+                        if ($row['userID'] == $userData['userID'] && $row['hiddenTran'] == "Yes") {
                           // If hidden transaction found, skip displaying it
                           continue;
                         } else {
@@ -680,7 +624,7 @@ if ($result->num_rows > 0) {
                   </table>
                 <?php
                 } else {
-                  echo "<p>No transactions</p>";
+                  echo "<p class='lead text-secondary'>Looks like this resident doesn't have any Transactions yet.</p><br>";
                 }
 
                 // Output the "Transaction Private" message if no visible transactions were found
@@ -704,9 +648,7 @@ if ($result->num_rows > 0) {
 
           </div>
         </div>
-        <!--- End of Tab Content --->
-
-
+        <!--- End of Transaction Content --->
 
       </div>
       <!--- End of Tab --->

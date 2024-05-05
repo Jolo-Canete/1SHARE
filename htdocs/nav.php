@@ -17,6 +17,7 @@ $email = $_SESSION['email'];
 $stmt = $conn->prepare("SELECT * FROM user WHERE userID = ?");
 $stmt->bind_param("i", $user_id);
 
+
 // Execute the query
 $stmt->execute();
 
@@ -28,6 +29,8 @@ if ($result->num_rows > 0) {
 
     // Access the columns
     $username = $row['username'];
+    $Imagge = $row['userImage_path'];
+
     // Access other columns as needed
 
     // Check status and redirect if necessary
@@ -115,7 +118,7 @@ if ($result->num_rows > 0) {
     <div class="vertical-nav bg-dark" id="sidebar">
         <div class="py-4 px-3">
             <br><br>
-            <div class="media d-flex align-items-center"><img src="<?php echo !empty($itemImage_path) ? 'picture/' . $itemImage_path : 'picture/' . getUserProfilePicPaths($user_id); ?>" alt="..." style="width: 60px; height: 60px;" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+            <div class="media d-flex align-items-center"><img src="<?php echo !empty($Imagge) ? 'picture/' . $Imagge : 'picture/default.png'; ?>" alt="..." style="width: 60px; height: 60px;" class="mr-3 rounded-circle img-thumbnail shadow-sm">
                 <div class="media-body">
                     <h4 class="m-0 text-light">
                         <?php
@@ -326,21 +329,21 @@ if ($result->num_rows > 0) {
                                 <button type="button" class="btn text-white position-relative d-flex align-items-center">
                                     <i class="bi bi-bell-fill fs-6"></i>
                                     <?php
-                                     include "notifcount.php";
+                                    include "notifcount.php";
                                     ?>
-                                     <!-- Display the unread messages count -->
+                                    <!-- Display the unread messages count -->
                                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="<?php echo $total_unread_count == 0 ? 'display: none;' : ''; ?>">
                                         <?php echo ($total_unread_count > 0) ? $total_unread_count : ''; ?>
                                         <span class="visually-hidden">unread messages</span>
                                     </span>
                                 </button>
                             </a>
-                            
+
                             <div class="dropdown">
                                 <a class="nav-link" data-bs-toggle="dropdown">
                                     <button type="button" class="btn text-white position-relative d-flex align-items-center">
                                         <i class="bi bi-gear-fill fs-6"></i>
-                                       
+
                                     </button>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark rounded-3 p-2 shadow w-220px">

@@ -179,7 +179,7 @@ function fetchTopMostRatedItems()
   return $items;
 }
 ?>
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -294,145 +294,164 @@ function fetchTopMostRatedItems()
       </div>
 
       <div class="row mt-4">
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">Highest Rated Items</h5>
-            </div>
-            <div class="card-body" id="highest-rated-items">
-              <?php
-              $highestRatedItems = fetchTopHighestRatedItems();
-              if (!empty($highestRatedItems)) {
-                echo "<ul>";
-                foreach ($highestRatedItems as $item) {
-                  echo "<li>{$item['itemName']} ({$item['averageRating']} stars)</li>";
-                }
-                echo "</ul>";
-              } else {
-                echo "<p>No data available</p>";
-              }
-              ?>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">Most Rated Items</h5>
-            </div>
-            <div class="card-body" id="most-rated-items">
-              <?php
-              $mostRatedItems = fetchTopMostRatedItems();
-              if (!empty($mostRatedItems)) {
-                echo "<ul>";
-                foreach ($mostRatedItems as $item) {
-                  echo "<li>{$item['itemName']} ({$item['totalRatings']} ratings)</li>";
-                }
-                echo "</ul>";
-              } else {
-                echo "<p>No data available</p>";
-              }
-              ?>
-            </div>
-          </div>
-        </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">Highest Rated Items</h5>
+      </div>
+      <div class="card-body" id="highest-rated-items">
+        <?php
+        $highestRatedItems = fetchTopHighestRatedItems();
+        if (!empty($highestRatedItems)) {
+          echo "<table class='table'>";
+          echo "<thead><tr><th>#</th><th>Item Name</th><th>Rating</th></tr></thead><tbody>";
+          $ranking = 1;
+          foreach ($highestRatedItems as $item) {
+            if ($item['averageRating'] !== null) {
+              echo "<tr>";
+              echo "<td>{$ranking}</td>";
+              echo "<td>{$item['itemName']}</td>";
+              echo "<td>{$item['averageRating']} stars</td>";
+              
+              echo "</tr>";
+              $ranking++;
+            }
+          }
+          echo "</tbody></table>";
+        } else {
+          echo "<p>No data available</p>";
+        }
+        ?>
       </div>
     </div>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script>
-      // Weekly Top 10 Most Engaged
-      var weeklyData = {
-        your: <?php echo json_encode($your_weekly_data); ?>,
-        all: <?php echo json_encode($all_weekly_data); ?>
-      };
-
-      // Monthly Top 10 Most Engaged
-      var monthlyData = {
-        your: <?php echo json_encode($your_monthly_data); ?>,
-        all: <?php echo json_encode($all_monthly_data); ?>
-      };
-
-      function updateTables(view) {
-        updateWeeklyTable(view);
-        updateMonthlyTable(view);
-      }
-
-      function updateWeeklyTable(view) {
-        var tableBody = document.getElementById('weekly-table-body');
-        tableBody.innerHTML = '';
-
-        var data = weeklyData[view];
-
-        for (var i = 0; i < data.labels.length; i++) {
-          var row = document.createElement('tr');
-
-          var rankCell = document.createElement('td');
-          rankCell.textContent = i + 1;
-
-          var itemNameCell = document.createElement('td');
-          itemNameCell.textContent = data.labels[i];
-
-          var requestsCell = document.createElement('td');
-          requestsCell.textContent = data.data[i];
-
-          var usernameCell = document.createElement('td');
-          usernameCell.textContent = data.usernames[i];
-
-          row.appendChild(rankCell);
-          row.appendChild(itemNameCell);
-          row.appendChild(requestsCell);
-          row.appendChild(usernameCell);
-          tableBody.appendChild(row);
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">Most Rated Items</h5>
+      </div>
+      <div class="card-body" id="most-rated-items">
+        <?php
+        $mostRatedItems = fetchTopMostRatedItems();
+        if (!empty($mostRatedItems)) {
+          echo "<table class='table'>";
+          echo "<thead><tr><th>#</th><th>Item Name</th><th>Total Ratings</th></tr></thead><tbody>";
+          $ranking = 1;
+          foreach ($mostRatedItems as $item) {
+            echo "<tr>";
+            echo "<td>{$ranking}</td>";
+            echo "<td>{$item['itemName']}</td>";
+            echo "<td>{$item['totalRatings']} ratings</td>";
+            echo "</tr>";
+            $ranking++;
+          }
+          echo "</tbody></table>";
+        } else {
+          echo "<p>No data available</p>";
         }
-      }
+        ?>
+      </div>
+    </div>
+  </div>
+</div>
 
-      function updateMonthlyTable(view) {
-        var tableBody = document.getElementById('monthly-table-body');
-        tableBody.innerHTML = '';
 
-        var data = monthlyData[view];
 
-        for (var i = 0; i < data.labels.length; i++) {
-          var row = document.createElement('tr');
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+      <script>
+        // Weekly Top 10 Most Engaged
+        var weeklyData = {
+          your: <?php echo json_encode($your_weekly_data); ?>,
+          all: <?php echo json_encode($all_weekly_data); ?>
+        };
 
-          var rankCell = document.createElement('td');
-          rankCell.textContent = i + 1;
+        // Monthly Top 10 Most Engaged
+        var monthlyData = {
+          your: <?php echo json_encode($your_monthly_data); ?>,
+          all: <?php echo json_encode($all_monthly_data); ?>
+        };
 
-          var itemNameCell = document.createElement('td');
-          itemNameCell.textContent = data.labels[i];
-
-          var requestsCell = document.createElement('td');
-          requestsCell.textContent = data.data[i];
-
-          var usernameCell = document.createElement('td');
-          usernameCell.textContent = data.usernames[i];
-
-          row.appendChild(rankCell);
-          row.appendChild(itemNameCell);
-          row.appendChild(requestsCell);
-          row.appendChild(usernameCell);
-          tableBody.appendChild(row);
+        function updateTables(view) {
+          updateWeeklyTable(view);
+          updateMonthlyTable(view);
         }
-      }
 
-      document.querySelectorAll('.btn-group button').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var view = this.getAttribute('data-view');
+        function updateWeeklyTable(view) {
+          var tableBody = document.getElementById('weekly-table-body');
+          tableBody.innerHTML = '';
 
-          // Update both tables
-          updateTables(view);
+          var data = weeklyData[view];
 
-          // Update button styles
-          this.classList.add('btn-outline-dark');
-          this.classList.remove('btn-dark');
-          this.parentNode.querySelector('.btn:not(.btn-outline-dark)').classList.add('btn-dark');
-          this.parentNode.querySelector('.btn:not(.btn-outline-dark)').classList.remove('btn-outline-dark');
+          for (var i = 0; i < data.labels.length; i++) {
+            var row = document.createElement('tr');
+
+            var rankCell = document.createElement('td');
+            rankCell.textContent = i + 1;
+
+            var itemNameCell = document.createElement('td');
+            itemNameCell.textContent = data.labels[i];
+
+            var requestsCell = document.createElement('td');
+            requestsCell.textContent = data.data[i];
+
+            var usernameCell = document.createElement('td');
+            usernameCell.textContent = data.usernames[i];
+
+            row.appendChild(rankCell);
+            row.appendChild(itemNameCell);
+            row.appendChild(requestsCell);
+            row.appendChild(usernameCell);
+            tableBody.appendChild(row);
+          }
+        }
+
+        function updateMonthlyTable(view) {
+          var tableBody = document.getElementById('monthly-table-body');
+          tableBody.innerHTML = '';
+
+          var data = monthlyData[view];
+
+          for (var i = 0; i < data.labels.length; i++) {
+            var row = document.createElement('tr');
+
+            var rankCell = document.createElement('td');
+            rankCell.textContent = i + 1;
+
+            var itemNameCell = document.createElement('td');
+            itemNameCell.textContent = data.labels[i];
+
+            var requestsCell = document.createElement('td');
+            requestsCell.textContent = data.data[i];
+
+            var usernameCell = document.createElement('td');
+            usernameCell.textContent = data.usernames[i];
+
+            row.appendChild(rankCell);
+            row.appendChild(itemNameCell);
+            row.appendChild(requestsCell);
+            row.appendChild(usernameCell);
+            tableBody.appendChild(row);
+          }
+        }
+
+        document.querySelectorAll('.btn-group button').forEach(function(btn) {
+          btn.addEventListener('click', function() {
+            var view = this.getAttribute('data-view');
+
+            // Update both tables
+            updateTables(view);
+
+            // Update button styles
+            this.classList.add('btn-outline-dark');
+            this.classList.remove('btn-dark');
+            this.parentNode.querySelector('.btn:not(.btn-outline-dark)').classList.add('btn-dark');
+            this.parentNode.querySelector('.btn:not(.btn-outline-dark)').classList.remove('btn-outline-dark');
+          });
         });
-      });
 
-      // Initialize tables
-      updateTables('your');
-    </script>
-  </body>
+        // Initialize tables
+        updateTables('your');
+      </script>
+</body>
+
 </html>

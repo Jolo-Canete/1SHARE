@@ -129,7 +129,7 @@ if (isset($_GET['itemID'])) {
                                 <?php endif; ?>
 
                                 <?php if (in_array('Borrow', explode(',', $item['requestType']))) : ?>
-                                    <p><i class="bi bi-cash"></i> <b>Borrow Price:</b> ₱<?php echo number_format($item['borrowPrice'], 2); ?></p>
+                                    <p><i class="bi bi-cash"></i> <b>Maintenance Fee:</b> ₱<?php echo number_format($item['borrowPrice'], 2); ?></p>
                                     <p><i class="bi-clock"></i> <b>Borrow Duration:</b> <?php echo $item['borrowDuration']; ?> Day/s</p>
                                 <?php endif; ?>
                             </div>

@@ -84,7 +84,7 @@
 
                                 <tbody id="borrowFields">
                                     <tr>
-                                        <td><i class="bi bi-cash text-dark"></i> <b>Borrow Price</b></td>
+                                        <td><i class="bi bi-cash text-dark"></i> <b>Maintenance Fee</b></td>
                                         <td>₱<span class="text-dark" id="modalBorrowPrice"></span></td>
                                     </tr>
                                     <tr>
@@ -116,6 +116,8 @@
             </div>
         </div>
     </div>
+
+    
 
     <script>
         function openItem() {
