@@ -151,7 +151,6 @@ if($status === 'Verified'){
                                     <th>Username</th>
                                     <th>Status</th>
                                     <th>Joined Date</th>
-                                    <th>Date Verified</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -228,7 +227,6 @@ if($status === 'Verified'){
                                         echo '<td>' . ucfirst($rowUser['username']) . '</td>';
                                         echo '<td><span class="badge ' .$statusBadgeClass .' text-white rounded-pill">' .$statusText . '</span></td>';
                                         echo '<td>' . $dateJoinedMonth . ' ' . $dateJoinedDay . ', ' . $dateJoinedYear . ' <br><i class="bi bi-clock"></i> ' . $dateJoinedHour . ':' . $dateJoinedMinute .'</td>';
-                                        echo '<td>' . $dateVerifiedDisplay . '</td>';
                                         echo '<td class="text-center">';
                                         echo '<a href="./action/user_details.php?userID='. $rowUser['userID']. '" class="btn btn-sm border-0">';
                                         echo '<i class="bi bi-plus-circle" style="font-size: 1rem; color: #0D6EFD;"></i>';
