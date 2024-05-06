@@ -2,9 +2,9 @@
 session_start();
 
 // Check if the admin is logged in
-if (!isset($_SESSION['adminID'])) {
+if (!isset($_SESSION['Lgn_Username'])) {
     // If the user is not logged in, redirect them to the login page
-    header("Location: ../login.php");
+    header("Location: ../adlogin.php");
     exit;
 }
 ?>
