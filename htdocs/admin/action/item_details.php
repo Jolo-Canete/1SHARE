@@ -212,7 +212,7 @@ input[type="number"]::-webkit-inner-spin-button {
                                             <!-- If borrow, input borrowing price and duration -->
                                             <div class="mb-3" id="borrowPriceField">
                                                 <!-- Borrowing Price Label -->
-                                                <label for="borrowPrice" class="form-label"><i class="bi bi-cash"></i> <b>Borrow Price (₱)</b></label>
+                                                <label for="borrowPrice" class="form-label"><i class="bi bi-cash"></i> <b>Maintenance Price (₱)</b></label>
                                                 <!-- Borrowing Price Input -->
                                                 <input type="number" step="0.01" class="form-control" id="borrowPrice" name="borrowPrice" value="<?php if (!empty($itemData['borrowPrice'])) { echo number_format($itemData['borrowPrice'], 2); } ?>">
                                             </div>
